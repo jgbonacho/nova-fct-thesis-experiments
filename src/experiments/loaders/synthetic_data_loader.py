@@ -51,10 +51,10 @@ def load_lfr_benchmark_network(path, filename, overlapping_ground_truth=True):
 
     # Extract ground-truth labels.
     if not overlapping_ground_truth:
-        ground_truth_labels = [memberships[idx + 1] - 1 for idx in sorted(graph.nodes())]
+        ground_truth_labels = [memberships[node_id + 1] - 1 for node_id in sorted(graph.nodes())]
         k = len(set(ground_truth_labels))
     else:
-        ground_truth_labels = [[label - 1 for label in memberships[idx + 1]] for idx in sorted(graph.nodes())]
+        ground_truth_labels = [[label - 1 for label in memberships[node_id + 1]] for node_id in sorted(graph.nodes())]
         k = len({label for labels in ground_truth_labels for label in labels})
 
     return graph, ground_truth_labels, k

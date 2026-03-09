@@ -45,8 +45,9 @@ def save_normalized_contributions(results_dir, input_filename, output_filename, 
             Name of the input CSV file inside each family directory.
         output_filename : (str)
             Name of the output CSV file to save inside each family directory.
-        number_of_columns_to_skip : (int)
+        number_of_columns_to_skip : (int, optional)
             Number of leading columns in each row that should not be normalized.
+            Default is 2.
 
     Saves:
         For each network family directory, a CSV file with the same leading columns and normalized contribution values,
@@ -86,8 +87,9 @@ def save_global_statistics(results_dir, input_filename, output_filename, number_
             Name of the normalized contributions CSV file inside each family directory.
         output_filename : (str)
             Name of the CSV file to save global statistics in the results directory.
-        number_of_columns_to_skip : (int)
+        number_of_columns_to_skip : (int, optional)
             Number of leading columns in each row that should be ignored when reading values.
+            Default is 2.
 
     Saves:
         A CSV file in 'results_dir' containing one statistics row per network family.
@@ -194,9 +196,10 @@ def draw_boxplot(results_dir, input_filename, output_filename, number_of_columns
         input_filename : (str)
             Name of the normalized contributions CSV file inside each family directory.
         output_filename : (str)
-            Name of the boxplot file to save in the results directory.
-        number_of_columns_to_skip : (int)
+            Name of the boxplot file to save in the results' directory.
+        number_of_columns_to_skip : (int, optional)
             Number of leading columns in each row that should be ignored when reading values.
+            Default is 2.
 
     Saves:
         A boxplot in 'results_dir' where each box represents the distribution of normalized contributions for one network family.
@@ -241,9 +244,9 @@ def draw_histograms(results_dir, input_filename, statistics_filename, output_fil
             Name of the statistics CSV file in the results' directory.
         output_filename : (str)
             Name of the histogram file to save inside each family directory.
-        number_of_columns_to_skip : (int)
+        number_of_columns_to_skip : (int, optional)
             Number of leading columns in each row that should be ignored when reading values.
-
+            Default is 2.
 
     Saves:
         For each network family directory, a histogram of normalized contributions with vertical lines for the median,
@@ -300,7 +303,7 @@ def draw_histograms(results_dir, input_filename, statistics_filename, output_fil
         plt.close()
 
 
-def save_thresholds(results_dir, input_filename, output_filename, threshold_metric):
+def save_thresholds(results_dir, input_filename, output_filename, threshold_metrics):
     """
     Save one threshold value per network family from the statistics file.
 
@@ -311,22 +314,22 @@ def save_thresholds(results_dir, input_filename, output_filename, threshold_metr
             Name of the statistics CSV file in the results' directory.
         output_filename : (str)
             Name of the CSV file to save thresholds in the results directory.
-        threshold_metric : (str)
-            Column name in the statistics file to use as the threshold
-            (for example: "Median", "75%", "90%", or "95%").
+        threshold_metrics : (tuple)
+            Column names in the statistics file to use as the threshold (for example: "Median", "75%", "90%" or "95%").
 
     Saves:
-        A CSV file in 'results_dir' containing two columns: network family and selected threshold value.
+        A CSV file in 'results_dir' containing two columns: network family and selected threshold value, for each threshold metric.
     """
 
-    with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file, \
-            open(os.path.join(results_dir, output_filename), "w", newline="", encoding="utf-8") as out_file:
-        reader = csv.DictReader(in_file)
-        writer = csv.writer(out_file)
-        writer.writerow(["Network Family", "Threshold"])
+    for threshold_metric in threshold_metrics:
+        with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file, \
+                open(os.path.join(results_dir, output_filename.replace(".csv", f"_{threshold_metric}.csv")), "w", newline="", encoding="utf-8") as out_file:
+            reader = csv.DictReader(in_file)
+            writer = csv.writer(out_file)
+            writer.writerow(["Network Family", f"Threshold ({threshold_metric})"])
 
-        for row in reader:
-            writer.writerow([row["Network Family"], row[threshold_metric]])
+            for row in reader:
+                writer.writerow([row["Network Family"], row[threshold_metric]])
 
 
 def _percentile(sorted_values, p):
@@ -354,8 +357,7 @@ def _percentile(sorted_values, p):
     return sorted_values[f] * (c - k) + sorted_values[c] * (k - f)
 
 
-def save_experiment_report(results_dir, apply_lapin, desired_k, network_family_dirs, networks_by_family,
-                           threshold_metric):
+def save_experiment_report(results_dir, apply_lapin, desired_k, network_family_dirs, networks_by_family, threshold_metrics):
     """
     Save a report with experiment metadata and generated files.
 
@@ -370,17 +372,17 @@ def save_experiment_report(results_dir, apply_lapin, desired_k, network_family_d
             List of network family directories.
         networks_by_family : (dict[str, list[str]])
             Mapping from each family to its network names.
-        threshold_metric : (str)
-            Statistic used to generate the thresholds file.
+        threshold_metrics : (str)
+            Statistics used to generate the threshold files.
 
     Saves:
-        A JSON report file named 'report.json' in the results directory.
+        A JSON report file named 'report.json' in the results' directory.
     """
 
     report = {
         "apply_lapin": apply_lapin,
         "desired_k": desired_k,
-        "threshold_metric": threshold_metric,
+        "threshold_metrics": threshold_metrics,
         "number_of_families": len(network_family_dirs),
         "families": [directory.name for directory in network_family_dirs],
         "total_number_of_networks": sum(len(networks) for networks in networks_by_family.values()),

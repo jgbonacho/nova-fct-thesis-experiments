@@ -23,20 +23,24 @@ STATISTICS_FILENAME = "statistics.csv"
 LINE_PLOT_FILENAME = "line_plot.pdf"
 BOXPLOT_FILENAME = "boxplot.pdf"
 THRESHOLDS_FILENAME = "thresholds.csv"
+THRESHOLDS_METRICS = ("Median", "75%", "90%", "95%")
 
 
-def run_contributions_in_lfr_networks_experiments(apply_lapin=False, desired_k=True, threshold_metric="Median"):
+def run_contributions_in_lfr_networks_experiments(apply_lapin=False, desired_k=True, threshold_metrics=THRESHOLDS_METRICS):
     """
     Run contribution experiments on all LFR network families.
 
     Parameters:
-        apply_lapin : (bool)
+        apply_lapin : (bool, optional)
             Whether to apply the LAPIN transformation as preprocessing step.
-        desired_k : (bool)
+            Default is False.
+        desired_k : (bool, optional)
             Whether to stop iterative extraction when the desired number of clusters is extracted
             or when the eigenvalues of the residual matrix are not positive.
-        threshold_metric : (str)
-            Statistic used to generate the thresholds file.
+            Default is True.
+        threshold_metrics : (str)
+            Statistics used to generate the threshold files.
+            Default is THRESHOLDS_METRICS.
 
     Saves:
         For each network family:
@@ -48,15 +52,14 @@ def run_contributions_in_lfr_networks_experiments(apply_lapin=False, desired_k=T
             - A CSV file with summary statistics per network family.
             - A line plot of contribution percentiles by network family.
             - A boxplot of normalized contributions by network family.
-            - A CSV file with one selected threshold per network family.
+            - A CSV file with for each selected threshold per network family.
             - A JSON report with experiment metadata.
     """
 
-    network_family_dirs = [directory for directory in Path(NETWORKS_BASE_DIR_PATH).iterdir() if directory.is_dir()]
-    networks_by_family = {}
-
     results_dir = create_results_dir(RESULTS_BASE_DIR_PATH)
 
+    network_family_dirs = [directory for directory in Path(NETWORKS_BASE_DIR_PATH).iterdir() if directory.is_dir()]
+    networks_by_family = {}
     for network_family_dir_idx, network_family_dir in enumerate(network_family_dirs, start=1):
         network_family = network_family_dir.name
         print(f"====== [{network_family_dir_idx}/{len(network_family_dirs)}] Network Family '{network_family}' ======")
@@ -101,8 +104,8 @@ def run_contributions_in_lfr_networks_experiments(apply_lapin=False, desired_k=T
     draw_boxplot(results_dir, NORMALIZED_CONTRIBUTIONS_FILENAME, BOXPLOT_FILENAME)
     draw_histograms(results_dir, NORMALIZED_CONTRIBUTIONS_FILENAME, STATISTICS_FILENAME, HISTOGRAM_FILENAME)
 
-    save_thresholds(results_dir, STATISTICS_FILENAME, THRESHOLDS_FILENAME, threshold_metric)
+    save_thresholds(results_dir, STATISTICS_FILENAME, THRESHOLDS_FILENAME, threshold_metrics)
 
     save_experiment_report(
-        results_dir, apply_lapin, desired_k, network_family_dirs, networks_by_family, threshold_metric
+        results_dir, apply_lapin, desired_k, network_family_dirs, networks_by_family, threshold_metrics
     )

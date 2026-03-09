@@ -10,20 +10,21 @@ cd LFR-Benchmark_UndirWeightOvp
 make
 cd ..
 
+# Set the name of the network family.
+network_family_name="nH_uH_onnH_omH"
+
 # Define the parameters for the graphs.
-list_n=(100 300)              # <--
 list_d_avg=(20)
 list_d_max=(50)
-list_mu=(0.1 0.3)             # <--
-list_t1=(2.0)
-list_t2=(1.0)
 list_c_min=(20)
 list_c_max=(100)
-list_on_percentages=(10 30)   # <--
-list_om=(2 4)                 # <--
+list_t1=(2.0)
+list_t2=(1.0)
 
-# Set the name of the network family.
-network_family_name="F1"
+list_n=(700 900)
+list_mu=(0.5 0.8)
+list_on_percentages=(40 60)
+list_om=(6 9)
 
 # Set the number of instances per network.
 t=2
