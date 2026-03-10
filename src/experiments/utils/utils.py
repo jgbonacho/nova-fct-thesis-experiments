@@ -2,6 +2,7 @@ import csv
 import json
 import math
 import os
+from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
@@ -323,7 +324,8 @@ def save_thresholds(results_dir, input_filename, output_filename, threshold_metr
 
     for threshold_metric in threshold_metrics:
         with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file, \
-                open(os.path.join(results_dir, output_filename.replace(".csv", f"_{threshold_metric}.csv")), "w", newline="", encoding="utf-8") as out_file:
+                open(os.path.join(results_dir, output_filename.replace(".csv", f"_{threshold_metric}.csv")), "w",
+                     newline="", encoding="utf-8") as out_file:
             reader = csv.DictReader(in_file)
             writer = csv.writer(out_file)
             writer.writerow(["Network Family", f"Threshold ({threshold_metric})"])
@@ -391,3 +393,90 @@ def save_experiment_report(results_dir, apply_lapin, desired_k, network_family_d
 
     with open(os.path.join(results_dir, "report.json"), "w", encoding="utf-8") as out_file:
         json.dump(report, out_file, indent=2)
+
+
+def read_thresholds(config_path, thresholds_filename, threshold_metrics):
+    """
+    Read threshold values for each network family and threshold metric.
+
+    Parameters:
+        config_path : (str)
+            Path to the configuration directory containing threshold CSV files.
+        thresholds_filename : (str)
+            Base filename for the thresholds files, for example "thresholds.csv".
+        threshold_metrics : (list[str])
+            List of threshold metrics to read, for example: ["Median", "75%", "90%", "95%"].
+
+    Returns:
+        thresholds : (dict)
+            Nested dictionary of threshold values.
+    """
+
+    thresholds = {}
+
+    for threshold_metric in threshold_metrics:
+        thresholds[threshold_metric] = {}
+        with open(os.path.join(config_path, thresholds_filename.replace(".csv", f"_{threshold_metric}.csv")), "r",
+                  newline="", encoding="utf-8") as input_file:
+            reader = csv.DictReader(input_file)
+            for row in reader:
+                network_family = row["Network Family"]
+                threshold = float(row[f"Threshold ({threshold_metric})"])
+                thresholds[threshold_metric][network_family] = threshold
+
+    return thresholds
+
+
+def draw_threshold_metric_line_plot(results_dir, input_filename, output_filename, y_metric="ONMI"):
+    """
+    Draw a line plot comparing threshold metrics across networks.
+
+    Parameters:
+        results_dir : (str)
+            Path to the results' directory.
+        input_filename : (str)
+            Name of the CSV file with extrinsic evaluation results.
+        output_filename : (str)
+            Name of the plot file to save in the results' directory.
+        y_metric : (str)
+            Column name to use on the y-axis, for example "ONMI" or "Omega".
+
+    Saves:
+        A line plot in 'results_dir' with:
+            - x-axis: network
+            - y-axis: selected evaluation metric
+            - one line per threshold metric
+    """
+
+    data_by_threshold = defaultdict(list)
+    network_order = []
+    seen_networks = set()
+
+    with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
+        reader = csv.DictReader(in_file)
+
+        for row in reader:
+            network = row["Network"]
+            threshold_metric = row["Threshold Metric"]
+            y_value = float(row[y_metric])
+
+            data_by_threshold[threshold_metric].append((network, y_value))
+
+            if network not in seen_networks:
+                seen_networks.add(network)
+                network_order.append(network)
+
+    plt.figure(figsize=(14, 5))
+
+    for threshold_metric, values in data_by_threshold.items():
+        values_by_network = {network: y for network, y in values}
+        y_series = [values_by_network.get(network, None) for network in network_order]
+        plt.plot(network_order, y_series, marker="o", label=threshold_metric)
+
+    plt.xlabel("Network")
+    plt.ylabel(y_metric)
+    plt.xticks(rotation=45, ha="right")
+    plt.legend(title="Threshold Metric")
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, f"{y_metric if y_metric != "|K'-K|/K" else "relative_error_of_k"}_{output_filename}"), dpi=300)
+    plt.close()

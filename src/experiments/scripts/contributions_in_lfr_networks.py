@@ -26,7 +26,7 @@ THRESHOLDS_FILENAME = "thresholds.csv"
 THRESHOLDS_METRICS = ("Median", "75%", "90%", "95%")
 
 
-def run_contributions_in_lfr_networks_experiments(apply_lapin=False, desired_k=True, threshold_metrics=THRESHOLDS_METRICS):
+def run_contributions_experiments_in_lfr_networks_experiments(apply_lapin=False, desired_k=True, threshold_metrics=THRESHOLDS_METRICS):
     """
     Run contribution experiments on all LFR network families.
 
