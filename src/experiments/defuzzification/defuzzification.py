@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def apply_defuzzification_rule(U, gamma, conditionally_discard_first_cluster, overlapping=True):
+def apply_defuzzification_rule(U, gamma=0.5, conditionally_discard_first_cluster=True, overlapping=True):
     """
     Apply a defuzzification rule to map fuzzy memberships to a binary [overlapping] community cover.
 
@@ -10,9 +10,11 @@ def apply_defuzzification_rule(U, gamma, conditionally_discard_first_cluster, ov
             Fuzzy membership per node per community.
         gamma : (float)
             Hyperparameter for the defuzzification rule.
+            Default is 0.5.
         conditionally_discard_first_cluster : (bool)
             If True, discard the first cluster if all membership values in the first column are positive.
             If False, include all clusters in the defuzzification process.
+            Default is True.
         overlapping : (bool, optional)
             If True, apply node-wise alpha-cut thresholding.
             If False, apply maximum membership assignment.
