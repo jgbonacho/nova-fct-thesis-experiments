@@ -1,0 +1,9 @@
+{
+  "apply_lapin": false,
+  "threshold_metrics": [
+    "Median",
+    "75%",
+    "90%",
+    "95%"
+  ]
+}

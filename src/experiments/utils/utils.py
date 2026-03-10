@@ -359,7 +359,14 @@ def _percentile(sorted_values, p):
     return sorted_values[f] * (c - k) + sorted_values[c] * (k - f)
 
 
-def save_experiment_report(results_dir, apply_lapin, desired_k, network_family_dirs, networks_by_family, threshold_metrics):
+def save_experiment_report(
+        results_dir,
+        apply_lapin,
+        threshold_metrics,
+        desired_k=None,
+        network_family_dirs=None,
+        networks_by_family=None
+):
     """
     Save a report with experiment metadata and generated files.
 
@@ -368,14 +375,14 @@ def save_experiment_report(results_dir, apply_lapin, desired_k, network_family_d
             Path to the experiment results directory.
         apply_lapin : (bool)
             Whether LAPIN preprocessing was applied.
+        threshold_metrics : (list[str])
+            Statistics used to generate the threshold files.
         desired_k : (bool)
             Whether FADDIS used the desired number of clusters as stopping criterion.
         network_family_dirs : (list[str])
             List of network family directories.
         networks_by_family : (dict[str, list[str]])
             Mapping from each family to its network names.
-        threshold_metrics : (str)
-            Statistics used to generate the threshold files.
 
     Saves:
         A JSON report file named 'report.json' in the results' directory.
@@ -383,13 +390,17 @@ def save_experiment_report(results_dir, apply_lapin, desired_k, network_family_d
 
     report = {
         "apply_lapin": apply_lapin,
-        "desired_k": desired_k,
-        "threshold_metrics": threshold_metrics,
-        "number_of_families": len(network_family_dirs),
-        "families": [directory.name for directory in network_family_dirs],
-        "total_number_of_networks": sum(len(networks) for networks in networks_by_family.values()),
-        "networks_by_family": networks_by_family
+        "threshold_metrics": threshold_metrics
     }
+
+    if desired_k is not None:
+        report["desired_k"] = desired_k
+    if network_family_dirs is not None:
+        report["number_of_families"] = len(network_family_dirs)
+        report["families"] = [directory.name for directory in network_family_dirs]
+    if networks_by_family is not None:
+        report["total_number_of_networks"] = sum(len(networks) for networks in networks_by_family.values())
+        report["networks_by_family"] = networks_by_family
 
     with open(os.path.join(results_dir, "report.json"), "w", encoding="utf-8") as out_file:
         json.dump(report, out_file, indent=2)
@@ -480,3 +491,65 @@ def draw_threshold_metric_line_plot(results_dir, input_filename, output_filename
     plt.tight_layout()
     plt.savefig(os.path.join(results_dir, f"{y_metric if y_metric != "|K'-K|/K" else "relative_error_of_k"}_{output_filename}"), dpi=300)
     plt.close()
+
+
+def save_threshold_metric_votes(results_dir, input_filename, output_filename, threshold_metrics):
+    """
+    Compute the number of wins for each threshold metric by reading result files.
+
+    Parameters:
+        results_dir : (str)
+            Path to the results directory containing one subdirectory per network family.
+        input_filename : (str)
+            Name of the extrinsic results CSV file inside each family directory.
+        output_filename : (str)
+            Name of the CSV file to save in the results directory.
+        threshold_metrics : (list[str])
+            List of threshold metrics to evaluate.
+
+    Saves:
+        A CSV file in 'results_dir' with two columns:
+            - Threshold Metric
+            - Votes
+    """
+
+    votes_by_threshold_metric = {threshold_metric: 0 for threshold_metric in threshold_metrics}
+    threshold_priority = {threshold_metric: idx for idx, threshold_metric in enumerate(threshold_metrics)}
+
+    network_family_dirs = [directory for directory in Path(results_dir).iterdir() if directory.is_dir()]
+    for network_family_dir in network_family_dirs:
+        networks_results = {}
+        with open(os.path.join(network_family_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
+            reader = csv.DictReader(in_file)
+
+            for row in reader:
+                network = row["Network"]
+
+                if network not in networks_results:
+                    networks_results[network] = []
+
+                networks_results[network].append({
+                    "Threshold Metric": row["Threshold Metric"],
+                    "ONMI": float(row["ONMI"]),
+                    "Omega": float(row["Omega"]),
+                    "|K'-K|/K": float(row["|K'-K|/K"]),
+                })
+
+        for network, network_results in networks_results.items():
+            best_result = min(
+                network_results,
+                key=lambda result: (
+                    -result["ONMI"],
+                    -result["Omega"],
+                    result["|K'-K|/K"],
+                    threshold_priority[result["Threshold Metric"]],
+                )
+            )
+            votes_by_threshold_metric[best_result["Threshold Metric"]] += 1
+
+    with open(os.path.join(results_dir, output_filename), "w", newline="", encoding="utf-8") as out_file:
+        writer = csv.writer(out_file)
+        writer.writerow(["Threshold Metric", "Votes"])
+
+        for threshold_metric in threshold_metrics:
+            writer.writerow([threshold_metric, votes_by_threshold_metric[threshold_metric]])

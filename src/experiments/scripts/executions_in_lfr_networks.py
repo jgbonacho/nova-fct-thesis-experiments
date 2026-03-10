@@ -13,11 +13,13 @@ from experiments.loaders.adjacency_matrix import compute_adjacency_matrix
 from experiments.loaders.synthetic_data_loader import load_lfr_benchmark_network
 from experiments.scripts.contributions_in_lfr_networks import RESULTS_BASE_DIR_PATH, NETWORKS_BASE_DIR_PATH, \
     THRESHOLDS_METRICS, THRESHOLDS_FILENAME, ROOT_DIR_PATH
-from experiments.utils.utils import read_thresholds, draw_threshold_metric_line_plot, create_results_dir
+from experiments.utils.utils import read_thresholds, draw_threshold_metric_line_plot, create_results_dir, \
+    save_threshold_metric_votes, save_experiment_report
 
 CONFIG_PATH = os.path.join(ROOT_DIR_PATH, 'config')
 EXTRINSIC_RESULTS_FILENAME = "extrinsic_results.csv"
 BY_THRESHOLD_FILENAME = "by_threshold.pdf"
+THRESHOLD_METRIC_VOTES = "threshold_metric_votes.csv"
 
 
 def run_executions_experiments_in_lfr_networks_experiments(apply_lapin=False, threshold_metrics=THRESHOLDS_METRICS):
@@ -108,3 +110,7 @@ def run_executions_experiments_in_lfr_networks_experiments(apply_lapin=False, th
         draw_threshold_metric_line_plot(
             network_family_results_dir, EXTRINSIC_RESULTS_FILENAME, BY_THRESHOLD_FILENAME, y_metric="|K'-K|/K"
         )
+
+        save_threshold_metric_votes(results_dir, EXTRINSIC_RESULTS_FILENAME, THRESHOLD_METRIC_VOTES, threshold_metrics)
+
+        save_experiment_report(results_dir, apply_lapin, threshold_metrics)

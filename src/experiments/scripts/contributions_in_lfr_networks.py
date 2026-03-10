@@ -107,5 +107,5 @@ def run_contributions_experiments_in_lfr_networks_experiments(apply_lapin=False,
     save_thresholds(results_dir, STATISTICS_FILENAME, THRESHOLDS_FILENAME, threshold_metrics)
 
     save_experiment_report(
-        results_dir, apply_lapin, desired_k, network_family_dirs, networks_by_family, threshold_metrics
+        results_dir, apply_lapin, threshold_metrics, desired_k, network_family_dirs, networks_by_family
     )
