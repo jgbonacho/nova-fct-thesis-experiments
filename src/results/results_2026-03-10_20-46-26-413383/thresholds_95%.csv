@@ -1,0 +1,25 @@
+Network Family,Threshold (95%)
+nH_uH_onnH_omH,5.1e-05
+nH_uH_onnH_omL,4.6e-05
+nH_uH_onnL_omH,5.8e-05
+nH_uH_onnL_omL,6.6e-05
+nH_uL_onnH_omH,0.000138
+nH_uL_onnH_omL,0.000156
+nH_uL_onnL_omH,0.000389
+nH_uL_onnL_omL,0.000473
+nL_uH_onnH_omH,0.000165
+nL_uH_onnH_omL,0.000422
+nL_uH_onnL_omH,0.000211
+nL_uH_onnL_omL,0.000377
+nL_uL_onnH_omH,0.000332
+nL_uL_onnH_omL,0.000571
+nL_uL_onnL_omH,0.001165
+nL_uL_onnL_omL,0.00141
+nM_uH_onnH_omH,9.3e-05
+nM_uH_onnH_omL,8e-05
+nM_uH_onnL_omH,9.9e-05
+nM_uH_onnL_omL,0.00011
+nM_uL_onnH_omH,0.00019
+nM_uL_onnH_omL,0.000247
+nM_uL_onnL_omH,0.000686
+nM_uL_onnL_omL,0.000911
