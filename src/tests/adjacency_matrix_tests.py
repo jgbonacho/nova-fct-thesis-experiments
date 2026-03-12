@@ -7,6 +7,7 @@ from experiments.loaders.adjacency_matrix import compute_adjacency_matrix
 
 
 class Test(unittest.TestCase):
+
     def test_adjacency_matrix(self):
         graph = nx.Graph()
         graph.add_edges_from([(0, 1), (1, 2), (2, 0), (2, 3)])

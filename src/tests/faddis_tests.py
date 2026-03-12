@@ -6,6 +6,7 @@ from experiments.faddis.faddis import faddis
 
 
 class Test(unittest.TestCase):
+
     def test_faddis_with_epsilon_tau_k_max(self):
         W = np.matrix(
             [[1, .5, .3, .1],

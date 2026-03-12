@@ -6,6 +6,7 @@ from experiments.lapin.lapin import lapin
 
 
 class Test(unittest.TestCase):
+
     def test_lapin_symmetric_normalized_laplacian(self):
         W = np.matrix([[1, 0, 1], [0, 3, 0], [1, 0, 9]])
         W_transformed = lapin(W, laplacian_variant='symmetric_normalized_laplacian')

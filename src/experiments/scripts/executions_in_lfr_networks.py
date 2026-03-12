@@ -22,7 +22,7 @@ BY_THRESHOLD_FILENAME = "by_threshold.pdf"
 THRESHOLD_METRIC_VOTES = "threshold_metric_votes.csv"
 
 
-def run_executions_experiments_in_lfr_networks_experiments(apply_lapin=False, threshold_metrics=THRESHOLDS_METRICS):
+def run_executions_experiments_in_lfr_networks(apply_lapin=False, threshold_metrics=THRESHOLDS_METRICS):
     """
     Run execution experiments on all LFR network families using predefined threshold metrics.
 
@@ -60,7 +60,7 @@ def run_executions_experiments_in_lfr_networks_experiments(apply_lapin=False, th
 
             for network_idx, network in enumerate(networks, start=1):
                 for threshold_metric in threshold_metrics:
-                    print(f"=== [{network_idx}/{len(networks)}] Network '{network}' ===")
+                    print(f"=== [{network_idx}/{len(networks)}] Network '{network}' | Threshold '{threshold_metric}' ===")
                     try:
                         graph, ground_truth_labels, k = load_lfr_benchmark_network(
                             path=os.path.join(NETWORKS_BASE_DIR_PATH, network_family),
@@ -75,7 +75,7 @@ def run_executions_experiments_in_lfr_networks_experiments(apply_lapin=False, th
                             W=W,
                             epsilon=epsilon,
                             tau=-np.inf,
-                            k_max=min(50, graph.number_of_nodes() / 2)
+                            k_max=int(min(100, graph.number_of_nodes() / 2))
                         )
 
                         predicted_labels, first_cluster_discarded = apply_defuzzification_rule(
@@ -111,6 +111,6 @@ def run_executions_experiments_in_lfr_networks_experiments(apply_lapin=False, th
             network_family_results_dir, EXTRINSIC_RESULTS_FILENAME, BY_THRESHOLD_FILENAME, y_metric="|K'-K|/K"
         )
 
-        save_threshold_metric_votes(results_dir, EXTRINSIC_RESULTS_FILENAME, THRESHOLD_METRIC_VOTES, threshold_metrics)
+    save_threshold_metric_votes(results_dir, EXTRINSIC_RESULTS_FILENAME, THRESHOLD_METRIC_VOTES, threshold_metrics)
 
-        save_experiment_report(results_dir, apply_lapin, threshold_metrics)
+    save_experiment_report(results_dir, apply_lapin, threshold_metrics)

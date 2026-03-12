@@ -155,7 +155,7 @@
 
 - Script 2:
   1. Execute FADDIS **without LAPIN** for each network in each network family for each threshold, using the threshold as `epsilon` (FADDIS's individual cluster contribution);
-  2. Compute the extrinsic results ($K'$ | $K$, ONMI, Omega, $|K' - K|/K$);
+  2. Compute the extrinsic results ($K'$ | $K$, ONMI, Omega, $|K' - K|/K$), after a defuzzification step with default `gamma` 0.5;
   3. Create line plots for each network family (ONMI by threshold, Omega by threshold, $|K' - K|/K$ by threshold);
   4. Create a table with votes for the threshold that gives the best results, using the following rule:
      - ONMI (primary)
@@ -261,4 +261,26 @@
 ----
 
 - Script 2:
- TODO
+  1. Execute FADDIS **with LAPIN** for each network in each network family for each threshold, using the threshold as `epsilon` (FADDIS's individual cluster contribution);
+  2. Compute the extrinsic results ($K'$ | $K$, ONMI, Omega, $|K' - K|/K$), after a defuzzification step with default `gamma` 0.5;
+  3. Create line plots for each network family (ONMI by threshold, Omega by threshold, $|K' - K|/K$ by threshold);
+  4. Create a table with votes for the threshold that gives the best results, using the following rule:
+     - ONMI (primary)
+     - Omega (secondary)
+     - $|K' - K|/K$ (tertiary)
+     - Priority: [Median, 75%, 90%, 95%] (quaternary)
+    
+## Line Plots
+
+[Open Folder](../results/results_2026-03-11_19-48-00-719011)
+
+## Thresholds Votes
+
+| Threshold Metric | Votes |
+|------------------|-------|
+| Median           | 193   |
+| 75%              | 127   |
+| 90%              | 179   |
+| 95%              | 145   |
+
+---

@@ -489,7 +489,10 @@ def draw_threshold_metric_line_plot(results_dir, input_filename, output_filename
     plt.xticks(rotation=45, ha="right")
     plt.legend(title="Threshold Metric")
     plt.tight_layout()
-    plt.savefig(os.path.join(results_dir, f"{y_metric if y_metric != "|K'-K|/K" else "relative_error_of_k"}_{output_filename}"), dpi=300)
+    plt.savefig(
+        os.path.join(results_dir, f"{y_metric if y_metric != "|K'-K|/K" else "relative_error_of_k"}_{output_filename}"),
+        dpi=300
+    )
     plt.close()
 
 

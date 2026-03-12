@@ -26,7 +26,7 @@ THRESHOLDS_FILENAME = "thresholds.csv"
 THRESHOLDS_METRICS = ("Median", "75%", "90%", "95%")
 
 
-def run_contributions_experiments_in_lfr_networks_experiments(apply_lapin=False, desired_k=True, threshold_metrics=THRESHOLDS_METRICS):
+def run_contributions_experiments_in_lfr_networks(apply_lapin=False, desired_k=True, threshold_metrics=THRESHOLDS_METRICS):
     """
     Run contribution experiments on all LFR network families.
 
@@ -38,7 +38,7 @@ def run_contributions_experiments_in_lfr_networks_experiments(apply_lapin=False,
             Whether to stop iterative extraction when the desired number of clusters is extracted
             or when the eigenvalues of the residual matrix are not positive.
             Default is True.
-        threshold_metrics : (str)
+        threshold_metrics : (list[str])
             Statistics used to generate the threshold files.
             Default is THRESHOLDS_METRICS.
 
@@ -72,7 +72,7 @@ def run_contributions_experiments_in_lfr_networks_experiments(apply_lapin=False,
         with (open(os.path.join(network_family_results_dir, CONTRIBUTIONS_FILENAME), "w", newline="", encoding="utf-8")
               as out_file):
             writer = csv.writer(out_file)
-            writer.writerow(["Network", "k"])
+            writer.writerow(["Network", "K"])
 
             for network_idx, network in enumerate(networks, start=1):
                 print(f"=== [{network_idx}/{len(networks)}] Network '{network}' ===")
