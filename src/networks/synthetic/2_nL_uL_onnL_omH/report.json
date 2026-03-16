@@ -1,0 +1,14 @@
+{
+  "n200mu0.1on20om5inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.1; on=20; om=5; instance=1",
+  "n200mu0.1on60om5inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.1; on=60; om=5; instance=1",
+  "n200mu0.1on60om8inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.1; on=60; om=8; instance=1",
+  "n200mu0.4on60om8inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.4; on=60; om=8; instance=1",
+  "n400mu0.1on40om5inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.1; on=40; om=5; instance=1",
+  "n400mu0.1on40om8inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.1; on=40; om=8; instance=1",
+  "n400mu0.1on120om5inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.1; on=120; om=5; instance=1",
+  "n400mu0.1on120om8inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.1; on=120; om=8; instance=1",
+  "n400mu0.4on40om5inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.4; on=40; om=5; instance=1",
+  "n400mu0.4on40om8inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.4; on=40; om=8; instance=1",
+  "n400mu0.4on120om5inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.4; on=120; om=5; instance=1",
+  "n400mu0.4on120om8inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.4; on=120; om=8; instance=1"
+}

@@ -2,29 +2,15 @@ import csv
 import json
 import math
 import os
-from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.utils import resample
 
 
 def create_results_dir(base_dir):
-    """
-    Create a directory to store results, named with the current timestamp.
-
-    Parameters:
-        base_dir : (str)
-            The base directory for the results.
-
-    Returns:
-        results_dir : (str)
-            Path to the created results' directory.
-
-    Saves:
-        A new directory within 'base_dir' named "results_YYYY-MM-DD_HH-MM-SS-ffffff".
-    """
-
     os.makedirs(base_dir, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S-%f")
@@ -35,32 +21,22 @@ def create_results_dir(base_dir):
     return results_dir
 
 
-def save_normalized_contributions(results_dir, input_filename, output_filename, number_of_columns_to_skip=2):
-    """
-    Normalize contribution values across all network families using a global sum.
-
-    Parameters:
-        results_dir : (str)
-            Path to the results directory containing one subdirectory per network family.
-        input_filename : (str)
-            Name of the input CSV file inside each family directory.
-        output_filename : (str)
-            Name of the output CSV file to save inside each family directory.
-        number_of_columns_to_skip : (int, optional)
-            Number of leading columns in each row that should not be normalized.
-            Default is 2.
-
-    Saves:
-        For each network family directory, a CSV file with the same leading columns and normalized contribution values,
-        where each value is divided by the global sum of all contribution values across all families.
-    """
-
+def save_normalized_contributions_and_draw_line_plots(
+        results_dir,
+        input_filename,
+        output_filename,
+        number_of_columns_to_skip=2
+):
     global_sum = 0.0
 
-    network_family_dirs = [directory for directory in Path(results_dir).iterdir() if directory.is_dir()]
+    network_family_dirs = sorted(
+        [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
+        key=lambda path: path.name
+    )
     for network_family_dir in network_family_dirs:
         with open(os.path.join(network_family_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
             reader = csv.reader(in_file)
+            next(reader, None)
             for row in reader:
                 values = [float(x) for x in row[number_of_columns_to_skip:]]
                 global_sum += sum(values)
@@ -69,286 +45,99 @@ def save_normalized_contributions(results_dir, input_filename, output_filename, 
         with open(os.path.join(network_family_dir, input_filename), "r", newline="", encoding="utf-8") as in_file, \
                 open(os.path.join(network_family_dir, output_filename), "w", newline="", encoding="utf-8") as out_file:
             reader = csv.reader(in_file)
+            next(reader, None)
             writer = csv.writer(out_file)
+            writer.writerow(["Network", "K"])
             for row in reader:
                 values = [float(x) for x in row[number_of_columns_to_skip:]]
-                normalized_values = [value / global_sum for value in values]
-                rounded_normalized_values = [round(value, 6) for value in normalized_values]
-                writer.writerow(row[:number_of_columns_to_skip] + rounded_normalized_values)
+                normalized_values = [round(value / global_sum, 6) for value in values]
+                writer.writerow(row[:number_of_columns_to_skip] + normalized_values)
+
+                _draw_normalized_contributions_line_plot(network_family_dir, row[0], row[1], normalized_values)
 
 
-def save_global_statistics(results_dir, input_filename, output_filename, number_of_columns_to_skip=2):
-    """
-    Compute summary statistics of normalized contributions for each network family.
+def _draw_normalized_contributions_line_plot(results_dir, network_name, k, normalized_values):
+    x_values = list(range(1, len(normalized_values) + 1))
+    y_values = normalized_values
 
-    Parameters:
-        results_dir : (str)
-            Path to the results directory containing one subdirectory per network family.
-        input_filename : (str)
-            Name of the normalized contributions CSV file inside each family directory.
-        output_filename : (str)
-            Name of the CSV file to save global statistics in the results directory.
-        number_of_columns_to_skip : (int, optional)
-            Number of leading columns in each row that should be ignored when reading values.
-            Default is 2.
+    plt.figure(figsize=(8, 5))
+    plt.plot(x_values, y_values, marker="o")
 
-    Saves:
-        A CSV file in 'results_dir' containing one statistics row per network family.
-    """
+    k_int = int(k)
+    if k_int in x_values:
+        y_k = y_values[k_int - 1]
+        plt.axvline(x=k_int, linestyle="--", alpha=0.7)
+        plt.scatter([k_int], [y_k], s=80, zorder=5)
+        plt.annotate(f"K", xy=(k_int, y_k), xytext=(5, 8), textcoords="offset points")
 
-    statistics = []
+    plt.xlabel("Extraction Number")
+    plt.ylabel("Normalized Contribution")
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, f"{network_name}.pdf"), dpi=200)
+    plt.close()
 
-    network_family_dirs = [directory for directory in Path(results_dir).iterdir() if directory.is_dir()]
-    for network_family_dir in network_family_dirs:
-        network_family = network_family_dir.name
 
-        values = []
-        number_of_networks = 0
-        with open(os.path.join(network_family_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
-            reader = csv.reader(in_file)
-            for row in reader:
-                values.extend(float(x) for x in row[number_of_columns_to_skip:])
-                number_of_networks += 1
-
-        sorted_values = sorted(values)
-        n = len(sorted_values)
-
-        mean = sum(sorted_values) / n
-        variance = sum((x - mean) ** 2 for x in sorted_values) / n
-        std = math.sqrt(variance)
-        median = (sorted_values[n // 2] if n % 2 == 1 else (sorted_values[n // 2 - 1] + sorted_values[n // 2]) / 2)
-        p75 = _percentile(sorted_values, 0.75)
-        p90 = _percentile(sorted_values, 0.90)
-        p95 = _percentile(sorted_values, 0.95)
-        min_value = sorted_values[0]
-        max_value = sorted_values[-1]
-        statistics.append((
-            network_family,
-            number_of_networks - 1,
-            round(mean, 6),
-            round(std, 6),
-            round(median, 6),
-            round(p75, 6),
-            round(p90, 6),
-            round(p95, 6),
-            round(min_value, 6),
-            round(max_value, 6)
-        ))
-
-    with open(os.path.join(results_dir, output_filename), "w", newline="", encoding="utf-8") as out_file:
+def save_statistics_and_draw_histograms(
+        results_dir,
+        input_filename,
+        statistics_output_filename,
+        histogram_output_filename,
+        number_of_columns_to_skip=2
+):
+    network_family_dirs = sorted(
+        [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
+        key=lambda path: path.name
+    )
+    with open(os.path.join(results_dir, statistics_output_filename), "w", newline="", encoding="utf-8") as out_file:
         writer = csv.writer(out_file)
         writer.writerow(["Network Family", "#Networks", "Mean", "Std", "Median", "75%", "90%", "95%", "Min", "Max"])
-        writer.writerows(statistics)
+
+        for network_family_dir in network_family_dirs:
+            normalized_values = []
+            number_of_networks = 0
+            with open(os.path.join(network_family_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
+                reader = csv.reader(in_file)
+                next(reader, None)
+                for row in reader:
+                    network_normalized_values = [float(x) for x in row[number_of_columns_to_skip:]]
+                    normalized_values.extend(network_normalized_values)
+                    number_of_networks += 1
+
+            mean, std, median, p75, p90, p95, min_value, max_value = _compute_statistics(normalized_values)
+            writer.writerow([
+                network_family_dir.name, number_of_networks, mean, std, median, p75, p90, p95, min_value, max_value,
+            ])
+            _draw_histogram(
+                network_family_dir, histogram_output_filename, normalized_values, mean, std, median, p75, p90, p95
+            )
 
 
-def draw_line_plot(results_dir, input_filename, output_filename):
-    """
-    Draw a line plot of contribution percentiles for each network family.
+def _compute_statistics(normalized_values, number_of_decimal_places=6):
+    sorted_values = sorted(normalized_values)
+    n = len(sorted_values)
 
-    Parameters:
-        results_dir : (str)
-            Path to the results' directory.
-        input_filename : (str)
-            Name of the statistics CSV file in the results' directory.
-        output_filename : (str)
-            Name of the line plot file to save in the results' directory.
+    mean = sum(sorted_values) / n
+    variance = sum((x - mean) ** 2 for x in sorted_values) / n
+    std = math.sqrt(variance)
+    median = (sorted_values[n // 2] if n % 2 == 1 else (sorted_values[n // 2 - 1] + sorted_values[n // 2]) / 2)
+    p75 = _percentile(sorted_values, 0.75)
+    p90 = _percentile(sorted_values, 0.90)
+    p95 = _percentile(sorted_values, 0.95)
+    min_value = sorted_values[0]
+    max_value = sorted_values[-1]
 
-    Saves:
-        A line plot in 'results_dir' showing the median, 75th percentile, 90th percentile and 95th percentile
-        of normalized contributions for each network family.
-    """
-
-    families = []
-    medians = []
-    p75s = []
-    p90s = []
-    p95s = []
-    with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as input_file:
-        reader = csv.DictReader(input_file)
-        for row in reader:
-            families.append(row["Network Family"])
-            medians.append(float(row["Median"]))
-            p75s.append(float(row["75%"]))
-            p90s.append(float(row["90%"]))
-            p95s.append(float(row["95%"]))
-
-    plt.figure(figsize=(10, 4.5))
-    plt.plot(families, medians, marker="o", label="Median")
-    plt.plot(families, p75s, marker="o", label="75%")
-    plt.plot(families, p90s, marker="o", label="90%")
-    plt.plot(families, p95s, marker="o", label="95%")
-
-    plt.xlabel("Network Family")
-    plt.ylabel("Normalized Contribution")
-    plt.xticks(rotation=45, ha="right")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(os.path.join(results_dir, output_filename), dpi=300)
-    plt.close()
-
-
-def draw_boxplot(results_dir, input_filename, output_filename, number_of_columns_to_skip=2):
-    """
-    Draw a boxplot of normalized contributions for each network family.
-
-    Parameters:
-        results_dir : (str)
-            Path to the results directory containing one subdirectory per network family.
-        input_filename : (str)
-            Name of the normalized contributions CSV file inside each family directory.
-        output_filename : (str)
-            Name of the boxplot file to save in the results' directory.
-        number_of_columns_to_skip : (int, optional)
-            Number of leading columns in each row that should be ignored when reading values.
-            Default is 2.
-
-    Saves:
-        A boxplot in 'results_dir' where each box represents the distribution of normalized contributions for one network family.
-    """
-
-    boxplot_data = []
-    boxplot_labels = []
-
-    network_family_dirs = [directory for directory in Path(results_dir).iterdir() if directory.is_dir()]
-    for network_family in network_family_dirs:
-        values = []
-        with (open(os.path.join(results_dir, network_family, input_filename), "r", newline="", encoding="utf-8")
-              as input_file):
-            reader = csv.reader(input_file)
-            for row in reader:
-                values.extend(float(x) for x in row[number_of_columns_to_skip:])
-
-        boxplot_data.append(values)
-        boxplot_labels.append(network_family.name)
-
-    plt.figure(figsize=(10, 4.5))
-    plt.boxplot(boxplot_data, labels=boxplot_labels, patch_artist=True)
-
-    plt.xlabel("Network Family")
-    plt.ylabel("Normalized Contribution")
-    plt.xticks(rotation=45, ha="right")
-    plt.tight_layout()
-    plt.savefig(os.path.join(results_dir, output_filename), dpi=300)
-    plt.close()
-
-
-def draw_histograms(results_dir, input_filename, statistics_filename, output_filename, number_of_columns_to_skip=2):
-    """
-    Draw one histogram per network family with percentile threshold lines.
-
-    Parameters:
-        results_dir : (str)
-            Path to the results directory containing one subdirectory per network family.
-        input_filename : (str)
-            Name of the normalized contributions CSV file inside each family directory.
-        statistics_filename : (str)
-            Name of the statistics CSV file in the results' directory.
-        output_filename : (str)
-            Name of the histogram file to save inside each family directory.
-        number_of_columns_to_skip : (int, optional)
-            Number of leading columns in each row that should be ignored when reading values.
-            Default is 2.
-
-    Saves:
-        For each network family directory, a histogram of normalized contributions with vertical lines for the median,
-        75th percentile, 90th percentile and 95th percentile taken from the global statistics file.
-    """
-
-    statistics_by_family = {}
-
-    network_family_dirs = [directory for directory in Path(results_dir).iterdir() if directory.is_dir()]
-    with open(os.path.join(results_dir, statistics_filename), "r", newline="", encoding="utf-8") as stats_in_file:
-        reader = csv.DictReader(stats_in_file)
-        for row in reader:
-            statistics_by_family[row["Network Family"]] = {
-                "Median": float(row["Median"]),
-                "75%": float(row["75%"]),
-                "90%": float(row["90%"]),
-                "95%": float(row["95%"]),
-            }
-
-    for network_family_dir in network_family_dirs:
-        network_family = network_family_dir.name
-        values = []
-        with open(os.path.join(network_family_dir / input_filename), "r", newline="", encoding="utf-8") as in_file:
-            reader = csv.reader(in_file)
-            for row in reader:
-                values.extend(float(x) for x in row[number_of_columns_to_skip:])
-
-        thresholds = statistics_by_family.get(network_family)
-
-        plt.figure(figsize=(8, 5))
-        plt.hist(values, bins=30, edgecolor="black")
-        plt.axvline(
-            thresholds["Median"], color="blue", linestyle="--", linewidth=1.5,
-            label=f"median = {thresholds['Median']:.4f}"
-        )
-        plt.axvline(
-            thresholds["75%"], color="orange", linestyle="--", linewidth=1.5,
-            label=f"75% = {thresholds['75%']:.4f}"
-        )
-        plt.axvline(
-            thresholds["90%"], color="green", linestyle="--", linewidth=1.5,
-            label=f"90% = {thresholds['90%']:.4f}"
-        )
-        plt.axvline(
-            thresholds["95%"], color="red", linestyle="--", linewidth=1.5,
-            label=f"95% = {thresholds['95%']:.4f}"
-        )
-
-        plt.xlabel("Normalized Contribution")
-        plt.ylabel("Frequency")
-        plt.legend()
-        plt.tight_layout()
-        plt.savefig(os.path.join(network_family_dir, output_filename), dpi=300)
-        plt.close()
-
-
-def save_thresholds(results_dir, input_filename, output_filename, threshold_metrics):
-    """
-    Save one threshold value per network family from the statistics file.
-
-    Parameters:
-        results_dir : (str)
-            Path to the results' directory.
-        input_filename : (str)
-            Name of the statistics CSV file in the results' directory.
-        output_filename : (str)
-            Name of the CSV file to save thresholds in the results directory.
-        threshold_metrics : (tuple)
-            Column names in the statistics file to use as the threshold (for example: "Median", "75%", "90%" or "95%").
-
-    Saves:
-        A CSV file in 'results_dir' containing two columns: network family and selected threshold value, for each threshold metric.
-    """
-
-    for threshold_metric in threshold_metrics:
-        with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file, \
-                open(os.path.join(results_dir, output_filename.replace(".csv", f"_{threshold_metric}.csv")), "w",
-                     newline="", encoding="utf-8") as out_file:
-            reader = csv.DictReader(in_file)
-            writer = csv.writer(out_file)
-            writer.writerow(["Network Family", f"Threshold ({threshold_metric})"])
-
-            for row in reader:
-                writer.writerow([row["Network Family"], row[threshold_metric]])
+    return round(mean, number_of_decimal_places), \
+        round(std, number_of_decimal_places), \
+        round(median, number_of_decimal_places), \
+        round(p75, number_of_decimal_places), \
+        round(p90, number_of_decimal_places), \
+        round(p95, number_of_decimal_places), \
+        round(min_value, number_of_decimal_places), \
+        round(max_value, number_of_decimal_places)
 
 
 def _percentile(sorted_values, p):
-    """
-    Compute a percentile value from a sorted list using linear interpolation.
-
-    Parameters:
-        sorted_values : (list[float])
-            List of numeric values already sorted in ascending order.
-        p : (float)
-            Percentile to compute, expressed between 0 and 1.
-
-    Returns:
-        percentile_value : (float)
-            The interpolated percentile value.
-    """
-
     k = (len(sorted_values) - 1) * p
     f = math.floor(k)
     c = math.ceil(k)
@@ -359,200 +148,329 @@ def _percentile(sorted_values, p):
     return sorted_values[f] * (c - k) + sorted_values[c] * (k - f)
 
 
-def save_experiment_report(
+def _draw_histogram(results_dir, output_filename, normalized_values, mean, std, median, p75, p90, p95):
+    plt.figure(figsize=(8, 5))
+    plt.hist(normalized_values, bins=30, edgecolor="black")
+
+    for threshold_value, threshold_label in [
+        (mean - std, "mean-std"),
+        (mean + std, "mean+std"),
+        (median, "median"),
+        (p75, "75%"),
+        (p90, "90%"),
+        (p95, "95%"),
+    ]:
+        plt.axvline(
+            threshold_value,
+            linestyle="--",
+            linewidth=1.5,
+            label=f"{threshold_label} = {threshold_value:.6f}"
+        )
+
+    plt.xlabel("Normalized Contribution")
+    plt.ylabel("Frequency")
+    plt.grid(True, alpha=0.3)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, output_filename), dpi=300)
+    plt.close()
+
+
+def draw_boxplot(results_dir, input_filename, output_filename, number_of_columns_to_skip=2):
+    boxplot_data = []
+    boxplot_labels = []
+
+    network_family_dirs = sorted(
+        [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
+        key=lambda path: path.name
+    )
+    for network_family in network_family_dirs:
+        normalized_values = []
+        with (open(os.path.join(results_dir, network_family, input_filename), "r", newline="", encoding="utf-8")
+              as in_file):
+            reader = csv.reader(in_file)
+            next(reader, None)
+            for row in reader:
+                normalized_values.extend(float(x) for x in row[number_of_columns_to_skip:])
+        boxplot_data.append(normalized_values)
+        boxplot_labels.append(network_family.name)
+
+    plt.figure(figsize=(10, 4.5))
+    plt.boxplot(boxplot_data, labels=boxplot_labels, patch_artist=True)
+    plt.xlabel("Network Family")
+    plt.ylabel("Normalized Contribution")
+    plt.grid(True, alpha=0.3)
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, output_filename), dpi=300)
+    plt.close()
+
+
+def draw_line_plot(results_dir, input_filename, output_filename):
+    families = []
+    mean_minus_stds = []
+    mean_plus_stds = []
+    medians = []
+    p75s = []
+    p90s = []
+    p95s = []
+    with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as input_file:
+        reader = csv.DictReader(input_file)
+        for row in reader:
+            families.append(row["Network Family"])
+            mean_minus_stds.append(float(row["Mean"]) - float(row["Std"]))
+            mean_plus_stds.append(float(row["Mean"]) + float(row["Std"]))
+            medians.append(float(row["Median"]))
+            p75s.append(float(row["75%"]))
+            p90s.append(float(row["90%"]))
+            p95s.append(float(row["95%"]))
+
+    plt.figure(figsize=(10, 4.5))
+    plt.plot(families, mean_minus_stds, marker="o", label="mean-std")
+    plt.plot(families, mean_plus_stds, marker="o", label="mean+std")
+    plt.plot(families, medians, marker="o", label="median")
+    plt.plot(families, p75s, marker="o", label="75%")
+    plt.plot(families, p90s, marker="o", label="90%")
+    plt.plot(families, p95s, marker="o", label="95%")
+    plt.xlabel("Network Family")
+    plt.ylabel("Normalized Contribution")
+    plt.grid(True, alpha=0.3)
+    plt.xticks(rotation=45, ha="right")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, output_filename), dpi=300)
+    plt.close()
+
+
+def save_candidate_thresholds(results_dir, input_filename, output_filename, threshold_metrics):
+    with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file, \
+            open(os.path.join(results_dir, output_filename), "w", newline="", encoding="utf-8") as out_file:
+        reader = csv.DictReader(in_file)
+        writer = csv.writer(out_file)
+
+        writer.writerow(["Network Family"] + list(threshold_metrics))
+        for row in reader:
+            mean = float(row["Mean"])
+            std = float(row["Std"])
+            threshold_values = []
+            for threshold_metric in threshold_metrics:
+                if threshold_metric == "Mean-Std":
+                    threshold_values.append(round(mean - std, 6))
+                elif threshold_metric == "Mean+Std":
+                    threshold_values.append(round(mean + std, 6))
+                else:
+                    threshold_values.append(row[threshold_metric])
+            writer.writerow([row["Network Family"]] + threshold_values)
+
+
+def selected_thresholds_using_bootstrap_and_mse(
         results_dir,
-        apply_lapin,
+        raw_contributions_input_filename,
+        candidate_thresholds_input_filename,
+        bootstrap_statistics_output_filename,
+        thresholds_output_filename,
         threshold_metrics,
-        desired_k=None,
-        network_family_dirs=None,
-        networks_by_family=None
+        maximum_number_of_bootstraps=1000,
+        subsample_fraction=0.8,
+        number_of_columns_to_skip=2
 ):
-    """
-    Save a report with experiment metadata and generated files.
+    candidate_thresholds_by_family = _load_candidate_thresholds(
+        results_dir, candidate_thresholds_input_filename, threshold_metrics
+    )
 
-    Parameters:
-        results_dir : (str)
-            Path to the experiment results directory.
-        apply_lapin : (bool)
-            Whether LAPIN preprocessing was applied.
-        threshold_metrics : (list[str])
-            Statistics used to generate the threshold files.
-        desired_k : (bool)
-            Whether FADDIS used the desired number of clusters as stopping criterion.
-        network_family_dirs : (list[str])
-            List of network family directories.
-        networks_by_family : (dict[str, list[str]])
-            Mapping from each family to its network names.
+    with open(os.path.join(results_dir, bootstrap_statistics_output_filename), "w", newline="",
+              encoding="utf-8") as bootstrap_out_file, \
+            open(os.path.join(results_dir, thresholds_output_filename), "w", newline="",
+                 encoding="utf-8") as thresholds_out_file:
+        bootstrap_writer = csv.writer(bootstrap_out_file)
+        thresholds_writer = csv.writer(thresholds_out_file)
 
-    Saves:
-        A JSON report file named 'report.json' in the results' directory.
-    """
+        bootstrap_writer.writerow([
+            "Network Family",
+            "#Networks",
+            "Subsample Size",
+            "#Bootstraps",
+            "Metric",
+            "Candidate Threshold",
+            "MSE"
+        ])
+        thresholds_writer.writerow([
+            "Network Family",
+            "Selected Metric",
+            "Threshold",
+        ])
 
+        network_family_dirs = sorted(
+            [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
+            key=lambda path: path.name
+        )
+        for network_family_dir in network_family_dirs:
+            network_raw_contributions = _load_network_contributions(
+                network_family_dir, raw_contributions_input_filename, number_of_columns_to_skip
+            )
+            number_of_networks = len(network_raw_contributions)
+
+            subsample_size = max(1, math.ceil(subsample_fraction * number_of_networks))
+            subsample_size = min(subsample_size, number_of_networks - 1)
+
+            squared_errors_by_metric = {threshold_metric: [] for threshold_metric in threshold_metrics}
+
+            network_family_candidate_thresholds = candidate_thresholds_by_family[network_family_dir.name]
+            number_of_bootstraps = 0
+            for bootstrap_idx in range(maximum_number_of_bootstraps):
+                sampled_indices = _sample_network_indices_with_replacement(
+                    number_of_networks=number_of_networks,
+                    sample_size=subsample_size,
+                    random_seed=0 + bootstrap_idx
+                )
+                test_indices = _get_test_indices(number_of_networks, sampled_indices)
+                test_contributions = _get_test_contributions(network_raw_contributions, test_indices)
+                normalized_test_contributions = _normalize_contributions(test_contributions)
+                test_candidate_thresholds = _compute_candidate_thresholds(
+                    normalized_test_contributions, threshold_metrics
+                )
+
+                for threshold_metric in threshold_metrics:
+                    candidate_threshold_value = network_family_candidate_thresholds[threshold_metric]
+                    test_threshold_value = test_candidate_thresholds[threshold_metric]
+                    squared_error = (candidate_threshold_value - test_threshold_value) ** 2
+                    squared_errors_by_metric[threshold_metric].append(squared_error)
+
+                number_of_bootstraps += 1
+
+            selected_threshold_metric = None
+            selected_threshold_value = None
+            selected_threshold_mse = np.inf
+
+            for threshold_metric in threshold_metrics:
+                candidate_threshold_value = network_family_candidate_thresholds[threshold_metric]
+                squared_errors = squared_errors_by_metric[threshold_metric]
+                mse = sum(squared_errors) / len(squared_errors)
+
+                bootstrap_writer.writerow([
+                    network_family_dir.name,
+                    number_of_networks,
+                    subsample_size,
+                    number_of_bootstraps,
+                    threshold_metric,
+                    round(candidate_threshold_value, 6),
+                    round(mse, 12)
+                ])
+
+                if mse < selected_threshold_mse:
+                    selected_threshold_mse = mse
+                    selected_threshold_metric = threshold_metric
+                    selected_threshold_value = candidate_threshold_value
+
+            thresholds_writer.writerow([
+                network_family_dir.name,
+                selected_threshold_metric,
+                round(selected_threshold_value, 6)
+            ])
+
+
+def _load_candidate_thresholds(results_dir, input_filename, threshold_metrics):
+    candidate_thresholds_by_family = {}
+    with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
+        reader = csv.DictReader(in_file)
+        for row in reader:
+            candidate_thresholds_by_family[row["Network Family"]] = {
+                threshold_metric: float(row[threshold_metric]) for threshold_metric in threshold_metrics
+            }
+    return candidate_thresholds_by_family
+
+
+def _load_network_contributions(results_dir, input_filename, number_of_columns_to_skip=2):
+    network_raw_contributions = []
+    with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
+        reader = csv.reader(in_file)
+        next(reader, None)
+        for row in reader:
+            contributions = [float(x) for x in row[number_of_columns_to_skip:]]
+            network_raw_contributions.append(contributions)
+    return network_raw_contributions
+
+
+def _sample_network_indices_with_replacement(number_of_networks, sample_size, random_seed):
+    return resample(
+        list(range(number_of_networks)),
+        replace=True,
+        n_samples=sample_size,
+        random_state=random_seed
+    )
+
+
+def _get_test_indices(number_of_networks, sampled_indices):
+    return [idx for idx in range(number_of_networks) if idx not in set(sampled_indices)]
+
+
+def _get_test_contributions(network_contributions, selected_indices):
+    contributions = []
+    for idx in selected_indices:
+        contributions.extend(network_contributions[idx])
+    return contributions
+
+
+def _normalize_contributions(contributions):
+    total = sum(contributions)
+    return [value / total for value in contributions]
+
+
+def _compute_candidate_thresholds(normalized_values, threshold_metrics):
+    mean, std, median, p75, p90, p95, min_value, max_value = _compute_statistics(normalized_values)
+    thresholds = {
+        "Mean-Std": mean - std,
+        "Mean+Std": mean + std,
+        "Median": median,
+        "75%": p75,
+        "90%": p90,
+        "95%": p95
+    }
+
+    return {threshold_metric: thresholds[threshold_metric] for threshold_metric in threshold_metrics}
+
+
+def save_experiment_report(results_dir, output_filename, apply_lapin, network_family_dirs, desired_k=None):
     report = {
         "apply_lapin": apply_lapin,
-        "threshold_metrics": threshold_metrics
+        "number_of_families": len(network_family_dirs),
+        "families": [directory.name for directory in network_family_dirs]
     }
 
     if desired_k is not None:
         report["desired_k"] = desired_k
-    if network_family_dirs is not None:
-        report["number_of_families"] = len(network_family_dirs)
-        report["families"] = [directory.name for directory in network_family_dirs]
-    if networks_by_family is not None:
-        report["total_number_of_networks"] = sum(len(networks) for networks in networks_by_family.values())
-        report["networks_by_family"] = networks_by_family
 
-    with open(os.path.join(results_dir, "report.json"), "w", encoding="utf-8") as out_file:
+    with open(os.path.join(results_dir, output_filename), "w", encoding="utf-8") as out_file:
         json.dump(report, out_file, indent=2)
 
 
-def read_thresholds(config_path, thresholds_filename, threshold_metrics):
-    """
-    Read threshold values for each network family and threshold metric.
-
-    Parameters:
-        config_path : (str)
-            Path to the configuration directory containing threshold CSV files.
-        thresholds_filename : (str)
-            Base filename for the thresholds files, for example "thresholds.csv".
-        threshold_metrics : (list[str])
-            List of threshold metrics to read, for example: ["Median", "75%", "90%", "95%"].
-
-    Returns:
-        thresholds : (dict)
-            Nested dictionary of threshold values.
-    """
-
+def read_thresholds(config_dir, input_filename):
     thresholds = {}
-
-    for threshold_metric in threshold_metrics:
-        thresholds[threshold_metric] = {}
-        with open(os.path.join(config_path, thresholds_filename.replace(".csv", f"_{threshold_metric}.csv")), "r",
-                  newline="", encoding="utf-8") as input_file:
-            reader = csv.DictReader(input_file)
-            for row in reader:
-                network_family = row["Network Family"]
-                threshold = float(row[f"Threshold ({threshold_metric})"])
-                thresholds[threshold_metric][network_family] = threshold
-
+    with open(os.path.join(config_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
+        reader = csv.DictReader(in_file)
+        for row in reader:
+            thresholds[row["Network Family"]] = float(row["Threshold"])
     return thresholds
 
 
-def draw_threshold_metric_line_plot(results_dir, input_filename, output_filename, y_metric="ONMI"):
-    """
-    Draw a line plot comparing threshold metrics across networks.
+def draw_line_plots(results_dir, input_filename, metrics_to_plot):
+    networks = []
+    results_by_metric = {metric: [] for metric in metrics_to_plot}
 
-    Parameters:
-        results_dir : (str)
-            Path to the results' directory.
-        input_filename : (str)
-            Name of the CSV file with extrinsic evaluation results.
-        output_filename : (str)
-            Name of the plot file to save in the results' directory.
-        y_metric : (str)
-            Column name to use on the y-axis, for example "ONMI" or "Omega".
-
-    Saves:
-        A line plot in 'results_dir' with:
-            - x-axis: network
-            - y-axis: selected evaluation metric
-            - one line per threshold metric
-    """
-
-    data_by_threshold = defaultdict(list)
-    network_order = []
-    seen_networks = set()
-
-    with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
-        reader = csv.DictReader(in_file)
-
+    with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as input_file:
+        reader = csv.DictReader(input_file)
         for row in reader:
-            network = row["Network"]
-            threshold_metric = row["Threshold Metric"]
-            y_value = float(row[y_metric])
+            networks.append(row["Network"])
+            for metric in metrics_to_plot:
+                results_by_metric[metric].append(float(row[metric]))
 
-            data_by_threshold[threshold_metric].append((network, y_value))
-
-            if network not in seen_networks:
-                seen_networks.add(network)
-                network_order.append(network)
-
-    plt.figure(figsize=(14, 5))
-
-    for threshold_metric, values in data_by_threshold.items():
-        values_by_network = {network: y for network, y in values}
-        y_series = [values_by_network.get(network, None) for network in network_order]
-        plt.plot(network_order, y_series, marker="o", label=threshold_metric)
-
-    plt.xlabel("Network")
-    plt.ylabel(y_metric)
-    plt.xticks(rotation=45, ha="right")
-    plt.legend(title="Threshold Metric")
-    plt.tight_layout()
-    plt.savefig(
-        os.path.join(results_dir, f"{y_metric if y_metric != "|K'-K|/K" else "relative_error_of_k"}_{output_filename}"),
-        dpi=300
-    )
-    plt.close()
-
-
-def save_threshold_metric_votes(results_dir, input_filename, output_filename, threshold_metrics):
-    """
-    Compute the number of wins for each threshold metric by reading result files.
-
-    Parameters:
-        results_dir : (str)
-            Path to the results directory containing one subdirectory per network family.
-        input_filename : (str)
-            Name of the extrinsic results CSV file inside each family directory.
-        output_filename : (str)
-            Name of the CSV file to save in the results directory.
-        threshold_metrics : (list[str])
-            List of threshold metrics to evaluate.
-
-    Saves:
-        A CSV file in 'results_dir' with two columns:
-            - Threshold Metric
-            - Votes
-    """
-
-    votes_by_threshold_metric = {threshold_metric: 0 for threshold_metric in threshold_metrics}
-    threshold_priority = {threshold_metric: idx for idx, threshold_metric in enumerate(threshold_metrics)}
-
-    network_family_dirs = [directory for directory in Path(results_dir).iterdir() if directory.is_dir()]
-    for network_family_dir in network_family_dirs:
-        networks_results = {}
-        with open(os.path.join(network_family_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
-            reader = csv.DictReader(in_file)
-
-            for row in reader:
-                network = row["Network"]
-
-                if network not in networks_results:
-                    networks_results[network] = []
-
-                networks_results[network].append({
-                    "Threshold Metric": row["Threshold Metric"],
-                    "ONMI": float(row["ONMI"]),
-                    "Omega": float(row["Omega"]),
-                    "|K'-K|/K": float(row["|K'-K|/K"]),
-                })
-
-        for network, network_results in networks_results.items():
-            best_result = min(
-                network_results,
-                key=lambda result: (
-                    -result["ONMI"],
-                    -result["Omega"],
-                    result["|K'-K|/K"],
-                    threshold_priority[result["Threshold Metric"]],
-                )
-            )
-            votes_by_threshold_metric[best_result["Threshold Metric"]] += 1
-
-    with open(os.path.join(results_dir, output_filename), "w", newline="", encoding="utf-8") as out_file:
-        writer = csv.writer(out_file)
-        writer.writerow(["Threshold Metric", "Votes"])
-
-        for threshold_metric in threshold_metrics:
-            writer.writerow([threshold_metric, votes_by_threshold_metric[threshold_metric]])
+    for metric in metrics_to_plot:
+        plt.figure(figsize=(14, 5))
+        plt.plot(networks, results_by_metric[metric], marker="o")
+        plt.xlabel("Network")
+        plt.ylabel(metric)
+        plt.xticks(rotation=45, ha="right")
+        plt.tight_layout()
+        output_filename = f"{metric if metric != "|K'-K|/K" else "relative_error_of_k"}.pdf"
+        plt.savefig(os.path.join(results_dir, output_filename), dpi=300)
+        plt.close()

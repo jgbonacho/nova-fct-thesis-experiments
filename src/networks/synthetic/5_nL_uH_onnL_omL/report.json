@@ -1,0 +1,18 @@
+{
+  "n200mu0.5on20om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.5; on=20; om=2; instance=1",
+  "n200mu0.5on20om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.5; on=20; om=4; instance=1",
+  "n200mu0.5on60om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.5; on=60; om=2; instance=1",
+  "n200mu0.5on60om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.5; on=60; om=4; instance=1",
+  "n200mu0.8on20om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.8; on=20; om=2; instance=1",
+  "n200mu0.8on20om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.8; on=20; om=4; instance=1",
+  "n200mu0.8on60om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.8; on=60; om=2; instance=1",
+  "n200mu0.8on60om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=200; mu=0.8; on=60; om=4; instance=1",
+  "n400mu0.5on40om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.5; on=40; om=2; instance=1",
+  "n400mu0.5on40om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.5; on=40; om=4; instance=1",
+  "n400mu0.5on120om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.5; on=120; om=2; instance=1",
+  "n400mu0.5on120om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.5; on=120; om=4; instance=1",
+  "n400mu0.8on40om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.8; on=40; om=2; instance=1",
+  "n400mu0.8on40om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.8; on=40; om=4; instance=1",
+  "n400mu0.8on120om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.8; on=120; om=2; instance=1",
+  "n400mu0.8on120om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=400; mu=0.8; on=120; om=4; instance=1"
+}

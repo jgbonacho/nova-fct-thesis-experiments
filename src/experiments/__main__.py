@@ -2,22 +2,31 @@
 Entry point.
 """
 
-from experiments.scripts.contributions_in_lfr_networks import run_contributions_experiments_in_lfr_networks
-from experiments.scripts.executions_in_lfr_networks import run_executions_experiments_in_lfr_networks
+from experiments.scripts.contributions_experiments_in_lfr_networks import \
+    run_contributions_experiments_in_lfr_networks
+from experiments.scripts.experiments_in_lfr_networks import \
+    run_experiments_in_lfr_networks
+
+
+def run_experience(apply_lapin, use_desired_k):
+    print("\n###### Script 1")
+    results_path = run_contributions_experiments_in_lfr_networks(apply_lapin, use_desired_k)
+    print("\n###### Script 2")
+    run_experiments_in_lfr_networks(results_path, apply_lapin)
 
 
 def main():
-    run_contributions_experiments_in_lfr_networks(desired_k=True, apply_lapin=False)
-    run_executions_experiments_in_lfr_networks(apply_lapin=False)
+    # Experience 1
+    run_experience(apply_lapin=False, use_desired_k=True)
 
-    run_contributions_experiments_in_lfr_networks(desired_k=True, apply_lapin=True)
-    run_executions_experiments_in_lfr_networks(apply_lapin=True)
+    # Experience 2
+    run_experience(apply_lapin=True, use_desired_k=True)
 
-    run_contributions_experiments_in_lfr_networks(desired_k=False, apply_lapin=False)
-    run_executions_experiments_in_lfr_networks(apply_lapin=False)
+    # Experience 3
+    run_experience(apply_lapin=False, use_desired_k=False)
 
-    run_contributions_experiments_in_lfr_networks(desired_k=False, apply_lapin=True)
-    run_executions_experiments_in_lfr_networks(apply_lapin=True)
+    # Experience 4
+    run_experience(apply_lapin=True, use_desired_k=False)
 
 
 if __name__ == "__main__":
