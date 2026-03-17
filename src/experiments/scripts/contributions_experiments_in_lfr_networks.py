@@ -27,7 +27,7 @@ BOOTSTRAP_STATISTICS_FILENAME = "bootstrap_statistics.csv"
 SELECTED_THRESHOLDS_FILENAME = "thresholds.csv"
 REPORT_FILENAME = "report.json"
 
-THRESHOLDS_METRICS = ("Mean-Std", "Mean+Std", "Median", "75%", "90%", "95%")
+THRESHOLDS_METRICS = ("Mean-Std", "Mean", "Mean+Std", "Median", "75%", "90%", "95%")
 
 
 def run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired_k=True):

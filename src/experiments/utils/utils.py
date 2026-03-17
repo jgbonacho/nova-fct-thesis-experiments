@@ -154,6 +154,7 @@ def _draw_histogram(results_dir, output_filename, normalized_values, mean, std, 
 
     for threshold_value, threshold_label in [
         (mean - std, "mean-std"),
+        (mean, "mean"),
         (mean + std, "mean+std"),
         (median, "median"),
         (p75, "75%"),
@@ -309,31 +310,29 @@ def selected_thresholds_using_bootstrap_and_mse(
                 network_family_dir, raw_contributions_input_filename, number_of_columns_to_skip
             )
             number_of_networks = len(network_raw_contributions)
+            subsample_size = math.ceil(subsample_fraction * number_of_networks)
 
-            subsample_size = max(1, math.ceil(subsample_fraction * number_of_networks))
-            subsample_size = min(subsample_size, number_of_networks - 1)
-
+            number_of_bootstraps = 0
             squared_errors_by_metric = {threshold_metric: [] for threshold_metric in threshold_metrics}
 
-            network_family_candidate_thresholds = candidate_thresholds_by_family[network_family_dir.name]
-            number_of_bootstraps = 0
+            candidate_thresholds = candidate_thresholds_by_family[network_family_dir.name]
             for bootstrap_idx in range(maximum_number_of_bootstraps):
-                sampled_indices = _sample_network_indices_with_replacement(
+                # TODO: Check replacement.
+                sampled_indices = _bootstrapping(
                     number_of_networks=number_of_networks,
+                    with_replacement=True,
                     sample_size=subsample_size,
-                    random_seed=0 + bootstrap_idx
+                    random_seed=bootstrap_idx
                 )
-                test_indices = _get_test_indices(number_of_networks, sampled_indices)
-                test_contributions = _get_test_contributions(network_raw_contributions, test_indices)
-                normalized_test_contributions = _normalize_contributions(test_contributions)
-                test_candidate_thresholds = _compute_candidate_thresholds(
-                    normalized_test_contributions, threshold_metrics
-                )
+                contributions = _get_contributions(network_raw_contributions, sampled_indices)
+                # TODO: Check normalization denominator.
+                normalized_contributions = _normalize_contributions(contributions)
+                current_thresholds = _compute_candidate_thresholds(normalized_contributions, threshold_metrics)
 
                 for threshold_metric in threshold_metrics:
-                    candidate_threshold_value = network_family_candidate_thresholds[threshold_metric]
-                    test_threshold_value = test_candidate_thresholds[threshold_metric]
-                    squared_error = (candidate_threshold_value - test_threshold_value) ** 2
+                    candidate_threshold = candidate_thresholds[threshold_metric]
+                    current_threshold = current_thresholds[threshold_metric]
+                    squared_error = (candidate_threshold - current_threshold) ** 2
                     squared_errors_by_metric[threshold_metric].append(squared_error)
 
                 number_of_bootstraps += 1
@@ -343,7 +342,7 @@ def selected_thresholds_using_bootstrap_and_mse(
             selected_threshold_mse = np.inf
 
             for threshold_metric in threshold_metrics:
-                candidate_threshold_value = network_family_candidate_thresholds[threshold_metric]
+                candidate_threshold = candidate_thresholds[threshold_metric]
                 squared_errors = squared_errors_by_metric[threshold_metric]
                 mse = sum(squared_errors) / len(squared_errors)
 
@@ -353,14 +352,14 @@ def selected_thresholds_using_bootstrap_and_mse(
                     subsample_size,
                     number_of_bootstraps,
                     threshold_metric,
-                    round(candidate_threshold_value, 6),
+                    round(candidate_threshold, 6),
                     round(mse, 12)
                 ])
 
                 if mse < selected_threshold_mse:
                     selected_threshold_mse = mse
                     selected_threshold_metric = threshold_metric
-                    selected_threshold_value = candidate_threshold_value
+                    selected_threshold_value = candidate_threshold
 
             thresholds_writer.writerow([
                 network_family_dir.name,
@@ -391,20 +390,16 @@ def _load_network_contributions(results_dir, input_filename, number_of_columns_t
     return network_raw_contributions
 
 
-def _sample_network_indices_with_replacement(number_of_networks, sample_size, random_seed):
+def _bootstrapping(number_of_networks, with_replacement, sample_size, random_seed):
     return resample(
         list(range(number_of_networks)),
-        replace=True,
+        replace=with_replacement,
         n_samples=sample_size,
         random_state=random_seed
     )
 
 
-def _get_test_indices(number_of_networks, sampled_indices):
-    return [idx for idx in range(number_of_networks) if idx not in set(sampled_indices)]
-
-
-def _get_test_contributions(network_contributions, selected_indices):
+def _get_contributions(network_contributions, selected_indices):
     contributions = []
     for idx in selected_indices:
         contributions.extend(network_contributions[idx])
@@ -420,6 +415,7 @@ def _compute_candidate_thresholds(normalized_values, threshold_metrics):
     mean, std, median, p75, p90, p95, min_value, max_value = _compute_statistics(normalized_values)
     thresholds = {
         "Mean-Std": mean - std,
+        "Mean": mean,
         "Mean+Std": mean + std,
         "Median": median,
         "75%": p75,
