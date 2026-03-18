@@ -152,19 +152,20 @@ def _draw_histogram(results_dir, output_filename, normalized_values, mean, std, 
     plt.figure(figsize=(8, 5))
     plt.hist(normalized_values, bins=30, edgecolor="black")
 
-    for threshold_value, threshold_label in [
-        (mean - std, "mean-std"),
-        (mean, "mean"),
-        (mean + std, "mean+std"),
-        (median, "median"),
-        (p75, "75%"),
-        (p90, "90%"),
-        (p95, "95%"),
+    for threshold_value, threshold_label, threshold_color in [
+        (mean - std, "mean-std", "purple"),
+        (mean, "mean", "gray"),
+        (mean + std, "mean+std", "yellow"),
+        (median, "median", "orange"),
+        (p75, "75%", "red"),
+        (p90, "90%", "green"),
+        (p95, "95%", "blue"),
     ]:
         plt.axvline(
             threshold_value,
             linestyle="--",
             linewidth=1.5,
+            color=threshold_color,
             label=f"{threshold_label} = {threshold_value:.6f}"
         )
 
@@ -210,6 +211,7 @@ def draw_boxplot(results_dir, input_filename, output_filename, number_of_columns
 def draw_line_plot(results_dir, input_filename, output_filename):
     families = []
     mean_minus_stds = []
+    means = []
     mean_plus_stds = []
     medians = []
     p75s = []
@@ -220,6 +222,7 @@ def draw_line_plot(results_dir, input_filename, output_filename):
         for row in reader:
             families.append(row["Network Family"])
             mean_minus_stds.append(float(row["Mean"]) - float(row["Std"]))
+            means.append(float(row["Mean"]))
             mean_plus_stds.append(float(row["Mean"]) + float(row["Std"]))
             medians.append(float(row["Median"]))
             p75s.append(float(row["75%"]))
@@ -228,6 +231,7 @@ def draw_line_plot(results_dir, input_filename, output_filename):
 
     plt.figure(figsize=(10, 4.5))
     plt.plot(families, mean_minus_stds, marker="o", label="mean-std")
+    plt.plot(families, means, marker="o", label="mean")
     plt.plot(families, mean_plus_stds, marker="o", label="mean+std")
     plt.plot(families, medians, marker="o", label="median")
     plt.plot(families, p75s, marker="o", label="75%")
@@ -465,6 +469,7 @@ def draw_line_plots(results_dir, input_filename, metrics_to_plot):
         plt.plot(networks, results_by_metric[metric], marker="o")
         plt.xlabel("Network")
         plt.ylabel(metric)
+        plt.grid(True, alpha=0.3)
         plt.xticks(rotation=45, ha="right")
         plt.tight_layout()
         output_filename = f"{metric if metric != "|K'-K|/K" else "relative_error_of_k"}.pdf"
