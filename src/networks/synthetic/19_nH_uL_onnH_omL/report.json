@@ -1,0 +1,18 @@
+{
+  "n800mu0.1on320om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=800; mu=0.1; on=320; om=2; instance=1",
+  "n800mu0.1on320om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=800; mu=0.1; on=320; om=4; instance=1",
+  "n800mu0.1on480om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=800; mu=0.1; on=480; om=2; instance=1",
+  "n800mu0.1on480om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=800; mu=0.1; on=480; om=4; instance=1",
+  "n800mu0.4on320om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=800; mu=0.4; on=320; om=2; instance=1",
+  "n800mu0.4on320om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=800; mu=0.4; on=320; om=4; instance=1",
+  "n800mu0.4on480om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=800; mu=0.4; on=480; om=2; instance=1",
+  "n800mu0.4on480om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=800; mu=0.4; on=480; om=4; instance=1",
+  "n1000mu0.1on400om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=1000; mu=0.1; on=400; om=2; instance=1",
+  "n1000mu0.1on400om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=1000; mu=0.1; on=400; om=4; instance=1",
+  "n1000mu0.1on600om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=1000; mu=0.1; on=600; om=2; instance=1",
+  "n1000mu0.1on600om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=1000; mu=0.1; on=600; om=4; instance=1",
+  "n1000mu0.4on400om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=1000; mu=0.4; on=400; om=2; instance=1",
+  "n1000mu0.4on400om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=1000; mu=0.4; on=400; om=4; instance=1",
+  "n1000mu0.4on600om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=1000; mu=0.4; on=600; om=2; instance=1",
+  "n1000mu0.4on600om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=1000; mu=0.4; on=600; om=4; instance=1"
+}

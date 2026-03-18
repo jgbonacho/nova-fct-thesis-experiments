@@ -1,0 +1,18 @@
+{
+  "n500mu0.1on50om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=500; mu=0.1; on=50; om=2; instance=1",
+  "n500mu0.1on50om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=500; mu=0.1; on=50; om=4; instance=1",
+  "n500mu0.1on150om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=500; mu=0.1; on=150; om=2; instance=1",
+  "n500mu0.1on150om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=500; mu=0.1; on=150; om=4; instance=1",
+  "n500mu0.4on50om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=500; mu=0.4; on=50; om=2; instance=1",
+  "n500mu0.4on50om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=500; mu=0.4; on=50; om=4; instance=1",
+  "n500mu0.4on150om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=500; mu=0.4; on=150; om=2; instance=1",
+  "n500mu0.4on150om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=500; mu=0.4; on=150; om=4; instance=1",
+  "n700mu0.1on70om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=700; mu=0.1; on=70; om=2; instance=1",
+  "n700mu0.1on70om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=700; mu=0.1; on=70; om=4; instance=1",
+  "n700mu0.1on210om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=700; mu=0.1; on=210; om=2; instance=1",
+  "n700mu0.1on210om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=700; mu=0.1; on=210; om=4; instance=1",
+  "n700mu0.4on70om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=700; mu=0.4; on=70; om=2; instance=1",
+  "n700mu0.4on70om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=700; mu=0.4; on=70; om=4; instance=1",
+  "n700mu0.4on210om2inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=700; mu=0.4; on=210; om=2; instance=1",
+  "n700mu0.4on210om4inst1": "d_avg=20; d_max=50; c_min=20; c_max=100; t1=2.0; t2=1.0; n=700; mu=0.4; on=210; om=4; instance=1"
+}
