@@ -1,0 +1,25 @@
+Network Family,Selected Metric,Threshold
+01_nL_uL_onnL_omL,Median,4.6e-05
+02_nL_uL_onnL_omH,Median,7.2e-05
+03_nL_uL_onnH_omL,Median,2.6e-05
+04_nL_uL_onnH_omH,Median,1.1e-05
+05_nL_uH_onnL_omL,Median,7e-06
+06_nL_uH_onnL_omH,Median,6e-06
+07_nL_uH_onnH_omL,Median,5e-06
+08_nL_uH_onnH_omH,Median,7e-06
+09_nM_uL_onnL_omL,Mean-Std,-7.3e-05
+10_nM_uL_onnL_omH,Median,7.3e-05
+11_nM_uL_onnH_omL,Median,1.8e-05
+12_nM_uL_onnH_omH,Median,7e-06
+13_nM_uH_onnL_omL,Median,5e-06
+14_nM_uH_onnL_omH,Median,6e-06
+15_nM_uH_onnH_omL,Median,4e-06
+16_nM_uH_onnH_omH,Median,2e-06
+17_nH_uL_onnL_omL,Mean-Std,-3.8e-05
+18_nH_uL_onnL_omH,Median,4.4e-05
+19_nH_uL_onnH_omL,Median,1.9e-05
+20_nH_uL_onnH_omH,Median,5e-06
+21_nH_uH_onnL_omL,Median,6e-06
+22_nH_uH_onnL_omH,Median,5e-06
+23_nH_uH_onnH_omL,Median,3e-06
+24_nH_uH_onnH_omH,Median,2e-06
