@@ -18,7 +18,7 @@ def compute_adjacency_matrix(graph):
     A = nx.to_numpy_array(graph, nodelist=sorted(graph.nodes()))
     ensure_symmetric_matrix(A)
     ensure_binary_matrix(A)
-    A = set_zero_diagonal_matrix(A)
+    set_zero_diagonal_matrix(A)
 
     return A
 
@@ -35,7 +35,7 @@ def ensure_symmetric_matrix(A):
         ValueError : If the adjacency matrix is not symmetric.
     """
 
-    if not np.allclose(A, A.T):
+    if not np.all(A == A.T):
         raise ValueError("[ERROR] Adjacency matrix is not symmetric.")
 
 
@@ -57,18 +57,13 @@ def ensure_binary_matrix(A):
 
 def set_zero_diagonal_matrix(A):
     """
-    Set the diagonal of the adjacency matrix to zero.
+    Set in place the diagonal of the adjacency matrix to zero.
 
     Parameters:
         A : (np.ndarray, shape[n,n])
             nxn adjacency matrix.
-
-    Returns:
-        A : (np.ndarray, shape[n,n])
-            nxn adjacency matrix with zero diagonal.
     """
 
     if not np.all(np.diag(A) == 0):
         print("[INFO] Setting adjacency matrix diagonal to zero.")
         np.fill_diagonal(A, 0)
-    return A

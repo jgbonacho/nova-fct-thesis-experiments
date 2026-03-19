@@ -11,26 +11,27 @@ ZERO_BOUND = 10 ** (-9)
 
 def faddis(W, epsilon=None, tau=None, k_max=None, desired_k=None):
     """
-    FADDIS: Sequential and one-by-one extraction of fuzzy clusters.
+    FADDIS: Fuzzy Additive Spectral clustering.
+    Stop criterion is ('epsilon', 'tau', 'k_max') or 'desired_k'.
 
     Parameters:
         W : (np.ndarray, shape[n,n])
-            nxn symmetric zero diagonal similarity/affinity matrix.
-        epsilon : (float, optional)
+            nxn symmetric similarity/affinity matrix.
+        epsilon : (float)
             Threshold of the individual cluster contribution.
-        tau : (float, optional)
+        tau : (float)
             Threshold of the total clusters contribution.
-        k_max : (int, optional)
+        k_max : (int)
             Maximum number of clusters.
-        desired_k : (int, optional)
+        desired_k : (int)
             Number of clusters to extract.
-            If not None, it is used as the stopping condition instead of 'epsilon', 'tau' and 'k_max'.
+            If not None, it is used as the stop criterion instead of 'epsilon', 'tau' and 'k_max'.
 
     Returns:
-        sequence_of_matrices : (list of np.matrix)
+        sequence_of_matrices : (list[np.matrix])
             List of residual similarity matrices at each iteration.
         membership_matrix : (np.matrix)
-            nxK membership matrix.
+            nxK membership matrix of clustering.
         contributions : (np.array)
             1xK vector of relative contributions to the data scatter.
         intensities : (np.matrix)
@@ -38,7 +39,7 @@ def faddis(W, epsilon=None, tau=None, k_max=None, desired_k=None):
         eigenvalues : (np.array)
             1xK vector of eigenvalues corresponding to clusters.
         number_of_clusters : (int)
-            Number of clusters found.
+            Number of clusters extracted.
     """
 
     # Validate inputs.
@@ -67,19 +68,19 @@ def faddis(W, epsilon=None, tau=None, k_max=None, desired_k=None):
     total_data_scatter = np.sum(data_scatter)
 
     # Sets initial matrix W.
-    # W = (W + W.T) / 2
+    # Wt = (W + W.T) / 2
     Wt = W.copy()
     sequence_of_matrices = [Wt]
 
     # Stop conditions:
     #      1. Eigenvalues of the residual matrix Wt are not positives;
     #   or 2. Individual cluster contribution is less or equal than 'epsilon';
-    #   or 3. 'residual_data_scatter' is less or equal than tau;
+    #   or 3. 'residual_data_scatter' is less or equal than 'tau';
     #   or 4. 'number_of_clusters' is equal to 'k_max'.
     while True:
         # Compute eigenvalues and eigenvectors of Wt.
         curr_eigenvalues, curr_eigenvectors = LA.eig(Wt)
-        # curr_eigenvalues_diagonal = np.diag(eigenvalues)
+        # curr_eigenvalues_diagonal = np.diag(curr_eigenvalues)
 
         # Get indices of only positive eigenvalues.
         eigenvalues_pos = np.argwhere(curr_eigenvalues > ZERO_BOUND).ravel()
@@ -205,15 +206,14 @@ def _validate_inputs(epsilon, tau, k_max, desired_k):
     Validate the inputs.
 
     Parameters:
-        epsilon : (float, optional)
+        epsilon : (float)
             Threshold of the individual cluster contribution.
-        tau : (float, optional)
+        tau : (float)
             Threshold of the total clusters contribution.
-        k_max : (int, optional)
+        k_max : (int)
             Maximum number of clusters.
-        desired_k : (int, optional)
+        desired_k : (int)
             Number of clusters to extract.
-            If not None, it is used as the stopping condition instead of 'epsilon', 'tau' and 'k_max'.
 
     Exceptions:
         ValueError : If one of the following restrictions is not met:

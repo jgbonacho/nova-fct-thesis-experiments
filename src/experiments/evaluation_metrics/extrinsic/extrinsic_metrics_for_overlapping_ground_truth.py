@@ -2,21 +2,27 @@ from cdlib import NodeClustering
 from cdlib import evaluation as ev
 
 
-def compute_extrinsic_metrics_for_overlapping_ground_truth(graph, ground_truth_labels, predicted_labels, k, k_predicted):
+def compute_extrinsic_metrics_for_overlapping_ground_truth(
+        graph,
+        ground_truth_labels,
+        predicted_labels,
+        k,
+        k_predicted
+):
     """
     Compute extrinsic metrics for overlapping ground-truth.
 
     Parameters:
         graph : (networkx.Graph)
             The graph.
-        ground_truth_labels : (list[list[int]], length n)
+        ground_truth_labels : (list[int], length n) or (list[list[int]], length n)
             Ground truth labels.
-        predicted_labels : (list[list[int]], length n)
+        predicted_labels : (list[int], length n) or (list[list[int]], length n)
             Predicted labels.
         k : (int)
-            The number of communities K in the ground truth or None if not available.
+            The number of communities in the ground truth.
         k_predicted : (int)
-            The number of communities K predicted.
+            The number of communities predicted.
 
     Returns:
         evaluation_scores : (dict)
@@ -28,26 +34,12 @@ def compute_extrinsic_metrics_for_overlapping_ground_truth(graph, ground_truth_l
 
     evaluation_scores = {
         "K' | K": f"{k_predicted} | {k}",
-        "|K'-K|/K": _compute_relative_error_of_k(k, k_predicted),
+        "|K'-K|/K": abs(k_predicted - k) / k,
         "ONMI": _compute_onmi(ground_truth_node_clustering, predicted_node_clustering),
         "Omega": _compute_omega_index(ground_truth_node_clustering, predicted_node_clustering)
     }
 
     return evaluation_scores
-
-
-def _compute_relative_error_of_k(k, k_predicted):
-    """
-    Compute the relative error of the number of communities K.
-
-    Parameters:
-        k : (int)
-            The number of communities K in the ground truth.
-        k_predicted : (int)
-            The number of communities K predicted by the algorithm.
-    """
-
-    return abs(k_predicted - k) / k
 
 
 def _compute_onmi(ground_truth_node_clustering, predicted_node_clustering):
@@ -66,7 +58,8 @@ def _compute_onmi(ground_truth_node_clustering, predicted_node_clustering):
             Overlapping Normalized Mutual Information score.
     """
 
-    return ev.overlapping_normalized_mutual_information_MGH(ground_truth_node_clustering, predicted_node_clustering).score
+    return (ev.overlapping_normalized_mutual_information_MGH(ground_truth_node_clustering, predicted_node_clustering)
+            .score)
 
 
 def _compute_omega_index(ground_truth_node_clustering, predicted_node_clustering):

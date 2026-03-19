@@ -14,15 +14,15 @@ ENTITY_BOUND = 10 ** (-4)
 
 def lapin(W, laplacian_variant='symmetric_normalized_laplacian'):
     """
-    LAPIN: Laplacian pseudo-inverse transformation.
+    LAPIN: Laplacian Pseudo-Inverse transformation.
 
     Parameters:
         W : (np.ndarray, shape[n,n])
-            nxn symmetric zero diagonal similarity/affinity matrix.
+            nxn symmetric similarity/affinity matrix.
         laplacian_variant : (str, optional)
             Variant of Laplacian to use.
             Default is 'symmetric_normalized_laplacian'.
-            Other options are 'unnormalized_laplacian' or 'random_walk_normalized_laplacian'.
+            Other options are 'random_walk_normalized_laplacian' or 'unnormalized_laplacian'.
 
     Returns:
         Ln+ : (np.matrix)
@@ -33,7 +33,8 @@ def lapin(W, laplacian_variant='symmetric_normalized_laplacian'):
     """
 
     if (laplacian_variant not in
-            ['symmetric_normalized_laplacian', 'random_walk_normalized_laplacian', 'unnormalized_laplacian']):
+            ['symmetric_normalized_laplacian', 'random_walk_normalized_laplacian', 'unnormalized_laplacian']
+    ):
         raise ValueError(f"[ERROR] Laplacian variant {laplacian_variant} not supported.")
 
     # W = (W + W.T) / 2

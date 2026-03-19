@@ -3,16 +3,16 @@ import os
 import networkx as nx
 
 
-def load_lfr_benchmark_network(path, filename, overlapping_ground_truth=True):
+def load_lfr_benchmark_network(dir_path, filename, overlapping_ground_truth=True):
     """
      Load a LFR benchmark network, preprocess it, and extract ground-truth labels.
 
      Parameters:
-            path : (str)
+            dir_path : (str)
                 The directory path where the network files are located.
             filename : (str)
                 The name of the network files .nse and .nmc (without extension).
-            overlapping_ground_truth : (bool)
+            overlapping_ground_truth : (bool, optional)
                 Whether nodes can belong to multiple communities in the ground-truth labels.
                 Default is True.
 
@@ -26,8 +26,8 @@ def load_lfr_benchmark_network(path, filename, overlapping_ground_truth=True):
     """
 
     # Load graph.
-    graph_raw = _read_edges_nse(os.path.join(path, f"{filename}.nse"))
-    memberships = _read_memberships_nmc(os.path.join(path, f"{filename}.nmc"), overlapping_ground_truth)
+    graph_raw = _read_edges_nse(os.path.join(dir_path, f"{filename}.nse"))
+    memberships = _read_memberships_nmc(os.path.join(dir_path, f"{filename}.nmc"), overlapping_ground_truth)
 
     # Ensure graph is undirected.
     if graph_raw.is_directed():
@@ -43,19 +43,19 @@ def load_lfr_benchmark_network(path, filename, overlapping_ground_truth=True):
         largest_cc = max(nx.connected_components(graph), key=len)
         graph = graph.subgraph(largest_cc).copy()
         print(f"[INFO] Extracted LCC with {graph.number_of_nodes()} nodes and {graph.number_of_edges()} edges.")
-        # TODO: Fix the logic when the largest connected component is extracted.
-
-    # Relabel nodes to ensure they are labeled from 0 to n-1.
-    mapping = {node: idx for idx, node in enumerate(sorted(graph.nodes()))}
-    graph = nx.relabel_nodes(graph, mapping)
 
     # Extract ground-truth labels.
+    original_nodes = sorted(graph.nodes())
     if not overlapping_ground_truth:
-        ground_truth_labels = [memberships[node_id + 1] - 1 for node_id in sorted(graph.nodes())]
+        ground_truth_labels = [memberships[node_id] - 1 for node_id in original_nodes]
         k = len(set(ground_truth_labels))
     else:
-        ground_truth_labels = [[label - 1 for label in memberships[node_id + 1]] for node_id in sorted(graph.nodes())]
+        ground_truth_labels = [[label - 1 for label in memberships[node_id]] for node_id in original_nodes]
         k = len({label for labels in ground_truth_labels for label in labels})
+
+    # Relabel nodes to ensure they are labeled from 0 to n-1.
+    mapping = {node: idx for idx, node in enumerate(original_nodes)}
+    graph = nx.relabel_nodes(graph, mapping)
 
     return graph, ground_truth_labels, k
 
@@ -85,6 +85,7 @@ def _read_edges_nse(nse_path):
             if u == v:
                 continue
             graph.add_edge(u, v)
+
     return graph
 
 
@@ -114,4 +115,5 @@ def _read_memberships_nmc(nmc_path, overlapping_ground_truth):
             node = int(parts[0])
             labels = [int(l) for l in parts[1:]]
             node_to_ground_truth_labels[node] = labels if overlapping_ground_truth else labels[0]
+
     return node_to_ground_truth_labels
