@@ -54,7 +54,7 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired
                 print(f"## [{network_idx}/{len(networks)}] Network '{network}'")
                 try:
                     graph, _, k = load_lfr_benchmark_network(
-                        path=os.path.join(NETWORKS_BASE_DIR_PATH, network_family_dir.name), filename=network
+                        dir_path=os.path.join(NETWORKS_BASE_DIR_PATH, network_family_dir.name), filename=network
                     )
                     A = compute_adjacency_matrix(graph)
                     W = A if not apply_lapin else lapin(A)

@@ -73,10 +73,40 @@
 
 ### Script 1
 
-- Stage 1
-- Stage 2
+- Stage 1 (obtain candidate thresholds)
+  1. Choose the execution configuration: i) LAPIN-off or ii) LAPIN-on; and i) extraction of K desired clusters or ii) extraction of clusters until the end;
+  2. For each network in each network family, execute FADDIS using the default input matrix and the selected configuration;
+     Exceptionally, when the configuration is LAPIN-off and extraction of K desired clusters, the script extracts K + 1 clusters due to the conditional removal of the first extracted cluster, which may behave as a global/background component;
+  3. Register the raw contribution values in the order in which they are extracted;
+  4. Normalize the contributions by dividing each contribution value by the "universe", i.e., the sum of all contributions from all networks in all families. The normalized values are stored with 6 decimal places;
+  5. Draw one line plot for each network, showing the normalized contribution by extraction number and highlighting the contribution at K;
+  6. Create a table of statistics with statistical metrics for each network family, using 6 decimal places;
+  7. Draw one histogram for each network family, showing the frequency distribution of the normalized contributions;
+  8. Draw a line plot of the normalized contributions for each network family, with one line for each statistical metric;
+  9. Draw a box plot of the normalized contributions for each network family;
+  10. Create a table of candidate thresholds based on the statistical metrics;
+
+- Stage 2 (Choose one of the candidate thresholds)
+  11. Load the candidate thresholds obtained in Stage 1;
+  12. For each network family, repeatedly generate bootstrap subsamples of networks by pseudo-random resampling with replacement;
+  13. In each bootstrap repetition:
+      - Gather the raw contributions of the sampled networks;
+      - Normalize the sampled contributions by dividing each contribution value by the "universe", i.e., the sum of the contributions in that bootstrap subsample;
+      - Compute the thresholds for the network family using the same statistical metrics adopted in Stage 1;
+      - For each statistical metric, compare the candidate threshold with the threshold computed for the bootstrap subsample using the squared error;
+  14. After the defined number of bootstrap repetitions, compute the mean squared error (MSE) of each metric;
+  15. Create a table of bootstrap statistics;
+  16. For each network family, select the threshold metric with the lowest MSE, that is, the one that shows the greatest stability and robustness under bootstrap resampling;
+  17. Create a table with the selected threshold for each network family.
 
 ### Script 2
+
+- Stage 1 (test thresholds)
+  1. Adopt the same execution configuration used in Script 1: i) LAPIN-off or ii) LAPIN-on;
+  2. Execute FADDIS on the same networks as in Script 1, using the threshold as `epsilon` (FADDIS's individual cluster contribution);
+  3. Apply a defuzzification step with the default `gamma` of 0.5;
+  4. Compute the extrinsic evaluation measures for each network;
+  5. Draw line plots for each network family showing the evaluation metrics by network.
 
 ---
 
@@ -366,7 +396,7 @@
 
 ---
 
-## Experience 2 (LAPIN-off + Extraction of clusters until the last one)
+## Experience 2 (LAPIN-off + Extraction of clusters until the end)
 
 ### Contributions Line Plots
 
@@ -657,4 +687,4 @@
 
 ---
 
-## Experience 4 (LAPIN-on + Extraction of clusters until the last one)
+## Experience 4 (LAPIN-on + Extraction of clusters until the end)

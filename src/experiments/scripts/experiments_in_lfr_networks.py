@@ -46,7 +46,7 @@ def run_experiments_in_lfr_networks(config_path=CONFIG_PATH, apply_lapin=False):
                 print(f"## [{network_idx}/{len(networks)}] Network '{network}'")
                 try:
                     graph, ground_truth_labels, k = load_lfr_benchmark_network(
-                        path=os.path.join(NETWORKS_BASE_DIR_PATH, network_family_dir.name),
+                        dir_path=os.path.join(NETWORKS_BASE_DIR_PATH, network_family_dir.name),
                         filename=network
                     )
                     A = compute_adjacency_matrix(graph)
