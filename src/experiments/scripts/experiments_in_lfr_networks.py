@@ -12,17 +12,14 @@ from experiments.lapin.lapin import lapin
 from experiments.loaders.adjacency_matrix import compute_adjacency_matrix
 from experiments.loaders.synthetic_data_loader import load_lfr_benchmark_network
 from experiments.scripts.contributions_experiments_in_lfr_networks import RESULTS_BASE_DIR_PATH, \
-    NETWORKS_BASE_DIR_PATH, \
-    ROOT_DIR_PATH, REPORT_FILENAME
+    NETWORKS_BASE_DIR_PATH, REPORT_FILENAME
 from experiments.utils.utils import create_results_dir, save_experiment_report, draw_line_plots, read_thresholds
-
-CONFIG_PATH = os.path.join(ROOT_DIR_PATH, 'config')
 
 THRESHOLDS_FILENAME = "thresholds.csv"
 EXTRINSIC_RESULTS_FILENAME = "extrinsic_results.csv"
 
 
-def run_experiments_in_lfr_networks(config_path=CONFIG_PATH, apply_lapin=False):
+def run_experiments_in_lfr_networks(config_path, apply_lapin=False):
     results_dir = create_results_dir(RESULTS_BASE_DIR_PATH)
     thresholds = read_thresholds(config_path, THRESHOLDS_FILENAME)
 

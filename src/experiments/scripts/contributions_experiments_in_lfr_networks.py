@@ -12,7 +12,7 @@ from experiments.utils.utils import selected_thresholds_using_bootstrap_and_mse,
     save_normalized_contributions_and_draw_line_plots, save_statistics_and_draw_histograms, draw_boxplot, \
     draw_line_plot, save_candidate_thresholds, save_experiment_report
 
-ROOT_DIR_PATH = os.path.join(os.path.dirname(__file__), '..', '..')
+ROOT_DIR_PATH = os.path.join(os.path.dirname(__file__), '..', '..', '..')
 NETWORKS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'networks', 'synthetic')
 RESULTS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'results')
 
