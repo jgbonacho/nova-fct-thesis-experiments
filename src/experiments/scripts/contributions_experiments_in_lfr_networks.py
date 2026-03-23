@@ -60,9 +60,9 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired
                     W = A if not apply_lapin else lapin(A)
 
                     if use_desired_k:
-                        _, _, contributions, _, _, _ = faddis(W=W, desired_k=k + 1 if not apply_lapin else k)
+                        _, _, contributions, _, _, _, _ = faddis(W=W, desired_k=k + 1 if not apply_lapin else k)
                     else:
-                        _, _, contributions, _, _, _ = faddis(W=W, epsilon=-np.inf, tau=-np.inf, k_max=np.inf)
+                        _, _, contributions, _, _, _, _ = faddis(W=W, epsilon=-np.inf, tau=-np.inf, k_max=np.inf)
 
                     writer.writerow([network, k] + list(contributions))
                 except Exception as e:

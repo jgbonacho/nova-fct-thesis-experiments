@@ -50,7 +50,7 @@ def run_experiments_in_lfr_networks(config_path, apply_lapin=False):
                     W = A if not apply_lapin else lapin(A)
 
                     epsilon = thresholds[network_family_dir.name]
-                    _, membership_matrix, _, _, _, number_of_clusters = faddis(
+                    _, membership_matrix, _, _, _, number_of_clusters, _ = faddis(
                         W=W,
                         epsilon=epsilon,
                         tau=-np.inf,
@@ -58,7 +58,7 @@ def run_experiments_in_lfr_networks(config_path, apply_lapin=False):
                     )
 
                     predicted_labels, first_cluster_discarded = apply_defuzzification_rule(
-                        U=np.asarray(membership_matrix),
+                        U=membership_matrix,
                         gamma=0.5,
                         conditionally_discard_first_cluster=True
                     )
@@ -69,10 +69,10 @@ def run_experiments_in_lfr_networks(config_path, apply_lapin=False):
 
                     writer.writerow([
                         network, epsilon,
-                        extrinsic_results["K' | K"],
-                        extrinsic_results["|K'-K|/K"],
-                        extrinsic_results["ONMI"],
-                        extrinsic_results["Omega"]
+                        extrinsic_results.diff_of_k,
+                        extrinsic_results.relative_error_of_k,
+                        extrinsic_results.onmi,
+                        extrinsic_results.omega
                     ])
                 except Exception as e:
                     print(f"[ERROR] {e}")
