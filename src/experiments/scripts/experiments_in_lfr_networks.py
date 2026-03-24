@@ -54,7 +54,7 @@ def run_experiments_in_lfr_networks(config_path, apply_lapin=False):
                         W=W,
                         epsilon=epsilon,
                         tau=-np.inf,
-                        k_max=int(min(100, graph.number_of_nodes() / 2))
+                        k_max=min(100, graph.number_of_nodes() // 2)
                     )
 
                     predicted_labels, first_cluster_discarded = apply_defuzzification_rule(
