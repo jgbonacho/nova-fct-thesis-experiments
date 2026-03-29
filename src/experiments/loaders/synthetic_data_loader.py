@@ -4,10 +4,10 @@ import networkx as nx
 
 
 def load_lfr_benchmark_network(
-        dir_path: str,
-        filename: str,
-        overlapping_ground_truth: bool = True
-) -> tuple[nx.Graph, list[int] | list[list[int]], int]:
+        dir_path,
+        filename,
+        overlapping_ground_truth=True
+):
     """
      Load a LFR benchmark network, preprocess it, and extract ground-truth labels.
 
@@ -64,7 +64,7 @@ def load_lfr_benchmark_network(
     return graph, ground_truth_labels, k
 
 
-def _read_edges_nse(nse_path: str) -> nx.Graph:
+def _read_edges_nse(nse_path):
     """
     Read edges from an NSE file and construct a graph.
 
@@ -93,7 +93,7 @@ def _read_edges_nse(nse_path: str) -> nx.Graph:
     return graph
 
 
-def _read_memberships_nmc(nmc_path: str, overlapping_ground_truth: bool) -> dict[int, int] | dict[int, list[int]]:
+def _read_memberships_nmc(nmc_path, overlapping_ground_truth):
     """
     Read node memberships from an NMC file.
 

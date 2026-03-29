@@ -2,15 +2,13 @@ import networkx as nx
 from cdlib import NodeClustering
 from cdlib import evaluation as ev
 
-from experiments.evaluation_metrics.extrinsic.extrinsic_metrics_dataclass import ExtrinsicMetrics
-
 
 def compute_extrinsic_metrics_for_overlapping_ground_truth(
-        graph: nx.Graph,
-        ground_truth_labels: list[list[int]],
-        predicted_labels: list[list[int]],
-        k: int,
-        k_predicted: int
+        graph,
+        ground_truth_labels,
+        predicted_labels,
+        k,
+        k_predicted
 ):
     """
     Compute extrinsic metrics for overlapping ground-truth.
@@ -28,22 +26,24 @@ def compute_extrinsic_metrics_for_overlapping_ground_truth(
             The number of communities predicted.
 
     Returns:
-        evaluation_scores : (ExtrinsicMetrics)
-            Extrinsic metrics.
+        evaluation_scores : (dict)
+            Dictionary containing evaluation scores.
     """
 
     ground_truth_node_clustering = _to_node_clustering(ground_truth_labels, graph, method_name="ground_truth")
     predicted_node_clustering = _to_node_clustering(predicted_labels, graph, method_name="predicted")
 
-    return ExtrinsicMetrics(
-        diff_of_k=f"{k_predicted} | {k}",
-        relative_error_of_k=abs(k_predicted - k) / k,
-        onmi=_compute_onmi(ground_truth_node_clustering, predicted_node_clustering),
-        omega=_compute_omega(ground_truth_node_clustering, predicted_node_clustering)
-    )
+    evaluation_scores = {
+        "K' | K": f"{k_predicted} | {k}",
+        "|K'-K|/K": abs(k_predicted - k) / k,
+        "ONMI": _compute_onmi(ground_truth_node_clustering, predicted_node_clustering),
+        "Omega": _compute_omega(ground_truth_node_clustering, predicted_node_clustering)
+    }
+
+    return evaluation_scores
 
 
-def _compute_onmi(ground_truth_node_clustering: NodeClustering, predicted_node_clustering: NodeClustering) -> float:
+def _compute_onmi(ground_truth_node_clustering, predicted_node_clustering):
     """
     Compute the Overlapping Normalized Mutual Information (ONMI) between ground truth and predicted node clusterings.
     ONMI ranges from 0 to 1. The higher, the better.
@@ -63,7 +63,7 @@ def _compute_onmi(ground_truth_node_clustering: NodeClustering, predicted_node_c
             .score)
 
 
-def _compute_omega(ground_truth_node_clustering: NodeClustering, predicted_node_clustering: NodeClustering) -> float:
+def _compute_omega(ground_truth_node_clustering, predicted_node_clustering):
     """
     Compute the Omega Index between ground truth and predicted node clusterings.
     Omega Index ranges from 0 to 1. The higher, the better.
@@ -82,7 +82,7 @@ def _compute_omega(ground_truth_node_clustering: NodeClustering, predicted_node_
     return ev.omega(ground_truth_node_clustering, predicted_node_clustering).score
 
 
-def _to_node_clustering(labels: list[list[int]], graph: nx.Graph, method_name: str) -> NodeClustering:
+def _to_node_clustering(labels, graph, method_name):
     """
     Convert labels to NodeClustering format.
 
@@ -107,7 +107,7 @@ def _to_node_clustering(labels: list[list[int]], graph: nx.Graph, method_name: s
     )
 
 
-def _build_communities_from_labels(graph: nx.Graph, labels: list[list[int]]) -> list[list[int]]:
+def _build_communities_from_labels(graph, labels):
     """
     Build communities from labels.
 

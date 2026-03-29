@@ -472,6 +472,7 @@ def draw_line_plots(results_dir, input_filename, metrics_to_plot):
         plt.grid(True, alpha=0.3)
         plt.xticks(rotation=45, ha="right")
         plt.tight_layout()
-        output_filename = f"{metric if metric != "|K'-K|/K" else "relative_error_of_k"}.pdf"
+        name = metric if metric != "|K'-K|/K" else "relative_error_of_k"
+        output_filename = f"{name}.pdf"
         plt.savefig(os.path.join(results_dir, output_filename), dpi=300)
         plt.close()

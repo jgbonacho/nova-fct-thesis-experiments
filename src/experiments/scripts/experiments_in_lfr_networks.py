@@ -69,10 +69,10 @@ def run_experiments_in_lfr_networks(config_path, apply_lapin=False):
 
                     writer.writerow([
                         network, epsilon,
-                        extrinsic_results.diff_of_k,
-                        extrinsic_results.relative_error_of_k,
-                        extrinsic_results.onmi,
-                        extrinsic_results.omega
+                        extrinsic_results["K' | K"],
+                        extrinsic_results["|K'-K|/K"],
+                        extrinsic_results["ONMI"],
+                        extrinsic_results["Omega"]
                     ])
                 except Exception as e:
                     print(f"[ERROR] {e}")
