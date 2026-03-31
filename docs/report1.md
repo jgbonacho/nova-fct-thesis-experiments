@@ -738,3 +738,205 @@
 ---
 
 ## Experience 4 (LAPIN-on + Extraction of clusters until the end)
+
+### Contributions Line Plots
+
+[Open Folder](../results/experience4_cluster/results_2026-03-31_10-54-49-895653)
+
+### Statistics
+
+| Network Family    | #Networks | Mean    | Std      | Median  | 75%      | 90%      | 95%      | Min | Max      |
+|-------------------|-----------|---------|----------|---------|----------|----------|----------|-----|----------|
+| 01_nL_uL_onnL_omL | 72        | 7.3e-05 | 0.000119 | 1.6e-05 | 0.000101 | 0.000211 | 0.000309 | 0.0 | 0.001047 |
+| 02_nL_uL_onnL_omM | 72        | 8.1e-05 | 0.000107 | 4.5e-05 | 0.000119 | 0.00021  | 0.000296 | 0.0 | 0.000791 |
+| 03_nL_uL_onnM_omL | 72        | 4.4e-05 | 6.4e-05  | 1.7e-05 | 6.4e-05  | 0.000125 | 0.000175 | 0.0 | 0.000609 |
+| 04_nL_uL_onnM_omM | 72        | 4e-05   | 5e-05    | 2.4e-05 | 6e-05    | 0.000106 | 0.000136 | 0.0 | 0.000402 |
+| 05_nL_uM_onnL_omL | 72        | 1.3e-05 | 2.2e-05  | 2e-06   | 1.8e-05  | 4.5e-05  | 6.1e-05  | 0.0 | 0.000132 |
+| 06_nL_uM_onnL_omM | 72        | 1.3e-05 | 2e-05    | 2e-06   | 1.7e-05  | 4.1e-05  | 5.6e-05  | 0.0 | 0.000145 |
+| 07_nL_uM_onnM_omL | 72        | 1e-05   | 1.7e-05  | 2e-06   | 1.3e-05  | 3.3e-05  | 4.7e-05  | 0.0 | 0.000125 |
+| 08_nL_uM_onnM_omM | 72        | 1e-05   | 1.6e-05  | 2e-06   | 1.3e-05  | 3.3e-05  | 4.4e-05  | 0.0 | 0.000125 |
+| 09_nM_uL_onnL_omL | 72        | 5.7e-05 | 9.3e-05  | 2.1e-05 | 7.6e-05  | 0.000162 | 0.000232 | 0.0 | 0.000941 |
+| 10_nM_uL_onnL_omM | 72        | 5.1e-05 | 7.1e-05  | 2.4e-05 | 7e-05    | 0.00014  | 0.000189 | 0.0 | 0.000606 |
+| 11_nM_uL_onnM_omL | 72        | 2.9e-05 | 4.7e-05  | 1e-05   | 3.9e-05  | 8.2e-05  | 0.000119 | 0.0 | 0.000518 |
+| 12_nM_uL_onnM_omM | 72        | 2.6e-05 | 3.6e-05  | 1.3e-05 | 3.5e-05  | 6.9e-05  | 9.5e-05  | 0.0 | 0.000331 |
+| 13_nM_uM_onnL_omL | 72        | 1e-05   | 1.5e-05  | 2e-06   | 1.3e-05  | 3.1e-05  | 4.3e-05  | 0.0 | 9.8e-05  |
+| 14_nM_uM_onnL_omM | 72        | 9e-06   | 1.4e-05  | 2e-06   | 1.3e-05  | 2.9e-05  | 3.9e-05  | 0.0 | 9.2e-05  |
+| 15_nM_uM_onnM_omL | 72        | 8e-06   | 1.2e-05  | 2e-06   | 1e-05    | 2.5e-05  | 3.5e-05  | 0.0 | 8.7e-05  |
+| 16_nM_uM_onnM_omM | 72        | 7e-06   | 1.1e-05  | 2e-06   | 9e-06    | 2.2e-05  | 3.1e-05  | 0.0 | 8.1e-05  |
+
+- #Total Networks: 1152
+
+### Histograms
+
+[Open Folder](../results/experience4_cluster/results_2026-03-31_10-54-49-895653)
+
+### Line plot
+
+![](../results/experience4_cluster/results_2026-03-31_10-54-49-895653/line_plot.png)
+
+### Box plot
+
+![](../results/experience4_cluster/results_2026-03-31_10-54-49-895653/boxplot.png)
+
+### Candidate Thresholds
+
+| Network Family    | Mean-Std | Mean    | Mean+Std | Median  | 75%      | 90%      | 95%      |
+|-------------------|----------|---------|----------|---------|----------|----------|----------|
+| 01_nL_uL_onnL_omL | -4.6e-05 | 7.3e-05 | 0.000192 | 1.6e-05 | 0.000101 | 0.000211 | 0.000309 |
+| 02_nL_uL_onnL_omM | -2.6e-05 | 8.1e-05 | 0.000188 | 4.5e-05 | 0.000119 | 0.00021  | 0.000296 |
+| 03_nL_uL_onnM_omL | -2e-05   | 4.4e-05 | 0.000108 | 1.7e-05 | 6.4e-05  | 0.000125 | 0.000175 |
+| 04_nL_uL_onnM_omM | -1e-05   | 4e-05   | 9e-05    | 2.4e-05 | 6e-05    | 0.000106 | 0.000136 |
+| 05_nL_uM_onnL_omL | -9e-06   | 1.3e-05 | 3.5e-05  | 2e-06   | 1.8e-05  | 4.5e-05  | 6.1e-05  |
+| 06_nL_uM_onnL_omM | -7e-06   | 1.3e-05 | 3.3e-05  | 2e-06   | 1.7e-05  | 4.1e-05  | 5.6e-05  |
+| 07_nL_uM_onnM_omL | -7e-06   | 1e-05   | 2.7e-05  | 2e-06   | 1.3e-05  | 3.3e-05  | 4.7e-05  |
+| 08_nL_uM_onnM_omM | -6e-06   | 1e-05   | 2.6e-05  | 2e-06   | 1.3e-05  | 3.3e-05  | 4.4e-05  |
+| 09_nM_uL_onnL_omL | -3.6e-05 | 5.7e-05 | 0.00015  | 2.1e-05 | 7.6e-05  | 0.000162 | 0.000232 |
+| 10_nM_uL_onnL_omM | -2e-05   | 5.1e-05 | 0.000122 | 2.4e-05 | 7e-05    | 0.00014  | 0.000189 |
+| 11_nM_uL_onnM_omL | -1.8e-05 | 2.9e-05 | 7.6e-05  | 1e-05   | 3.9e-05  | 8.2e-05  | 0.000119 |
+| 12_nM_uL_onnM_omM | -1e-05   | 2.6e-05 | 6.2e-05  | 1.3e-05 | 3.5e-05  | 6.9e-05  | 9.5e-05  |
+| 13_nM_uM_onnL_omL | -5e-06   | 1e-05   | 2.5e-05  | 2e-06   | 1.3e-05  | 3.1e-05  | 4.3e-05  |
+| 14_nM_uM_onnL_omM | -5e-06   | 9e-06   | 2.3e-05  | 2e-06   | 1.3e-05  | 2.9e-05  | 3.9e-05  |
+| 15_nM_uM_onnM_omL | -4e-06   | 8e-06   | 2e-05    | 2e-06   | 1e-05    | 2.5e-05  | 3.5e-05  |
+| 16_nM_uM_onnM_omM | -4e-06   | 7e-06   | 1.8e-05  | 2e-06   | 9e-06    | 2.2e-05  | 3.1e-05  |
+
+### Bootstrap Statistics
+
+| Network Family    | #Networks | Subsample Size | #Bootstraps | Metric   | Candidate Threshold | MSE          |
+|-------------------|-----------|----------------|-------------|----------|---------------------|--------------|
+| 01_nL_uL_onnL_omL | 72        | 58             | 1000        | Mean-Std | -4.6e-05            | 1.51177e-07  |
+| 01_nL_uL_onnL_omL | 72        | 58             | 1000        | Mean     | 7.3e-05             | 3.76496e-07  |
+| 01_nL_uL_onnL_omL | 72        | 58             | 1000        | Mean+Std | 0.000192            | 2.601319e-06 |
+| 01_nL_uL_onnL_omL | 72        | 58             | 1000        | Median   | 1.6e-05             | 2.2583e-08   |
+| 01_nL_uL_onnL_omL | 72        | 58             | 1000        | 75%      | 0.000101            | 7.48052e-07  |
+| 01_nL_uL_onnL_omL | 72        | 58             | 1000        | 90%      | 0.000211            | 3.163575e-06 |
+| 01_nL_uL_onnL_omL | 72        | 58             | 1000        | 95%      | 0.000309            | 6.716135e-06 |
+| 02_nL_uL_onnL_omM | 72        | 58             | 1000        | Mean-Std | -2.6e-05            | 3.5824e-08   |
+| 02_nL_uL_onnL_omM | 72        | 58             | 1000        | Mean     | 8.1e-05             | 3.90305e-07  |
+| 02_nL_uL_onnL_omM | 72        | 58             | 1000        | Mean+Std | 0.000188            | 2.059734e-06 |
+| 02_nL_uL_onnL_omM | 72        | 58             | 1000        | Median   | 4.5e-05             | 1.21353e-07  |
+| 02_nL_uL_onnL_omM | 72        | 58             | 1000        | 75%      | 0.000119            | 8.32073e-07  |
+| 02_nL_uL_onnL_omM | 72        | 58             | 1000        | 90%      | 0.00021             | 2.580341e-06 |
+| 02_nL_uL_onnL_omM | 72        | 58             | 1000        | 95%      | 0.000296            | 4.994302e-06 |
+| 03_nL_uL_onnM_omL | 72        | 58             | 1000        | Mean-Std | -2e-05              | 8.0924e-08   |
+| 03_nL_uL_onnM_omL | 72        | 58             | 1000        | Mean     | 4.4e-05             | 4.0491e-07   |
+| 03_nL_uL_onnM_omL | 72        | 58             | 1000        | Mean+Std | 0.000108            | 2.419274e-06 |
+| 03_nL_uL_onnM_omL | 72        | 58             | 1000        | Median   | 1.7e-05             | 6.1559e-08   |
+| 03_nL_uL_onnM_omL | 72        | 58             | 1000        | 75%      | 6.4e-05             | 8.39051e-07  |
+| 03_nL_uL_onnM_omL | 72        | 58             | 1000        | 90%      | 0.000125            | 3.117387e-06 |
+| 03_nL_uL_onnM_omL | 72        | 58             | 1000        | 95%      | 0.000175            | 6.286783e-06 |
+| 04_nL_uL_onnM_omM | 72        | 58             | 1000        | Mean-Std | -1e-05              | 1.5083e-08   |
+| 04_nL_uL_onnM_omM | 72        | 58             | 1000        | Mean     | 4e-05               | 2.96634e-07  |
+| 04_nL_uL_onnM_omM | 72        | 58             | 1000        | Mean+Std | 9e-05               | 1.464857e-06 |
+| 04_nL_uL_onnM_omM | 72        | 58             | 1000        | Median   | 2.4e-05             | 1.08377e-07  |
+| 04_nL_uL_onnM_omM | 72        | 58             | 1000        | 75%      | 6e-05               | 6.41862e-07  |
+| 04_nL_uL_onnM_omM | 72        | 58             | 1000        | 90%      | 0.000106            | 2.0108e-06   |
+| 04_nL_uL_onnM_omM | 72        | 58             | 1000        | 95%      | 0.000136            | 3.407836e-06 |
+| 05_nL_uM_onnL_omL | 72        | 58             | 1000        | Mean-Std | -9e-06              | 1.20906e-07  |
+| 05_nL_uM_onnL_omL | 72        | 58             | 1000        | Mean     | 1.3e-05             | 3.11756e-07  |
+| 05_nL_uM_onnL_omL | 72        | 58             | 1000        | Mean+Std | 3.5e-05             | 2.142957e-06 |
+| 05_nL_uM_onnL_omL | 72        | 58             | 1000        | Median   | 2e-06               | 8.918e-09    |
+| 05_nL_uM_onnL_omL | 72        | 58             | 1000        | 75%      | 1.8e-05             | 5.73647e-07  |
+| 05_nL_uM_onnL_omL | 72        | 58             | 1000        | 90%      | 4.5e-05             | 3.526564e-06 |
+| 05_nL_uM_onnL_omL | 72        | 58             | 1000        | 95%      | 6.1e-05             | 6.509205e-06 |
+| 06_nL_uM_onnL_omM | 72        | 58             | 1000        | Mean-Std | -7e-06              | 1.0591e-07   |
+| 06_nL_uM_onnL_omM | 72        | 58             | 1000        | Mean     | 1.3e-05             | 2.82141e-07  |
+| 06_nL_uM_onnL_omM | 72        | 58             | 1000        | Mean+Std | 3.3e-05             | 1.92412e-06  |
+| 06_nL_uM_onnL_omM | 72        | 58             | 1000        | Median   | 2e-06               | 1.0609e-08   |
+| 06_nL_uM_onnL_omM | 72        | 58             | 1000        | 75%      | 1.7e-05             | 5.14573e-07  |
+| 06_nL_uM_onnL_omM | 72        | 58             | 1000        | 90%      | 4.1e-05             | 2.978342e-06 |
+| 06_nL_uM_onnL_omM | 72        | 58             | 1000        | 95%      | 5.6e-05             | 5.657853e-06 |
+| 07_nL_uM_onnM_omL | 72        | 58             | 1000        | Mean-Std | -7e-06              | 1.24109e-07  |
+| 07_nL_uM_onnM_omL | 72        | 58             | 1000        | Mean     | 1e-05               | 2.65723e-07  |
+| 07_nL_uM_onnM_omL | 72        | 58             | 1000        | Mean+Std | 2.7e-05             | 1.912377e-06 |
+| 07_nL_uM_onnM_omL | 72        | 58             | 1000        | Median   | 2e-06               | 8.277e-09    |
+| 07_nL_uM_onnM_omL | 72        | 58             | 1000        | 75%      | 1.3e-05             | 4.17293e-07  |
+| 07_nL_uM_onnM_omL | 72        | 58             | 1000        | 90%      | 3.3e-05             | 2.968648e-06 |
+| 07_nL_uM_onnM_omL | 72        | 58             | 1000        | 95%      | 4.7e-05             | 5.785905e-06 |
+| 08_nL_uM_onnM_omM | 72        | 58             | 1000        | Mean-Std | -6e-06              | 9.2914e-08   |
+| 08_nL_uM_onnM_omM | 72        | 58             | 1000        | Mean     | 1e-05               | 2.80826e-07  |
+| 08_nL_uM_onnM_omM | 72        | 58             | 1000        | Mean+Std | 2.6e-05             | 1.861227e-06 |
+| 08_nL_uM_onnM_omM | 72        | 58             | 1000        | Median   | 2e-06               | 1.4827e-08   |
+| 08_nL_uM_onnM_omM | 72        | 58             | 1000        | 75%      | 1.3e-05             | 5.09868e-07  |
+| 08_nL_uM_onnM_omM | 72        | 58             | 1000        | 90%      | 3.3e-05             | 3.030867e-06 |
+| 08_nL_uM_onnM_omM | 72        | 58             | 1000        | 95%      | 4.4e-05             | 5.488162e-06 |
+| 09_nM_uL_onnL_omL | 72        | 58             | 1000        | Mean-Std | -3.6e-05            | 1.11121e-07  |
+| 09_nM_uL_onnL_omL | 72        | 58             | 1000        | Mean     | 5.7e-05             | 3.06597e-07  |
+| 09_nM_uL_onnL_omL | 72        | 58             | 1000        | Mean+Std | 0.00015             | 2.070287e-06 |
+| 09_nM_uL_onnL_omL | 72        | 58             | 1000        | Median   | 2.1e-05             | 4.0939e-08   |
+| 09_nM_uL_onnL_omL | 72        | 58             | 1000        | 75%      | 7.6e-05             | 5.32003e-07  |
+| 09_nM_uL_onnL_omL | 72        | 58             | 1000        | 90%      | 0.000162            | 2.388691e-06 |
+| 09_nM_uL_onnL_omL | 72        | 58             | 1000        | 95%      | 0.000232            | 5.030477e-06 |
+| 10_nM_uL_onnL_omM | 72        | 58             | 1000        | Mean-Std | -2e-05              | 3.5374e-08   |
+| 10_nM_uL_onnL_omM | 72        | 58             | 1000        | Mean     | 5.1e-05             | 2.21658e-07  |
+| 10_nM_uL_onnL_omM | 72        | 58             | 1000        | Mean+Std | 0.000122            | 1.270807e-06 |
+| 10_nM_uL_onnL_omM | 72        | 58             | 1000        | Median   | 2.4e-05             | 5.13e-08     |
+| 10_nM_uL_onnL_omM | 72        | 58             | 1000        | 75%      | 7e-05               | 4.39109e-07  |
+| 10_nM_uL_onnL_omM | 72        | 58             | 1000        | 90%      | 0.00014             | 1.657945e-06 |
+| 10_nM_uL_onnL_omM | 72        | 58             | 1000        | 95%      | 0.000189            | 3.088321e-06 |
+| 11_nM_uL_onnM_omL | 72        | 58             | 1000        | Mean-Std | -1.8e-05            | 9.8513e-08   |
+| 11_nM_uL_onnM_omL | 72        | 58             | 1000        | Mean     | 2.9e-05             | 2.59668e-07  |
+| 11_nM_uL_onnM_omL | 72        | 58             | 1000        | Mean+Std | 7.6e-05             | 1.771441e-06 |
+| 11_nM_uL_onnM_omL | 72        | 58             | 1000        | Median   | 1e-05               | 3.0776e-08   |
+| 11_nM_uL_onnM_omL | 72        | 58             | 1000        | 75%      | 3.9e-05             | 4.6319e-07   |
+| 11_nM_uL_onnM_omL | 72        | 58             | 1000        | 90%      | 8.2e-05             | 2.035074e-06 |
+| 11_nM_uL_onnM_omL | 72        | 58             | 1000        | 95%      | 0.000119            | 4.320474e-06 |
+| 12_nM_uL_onnM_omM | 72        | 58             | 1000        | Mean-Std | -1e-05              | 2.5881e-08   |
+| 12_nM_uL_onnM_omM | 72        | 58             | 1000        | Mean     | 2.6e-05             | 1.89578e-07  |
+| 12_nM_uL_onnM_omM | 72        | 58             | 1000        | Mean+Std | 6.2e-05             | 1.062864e-06 |
+| 12_nM_uL_onnM_omM | 72        | 58             | 1000        | Median   | 1.3e-05             | 4.4549e-08   |
+| 12_nM_uL_onnM_omM | 72        | 58             | 1000        | 75%      | 3.5e-05             | 3.59723e-07  |
+| 12_nM_uL_onnM_omM | 72        | 58             | 1000        | 90%      | 6.9e-05             | 1.362774e-06 |
+| 12_nM_uL_onnM_omM | 72        | 58             | 1000        | 95%      | 9.5e-05             | 2.591068e-06 |
+| 13_nM_uM_onnL_omL | 72        | 58             | 1000        | Mean-Std | -5e-06              | 9.3066e-08   |
+| 13_nM_uM_onnL_omL | 72        | 58             | 1000        | Mean     | 1e-05               | 2.87071e-07  |
+| 13_nM_uM_onnL_omL | 72        | 58             | 1000        | Mean+Std | 2.5e-05             | 1.893516e-06 |
+| 13_nM_uM_onnL_omL | 72        | 58             | 1000        | Median   | 2e-06               | 1.467e-08    |
+| 13_nM_uM_onnL_omL | 72        | 58             | 1000        | 75%      | 1.3e-05             | 5.55045e-07  |
+| 13_nM_uM_onnL_omL | 72        | 58             | 1000        | 90%      | 3.1e-05             | 2.937501e-06 |
+| 13_nM_uM_onnL_omL | 72        | 58             | 1000        | 95%      | 4.3e-05             | 5.545134e-06 |
+| 14_nM_uM_onnL_omM | 72        | 58             | 1000        | Mean-Std | -5e-06              | 7.2538e-08   |
+| 14_nM_uM_onnL_omM | 72        | 58             | 1000        | Mean     | 9e-06               | 2.70071e-07  |
+| 14_nM_uM_onnL_omM | 72        | 58             | 1000        | Mean+Std | 2.3e-05             | 1.711468e-06 |
+| 14_nM_uM_onnL_omM | 72        | 58             | 1000        | Median   | 2e-06               | 1.7713e-08   |
+| 14_nM_uM_onnL_omM | 72        | 58             | 1000        | 75%      | 1.3e-05             | 5.35473e-07  |
+| 14_nM_uM_onnL_omM | 72        | 58             | 1000        | 90%      | 2.9e-05             | 2.776525e-06 |
+| 14_nM_uM_onnL_omM | 72        | 58             | 1000        | 95%      | 3.9e-05             | 4.905053e-06 |
+| 15_nM_uM_onnM_omL | 72        | 58             | 1000        | Mean-Std | -4e-06              | 1.00365e-07  |
+| 15_nM_uM_onnM_omL | 72        | 58             | 1000        | Mean     | 8e-06               | 2.55055e-07  |
+| 15_nM_uM_onnM_omL | 72        | 58             | 1000        | Mean+Std | 2e-05               | 1.759591e-06 |
+| 15_nM_uM_onnM_omL | 72        | 58             | 1000        | Median   | 2e-06               | 1.1031e-08   |
+| 15_nM_uM_onnM_omL | 72        | 58             | 1000        | 75%      | 1e-05               | 4.38036e-07  |
+| 15_nM_uM_onnM_omL | 72        | 58             | 1000        | 90%      | 2.5e-05             | 2.727753e-06 |
+| 15_nM_uM_onnM_omL | 72        | 58             | 1000        | 95%      | 3.5e-05             | 5.303348e-06 |
+| 16_nM_uM_onnM_omM | 72        | 58             | 1000        | Mean-Std | -4e-06              | 8.3748e-08   |
+| 16_nM_uM_onnM_omM | 72        | 58             | 1000        | Mean     | 7e-06               | 2.4138e-07   |
+| 16_nM_uM_onnM_omM | 72        | 58             | 1000        | Mean+Std | 1.8e-05             | 1.617321e-06 |
+| 16_nM_uM_onnM_omM | 72        | 58             | 1000        | Median   | 2e-06               | 1.3188e-08   |
+| 16_nM_uM_onnM_omM | 72        | 58             | 1000        | 75%      | 9e-06               | 4.30067e-07  |
+| 16_nM_uM_onnM_omM | 72        | 58             | 1000        | 90%      | 2.2e-05             | 2.457085e-06 |
+| 16_nM_uM_onnM_omM | 72        | 58             | 1000        | 95%      | 3.1e-05             | 4.702634e-06 |
+
+### Thresholds
+
+| Network Family    | Selected Metric | Threshold |
+|-------------------|-----------------|-----------|
+| 01_nL_uL_onnL_omL | Median          | 1.6e-05   |
+| 02_nL_uL_onnL_omM | Mean-Std        | -2.6e-05  |
+| 03_nL_uL_onnM_omL | Median          | 1.7e-05   |
+| 04_nL_uL_onnM_omM | Mean-Std        | -1e-05    |
+| 05_nL_uM_onnL_omL | Median          | 2e-06     |
+| 06_nL_uM_onnL_omM | Median          | 2e-06     |
+| 07_nL_uM_onnM_omL | Median          | 2e-06     |
+| 08_nL_uM_onnM_omM | Median          | 2e-06     |
+| 09_nM_uL_onnL_omL | Median          | 2.1e-05   |
+| 10_nM_uL_onnL_omM | Mean-Std        | -2e-05    |
+| 11_nM_uL_onnM_omL | Median          | 1e-05     |
+| 12_nM_uL_onnM_omM | Mean-Std        | -1e-05    |
+| 13_nM_uM_onnL_omL | Median          | 2e-06     |
+| 14_nM_uM_onnL_omM | Median          | 2e-06     |
+| 15_nM_uM_onnM_omL | Median          | 2e-06     |
+| 16_nM_uM_onnM_omM | Median          | 2e-06     |
+
+### Extrinsic Metrics Results
+
+[Open Folder](../results/experience4_cluster/results_2026-03-31_22-16-52-062617)
