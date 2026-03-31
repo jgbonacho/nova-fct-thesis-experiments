@@ -20,13 +20,13 @@ def main():
     run_experience(apply_lapin=False, use_desired_k=True)
 
     # Experience 2
-    #run_experience(apply_lapin=False, use_desired_k=False)
+    run_experience(apply_lapin=False, use_desired_k=False)
 
     # Experience 3
-    #run_experience(apply_lapin=True, use_desired_k=True)
+    run_experience(apply_lapin=True, use_desired_k=True)
 
     # Experience 4
-    #run_experience(apply_lapin=True, use_desired_k=False)
+    run_experience(apply_lapin=True, use_desired_k=False)
 
 
 if __name__ == "__main__":
