@@ -1,6 +1,7 @@
 import csv
 import os
 from pathlib import Path
+import random
 
 import numpy as np
 
@@ -19,7 +20,7 @@ THRESHOLDS_FILENAME = "thresholds.csv"
 EXTRINSIC_RESULTS_FILENAME = "extrinsic_results.csv"
 
 
-def run_experiments_in_lfr_networks(config_path, apply_lapin=False):
+def run_experiments_in_lfr_networks(config_path, apply_lapin=False, number_of_networks=10):
     results_dir = create_results_dir(RESULTS_BASE_DIR_PATH)
     thresholds = read_thresholds(config_path, THRESHOLDS_FILENAME)
 
@@ -34,13 +35,14 @@ def run_experiments_in_lfr_networks(config_path, apply_lapin=False):
         os.makedirs(network_family_results_dir)
 
         networks = sorted({file.stem for file in network_family_dir.iterdir() if file.suffix not in {".txt", ".json"}})
+        selected_networks = random.sample(networks, k=min(number_of_networks, len(networks)))
         with (open(os.path.join(network_family_results_dir, EXTRINSIC_RESULTS_FILENAME), "w", newline="",
                    encoding="utf-8") as out_file):
             writer = csv.writer(out_file)
             writer.writerow(["Network", "FADDIS's Epsilon", "K' | K", "|K'-K|/K", "ONMI", "Omega"])
 
-            for network_idx, network in enumerate(networks, start=1):
-                print(f"## [{network_idx}/{len(networks)}] Network '{network}'")
+            for network_idx, network in enumerate(selected_networks, start=1):
+                print(f"## [{network_idx}/{len(selected_networks)}] Network '{network}'")
                 try:
                     graph, ground_truth_labels, k = load_lfr_benchmark_network(
                         dir_path=os.path.join(NETWORKS_BASE_DIR_PATH, network_family_dir.name),

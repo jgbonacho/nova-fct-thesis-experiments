@@ -112,7 +112,7 @@
 
 - Stage 1 (test thresholds)
   1. Adopt the same execution configuration used in Script 1: i) LAPIN-off or ii) LAPIN-on;
-  2. Execute FADDIS on the same networks as in Script 1, using the threshold as `epsilon` (FADDIS's individual cluster contribution);
+  2. Execute FADDIS on a sample of the same networks as in Script 1, using the threshold as `epsilon` (FADDIS's individual cluster contribution);
   3. Apply a defuzzification step with the default `gamma` of 0.5;
   4. Compute the extrinsic evaluation measures for each network;
   5. Draw line plots for each network family showing the evaluation metrics by network.
@@ -319,9 +319,30 @@
 | 15_nM_uM_onnM_omL | Median          | 4e-06     |
 | 16_nM_uM_onnM_omM | Median          | 2e-06     |
 
+### Updated Thresholds (excluding negative values)
+
+| Network Family    | Selected Metric | Threshold |
+|-------------------|-----------------|-----------|
+| 01_nL_uL_onnL_omL | Mean-Std        | 1.7e-05   |
+| 02_nL_uL_onnL_omM | Mean-Std        | 1e-05     |
+| 03_nL_uL_onnM_omL | Median          | 3.9e-05   |
+| 04_nL_uL_onnM_omM | Median          | 2e-05     |
+| 05_nL_uM_onnL_omL | Median          | 1.9e-05   |
+| 06_nL_uM_onnL_omM | Median          | 1.6e-05   |
+| 07_nL_uM_onnM_omL | Median          | 8e-06     |
+| 08_nL_uM_onnM_omM | Median          | 3e-06     |
+| 09_nM_uL_onnL_omL | Mean-Std        | 1.4e-05   |
+| 10_nM_uL_onnL_omM | Mean-Std        | 7e-06     |
+| 11_nM_uL_onnM_omL | Median          | 2.1e-05   |
+| 12_nM_uL_onnM_omM | Median          | 8e-06     |
+| 13_nM_uM_onnL_omL | Median          | 1.1e-05   |
+| 14_nM_uM_onnL_omM | Median          | 8e-06     |
+| 15_nM_uM_onnM_omL | Median          | 4e-06     |
+| 16_nM_uM_onnM_omM | Median          | 2e-06     |
+
 ### Extrinsic Metrics Results
 
-[Open Folder](../results/experience1_cluster/results_2026-03-29_23-26-27-954876)
+[Open Folder](../results/experience1_cluster/results_2026-04-01_12-12-44-340843)
 
 ---
 
@@ -525,9 +546,30 @@
 | 15_nM_uM_onnM_omL | Median          | 3e-06     |
 | 16_nM_uM_onnM_omM | Median          | 1e-06     |
 
+### Updated Thresholds (excluding negative values)
+
+| Network Family    | Selected Metric | Threshold |
+|-------------------|-----------------|-----------|
+| 01_nL_uL_onnL_omL | Median          | 5.8e-05   |
+| 02_nL_uL_onnL_omM | Median          | 6e-05     |
+| 03_nL_uL_onnM_omL | Median          | 2.9e-05   |
+| 04_nL_uL_onnM_omM | Median          | 1.5e-05   |
+| 05_nL_uM_onnL_omL | Median          | 6e-06     |
+| 06_nL_uM_onnL_omM | Median          | 8e-06     |
+| 07_nL_uM_onnM_omL | Median          | 3e-06     |
+| 08_nL_uM_onnM_omM | Median          | 2e-06     |
+| 09_nM_uL_onnL_omL | Mean-Std        | 3e-06     |
+| 10_nM_uL_onnL_omM | Median          | 3.5e-05   |
+| 11_nM_uL_onnM_omL | Median          | 1.6e-05   |
+| 12_nM_uL_onnM_omM | Median          | 8e-06     |
+| 13_nM_uM_onnL_omL | Median          | 6e-06     |
+| 14_nM_uM_onnL_omM | Median          | 5e-06     |
+| 15_nM_uM_onnM_omL | Median          | 3e-06     |
+| 16_nM_uM_onnM_omM | Median          | 1e-06     |
+
 ### Extrinsic Metrics Results
 
-[Open Folder](../results/experience2_cluster/results_2026-03-30_20-05-39-220571)
+[Open Folder](../results/experience2_cluster/results_2026-04-01_13-16-20-179409)
 
 ---
 
@@ -731,9 +773,30 @@
 | 15_nM_uM_onnM_omL | Median          | 3e-06     |
 | 16_nM_uM_onnM_omM | Median          | 2e-06     |
 
+### Updated Thresholds (excluding negative values)
+
+| Network Family    | Selected Metric | Threshold |
+|-------------------|-----------------|-----------|
+| 01_nL_uL_onnL_omL | Median          | 8.9e-05   |
+| 02_nL_uL_onnL_omM | Median          | 8.1e-05   |
+| 03_nL_uL_onnM_omL | Median          | 4.2e-05   |
+| 04_nL_uL_onnM_omM | Median          | 3.1e-05   |
+| 05_nL_uM_onnL_omL | Mean-Std        | 2e-06     |
+| 06_nL_uM_onnL_omM | Mean-Std        | 1.3e-05   |
+| 07_nL_uM_onnM_omL | Median          | 1.1e-05   |
+| 08_nL_uM_onnM_omM | Mean-Std        | 5e-06     |
+| 09_nM_uL_onnL_omL | Median          | 4.3e-05   |
+| 10_nM_uL_onnL_omM | Median          | 4.1e-05   |
+| 11_nM_uL_onnM_omL | Median          | 1.7e-05   |
+| 12_nM_uL_onnM_omM | Median          | 1.4e-05   |
+| 13_nM_uM_onnL_omL | Median          | 7e-06     |
+| 14_nM_uM_onnL_omM | Median          | 4e-06     |
+| 15_nM_uM_onnM_omL | Median          | 3e-06     |
+| 16_nM_uM_onnM_omM | Median          | 2e-06     |
+
 ### Extrinsic Metrics Results
 
-[Open Folder](../results/experience3_cluster/results_2026-03-31_07-25-10-737505)
+[Open Folder](../results/experience3_cluster/results_2026-04-01_14-22-21-965344)
 
 ---
 
@@ -937,6 +1000,27 @@
 | 15_nM_uM_onnM_omL | Median          | 2e-06     |
 | 16_nM_uM_onnM_omM | Median          | 2e-06     |
 
+### Updated Thresholds (excluding negative values)
+
+| Network Family    | Selected Metric | Threshold |
+|-------------------|-----------------|-----------|
+| 01_nL_uL_onnL_omL | Median          | 1.6e-05   |
+| 02_nL_uL_onnL_omM | Median          | 4.5e-05   |
+| 03_nL_uL_onnM_omL | Median          | 1.7e-05   |
+| 04_nL_uL_onnM_omM | Median          | 2.4e-05   |
+| 05_nL_uM_onnL_omL | Median          | 2e-06     |
+| 06_nL_uM_onnL_omM | Median          | 2e-06     |
+| 07_nL_uM_onnM_omL | Median          | 2e-06     |
+| 08_nL_uM_onnM_omM | Median          | 2e-06     |
+| 09_nM_uL_onnL_omL | Median          | 2.1e-05   |
+| 10_nM_uL_onnL_omM | Median          | 2.4e-05   |
+| 11_nM_uL_onnM_omL | Median          | 1e-05     |
+| 12_nM_uL_onnM_omM | Median          | 1.3e-05   |
+| 13_nM_uM_onnL_omL | Median          | 2e-06     |
+| 14_nM_uM_onnL_omM | Median          | 2e-06     |
+| 15_nM_uM_onnM_omL | Median          | 2e-06     |
+| 16_nM_uM_onnM_omM | Median          | 2e-06     |
+
 ### Extrinsic Metrics Results
 
-[Open Folder](../results/experience4_cluster/results_2026-03-31_22-16-52-062617)
+[Open Folder](../results/experience4_cluster/results_2026-04-01_15-42-23-745804)

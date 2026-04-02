@@ -360,7 +360,7 @@ def selected_thresholds_using_bootstrap_and_mse(
                     round(mse, 12)
                 ])
 
-                if mse < selected_threshold_mse:
+                if candidate_threshold > 0 and mse < selected_threshold_mse:
                     selected_threshold_mse = mse
                     selected_threshold_metric = threshold_metric
                     selected_threshold_value = candidate_threshold
