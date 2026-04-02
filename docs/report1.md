@@ -1,8 +1,20 @@
 # Report 1 - Question: Does the relative contribution to data scatter provide a good hyperparameter for the definition of the stop rules under variations in the structure/architecture parameters of LFR synthetic networks?
 
----
 
-## LFR Network Parameterization
+
+## Table of Contents
+- [Networks](#networks)
+- [Scripts](#scripts)
+- [Experience 1 (LAPIN-off + Extraction of K desired clusters)](#experience-1-lapin-off--extraction-of-k-desired-clusters)
+- [Experience 2 (LAPIN-off + Extraction of clusters until the end)](#experience-2-lapin-off--extraction-of-clusters-until-the-end)
+- [Experience 3 (LAPIN-on + Extraction of K desired clusters)](#experience-3-lapin-on--extraction-of-k-desired-clusters)
+- [Experience 4 (LAPIN-on + Extraction of clusters until the end)](#experience-4-lapin-on--extraction-of-clusters-until-the-end)
+
+
+
+## Networks
+
+### LFR Network Parameterization
 
 - $\overline{d}$ = 20
 - $d_{max}$ = 50
@@ -27,7 +39,7 @@
   - M: [4, 5]
   - #H: [6, 8]
 
-## Network Families
+### Network Families
 
 | Network Family    | $n$         | $\mu$      | $o_{n}$/$n$ | $o_{m}$ |
 |-------------------|-------------|------------|-------------|---------|
@@ -48,7 +60,7 @@
 | 15_nM_uM_onnM_omL | [800, 1000] | [0.4, 0.6] | [0.3, 0.4]  | [2, 3]  |
 | 16_nM_uM_onnM_omM | [800, 1000] | [0.4, 0.6] | [0.3, 0.4]  | [4, 5]  |
 
-## Networks for Each Network Family
+### Networks for Each Network Family
 
 - $\overline{d}$: fixed
   - (20)
@@ -76,13 +88,13 @@
   - M: (4 5)
 - Instances: 2 (*10)
 
----
+
 
 ## Scripts
 
 ### Script 1
 
-- Stage 1 (obtain candidate thresholds)
+- Stage 1 (obtain candidate thresholds for each network family)
   1. Choose the execution configuration: i) LAPIN-off or ii) LAPIN-on; and i) extraction of K desired clusters or ii) extraction of clusters until the end;
   2. For each network in each network family, execute FADDIS using the default input matrix and the selected configuration;
      Exceptionally, when the configuration is LAPIN-off and extraction of K desired clusters, the script extracts K + 1 clusters due to the conditional removal of the first extracted cluster, which may behave as a global/background component;
@@ -95,7 +107,7 @@
   9. Draw a box plot of the normalized contributions for each network family;
   10. Create a table of candidate thresholds based on the statistical metrics;
 
-- Stage 2 (Choose one of the candidate thresholds)
+- Stage 2 (Choose one of the candidate thresholds for each network family using bootstrap resampling)
   1. Load the candidate thresholds obtained in Stage 1;
   2. For each network family, repeatedly generate bootstrap subsamples of networks by pseudo-random resampling with replacement;
   3. In each bootstrap repetition:
@@ -110,14 +122,14 @@
 
 ### Script 2
 
-- Stage 1 (test thresholds)
+- Stage 1 (test thresholds for each network family)
   1. Adopt the same execution configuration used in Script 1: i) LAPIN-off or ii) LAPIN-on;
   2. Execute FADDIS on a sample of the same networks as in Script 1, using the threshold as `epsilon` (FADDIS's individual cluster contribution);
   3. Apply a defuzzification step with the default `gamma` of 0.5;
   4. Compute the extrinsic evaluation measures for each network;
   5. Draw line plots for each network family showing the evaluation metrics by network.
 
----
+
 
 ## Experience 1 (LAPIN-off + Extraction of K desired clusters)
 
@@ -344,7 +356,7 @@
 
 [Open Folder](../results/experience1_cluster/results_2026-04-01_12-12-44-340843)
 
----
+
 
 ## Experience 2 (LAPIN-off + Extraction of clusters until the end)
 
@@ -571,7 +583,7 @@
 
 [Open Folder](../results/experience2_cluster/results_2026-04-01_13-16-20-179409)
 
----
+
 
 ## Experience 3 (LAPIN-on + Extraction of K desired clusters)
 
@@ -798,7 +810,7 @@
 
 [Open Folder](../results/experience3_cluster/results_2026-04-01_14-22-21-965344)
 
----
+
 
 ## Experience 4 (LAPIN-on + Extraction of clusters until the end)
 
