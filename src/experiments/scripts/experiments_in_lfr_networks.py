@@ -1,7 +1,7 @@
 import csv
 import os
-from pathlib import Path
 import random
+from pathlib import Path
 
 import numpy as np
 
@@ -20,7 +20,21 @@ THRESHOLDS_FILENAME = "thresholds.csv"
 EXTRINSIC_RESULTS_FILENAME = "extrinsic_results.csv"
 
 
-def run_experiments_in_lfr_networks(config_path, apply_lapin=False, number_of_networks=10):
+def run_experiments_in_lfr_networks(config_path, apply_lapin=False, number_of_networks=10, gamma=0.5):
+    """
+    Run experiments in LFR benchmark networks.
+    
+    Parameters:
+        config_path : str
+            The path to the configuration file with the thresholds for each network family.
+        apply_lapin : bool
+            Whether to apply the Lapin transformation.
+        number_of_networks : int
+            The number of networks to sample from each network family.
+        gamma : float
+            The gamma parameter for the defuzzification rule.
+    """
+
     results_dir = create_results_dir(RESULTS_BASE_DIR_PATH)
     thresholds = read_thresholds(config_path, THRESHOLDS_FILENAME)
 
@@ -52,19 +66,18 @@ def run_experiments_in_lfr_networks(config_path, apply_lapin=False, number_of_ne
                     W = A if not apply_lapin else lapin(A)
 
                     epsilon = thresholds[network_family_dir.name]
-                    _, membership_matrix, _, _, _, number_of_clusters, _ = faddis(
+                    _, membership_matrix, _, _, _, _, _ = faddis(
                         W=W,
                         epsilon=epsilon,
                         tau=-np.inf,
                         k_max=min(100, graph.number_of_nodes() // 2)
                     )
 
-                    predicted_labels, first_cluster_discarded = apply_defuzzification_rule(
+                    predicted_labels, k_predicted, _ = apply_defuzzification_rule(
                         U=membership_matrix,
-                        gamma=0.5,
+                        gamma=gamma,
                         conditionally_discard_first_cluster=True
                     )
-                    k_predicted = number_of_clusters - 1 if first_cluster_discarded else number_of_clusters
                     extrinsic_results = compute_extrinsic_metrics_for_overlapping_ground_truth(
                         graph, ground_truth_labels, predicted_labels, k, k_predicted
                     )

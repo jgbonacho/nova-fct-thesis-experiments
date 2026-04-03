@@ -9,8 +9,19 @@ from experiments.scripts.experiments_in_lfr_networks import \
 
 
 def run_experience(apply_lapin, use_desired_k):
+    """
+    Run an experience.
+
+    Parameters:
+        apply_lapin : bool
+            Whether to apply the Lapin transformation.
+        use_desired_k : bool
+            Whether to use the desired number of communities.
+    """
+
     print("\n###### Script 1")
     results_path = run_contributions_experiments_in_lfr_networks(apply_lapin, use_desired_k)
+
     print("\n###### Script 2")
     run_experiments_in_lfr_networks(results_path, apply_lapin)
 

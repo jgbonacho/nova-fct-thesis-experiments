@@ -27,10 +27,25 @@ BOOTSTRAP_STATISTICS_FILENAME = "bootstrap_statistics.csv"
 SELECTED_THRESHOLDS_FILENAME = "thresholds.csv"
 REPORT_FILENAME = "report.json"
 
-THRESHOLDS_METRICS = ("Mean-Std", "Mean", "Mean+Std", "Median", "75%", "90%", "95%")
+THRESHOLDS_METRICS = ("Mean", "Median", "75%", "90%", "95%")
 
 
 def run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired_k=True):
+    """
+    Run contributions experiments in LFR benchmark networks.
+
+    Parameters:
+        apply_lapin : bool
+            Whether to apply the Lapin transformation.
+        use_desired_k : bool
+            Whether to use the desired number of communities.
+    
+    Returns:
+        results_dir : str
+            The path to the results directory.
+
+    """
+
     results_dir = create_results_dir(RESULTS_BASE_DIR_PATH)
 
     # Stage 1
