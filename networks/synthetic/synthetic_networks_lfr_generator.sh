@@ -37,6 +37,9 @@ out_dir="./${network_family_name}"
 mkdir -p "$out_dir"
 cd "$out_dir"
 
+#network_family_filename="${network_family_name}.json"
+#jq -n --arg name "$network_family_name" '{name: $name, networks: []}' > "$network_family_filename"
+
 # Loop over the parameter combinations and run the generator.
 for d_avg in "${list_d_avg[@]}"; do
   for d_max in "${list_d_max[@]}"; do
@@ -51,6 +54,13 @@ for d_avg in "${list_d_avg[@]}"; do
                   for om in "${list_om[@]}"; do
                     for instance in $(seq 1 "$t"); do
                       network_name="n${n}mu${mu}on${on}om${om}inst${instance}"
+                      #description="d_avg=${d_avg};d_max=${d_max};c_min=${c_min};c_max=${c_max};t1=${t1};t2=${t2};n=${n};mu=${mu};on=${on};om=${om}"
+
+                      #if [ "$on" -eq 0 ]; then
+                      #  overlapping_ground_truth=false
+                      #else
+                      #  overlapping_ground_truth=true
+                      #fi
 
                       echo "[INFO] Generating LFR benchmark graph: ${network_name}"
                       if ! ../LFR-Benchmark_UndirWeightOvp/lfrbench_udwov \
@@ -60,6 +70,19 @@ for d_avg in "${list_d_avg[@]}"; do
                           -muw "$mu"  # Required parameter, but not relevant for the experiments.
                       then
                         echo "[INFO] Continuing..."
+                        #jq \
+                        #  --arg nn "$network_name" \
+                        #  --arg d "$description" \
+                        #  --argjson i "$instance" \
+                        #  --argjson ogt "$overlapping_ground_truth" \
+                        #  '.networks += [{
+                        #    description: $d,
+                        #    instance: $i,
+                        #    name: $nn,
+                        #    overlapping_ground_truth: $ogt
+                        #  }]' \
+                        #  "$network_family_filename" > "${network_family_filename}.new"
+                        #mv "${network_family_filename}.new" "$network_family_filename"
                       fi
                     done
                   done
