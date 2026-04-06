@@ -88,6 +88,32 @@ def save_normalized_contributions_and_draw_line_plots(
         Normalized contributions to 'output_filename' and line plots for each network, within each network family directory.
     """
 
+    # network_family_dirs = sorted(
+    #    [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
+    #    key=lambda path: path.name
+    # )
+    # for network_family_dir in network_family_dirs:
+    #    family_sum = 0.0
+    #    with open(os.path.join(network_family_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
+    #        reader = csv.reader(in_file)
+    #        next(reader, None)
+    #        for row in reader:
+    #            values = [float(x) for x in row[number_of_columns_to_skip:]]
+    #            family_sum += sum(values)
+    #
+    #    with open(os.path.join(network_family_dir, input_filename), "r", newline="", encoding="utf-8") as in_file, \
+    #            open(os.path.join(network_family_dir, output_filename), "w", newline="", encoding="utf-8") as out_file:
+    #        reader = csv.reader(in_file)
+    #        next(reader, None)
+    #        writer = csv.writer(out_file)
+    #        writer.writerow(["Network", "K"])
+    #        for row in reader:
+    #            values = [float(x) for x in row[number_of_columns_to_skip:]]
+    #            normalized_values = [round(value / family_sum, 6) for value in values]
+    #            writer.writerow(row[:number_of_columns_to_skip] + normalized_values)
+    #
+    #            _draw_normalized_contributions_line_plot(network_family_dir, row[0], row[1], normalized_values)
+
     global_sum = 0.0
 
     network_family_dirs = sorted(
