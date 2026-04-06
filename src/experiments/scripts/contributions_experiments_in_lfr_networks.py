@@ -8,7 +8,7 @@ from experiments.faddis.faddis import faddis
 from experiments.lapin.lapin import lapin
 from experiments.loaders.adjacency_matrix import compute_adjacency_matrix
 from experiments.loaders.synthetic_data_loader import load_lfr_benchmark_network
-from experiments.utils.utils import selected_thresholds_using_bootstrap_and_mse, create_results_dir, \
+from experiments.utils.utils import log_progress, selected_thresholds_using_bootstrap_and_mse, create_results_dir, \
     save_normalized_contributions_and_draw_line_plots, save_statistics_and_draw_histograms, draw_boxplot, \
     draw_line_plot, save_candidate_thresholds, save_experiment_report
 
@@ -30,7 +30,7 @@ REPORT_FILENAME = "report.json"
 THRESHOLDS_METRICS = ("Mean", "Median", "75%", "90%", "95%")
 
 
-def run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired_k=True):
+def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use_desired_k: bool = True) -> str:
     """
     Run contributions experiments in LFR benchmark networks.
 
@@ -42,8 +42,7 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired
     
     Returns:
         results_dir : str
-            The path to the results directory.
-
+            The path to the results' directory.
     """
 
     results_dir = create_results_dir(RESULTS_BASE_DIR_PATH)
@@ -54,7 +53,7 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired
         key=lambda path: path.name
     )
     for network_family_idx, network_family_dir in enumerate(network_family_dirs, start=1):
-        print(f"#### [{network_family_idx}/{len(network_family_dirs)}] Network Family '{network_family_dir.name}'")
+        log_progress(network_family_idx, len(network_family_dirs), network_family_dir.name, 4, True)
 
         network_family_results_dir = os.path.join(results_dir, network_family_dir.name)
         os.makedirs(network_family_results_dir)
@@ -66,7 +65,7 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired
             writer.writerow(["Network", "K"])
 
             for network_idx, network in enumerate(networks, start=1):
-                print(f"## [{network_idx}/{len(networks)}] Network '{network}'")
+                log_progress(network_idx, len(networks), network, 2)
                 try:
                     graph, _, k = load_lfr_benchmark_network(
                         dir_path=os.path.join(NETWORKS_BASE_DIR_PATH, network_family_dir.name), filename=network

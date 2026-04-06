@@ -12,7 +12,7 @@ ZERO_BOUND = 10 ** (-8)
 ENTITY_BOUND = 10 ** (-4)
 
 
-def lapin(W, laplacian_variant='Lsym'):
+def lapin(W: np.ndarray, laplacian_variant: str = 'Lsym') -> np.ndarray:
     """
     LAPIN: Laplacian Pseudo-Inverse transformation.
 

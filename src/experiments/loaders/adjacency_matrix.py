@@ -2,7 +2,7 @@ import networkx as nx
 import numpy as np
 
 
-def compute_adjacency_matrix(graph):
+def compute_adjacency_matrix(graph: nx.Graph) -> np.ndarray:
     """
     Compute the adjacency matrix of a graph and ensure it is symmetric, binary and has a zero diagonal.
     
@@ -26,7 +26,7 @@ def compute_adjacency_matrix(graph):
     return A
 
 
-def ensure_square_matrix(A):
+def ensure_square_matrix(A: np.ndarray) -> None:
     """
     Ensure the adjacency matrix is square.
 
@@ -42,7 +42,7 @@ def ensure_square_matrix(A):
         raise ValueError(f"[ERROR] Adjacency matrix is not square.")
 
 
-def ensure_symmetric_matrix(A):
+def ensure_symmetric_matrix(A: np.ndarray) -> None:
     """
     Ensure the adjacency matrix is symmetric.
 
@@ -58,7 +58,7 @@ def ensure_symmetric_matrix(A):
         raise ValueError("[ERROR] Adjacency matrix is not symmetric.")
 
 
-def ensure_binary_matrix(A):
+def ensure_binary_matrix(A: np.ndarray) -> None:
     """
      Ensure the adjacency matrix is binary.
 
@@ -74,7 +74,7 @@ def ensure_binary_matrix(A):
         raise ValueError("[ERROR] Adjacency matrix is not binary.")
 
 
-def ensure_zero_diagonal_matrix(A):
+def ensure_zero_diagonal_matrix(A: np.ndarray) -> None:
     """
      Ensure the adjacency matrix has a zero diagonal.
 
@@ -90,7 +90,7 @@ def ensure_zero_diagonal_matrix(A):
         raise ValueError("[ERROR] Adjacency matrix diagonal is not zero.")
 
 
-def set_zero_diagonal_matrix(A):
+def set_zero_diagonal_matrix(A: np.ndarray) -> None:
     """
     Set in place the diagonal of the adjacency matrix to zero.
 

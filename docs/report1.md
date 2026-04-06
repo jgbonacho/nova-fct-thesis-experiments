@@ -120,15 +120,6 @@
   6. For each network family, select the threshold metric with the lowest MSE, that is, the one that shows the greatest stability and robustness under bootstrap resampling;
   7. Create a table with the selected threshold for each network family.
 
-### Script 2
-
-- Stage 1 (test thresholds for each network family)
-  1. Adopt the same execution configuration used in Script 1: i) LAPIN-off or ii) LAPIN-on;
-  2. Execute FADDIS on a sample of the same networks as in Script 1, using the threshold as `epsilon` (FADDIS's individual cluster contribution);
-  3. Apply a defuzzification step with the default `gamma` of 0.5;
-  4. Compute the extrinsic evaluation measures for each network;
-  5. Draw line plots for each network family showing the evaluation metrics by network.
-
 
 
 ## Experience 1 (LAPIN-off + Extraction of K desired clusters)
@@ -298,10 +289,6 @@
 | 14_nM_uM_onnL_omM | Median          | 8e-06     |
 | 15_nM_uM_onnM_omL | Median          | 4e-06     |
 | 16_nM_uM_onnM_omM | Median          | 2e-06     |
-
-### Extrinsic Metrics Results
-
-[Open Folder](../results/experience1_cluster/results_2026-04-03_12-37-23-962869)
 
 
 
@@ -473,10 +460,6 @@
 | 15_nM_uM_onnM_omL | Median          | 3e-06     |
 | 16_nM_uM_onnM_omM | Median          | 1e-06     |
 
-### Extrinsic Metrics Results
-
-[Open Folder](../results/experience2_cluster/results_2026-04-03_13-47-18-631027)
-
 
 
 ## Experience 3 (LAPIN-on + Extraction of K desired clusters)
@@ -647,10 +630,6 @@
 | 15_nM_uM_onnM_omL | Median          | 3e-06     |
 | 16_nM_uM_onnM_omM | Median          | 2e-06     |
 
-### Extrinsic Metrics Results
-
-[Open Folder](../results/experience3_cluster/results_2026-04-03_15-01-30-440744)
-
 
 
 ## Experience 4 (LAPIN-on + Extraction of clusters until the end)
@@ -820,7 +799,3 @@
 | 14_nM_uM_onnL_omM | Median          | 2e-06     |
 | 15_nM_uM_onnM_omL | Median          | 2e-06     |
 | 16_nM_uM_onnM_omM | Median          | 2e-06     |
-
-### Extrinsic Metrics Results
-
-[Open Folder](../results/experience4_cluster/results_2026-04-03_16-23-16-185303)

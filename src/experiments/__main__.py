@@ -4,11 +4,9 @@ Entry point.
 
 from experiments.scripts.contributions_experiments_in_lfr_networks import \
     run_contributions_experiments_in_lfr_networks
-from experiments.scripts.experiments_in_lfr_networks import \
-    run_experiments_in_lfr_networks
 
 
-def run_experience(apply_lapin, use_desired_k):
+def run_experience(apply_lapin: bool, use_desired_k: bool) -> None:
     """
     Run an experience.
 
@@ -19,11 +17,7 @@ def run_experience(apply_lapin, use_desired_k):
             Whether to use the desired number of communities.
     """
 
-    print("\n###### Script 1")
-    results_path = run_contributions_experiments_in_lfr_networks(apply_lapin, use_desired_k)
-
-    print("\n###### Script 2")
-    run_experiments_in_lfr_networks(results_path, apply_lapin)
+    run_contributions_experiments_in_lfr_networks(apply_lapin, use_desired_k)
 
 
 def main():
