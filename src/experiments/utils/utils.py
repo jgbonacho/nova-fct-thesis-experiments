@@ -818,7 +818,7 @@ def save_experiment_report(
         output_filename: str,
         apply_lapin: bool,
         network_family_dirs: list[Path],
-        desired_k: int = None
+        desired_k: bool = None
 ) -> None:
     """
     Save a report of the experiment settings to a JSON file.
