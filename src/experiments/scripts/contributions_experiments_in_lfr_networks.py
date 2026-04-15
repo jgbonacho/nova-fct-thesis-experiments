@@ -33,16 +33,35 @@ THRESHOLDS_METRICS = ("Mean", "Median", "75%", "90%", "95%")
 def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use_desired_k: bool = True) -> str:
     """
     Run contributions experiments in LFR benchmark networks.
+    Exceptionally, when the configuration is LAPIN-off and extraction of K desired clusters, 
+    the script extracts K + 1 clusters due to the conditional removal of the first extracted cluster, which behave as a global/background component.
 
     Parameters:
-        apply_lapin : bool
+        apply_lapin : (bool)
             Whether to apply the Lapin transformation.
-        use_desired_k : bool
+        use_desired_k : (bool)
             Whether to use the desired number of communities.
     
     Returns:
-        results_dir : str
+        results_dir : (str)
             The path to the results' directory.
+    
+    Saves:
+        Inside the created results directory, one subdirectory is generated for each network family. 
+        For each family, the experiment saves:
+            - raw contributions CSV;
+            - normalized contributions CSV;
+            - per-network normalized contribution line plots;
+            - histogram of normalized contributions.
+
+        At the root of the results directory, the experiment also saves:
+            - statistics CSV with summary metrics for each family;
+            - boxplot comparing normalized contributions across families;
+            - line plot with mean, standard deviation, median, and percentiles;
+            - candidate thresholds CSV;
+            - bootstrap statistics CSV;
+            - selected thresholds CSV;
+            - JSON report with experiment settings.
     """
 
     results_dir = create_results_dir(RESULTS_BASE_DIR_PATH)
@@ -106,6 +125,6 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use
     )
 
     # Report
-    save_experiment_report(results_dir, REPORT_FILENAME, apply_lapin, network_family_dirs, use_desired_k)
+    save_experiment_report(results_dir, REPORT_FILENAME, apply_lapin, use_desired_k, network_family_dirs)
 
     return results_dir

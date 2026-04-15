@@ -11,9 +11,9 @@ def run_experience(apply_lapin: bool, use_desired_k: bool) -> None:
     Run an experience.
 
     Parameters:
-        apply_lapin : bool
+        apply_lapin : (bool)
             Whether to apply the Lapin transformation.
-        use_desired_k : bool
+        use_desired_k : (bool)
             Whether to use the desired number of communities.
     """
 

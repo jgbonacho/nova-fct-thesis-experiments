@@ -817,8 +817,8 @@ def save_experiment_report(
         results_dir: str,
         output_filename: str,
         apply_lapin: bool,
+        use_desired_k: bool,
         network_family_dirs: list[Path],
-        desired_k: bool = None
 ) -> None:
     """
     Save a report of the experiment settings to a JSON file.
@@ -830,11 +830,10 @@ def save_experiment_report(
             The name of the output file to save the report.
         apply_lapin : (bool)
             Whether Lapin's transformation was applied in the experiment.
+        use_desired_k : (bool)
+            Whether the desired number of communities was used in the experiment.
         network_family_dirs : (list[Path])
             A list of Path objects representing the directories of network families included in the experiment.
-        desired_k : (int, optional)
-            The desired value of k used in the experiment, if applicable. 
-            Default is None.
     
     Saves:
         A JSON file saved as "{output_filename}" in the specified results directory, containing a report of the experiment settings.
@@ -842,12 +841,10 @@ def save_experiment_report(
 
     report = {
         "apply_lapin": apply_lapin,
+        "use_desired_k": use_desired_k,
         "number_of_families": len(network_family_dirs),
         "families": [directory.name for directory in network_family_dirs]
     }
-
-    if desired_k is not None:
-        report["desired_k"] = desired_k
 
     with open(os.path.join(results_dir, output_filename), "w", encoding="utf-8") as out_file:
         json.dump(report, out_file, indent=2)

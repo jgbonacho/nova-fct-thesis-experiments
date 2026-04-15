@@ -9,6 +9,7 @@
 - [Experience 2 (LAPIN-off + Extraction of clusters until the end)](#experience-2-lapin-off--extraction-of-clusters-until-the-end)
 - [Experience 3 (LAPIN-on + Extraction of K desired clusters)](#experience-3-lapin-on--extraction-of-k-desired-clusters)
 - [Experience 4 (LAPIN-on + Extraction of clusters until the end)](#experience-4-lapin-on--extraction-of-clusters-until-the-end)
+- [Discussion](#discussion)
 
 
 
@@ -22,22 +23,22 @@
 - $c_{max}$ = 100
 - $t1$ = -2
 - $t2$ = -1
-- $n$ (2 groups) (*3 groups):
-  - L: [500, 700] (*[1000, 3000])
-  - M: [800, 1000] (*[4000, 6000])
-  - #H: [2000, 4000] (*[7000, 10000])
-- $\mu$ (2 groups) (*3 groups):
+- $n$ ~~(3 groups)~~ (2 groups):
+  - L: ~~[1000, 3000]~~ [500, 700]
+  - M: ~~[4000, 6000]~~ [800, 1000]
+  - ~~H: [7000, 10000]~~ ~~[2000, 4000]~~
+- $\mu$ ~~(3 groups)~~ (2 groups):
   - L: [0.1, 0.3]
   - M: [0.4, 0.6]
-  - #H: [0.7, 0.8]
-- $o_{n}$ / $n$ (2 groups) (*3 groups):
+  - ~~H: [0.7, 0.8]~~
+- $o_{n}$ / $n$ ~~(3 groups)~~ (2 groups):
   - L: [0.1, 0.2]
   - M: [0.3, 0.4]
-  - #H: [0.5, 0.6]
-- $o_{m}$ (2 groups) (*3 groups):
+  - ~~H: [0.5, 0.6]~~
+- $o_{m}$ ~~(3 groups)~~ (2 groups):
   - L: [2, 3]
   - M: [4, 5]
-  - #H: [6, 8]
+  - ~~H: [6, 8]~~
 
 ### Network Families
 
@@ -74,7 +75,7 @@
   - (2.0)
 - $t2$: fixed
   - (1.0)
-- $n$: step 100 (*step 1000)
+- $n$: step 100
   - L: (500 600 700)
   - M: (800 900 1000)
 - $\mu$: step 0.1
@@ -86,7 +87,7 @@
 - $o_{m}$: step 1
   - L: (2 3)
   - M: (4 5)
-- Instances: 2 (*10)
+- Instances: 2
 
 
 
@@ -96,12 +97,12 @@
 
 - Stage 1 (obtain candidate thresholds for each network family)
   1. Choose the execution configuration: i) LAPIN-off or ii) LAPIN-on; and i) extraction of K desired clusters or ii) extraction of clusters until the end;
-  2. For each network in each network family, execute FADDIS using the default input matrix and the selected configuration;
-     Exceptionally, when the configuration is LAPIN-off and extraction of K desired clusters, the script extracts K + 1 clusters due to the conditional removal of the first extracted cluster, which may behave as a global/background component;
+  2. For each network in each network family, execute FADDIS using the default input matrix and the selected configuration.
+     Exceptionally, when the configuration is LAPIN-off and extraction of K desired clusters, the script extracts K + 1 clusters due to the conditional removal of the first extracted cluster, which behave as a global/background component (K communities correspond to K + 1 clusters);
   3. Register the raw contribution values in the order in which they are extracted;
   4. Normalize the contributions by dividing each contribution value by the "universe", i.e., the sum of all contributions from all networks in all families. The normalized values are stored with 6 decimal places;
   5. Draw one line plot for each network, showing the normalized contribution by extraction number and highlighting the contribution at K;
-  6. Create a table of statistics with statistical metrics for each network family, using 6 decimal places;
+  6. Create a table of statistics with statistical metrics for each network family, using 6 decimal places. The standard deviation is sample;
   7. Draw one histogram for each network family, showing the frequency distribution of the normalized contributions;
   8. Draw a line plot of the normalized contributions for each network family, with one line for each statistical metric;
   9. Draw a box plot of the normalized contributions for each network family;
@@ -799,3 +800,19 @@
 | 14_nM_uM_onnL_omM | Median          | 2e-06     |
 | 15_nM_uM_onnM_omL | Median          | 2e-06     |
 | 16_nM_uM_onnM_omM | Median          | 2e-06     |
+
+
+
+## Discussion
+
+- **Observations**
+  - Contributions tend to decrease as clusters are extracted, but not monotonically and not always in the same way;
+  - The median was always the most stable and robust measure across all experiments;
+  - The same order of magnitude was observed between network families within the same experiment and across experiments (`10^-5`, `10^-6`).
+
+- **Warnings**
+  - Different normalizations are used across Stage 1 and Stage 2;
+  - Normalized contributions are rounded to 6 decimal places.
+
+- **TODO**
+  - Use different markers in the line plot.
