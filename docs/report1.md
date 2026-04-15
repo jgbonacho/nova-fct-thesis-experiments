@@ -808,7 +808,8 @@
 - **Observations**
   - Contributions tend to decrease as clusters are extracted, but not monotonically and not always in the same way;
   - The median was always the most stable and robust measure across all experiments;
-  - The same order of magnitude was observed between network families within the same experiment and across experiments (`10^-5`, `10^-6`).
+  - The same order of magnitude was observed between network families within the same experiment and across experiments (`10^-5`, `10^-6`);
+  - The experiment with normalization by family, instead of across all families, was discarded because it is less global and less correct, and it would only be considered if it produced better results.
 
 - **Warnings**
   - Different normalizations are used across Stage 1 and Stage 2;
