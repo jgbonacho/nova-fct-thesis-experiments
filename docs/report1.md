@@ -89,6 +89,9 @@
   - M: (4 5)
 - Instances: 2
 
+**Networks for Each Network Family: 3 ($n$) * 3 ($\mu$) * 2 ($o_{n}$/$n$) * 2 ($o_{m}$) * 2 (instances) = 72 networks**
+
+**Total Networks: 16 (families) * 3 ($n$) * 3 ($\mu$) * 2 ($o_{n}$/$n$) * 2 ($o_{m}$) * 2 (instances) = 1152 networks**
 
 
 ## Scripts
@@ -813,7 +816,7 @@
 
 - **Warnings**
   - Different normalizations are used across Stage 1 and Stage 2;
-  - Normalized contributions are rounded to 6 decimal places.
+  - [DONE] Normalized contributions are rounded to 6 decimal places.
 
 - **TODO**
-  - Use different markers in the line plot.
+  - [DONE] Use different markers in the line plot.

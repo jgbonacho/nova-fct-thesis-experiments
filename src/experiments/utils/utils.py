@@ -109,7 +109,7 @@ def save_normalized_contributions_and_draw_line_plots(
     #        writer.writerow(["Network", "K"])
     #        for row in reader:
     #            values = [float(x) for x in row[number_of_columns_to_skip:]]
-    #            normalized_values = [round(value / family_sum, 6) for value in values]
+    #            normalized_values = [value / family_sum for value in values]
     #            writer.writerow(row[:number_of_columns_to_skip] + normalized_values)
     #
     #            _draw_normalized_contributions_line_plot(network_family_dir, row[0], row[1], normalized_values)
@@ -137,7 +137,7 @@ def save_normalized_contributions_and_draw_line_plots(
             writer.writerow(["Network", "K"])
             for row in reader:
                 values = [float(x) for x in row[number_of_columns_to_skip:]]
-                normalized_values = [round(value / global_sum, 6) for value in values]
+                normalized_values = [value / global_sum for value in values]
                 writer.writerow(row[:number_of_columns_to_skip] + normalized_values)
 
                 _draw_normalized_contributions_line_plot(network_family_dir, row[0], row[1], normalized_values)
@@ -243,8 +243,7 @@ def save_statistics_and_draw_histograms(
 
 
 def _compute_statistics(
-        normalized_values: list[float],
-        number_of_decimal_places: int = 6
+        normalized_values: list[float]
 ) -> tuple[float, float, float, float, float, float, float, float]:
     """
     Compute statistics (mean, std, median, percentiles, min, max) for a list of normalized values.
@@ -252,13 +251,10 @@ def _compute_statistics(
     Parameters:
         normalized_values : (list[float])
             The list of normalized contribution values to compute statistics for.
-        number_of_decimal_places : (int, optional)
-            The number of decimal places to round the computed statistics to. 
-            Default is 6.
     
     Returns:
         statistics : (tuple[float, float, float, float, float, float, float, float])
-            A tuple containing the computed statistics: (mean, std, median, p75, p90, p95, min_value, max_value), each rounded to the specified number of decimal places.    
+            A tuple containing the computed statistics: (mean, std, median, p75, p90, p95, min_value, max_value).    
     """
 
     sorted_values = sorted(normalized_values)
@@ -274,14 +270,14 @@ def _compute_statistics(
     min_value = sorted_values[0]
     max_value = sorted_values[-1]
 
-    return round(mean, number_of_decimal_places), \
-        round(std, number_of_decimal_places), \
-        round(median, number_of_decimal_places), \
-        round(p75, number_of_decimal_places), \
-        round(p90, number_of_decimal_places), \
-        round(p95, number_of_decimal_places), \
-        round(min_value, number_of_decimal_places), \
-        round(max_value, number_of_decimal_places)
+    return mean, \
+        std, \
+        median, \
+        p75, \
+        p90, \
+        p95, \
+        min_value, \
+        max_value
 
 
 def _percentile(sorted_values: list[float], p: float) -> float:
@@ -475,10 +471,10 @@ def draw_line_plot(results_dir: str, input_filename: str, output_filename: str) 
         label="mean ± std"
     )
 
-    plt.plot(families, medians, marker="o", label="median")
-    plt.plot(families, p75s, marker="o", label="75%")
-    plt.plot(families, p90s, marker="o", label="90%")
-    plt.plot(families, p95s, marker="o", label="95%")
+    plt.plot(families, medians, marker="s", label="median")
+    plt.plot(families, p75s, marker="^", label="75%")
+    plt.plot(families, p90s, marker="D", label="90%")
+    plt.plot(families, p95s, marker="x", label="95%")
 
     plt.xlabel("Network Family")
     plt.ylabel("Normalized Contribution")
@@ -643,8 +639,8 @@ def selected_thresholds_using_bootstrap_and_mse(
                     subsample_size,
                     number_of_bootstraps,
                     threshold_metric,
-                    round(candidate_threshold, 6),
-                    round(mse, 12)
+                    candidate_threshold,
+                    mse
                 ])
 
                 if candidate_threshold > 0 and mse < selected_threshold_mse:
@@ -655,7 +651,7 @@ def selected_thresholds_using_bootstrap_and_mse(
             thresholds_writer.writerow([
                 network_family_dir.name,
                 selected_threshold_metric,
-                round(selected_threshold_value, 6)
+                selected_threshold_value
             ])
 
 
