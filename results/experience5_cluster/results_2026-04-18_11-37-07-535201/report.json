@@ -1,7 +1,7 @@
 {
   "apply_lapin": false,
   "use_desired_k": true,
-  "number_of_families": 16,
+  "number_of_families": 19,
   "families": [
     "01_nL_uL_onnL_omL",
     "02_nL_uL_onnL_omM",
