@@ -1,0 +1,10 @@
+{
+  "apply_lapin": false,
+  "use_desired_k": false,
+  "number_of_families": 3,
+  "families": [
+    "39_nM_uM_onnL_omH",
+    "43_nM_uM_onnH_omL",
+    "46_nM_uH_onnL_omL"
+  ]
+}

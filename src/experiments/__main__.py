@@ -25,13 +25,13 @@ def main():
     run_experience(apply_lapin=False, use_desired_k=True)
 
     # Experience with 'LAPIN-off + Extraction of clusters until the end'
-    # run_experience(apply_lapin=False, use_desired_k=False)
+    run_experience(apply_lapin=False, use_desired_k=False)
 
     # Experience with 'LAPIN-on + Extraction of K desired clusters'
-    # run_experience(apply_lapin=True, use_desired_k=True)
+    run_experience(apply_lapin=True, use_desired_k=True)
 
     # Experience with 'LAPIN-on + Extraction of clusters until the end'
-    # run_experience(apply_lapin=True, use_desired_k=False)
+    run_experience(apply_lapin=True, use_desired_k=False)
 
 
 if __name__ == "__main__":

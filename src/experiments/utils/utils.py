@@ -270,14 +270,7 @@ def _compute_statistics(
     min_value = sorted_values[0]
     max_value = sorted_values[-1]
 
-    return mean, \
-        std, \
-        median, \
-        p75, \
-        p90, \
-        p95, \
-        min_value, \
-        max_value
+    return mean, std, median, p75, p90, p95, min_value, max_value
 
 
 def _percentile(sorted_values: list[float], p: float) -> float:
