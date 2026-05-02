@@ -3,12 +3,14 @@
 
 
 ## Table of Contents
+
 - [Networks](#networks)
 - [Scripts](#scripts)
 - [Experience 1 (LAPIN-off + Extraction of K desired clusters)](#experience-1-lapin-off--extraction-of-k-desired-clusters)
 - [Experience 2 (LAPIN-off + Extraction of clusters until the end)](#experience-2-lapin-off--extraction-of-clusters-until-the-end)
 - [Experience 3 (LAPIN-on + Extraction of K desired clusters)](#experience-3-lapin-on--extraction-of-k-desired-clusters)
 - [Experience 4 (LAPIN-on + Extraction of clusters until the end)](#experience-4-lapin-on--extraction-of-clusters-until-the-end)
+- [Hardware](#hardware)
 - [Discussion](#discussion)
 
 
@@ -90,6 +92,7 @@
 **Total Networks: 16 (families) * 3 ($n$) * 3 ($\mu$) * 2 ($o_{n}$/$n$) * 2 ($o_{m}$) * 2 (instances) = 1152 networks**
 
 
+
 ## Scripts
 
 ### Script 1
@@ -99,7 +102,7 @@
   2. For each network in each network family, execute FADDIS using the default input matrix and the selected configuration.
      Exceptionally, when the configuration is LAPIN-off and extraction of K desired clusters, the script extracts K + 1 clusters due to the conditional removal of the first extracted cluster, which behave as a global/background component (K communities correspond to K + 1 clusters);
   3. Register the raw contribution values in the order in which they are extracted;
-  4. Normalize the contributions by dividing each contribution value by the "universe", i.e., the sum of all contributions from all networks in all families. The normalized values are stored with 6 decimal places;
+  4. Normalize the contributions by dividing each contribution value by the "universe", i.e., the sum of all contributions from all networks in all families;
   5. Draw one line plot for each network, showing the normalized contribution by extraction number and highlighting the contribution at K;
   6. Create a table of statistics with statistical metrics for each network family, using 6 decimal places. The standard deviation is sample;
   7. Draw one histogram for each network family, showing the frequency distribution of the normalized contributions;
@@ -799,6 +802,12 @@
 | 14_nM_uM_onnL_omM | Median          | 2e-06     |
 | 15_nM_uM_onnM_omL | Median          | 2e-06     |
 | 16_nM_uM_onnM_omM | Median          | 2e-06     |
+
+
+
+## Hardware
+
+![](./imgs/hardware.png)
 
 
 

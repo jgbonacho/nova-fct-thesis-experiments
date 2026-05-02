@@ -98,6 +98,9 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use
                         _, _, contributions, _, _, _, _ = faddis(W=W, epsilon=-np.inf, tau=-np.inf, k_max=1000)
 
                     writer.writerow([network, k] + list(contributions))
+
+                    out_file.flush()
+                    os.fsync(out_file.fileno())
                 except Exception as e:
                     print(f"[ERROR] {e}")
                     continue
