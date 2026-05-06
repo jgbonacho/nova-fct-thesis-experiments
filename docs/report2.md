@@ -1,4 +1,4 @@
-# Report 2 - Extend the experiments to larger networks and larger parameter values
+# Report 2 - Extend the experiments to larger parameter values
 
 
 
@@ -224,7 +224,7 @@
 
 **Total Networks: 21 (families) * 3 ($n$) * 3 ($\mu$) * 2 ($o_{n}$/$n$) * 2 ($o_{m}$) * 2 (instances) = 1512 networks**
 
-**NOTE**: The last two network families (64 and 91) are computationally intensive due to their large number of nodes ($n$) and are therefore excluded from the experiment.
+**NOTE**: The last two network families (64 and 91) are computationally intensive due to their large number of nodes ($n$) and are therefore excluded from the experiment until optimizations are made.
 
 **Networks for Each Network Family: 3 ($n$) * 3 ($\mu$) * 2 ($o_{n}$/$n$) * 2 ($o_{m}$) * 2 (instances) = 72 networks**
 
