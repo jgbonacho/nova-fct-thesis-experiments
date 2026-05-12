@@ -14,7 +14,7 @@ from experiments.utils.utils import log_progress, selected_thresholds_using_boot
 
 ROOT_DIR_PATH = os.path.join(os.path.dirname(__file__), '..', '..', '..')
 NETWORKS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'networks', 'synthetic')
-RESULTS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'results')
+RESULTS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'results', 'synthetic')
 
 RAW_CONTRIBUTIONS_FILENAME = "raw_contributions.csv"
 NORMALIZED_CONTRIBUTIONS_FILENAME = "normalized_contributions.csv"
@@ -77,17 +77,17 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use
         network_family_results_dir = os.path.join(results_dir, network_family_dir.name)
         os.makedirs(network_family_results_dir)
 
-        networks = sorted({file.stem for file in network_family_dir.iterdir() if file.suffix not in {".txt", ".json"}})
+        network_names = sorted({f.stem for f in network_family_dir.iterdir() if f.suffix not in {".txt", ".json"}})
         with (open(os.path.join(network_family_results_dir, RAW_CONTRIBUTIONS_FILENAME), "w", newline="",
                    encoding="utf-8") as out_file):
             writer = csv.writer(out_file)
             writer.writerow(["Network", "K"])
 
-            for network_idx, network in enumerate(networks, start=1):
-                log_progress(network_idx, len(networks), network, 2)
+            for network_name_idx, network_name in enumerate(network_names, start=1):
+                log_progress(network_name_idx, len(network_names), network_name, 2)
                 try:
                     graph, _, k = load_lfr_benchmark_network(
-                        dir_path=os.path.join(NETWORKS_BASE_DIR_PATH, network_family_dir.name), filename=network
+                        dir_path=os.path.join(NETWORKS_BASE_DIR_PATH, network_family_dir.name), filename=network_name
                     )
                     A = compute_adjacency_matrix(graph)
                     W = A if not apply_lapin else lapin(A)
@@ -98,7 +98,7 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use
                     else:
                         _, contributions, _, _, _, _ = faddis(W=W, epsilon=-np.inf, tau=-np.inf, k_max=1000)
 
-                    writer.writerow([network, k] + list(contributions))
+                    writer.writerow([network_name, k] + list(contributions))
 
                     out_file.flush()
                     os.fsync(out_file.fileno())

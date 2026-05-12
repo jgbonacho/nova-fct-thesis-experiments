@@ -1,0 +1,9 @@
+{
+  "apply_lapin": true,
+  "use_desired_k": true,
+  "number_of_families": 2,
+  "families": [
+    "network_family_1",
+    "network_family_2"
+  ]
+}

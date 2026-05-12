@@ -9,6 +9,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.utils import resample
 
+from experiments.utils.network_config_dataclass import NetworkConfig
+
 
 def create_results_dir(base_dir: str) -> str:
     """
@@ -837,3 +839,24 @@ def save_experiment_report(
 
     with open(os.path.join(results_dir, output_filename), "w", encoding="utf-8") as out_file:
         json.dump(report, out_file, indent=2)
+
+
+def load_real_world_network_configs(network_directory: Path, input_filename: str) -> list[NetworkConfig]:
+    """
+    Load real-world network configs from a JSON file.
+
+    Parameters:
+        network_directory : (Path)
+            The path to the directory containing the JSON file.
+        input_filename : (str)
+            The name of the input JSON file, without the ".json" extension.
+
+    Returns:
+        networks : (list[NetworkConfig])
+             A list of NetworkConfig objects loaded from the JSON file.
+    """
+
+    with open(os.path.join(network_directory, f"{input_filename}.json"), "r", encoding="utf-8") as in_file:
+        json_networks = json.load(in_file)
+
+    return [NetworkConfig.from_dict(json_network) for json_network in json_networks]

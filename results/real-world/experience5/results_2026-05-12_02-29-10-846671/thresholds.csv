@@ -1,0 +1,6 @@
+Network Family,Selected Metric,Threshold
+network_family_1,Median,0.00011330796255917095
+network_family_2,Median,6.581332540626537e-05
+network_family_3,Median,0.0012807491139226487
+network_family_4,Median,7.384861817600572e-05
+network_family_5,Median,5.157217279165567e-09
