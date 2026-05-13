@@ -238,7 +238,7 @@
 
 ### Contributions Line Plots
 
-[Open Folder](../results/experience9_cluster/results_2026-04-28_21-51-06-981808/)
+[Open Folder](../results/synthetic/experience9_cluster/results_2026-04-28_21-51-06-981808/)
 
 ### Statistics
 
@@ -269,15 +269,15 @@
 
 ### Histograms
 
-[Open Folder](../results/experience9_cluster/results_2026-04-28_21-51-06-981808/)
+[Open Folder](../results/synthetic/experience9_cluster/results_2026-04-28_21-51-06-981808/)
 
 ### Line plot
 
-![](../results/experience9_cluster/results_2026-04-28_21-51-06-981808/line_plot.png)
+![](../results/synthetic/experience9_cluster/results_2026-04-28_21-51-06-981808/line_plot.png)
 
 ### Box plot
 
-![](../results/experience9_cluster/results_2026-04-28_21-51-06-981808/boxplot.png)
+![](../results/synthetic/experience9_cluster/results_2026-04-28_21-51-06-981808/boxplot.png)
 
 ### Candidate Thresholds
 
