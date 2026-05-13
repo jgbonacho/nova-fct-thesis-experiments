@@ -1,0 +1,22 @@
+{
+  "apply_lapin": false,
+  "use_desired_k": false,
+  "number_of_families": 15,
+  "families": [
+    "network_family_1",
+    "network_family_10",
+    "network_family_11",
+    "network_family_12",
+    "network_family_13",
+    "network_family_14",
+    "network_family_15",
+    "network_family_2",
+    "network_family_3",
+    "network_family_4",
+    "network_family_5",
+    "network_family_6",
+    "network_family_7",
+    "network_family_8",
+    "network_family_9"
+  ]
+}

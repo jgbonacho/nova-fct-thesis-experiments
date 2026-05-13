@@ -1,5 +1,55 @@
 # Report 4 - Question: Does the relative contribution to data scatter provide a good hyperparameter for the definition of the stop rules under variations in the structure/architecture parameters of real-world networks?
 
+
+
+## Table of Contents
+
+- [Real-World Networks with Ground-truth](#real-world-networks-with-ground-truth)
+- [Experience 1 (All networks in the same family)](#experience-1-all-networks-in-the-same-family)
+  - [Network Family 0](#network-family-0)
+- [Experience 2 (Networks grouped by ground-truth type)](#experience-2-networks-grouped-by-ground-truth-type)
+  - [Network Family 1 (Non-Overlapping)](#network-family-1-non-overlapping)
+  - [Network Family 2 (Overlapping)](#network-family-2-overlapping)
+- [Experience 3 (Networks grouped by ground-truth type and K range)](#experience-3-networks-grouped-by-ground-truth-type-and-k-range)
+  - [Network Family 1 (Non-Overlapping + K $\in$ [2, 9])](#network-family-1-non-overlapping--k-in-2-9)
+  - [Network Family 2 (Non-Overlapping + K $\in$ [10, 19])](#network-family-2-non-overlapping--k-in-10-19)
+  - [Network Family 3 (Non-Overlapping + K $\in$ [40, 49])](#network-family-3-non-overlapping--k-in-40-49)
+  - [Network Family 4 (Overlapping + K $\in$ [2, 9])](#network-family-4-overlapping--k-in-2-9)
+  - [Network Family 5 (Overlapping + K $\in$ [10, 19])](#network-family-5-overlapping--k-in-10-19)
+  - [Network Family 6 (Overlapping + K $\in$ [20, 29])](#network-family-6-overlapping--k-in-20-29)
+  - [Network Family 7 (Overlapping + K $\in$ [30, 39])](#network-family-7-overlapping--k-in-30-39)
+  - [Network Family 8 (Overlapping + K $\in$ [40, 49])](#network-family-8-overlapping--k-in-40-49)
+- [Experience 4 (Networks grouped by ground-truth type and the proportion of communities relative to the number of nodes)](#experience-4-networks-grouped-by-ground-truth-type-and-the-proportion-of-communities-relative-to-the-number-of-nodes)
+  - [Network Family 1 (Non-Overlapping + Low Community Proportion (p < 0.03))](#network-family-1-non-overlapping--low-community-proportion-p--003)
+  - [Network Family 2 (Non-Overlapping + Medium Community Proportion (0.03 < p < 0.07))](#network-family-2-non-overlapping--medium-community-proportion-003--p--007)
+  - [Network Family 3 (Non-Overlapping + High Community Proportion (p > 0.07))](#network-family-3-non-overlapping--high-community-proportion-p--007)
+  - [Network Family 4 (Overlapping + Low Community Proportion (p < 0.03))](#network-family-4-overlapping--low-community-proportion-p--003)
+  - [Network Family 5 (Overlapping + Medium Community Proportion (0.03 < p < 0.07))](#network-family-5-overlapping--medium-community-proportion-003--p--007)
+  - [Network Family 6 (Overlapping + High Community Proportion (p > 0.07))](#network-family-6-overlapping--high-community-proportion-p--007)
+- [Experience 5 (Networks grouped by ground-truth type and average degree)](#experience-5-networks-grouped-by-ground-truth-type-and-average-degree)
+  - [Network Family 1 (Non-Overlapping + Low Average Degree (a < 15))](#network-family-1-non-overlapping--low-average-degree-a--15)
+  - [Network Family 2 (Non-Overlapping + Medium Average Degree (15 < a < 35))](#network-family-2-non-overlapping--medium-average-degree-15--a--35)
+  - [Network Family 3 (Overlapping + Low Average Degree (a < 15))](#network-family-3-overlapping--low-average-degree-a--15)
+  - [Network Family 4 (Overlapping + Medium Average Degree (15 < a < 35))](#network-family-4-overlapping--medium-average-degree-15--a--35)
+  - [Network Family 5 (Overlapping + High Average Degree (a > 35))](#network-family-5-overlapping--high-average-degree-a--35)
+- [Experience 6 (One network per family)](#experience-6-one-network-per-family)
+  - [Network Family 1](#network-family-1)
+  - [Network Family 2](#network-family-2)
+  - [Network Family 3](#network-family-3)
+  - [Network Family 4](#network-family-4)
+  - [Network Family 5](#network-family-5)
+  - [Network Family 6](#network-family-6)
+  - [Network Family 7](#network-family-7)
+  - [Network Family 8](#network-family-8)
+  - [Network Family 9](#network-family-9)
+  - [Network Family 10](#network-family-10)
+  - [Network Family 11](#network-family-11)
+  - [Network Family 12](#network-family-12)
+  - [Network Family 13](#network-family-13)
+  - [Network Family 14](#network-family-14)
+  - [Network Family 15](#network-family-15)
+
+
 ## Real-World Networks with Ground-truth
 
 - Pre-processed to **undirected, unweighted simple graphs without self-loops**, saved as .gml files.
@@ -27,6 +77,8 @@
 | Dolphin Social Network | Ground-truth labels require further interpretation |
 | LastFM Asia            | Very large network                                 |
 
+
+
 ## Experience 1 (All networks in the same family)
 
 [Open Folder](../results/real-world/experience1/)
@@ -50,6 +102,8 @@
 | Facebook Ego-0 Network    |
 | Facebook Ego-3437 Network |
 | Facebook Ego-1912 Network |
+
+
 
 ## Experience 2 (Networks grouped by ground-truth type)
 
@@ -79,6 +133,8 @@
 | Facebook Ego-0 Network    | Yes                       |
 | Facebook Ego-3437 Network | Yes                       |
 | Facebook Ego-1912 Network | Yes                       |
+
+
 
 ## Experience 3 (Networks grouped by ground-truth type and K range)
 
@@ -139,6 +195,8 @@
 |---------------------------|---------------------------|-----------|
 | Facebook Ego-1912 Network | Yes                       | 45        |
 
+
+
 ## Experience 4 (Networks grouped by ground-truth type and the proportion of communities relative to the number of nodes)
 
 [Open Folder](../results/real-world/experience4/)
@@ -192,6 +250,8 @@
     - Low p means the network has few communities compared with its number of nodes. So, communities are expected to be larger on average.
     - High p means the network has many communities compared with its number of nodes. So, communities are expected to be smaller on average.
 
+
+
 ## Experience 5 (Networks grouped by ground-truth type and average degree)
 
 [Open Folder](../results/real-world/experience5/)
@@ -235,3 +295,99 @@
 | Facebook Ego-1684 Network | Yes                       | 28012 / 775 = 36.1445         |
 | Facebook Ego-107 Network  | Yes                       | 53498 / 1034 = 51.7389        |
 | Facebook Ego-1912 Network | Yes                       | 60046 / 744 = 80.7070         |
+
+
+
+## Experience 6 (One network per family)
+
+[Open Folder](../results/real-world/experience6/)
+
+### Network Family 1
+
+| Network                   |
+|---------------------------|
+| Zachary Karate Club       |
+
+### Network Family 2
+
+| Network                   |
+|---------------------------|
+| US Political Blogs        |
+
+### Network Family 3
+
+| Network                   |
+|---------------------------|
+| Books about US Politics   |
+
+### Network Family 4
+
+| Network                   |
+|---------------------------|
+| American College Football |
+
+### Network Family 5
+
+| Network                   |
+|---------------------------|
+| E-mail EU Core            |
+
+### Network Family 6
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-414 Network  |
+
+### Network Family 7
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-107 Network  |
+
+### Network Family 8
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-698 Network  |
+
+### Network Family 9
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-3980 Network |
+
+### Network Family 10
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-348 Network  |
+
+### Network Family 11
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-686 Network  |
+
+### Network Family 12
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-1684 Network |
+
+### Network Family 13
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-0 Network    |
+
+### Network Family 14
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-3437 Network |
+
+### Network Family 15
+
+| Network                   |
+|---------------------------|
+| Facebook Ego-1912 Network |
