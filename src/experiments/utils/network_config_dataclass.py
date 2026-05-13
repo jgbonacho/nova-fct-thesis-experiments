@@ -26,7 +26,7 @@ class NetworkConfig:
     ground_truth_attr: str
 
     @staticmethod
-    def from_dict(data: dict):
+    def from_dict(data):
         """
         Create a NetworkConfig object from a dictionary.
 

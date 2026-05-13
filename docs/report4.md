@@ -5,6 +5,7 @@
 ## Table of Contents
 
 - [Real-World Networks with Ground-truth](#real-world-networks-with-ground-truth)
+- [Scripts](#scripts)
 - [Experience 1 (All networks in the same family)](#experience-1-all-networks-in-the-same-family)
   - [Network Family 0](#network-family-0)
 - [Experience 2 (Networks grouped by ground-truth type)](#experience-2-networks-grouped-by-ground-truth-type)
@@ -76,6 +77,14 @@
 |------------------------|----------------------------------------------------|
 | Dolphin Social Network | Ground-truth labels require further interpretation |
 | LastFM Asia            | Very large network                                 |
+
+
+
+## Scripts
+
+### Script 1
+
+- The same script from [Report 1](./report1.md) adapted for real-world networks.
 
 
 
