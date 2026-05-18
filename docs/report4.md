@@ -1,4 +1,4 @@
-# Report 4 - Question: Does the relative contribution to data scatter provide a good hyperparameter for the definition of the stop rules under variations in the structure/architecture parameters of real-world networks?
+# Report 4 - Question (Part I): Does the relative contribution to data scatter provide a good hyperparameter for the definition of the stop rules under variations in the structure/architecture parameters of real-world networks?
 
 
 

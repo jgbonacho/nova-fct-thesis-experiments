@@ -1,0 +1,66 @@
+Group,Threshold Mode,Threshold Label,Property,N,Spearman Correlation,Pearson Correlation,Abs Spearman Correlation
+All,network_statistic,Median Normalized Threshold,Degree Assortativity,15,-0.7142857142857142,-0.7316206180603525,0.7142857142857142
+All,network_statistic,Median Normalized Threshold,K,15,-0.673234299220246,-0.6410418591397632,0.673234299220246
+All,network_statistic,Median Normalized Threshold,Min Community Size,15,0.5784427330823998,0.3386755885092125,0.5784427330823998
+All,network_statistic,Median Normalized Threshold,Overlap Fraction,15,-0.5477505018207631,-0.3506304777175473,0.5477505018207631
+All,network_statistic,Median Normalized Threshold,Nodes Without Community,15,-0.5345755092189404,-0.01252667380151625,0.5345755092189404
+All,network_statistic,Median Normalized Threshold,Community Size CV,15,-0.5285714285714286,-0.6475792757051138,0.5285714285714286
+All,network_statistic,Median Normalized Threshold,Global Clustering Coefficient,15,-0.5107142857142856,-0.5264438544704633,0.5107142857142856
+All,network_statistic,Median Normalized Threshold,Average Degree,15,-0.47142857142857136,-0.40559241207039426,0.47142857142857136
+All,network_statistic,Median Normalized Threshold,Nodes Fraction Without Community,15,-0.4630478002389412,-0.1458725409333732,0.4630478002389412
+All,network_statistic,Median Normalized Threshold,Edges LCC,15,-0.36785714285714277,-0.1688343818743029,0.36785714285714277
+All,network_statistic,Median Normalized Threshold,Min Degree,15,0.3440985179966103,0.13403632810326058,0.3440985179966103
+All,network_statistic,Median Normalized Threshold,Community Size Std,15,-0.33571428571428563,-0.19592961127243913,0.33571428571428563
+All,network_statistic,Median Normalized Threshold,Average Clustering,15,-0.30357142857142855,-0.28250327960844057,0.30357142857142855
+All,network_statistic,Median Normalized Threshold,Degree Std,15,-0.3,-0.290035044692489,0.3
+All,network_statistic,Median Normalized Threshold,Max Community Size,15,-0.2678571428571428,0.08187467242151149,0.2678571428571428
+All,network_statistic,Median Normalized Threshold,Max Degree,15,-0.2645220001749188,-0.1442564853356117,0.2645220001749188
+All,network_statistic,Median Normalized Threshold,Nodes LCC,15,-0.2607142857142857,-0.11514287004339238,0.2607142857142857
+All,network_statistic,Median Normalized Threshold,Community Proportion,15,-0.16785714285714282,0.05233890618166423,0.16785714285714282
+All,network_statistic,Median Normalized Threshold,Average Community Size,15,0.10357142857142855,0.3169682942858457,0.10357142857142855
+All,network_statistic,Median Normalized Threshold,Degree CV,15,0.07142857142857141,0.04322834209518675,0.07142857142857141
+All,network_statistic,Median Normalized Threshold,Degree Hub Ratio,15,0.021428571428571425,0.08425533715850095,0.021428571428571425
+All,network_statistic,Median Normalized Threshold,Density,15,-0.010714285714285713,0.09384370692202514,0.010714285714285713
+All,network_statistic,Median Normalized Threshold,Sparsity,15,0.010714285714285713,-0.09384370692202519,0.010714285714285713
+Non-overlapping,network_statistic,Median Normalized Threshold,Average Degree,5,-0.7999999999999999,-0.6546613515472839,0.7999999999999999
+Non-overlapping,network_statistic,Median Normalized Threshold,K,5,-0.6668859288553501,-0.9013528896543332,0.6668859288553501
+Non-overlapping,network_statistic,Median Normalized Threshold,Degree Assortativity,5,-0.6,-0.6728008802871027,0.6
+Non-overlapping,network_statistic,Median Normalized Threshold,Edges LCC,5,-0.6,-0.49088780902370205,0.6
+Non-overlapping,network_statistic,Median Normalized Threshold,Min Community Size,5,0.6,0.20337052965680097,0.6
+Non-overlapping,network_statistic,Median Normalized Threshold,Nodes LCC,5,-0.6,-0.41917026795624274,0.6
+Non-overlapping,network_statistic,Median Normalized Threshold,Average Clustering,5,0.49999999999999994,0.47314765497814043,0.49999999999999994
+Non-overlapping,network_statistic,Median Normalized Threshold,Community Size CV,5,-0.39999999999999997,-0.6302074279825981,0.39999999999999997
+Non-overlapping,network_statistic,Median Normalized Threshold,Average Community Size,5,0.3,0.19300186037843658,0.3
+Non-overlapping,network_statistic,Median Normalized Threshold,Community Proportion,5,-0.3,-0.34272389176114576,0.3
+Non-overlapping,network_statistic,Median Normalized Threshold,Community Size Std,5,-0.3,-0.09325753433101468,0.3
+Non-overlapping,network_statistic,Median Normalized Threshold,Density,5,0.3,0.4590630988255129,0.3
+Non-overlapping,network_statistic,Median Normalized Threshold,Sparsity,5,-0.3,-0.45906309882551355,0.3
+Non-overlapping,network_statistic,Median Normalized Threshold,Degree CV,5,-0.19999999999999998,0.0360058697556921,0.19999999999999998
+Non-overlapping,network_statistic,Median Normalized Threshold,Degree Hub Ratio,5,-0.19999999999999998,-0.2833015607739563,0.19999999999999998
+Non-overlapping,network_statistic,Median Normalized Threshold,Min Degree,5,0.11180339887498947,-0.2762640500255153,0.11180339887498947
+Non-overlapping,network_statistic,Median Normalized Threshold,Degree Std,5,-0.09999999999999999,-0.4285768830754443,0.09999999999999999
+Non-overlapping,network_statistic,Median Normalized Threshold,Global Clustering Coefficient,5,-0.09999999999999999,-0.1219447483298857,0.09999999999999999
+Non-overlapping,network_statistic,Median Normalized Threshold,Max Community Size,5,-0.09999999999999999,0.09815690760304994,0.09999999999999999
+Non-overlapping,network_statistic,Median Normalized Threshold,Max Degree,5,-0.09999999999999999,-0.47733386156868274,0.09999999999999999
+Overlapping,network_statistic,Median Normalized Threshold,Degree Assortativity,10,-0.43030303030303024,-0.4243953978905938,0.43030303030303024
+Overlapping,network_statistic,Median Normalized Threshold,K,10,-0.3231767396591252,-0.4596182188913021,0.3231767396591252
+Overlapping,network_statistic,Median Normalized Threshold,Average Clustering,10,-0.23636363636363633,-0.1342598853862729,0.23636363636363633
+Overlapping,network_statistic,Median Normalized Threshold,Average Degree,10,-0.23636363636363633,-0.20597220524498813,0.23636363636363633
+Overlapping,network_statistic,Median Normalized Threshold,Community Proportion,10,0.23636363636363633,0.5018355917807854,0.23636363636363633
+Overlapping,network_statistic,Median Normalized Threshold,Edges LCC,10,-0.22424242424242422,0.00016567335322966736,0.22424242424242422
+Overlapping,network_statistic,Median Normalized Threshold,Max Community Size,10,-0.16363636363636364,-0.061426883012732574,0.16363636363636364
+Overlapping,network_statistic,Median Normalized Threshold,Nodes Without Community,10,-0.13981827504641486,0.31984952963499974,0.13981827504641486
+Overlapping,network_statistic,Median Normalized Threshold,Degree Std,10,-0.13939393939393938,-0.14392433890395856,0.13939393939393938
+Overlapping,network_statistic,Median Normalized Threshold,Density,10,0.12727272727272726,0.31600882057731844,0.12727272727272726
+Overlapping,network_statistic,Median Normalized Threshold,Sparsity,10,-0.12727272727272726,-0.3160088205773185,0.12727272727272726
+Overlapping,network_statistic,Median Normalized Threshold,Max Degree,10,-0.12158110873601292,-0.08427184415290065,0.12158110873601292
+Overlapping,network_statistic,Median Normalized Threshold,Min Community Size,10,0.1165231171632942,0.24833513322732167,0.1165231171632942
+Overlapping,network_statistic,Median Normalized Threshold,Degree Hub Ratio,10,0.09090909090909088,-0.05558869748565457,0.09090909090909088
+Overlapping,network_statistic,Median Normalized Threshold,Overlap Fraction,10,-0.09090909090909088,-0.02521053846518548,0.09090909090909088
+Overlapping,network_statistic,Median Normalized Threshold,Community Size Std,10,-0.07878787878787878,0.07864250226918422,0.07878787878787878
+Overlapping,network_statistic,Median Normalized Threshold,Nodes LCC,10,-0.07878787878787878,-0.04123552688835265,0.07878787878787878
+Overlapping,network_statistic,Median Normalized Threshold,Average Community Size,10,-0.04242424242424241,0.04788179869280723,0.04242424242424241
+Overlapping,network_statistic,Median Normalized Threshold,Global Clustering Coefficient,10,-0.04242424242424241,-0.14336284154198303,0.04242424242424241
+Overlapping,network_statistic,Median Normalized Threshold,Nodes Fraction Without Community,10,0.01823716631040194,0.16930021950003063,0.01823716631040194
+Overlapping,network_statistic,Median Normalized Threshold,Community Size CV,10,-0.006060606060606061,-0.18365500718337838,0.006060606060606061
+Overlapping,network_statistic,Median Normalized Threshold,Degree CV,10,0.006060606060606061,-0.1313854741873903,0.006060606060606061
