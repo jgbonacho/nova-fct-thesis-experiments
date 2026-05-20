@@ -88,7 +88,7 @@
 
 ### LAPIN-off Median Normalized Contributions
 
-`Median of the normalized contributions for each network family, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-off configuration`
+`Median of the normalized contributions for each network family, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-off and extraction of K clusters configuration`
 
 [Open Folder](../results/real-world/experience7/lapinoff_median_normalized_contributions/results_2026-05-17_22-40-29-009438/)
 
@@ -129,7 +129,7 @@
 
 ### LAPIN-on Median Normalized Contributions
 
-`Median of the normalized contributions for each network family, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-on configuration`
+`Median of the normalized contributions for each network family, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-on and extraction of K clusters configuration`
 
 [Open Folder](../results/real-world/experience7/lapinon_median_normalized_contributions/results_2026-05-17_22-49-34-021831/)
 

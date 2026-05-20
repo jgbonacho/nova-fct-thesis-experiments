@@ -181,12 +181,13 @@ def _draw_normalized_contributions_line_plot(
     plt.figure(figsize=(8, 5))
     plt.plot(x_values, y_values, marker="o")
 
-    k_int = int(k)
-    if k_int in x_values:
-        y_k = y_values[k_int - 1]
-        plt.axvline(x=k_int, linestyle="--", alpha=0.7)
-        plt.scatter([k_int], [y_k], s=80, zorder=5)
-        plt.annotate(f"K", xy=(k_int, y_k), xytext=(5, 8), textcoords="offset points")
+    if k != '':
+        k_int = int(k)
+        if k_int in x_values:
+            y_k = y_values[k_int - 1]
+            plt.axvline(x=k_int, linestyle="--", alpha=0.7)
+            plt.scatter([k_int], [y_k], s=80, zorder=5)
+            plt.annotate(f"K", xy=(k_int, y_k), xytext=(5, 8), textcoords="offset points")
 
     plt.xlabel("Extraction Number")
     plt.ylabel("Normalized Contribution")

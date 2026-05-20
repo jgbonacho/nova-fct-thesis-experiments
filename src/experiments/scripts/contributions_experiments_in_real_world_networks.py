@@ -49,18 +49,26 @@ NETWORK_PROPERTIES_FIELDNAMES = [
 ]
 
 
-def run_contributions_experiments_in_real_world_networks(apply_lapin: bool = False, use_desired_k: bool = True) -> str:
+def run_contributions_experiments_in_real_world_networks(
+        apply_lapin: bool = False,
+        use_desired_k: bool = True,
+        estimate_thresholds: bool = True
+) -> str:
     """
     Run contributions experiments in real-world networks.
     Exceptionally, when the configuration is LAPIN-off and extraction of K desired clusters,
     the script extracts K + 1 clusters due to the conditional removal of the first extracted cluster, which behave as a global/background component.
 
     Parameters:
-        apply_lapin : (bool)
+        apply_lapin : (bool, optional)
             Whether to apply the Lapin transformation.
-        use_desired_k : (bool)
+            Default is False.
+        use_desired_k : (bool, optional)
             Whether to use the desired number of communities.
-
+            Default is True.
+        estimate_thresholds : (bool, optional)
+            Whether to estimate thresholds.
+            Default is True.
     Returns:
         results_dir : (str)
             The path to the results' directory.
@@ -139,63 +147,66 @@ def run_contributions_experiments_in_real_world_networks(apply_lapin: bool = Fal
         number_of_columns_to_skip=3
     )
 
-    if use_desired_k:
-        save_statistics_and_draw_histograms(
-            results_dir, NORMALIZED_CONTRIBUTIONS_FILENAME, STATISTICS_FILENAME, HISTOGRAM_FILENAME,
-            number_of_columns_to_skip=3
-        )
-        draw_boxplot(results_dir, NORMALIZED_CONTRIBUTIONS_FILENAME, BOXPLOT_FILENAME, number_of_columns_to_skip=3)
-        draw_line_plot(results_dir, STATISTICS_FILENAME, LINE_PLOT_FILENAME)
-        save_candidate_thresholds(results_dir, STATISTICS_FILENAME, CANDIDATE_THRESHOLDS_FILENAME, THRESHOLDS_METRICS)
+    if estimate_thresholds:
+        if use_desired_k:
+            # Stage 2
+            save_statistics_and_draw_histograms(
+                results_dir, NORMALIZED_CONTRIBUTIONS_FILENAME, STATISTICS_FILENAME, HISTOGRAM_FILENAME,
+                number_of_columns_to_skip=3
+            )
+            draw_boxplot(results_dir, NORMALIZED_CONTRIBUTIONS_FILENAME, BOXPLOT_FILENAME, number_of_columns_to_skip=3)
+            draw_line_plot(results_dir, STATISTICS_FILENAME, LINE_PLOT_FILENAME)
+            save_candidate_thresholds(
+                results_dir, STATISTICS_FILENAME, CANDIDATE_THRESHOLDS_FILENAME, THRESHOLDS_METRICS
+            )
 
-        # Stage 2
-        selected_thresholds_using_a_statistic_metric(
-            results_dir=results_dir,
-            candidate_thresholds_input_filename=CANDIDATE_THRESHOLDS_FILENAME,
-            thresholds_output_filename=SELECTED_THRESHOLDS_FILENAME,
-            statistics_metric="Median"
-        )
+            selected_thresholds_using_a_statistic_metric(
+                results_dir=results_dir,
+                candidate_thresholds_input_filename=CANDIDATE_THRESHOLDS_FILENAME,
+                thresholds_output_filename=SELECTED_THRESHOLDS_FILENAME,
+                statistics_metric="Median"
+            )
 
-        # Stage 3
-        save_faddis_sensitivity_correlations(
-            results_dir=results_dir,
-            network_properties_filename=NETWORK_PROPERTIES_FILENAME,
-            threshold_source_filename=NORMALIZED_CONTRIBUTIONS_FILENAME,
-            output_filename=FADDIS_SENSITIVITY_CORRELATIONS,
-            threshold_mode="network_statistic",
-            statistic_metric="Median",
-            number_of_columns_to_skip=3
-        )
+            # Stage 3
+            save_faddis_sensitivity_correlations(
+                results_dir=results_dir,
+                network_properties_filename=NETWORK_PROPERTIES_FILENAME,
+                threshold_source_filename=NORMALIZED_CONTRIBUTIONS_FILENAME,
+                output_filename=FADDIS_SENSITIVITY_CORRELATIONS,
+                threshold_mode="network_statistic",
+                statistic_metric="Median",
+                number_of_columns_to_skip=3
+            )
 
-    else:
-        draw_sorted_k_contributions_bar_plot(
-            results_dir, NORMALIZED_CONTRIBUTIONS_FILENAME, BARPLOT_FILENAME,
-            remove_first_contribution=not apply_lapin,
-            number_of_columns_to_skip=3
-        )
+        else:
+            # Stage 2
+            draw_sorted_k_contributions_bar_plot(
+                results_dir, NORMALIZED_CONTRIBUTIONS_FILENAME, BARPLOT_FILENAME,
+                remove_first_contribution=not apply_lapin,
+                number_of_columns_to_skip=3
+            )
 
-        # Stage 2
-        save_k_boundary_geometric_mean_thresholds(
-            results_dir=results_dir,
-            input_filename=NORMALIZED_CONTRIBUTIONS_FILENAME,
-            output_by_network_filename=K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAME,
-            output_by_family_filename=K_BOUNDARY_THRESHOLDS_BY_FAMILY_FILENAME,
-            remove_first_contribution=not apply_lapin,
-            global_sum=global_sum,
-            number_of_columns_to_skip=3
-        )
+            save_k_boundary_geometric_mean_thresholds(
+                results_dir=results_dir,
+                input_filename=NORMALIZED_CONTRIBUTIONS_FILENAME,
+                output_by_network_filename=K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAME,
+                output_by_family_filename=K_BOUNDARY_THRESHOLDS_BY_FAMILY_FILENAME,
+                remove_first_contribution=not apply_lapin,
+                global_sum=global_sum,
+                number_of_columns_to_skip=3
+            )
 
-        # Stage 3
-        save_faddis_sensitivity_correlations(
-            results_dir=results_dir,
-            network_properties_filename=NETWORK_PROPERTIES_FILENAME,
-            threshold_source_filename=K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAME,
-            output_filename=FADDIS_SENSITIVITY_CORRELATIONS,
-            threshold_mode="k_boundary",
-            threshold_column="Normalized Threshold",
-            valid_thresholds_only=True,
-            number_of_columns_to_skip=3
-        )
+            # Stage 3
+            save_faddis_sensitivity_correlations(
+                results_dir=results_dir,
+                network_properties_filename=NETWORK_PROPERTIES_FILENAME,
+                threshold_source_filename=K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAME,
+                output_filename=FADDIS_SENSITIVITY_CORRELATIONS,
+                threshold_mode="k_boundary",
+                threshold_column="Normalized Threshold",
+                valid_thresholds_only=True,
+                number_of_columns_to_skip=3
+            )
 
     # Report
     save_experiment_report(results_dir, REPORT_FILENAME, apply_lapin, use_desired_k, network_family_dirs)
