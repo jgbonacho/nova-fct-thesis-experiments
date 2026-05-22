@@ -6,14 +6,14 @@
 
 - [Real-World Networks](#real-world-networks)
 - [Scripts](#scripts)
-- [Experience 7](#experience-7)
+- [Experience 7 (One network per family)](#experience-7-one-network-per-family)
   - [LAPIN-off Median Normalized Contributions](#lapin-off-median-normalized-contributions)
   - [LAPIN-on Median Normalized Contributions](#lapin-on-median-normalized-contributions)
   - [LAPIN-off Median K Boundary Normalized Contributions](#lapin-off-median-k-boundary-normalized-contributions)
   - [LAPIN-off Median K Boundary Raw Contributions](#lapin-off-median-k-boundary-raw-contributions)
   - [LAPIN-on Median K Boundary Normalized Contributions](#lapin-on-median-k-boundary-normalized-contributions)
   - [LAPIN-on Median K Boundary Raw Contributions](#lapin-on-median-k-boundary-raw-contributions)
-- [Experience 8](#experience-8)
+- [Experience 8 (Networks grouped by ground-truth type, K, degree assortativity and average degree)](#experience-8-networks-grouped-by-ground-truth-type-k-degree-assortativity-and-average-degree)
   - [Range Definitions](#range-definitions)
   - [Network Family 1 (Non-Overlapping + Low K + Low Average Degree + Disassortative)](#network-family-1-non-overlapping--low-k--low-average-degree--disassortative)
   - [Network Family 2 (Non-Overlapping + Low K + Medium Average Degree + Disassortative)](#network-family-2-non-overlapping--low-k--medium-average-degree--disassortative)
@@ -125,7 +125,7 @@
 
 
 
-## Experience 7 
+## Experience 7 (One network per family)
 
 ### LAPIN-off Median Normalized Contributions
 
