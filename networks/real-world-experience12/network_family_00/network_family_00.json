@@ -1,0 +1,44 @@
+[
+  {
+    "name": "word-adjacencies",
+    "gml_filename": "adjnoun",
+    "ground_truth": true,
+    "overlapping_ground_truth": false,
+    "ground_truth_attr": "value"
+  },
+  {
+    "name": "socio-patterns-primary-school-day2",
+    "gml_filename": "primary-school-day-2",
+    "ground_truth": true,
+    "overlapping_ground_truth": false,
+    "ground_truth_attr": "gt"
+  },
+  {
+    "name": "citeseer",
+    "gml_filename": "citeseer",
+    "ground_truth": true,
+    "overlapping_ground_truth": false,
+    "ground_truth_attr": "gt"
+  },
+  {
+    "name": "facebook-network-ego698",
+    "gml_filename": "facebook-network-ego698",
+    "ground_truth": true,
+    "overlapping_ground_truth": true,
+    "ground_truth_attr": "circles"
+  },
+  {
+    "name": "facebook-network-ego1912",
+    "gml_filename": "facebook-network-ego1912",
+    "ground_truth": true,
+    "overlapping_ground_truth": true,
+    "ground_truth_attr": "circles"
+  },
+  {
+    "name": "facebook-network-ego107",
+    "gml_filename": "facebook-network-ego107",
+    "ground_truth": true,
+    "overlapping_ground_truth": true,
+    "ground_truth_attr": "circles"
+  }
+]

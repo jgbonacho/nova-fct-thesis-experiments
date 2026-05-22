@@ -1,4 +1,37 @@
-# Report 5 - Question (Part II): Does the relative contribution to data scatter provide a good hyperparameter for the definition of the stop rules under variations in the structure/architecture parameters of real-world networks?
+# Report 5 - Add sensitivity analysis and k boundary strategy 
+
+
+
+## Table of Contents
+
+- [Real-World Networks](#real-world-networks)
+- [Scripts](#scripts)
+- [Experience 7](#experience-7)
+  - [LAPIN-off Median Normalized Contributions](#lapin-off-median-normalized-contributions)
+  - [LAPIN-on Median Normalized Contributions](#lapin-on-median-normalized-contributions)
+  - [LAPIN-off Median K Boundary Normalized Contributions](#lapin-off-median-k-boundary-normalized-contributions)
+  - [LAPIN-off Median K Boundary Raw Contributions](#lapin-off-median-k-boundary-raw-contributions)
+  - [LAPIN-on Median K Boundary Normalized Contributions](#lapin-on-median-k-boundary-normalized-contributions)
+  - [LAPIN-on Median K Boundary Raw Contributions](#lapin-on-median-k-boundary-raw-contributions)
+- [Experience 8](#experience-8)
+  - [Range Definitions](#range-definitions)
+  - [Network Family 1 (Non-Overlapping + Low K + Low Average Degree + Disassortative)](#network-family-1-non-overlapping--low-k--low-average-degree--disassortative)
+  - [Network Family 2 (Non-Overlapping + Low K + Medium Average Degree + Disassortative)](#network-family-2-non-overlapping--low-k--medium-average-degree--disassortative)
+  - [Network Family 3 (Non-Overlapping + Medium K + Low Average Degree + Moderately Assortative)](#network-family-3-non-overlapping--medium-k--low-average-degree--moderately-assortative)
+  - [Network Family 4 (Non-Overlapping + Very Large K + Medium Average Degree + Near-Neutral)](#network-family-4-non-overlapping--very-large-k--medium-average-degree--near-neutral)
+  - [Network Family 5 (Overlapping + Medium K + Low Average Degree + Near-Neutral)](#network-family-5-overlapping--medium-k--low-average-degree--near-neutral)
+  - [Network Family 6 (Overlapping + Medium K + Medium Average Degree + Near-Neutral / Moderately Assortative)](#network-family-6-overlapping--medium-k--medium-average-degree--near-neutral--moderately-assortative)
+  - [Network Family 7 (Overlapping + Medium K + Large Average Degree + Assortative)](#network-family-7-overlapping--medium-k--large-average-degree--assortative)
+  - [Network Family 8 (Overlapping + Large K + Medium Average Degree + Moderately Assortative)](#network-family-8-overlapping--large-k--medium-average-degree--moderately-assortative)
+  - [Network Family 9 (Overlapping + Very Large K + Very Large Average Degree + Highly Assortative)](#network-family-9-overlapping--very-large-k--very-large-average-degree--highly-assortative)
+  - [LAPIN-off Median Normalized Contributions](#lapin-off-median-normalized-contributions-1)
+  - [LAPIN-on Median Normalized Contributions](#lapin-on-median-normalized-contributions-1)
+  - [LAPIN-off Median K Boundary Normalized Contributions](#lapin-off-median-k-boundary-normalized-contributions-1)
+  - [LAPIN-off Median K Boundary Raw Contributions](#lapin-off-median-k-boundary-raw-contributions-1)
+  - [LAPIN-on Median K Boundary Normalized Contributions](#lapin-on-median-k-boundary-normalized-contributions-1)
+  - [LAPIN-on Median K Boundary Raw Contributions](#lapin-on-median-k-boundary-raw-contributions-1)
+
+
 
 ## Real-World Networks
 
@@ -84,13 +117,21 @@
 
 
 
+## Scripts
+
+### Script 1
+
+- TODO
+
+
+
 ## Experience 7 
 
 ### LAPIN-off Median Normalized Contributions
 
 `Median of the normalized contributions for each network family, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-off and extraction of K clusters configuration`
 
-[Open Folder](../results/real-world/experience7/lapinoff_median_normalized_contributions/results_2026-05-17_22-40-29-009438/)
+[Open Folder](../results/real-world/experience7/results_2026-05-17_22-40-29-009438/)
 
 #### Thresholds
 
@@ -131,7 +172,7 @@
 
 `Median of the normalized contributions for each network family, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-on and extraction of K clusters configuration`
 
-[Open Folder](../results/real-world/experience7/lapinon_median_normalized_contributions/results_2026-05-17_22-49-34-021831/)
+[Open Folder](../results/real-world/experience7/results_2026-05-17_22-49-34-021831/)
 
 #### Thresholds
 
@@ -177,11 +218,11 @@
 
 `Median of the geometric means between the K-th and (K+1)-th normalized contributions for each network family, computed only when the K-th contribution is greater than the (K+1)-th contribution and the previous contributions are decreasing, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-off configuration`
 
-[Open Folder](../results/real-world/experience7/lapinoff_median_k_boundary_normalized_contributions/results_2026-05-17_22-43-29-341884/)
+[Open Folder](../results/real-world/experience7/results_2026-05-17_22-43-29-341884/)
 
 #### Bar plot
 
-![Open Folder](../results/real-world/experience7/lapinoff_median_k_boundary_normalized_contributions/results_2026-05-17_22-43-29-341884/sorted_k_contributions_barplot.png)
+![Open Folder](../results/real-world/experience7/results_2026-05-17_22-43-29-341884/sorted_k_contributions_barplot.png)
 
 #### Thresholds by Network
 
@@ -243,7 +284,7 @@
 
 `Median of the geometric means between the K-th and (K+1)-th normalized contributions for each network family multiplied by the global sum, computed only when the K-th contribution is greater than the (K+1)-th contribution and the previous contributions are decreasing, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-off configuration`
 
-[Open Folder](../results/real-world/experience7/lapinoff_median_k_boundary_raw_contributions/results_2026-05-17_23-19-37-286945/)
+[Open Folder](../results/real-world/experience7/results_2026-05-17_23-19-37-286945/)
 
 #### Thresholds
 
@@ -269,11 +310,11 @@
 
 `Median of the geometric means between the K-th and (K+1)-th normalized contributions for each network family, computed only when the K-th contribution is greater than the (K+1)-th contribution and the previous contributions are decreasing, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-on configuration`
 
-[Open Folder](../results/real-world/experience7/lapinon_median_k_boundary_normalized_contributions/results_2026-05-17_22-56-32-909059/)
+[Open Folder](../results/real-world/experience7//results_2026-05-17_22-56-32-909059/)
 
 #### Bar plot
 
-![](../results/real-world/experience7/lapinon_median_k_boundary_normalized_contributions/results_2026-05-17_22-56-32-909059/sorted_k_contributions_barplot.png)
+![](../results/real-world/experience7/results_2026-05-17_22-56-32-909059/sorted_k_contributions_barplot.png)
 
 #### Thresholds By Family
 
@@ -340,7 +381,7 @@
 
 #### Thresholds
 
-[Open Folder](../results/real-world/experience7/lapinon_median_k_boundary_raw_contributions/results_2026-05-17_23-25-30-050698/)
+[Open Folder](../results/real-world/experience7/results_2026-05-17_23-25-30-050698/)
 
 | Network Family    | #Networks | #Valid Thresholds | Median Normalized Threshold | Median Raw Threshold   | Median gap_K           | Median ratio_K     | Threshold              |
 |-------------------|-----------|-------------------|-----------------------------|------------------------|------------------------|--------------------|------------------------|
@@ -363,8 +404,6 @@
 
 
 ## Experience 8 (Networks grouped by ground-truth type, K, degree assortativity and average degree)
-
-[Open Folder](../results/real-world/experience8/)
 
 ### Range Definitions
 
@@ -395,6 +434,12 @@
 | Near-Neutral            | `-0.10 <= r < 0.10`  |
 | Moderately Assortative  | `0.10 <= r < 0.35`   |
 | Highly Assortative      | `r >= 0.35`          |
+
+
+
+---
+
+
 
 ### Network Family 1 (Non-Overlapping + Low K + Low Average Degree + Disassortative)
 
@@ -510,8 +555,45 @@
 |---------------------------|---------------------------|----|------------|----------------|--------------------------|----------------------|------------------------|
 | Facebook Ego-1912 Network | Yes                       | 45 | Very Large | 80.7070        | Very Large               | 0.5026               | Highly Assortative     |
 
+
+
 ---
----
+
+
+
+### LAPIN-off Median Normalized Contributions
+
+[Open Folder](../results/real-world/experience8/results_2026-05-18_14-59-11-608487)
+
+
+
+### LAPIN-on Median Normalized Contributions
+
+[Open Folder](../results/real-world/experience8/results_2026-05-18_15-06-14-201183)
+
+
+
+### LAPIN-off Median K Boundary Normalized Contributions
+
+[Open Folder](../results/real-world/experience8/results_2026-05-18_15-01-36-389057)
+
+
+
+### LAPIN-off Median K Boundary Raw Contributions
+
+[Open Folder](../results/real-world/experience8/results_2026-05-18_15-26-12-860725)
+
+
+
+### LAPIN-on Median K Boundary Normalized Contributions
+
+[Open Folder](../results/real-world/experience8/results_2026-05-18_15-10-55-692486)
+
+
+
+### LAPIN-on Median K Boundary Raw Contributions
+
+[Open Folder](../results/real-world/experience8/results_2026-05-18_15-30-47-241039)
 
 #### Thresholds By Family
 
@@ -533,7 +615,7 @@
 | network_family_09 | facebook-network-ego3437  | 32 | False                       | 66                      | 66                                | 4.836820764252035e-05  | 1.576913190118163e-05  | 3.2599075741338715e-05  | 3.0672714227785725 | 2.7617469944559453e-05 | 7.629197295944828           | 0.00021069912702187054 | True             |
 | network_family_10 | facebook-network-ego1912  | 45 | False                       | 56                      | 56                                | 5.400044716513034e-11  | 4.799791007329535e-12  | 4.9200656157800805e-11  | 11.250583011357952 | 1.6099405600672537e-11 | 7.629197295944828           | 1.2282554167496995e-10 | True             |
 
-### Thresholds
+#### Thresholds
 
 | Network Family    | #Networks | #Valid Thresholds | Median Normalized Threshold | Median Raw Threshold   | Median gap_K           | Median ratio_K     | Threshold              |
 |-------------------|-----------|-------------------|-----------------------------|------------------------|------------------------|--------------------|------------------------|
@@ -547,3 +629,17 @@
 | network_family_08 | 3         | 3                 | 5.321392678636257e-06       | 4.0597954634512334e-05 | 3.362885847838093e-07  | 1.1047956761659266 | 4.0597954634512334e-05 |
 | network_family_09 | 1         | 1                 | 2.7617469944559453e-05      | 0.00021069912702187054 | 3.2599075741338715e-05 | 3.0672714227785725 | 0.00021069912702187054 |
 | network_family_10 | 1         | 1                 | 1.6099405600672537e-11      | 1.2282554167496995e-10 | 4.9200656157800805e-11 | 11.250583011357952 | 1.2282554167496995e-10 |
+
+## Discussion
+
+- **Observations**
+  - Degree assortativity and average degree appear to be the structural properties, independent of K, with the highest sensitivity to FADDIS. K also shows high sensitivity, but it is not available for most networks, especially networks without ground-truth labels;
+  - Overall, the LAPIN-on K-boundary configuration, using the geometric mean strategy over the raw contributions, seems to be more appropriate for defining the thresholds. In all observed networks, there are at least K + 1 contributions (extractions), which allows the boundary between the K-th and (K+1)-th contributions to be computed.
+
+- **Warnings**
+  - The families do not contain the same number of networks;
+  - The total number of networks is small.
+
+- **TODO**
+  - Consider more networks and divide them into train and test sets. Also include networks without ground-truth labels;
+  - Try only the split based on structural properties available for all networks, such as degree assortativity and average degree.
