@@ -870,9 +870,6 @@ def load_real_world_network_configs(network_directory: Path, input_filename: str
     return [NetworkConfig.from_dict(json_network) for json_network in json_networks]
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-
-
 def compute_real_world_network_properties(
         network_name: str,
         graph: nx.Graph,
@@ -1243,21 +1240,12 @@ def save_k_boundary_geometric_mean_thresholds(
     """
     Save the K-boundary geometric mean thresholds by network and by family.
 
-    The network-level K-boundary threshold is computed as:
+    The network-level K-boundary threshold is computed as: threshold = sqrt(c_K * c_K+1),
+    where c_K is the contribution of the K-th extracted cluster and c_K+1 is the contribution of the next extracted cluster.
 
-        threshold = sqrt(c_K * c_K+1)
-
-    where c_K is the contribution of the K-th extracted cluster and c_K+1
-    is the contribution of the next extracted cluster.
-
-    If the contributions were globally normalized as:
-
-        normalized_contribution = raw_contribution / global_sum
-
-    then the raw-scale threshold is recovered as:
-
-        raw_threshold = normalized_threshold * global_sum
-
+    If the contributions were globally normalized as: normalized_contribution = raw_contribution / global_sum,
+    then the raw-scale threshold is recovered as: raw_threshold = normalized_threshold * global_sum.
+    
     The family-level threshold is computed as the median of the valid network-level thresholds inside each family.
 
     Parameters:

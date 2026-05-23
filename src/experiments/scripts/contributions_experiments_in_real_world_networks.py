@@ -75,7 +75,29 @@ def run_contributions_experiments_in_real_world_networks(
             The path to the results' directory.
 
     Saves:
-        TODO
+        Inside the created results directory, one subdirectory is generated for each network family. 
+        For each family, the experiment saves:
+            - raw contributions CSV;
+            - normalized contributions CSV;
+            - per-network normalized contribution line plots;
+            - histogram of normalized contributions.
+
+        At the root of the results directory, the experiment also saves:
+            - statistics CSV with summary metrics for each family;
+            - boxplot comparing normalized contributions across families;
+            - line plot with mean, standard deviation, median, and percentiles;
+            - candidate thresholds CSV;
+            - selected thresholds CSV;
+            - CSV file with network properties, both structural and related to the ground-truth communities;
+            - CSV file with FADDIS sensitivity correlation results;
+            - JSON report with experiment settings.
+                or
+            - sorted K contributions bar plot;
+            - CSV file with K boundary thresholds by network;
+            - CSV file with K boundary thresholds by family, as the final selected thresholds;
+            - CSV file with network properties, both structural and related to the ground-truth communities;
+            - CSV file with FADDIS sensitivity correlation results;
+            - JSON report with experiment settings.
     """
 
     results_dir = create_results_dir(RESULTS_BASE_DIR_PATH)

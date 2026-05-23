@@ -110,7 +110,7 @@
 
 ### Script 1
 
-- TODO
+- Same as [Report 5](./report5.md), considering only the **Median K-Boundary Raw Contributions (LAPIN-on + Extraction of clusters until the end)**.
 
 
 
