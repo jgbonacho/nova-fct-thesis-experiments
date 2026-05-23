@@ -1,7 +1,7 @@
 [
   {
-    "name": "email-eu-core",
-    "gml_filename": "email-eu-core",
+    "name": "american-college-football",
+    "gml_filename": "football",
     "ground_truth": true,
     "overlapping_ground_truth": false,
     "ground_truth_attr": "value"

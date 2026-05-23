@@ -1,0 +1,66 @@
+Group,Threshold Mode,Threshold Label,Property,N,Spearman Correlation,Pearson Correlation,Abs Spearman Correlation
+All,k_boundary,Normalized Threshold,Min Community Size,14,0.8588524480978449,0.3543430194985913,0.8588524480978449
+All,k_boundary,Normalized Threshold,K,14,-0.8158809789769964,-0.7640011118884064,0.8158809789769964
+All,k_boundary,Normalized Threshold,Degree Assortativity,14,-0.7714285714285714,-0.702811477548056,0.7714285714285714
+All,k_boundary,Normalized Threshold,Community Size CV,14,-0.767032967032967,-0.6709707499759765,0.767032967032967
+All,k_boundary,Normalized Threshold,Global Clustering Coefficient,14,-0.6571428571428571,-0.6698268187590267,0.6571428571428571
+All,k_boundary,Normalized Threshold,Overlap Fraction,14,-0.6313353886964228,-0.4060623313998195,0.6313353886964228
+All,k_boundary,Normalized Threshold,Nodes Without Community,14,-0.5843959545925994,0.04361539446566649,0.5843959545925994
+All,k_boundary,Normalized Threshold,Average Degree,14,-0.5076923076923077,-0.704472477335852,0.5076923076923077
+All,k_boundary,Normalized Threshold,Nodes Fraction Without Community,14,-0.4999049732057177,-0.017013008177099657,0.4999049732057177
+All,k_boundary,Normalized Threshold,Community Proportion,14,-0.4241758241758242,-0.17257452574957144,0.4241758241758242
+All,k_boundary,Normalized Threshold,Degree Std,14,-0.4197802197802198,-0.5812196411408298,0.4197802197802198
+All,k_boundary,Normalized Threshold,Average Clustering,14,-0.3450549450549451,-0.44277716860203625,0.3450549450549451
+All,k_boundary,Normalized Threshold,Edges LCC,14,-0.3010989010989011,-0.48705642366653135,0.3010989010989011
+All,k_boundary,Normalized Threshold,Average Community Size,14,0.2923076923076923,0.3723591064384903,0.2923076923076923
+All,k_boundary,Normalized Threshold,Min Degree,14,0.2538273776010519,0.05088821990157458,0.2538273776010519
+All,k_boundary,Normalized Threshold,Community Size Std,14,-0.23956043956043957,0.07493832394925698,0.23956043956043957
+All,k_boundary,Normalized Threshold,Max Degree,14,-0.1956043956043956,-0.24531754417132795,0.1956043956043956
+All,k_boundary,Normalized Threshold,Degree CV,14,0.178021978021978,0.15470538203197096,0.178021978021978
+All,k_boundary,Normalized Threshold,Degree Hub Ratio,14,0.1076923076923077,0.2535109879990738,0.1076923076923077
+All,k_boundary,Normalized Threshold,Max Community Size,14,-0.1076923076923077,0.16775217735355563,0.1076923076923077
+All,k_boundary,Normalized Threshold,Density,14,-0.1032967032967033,-0.12085788719981681,0.1032967032967033
+All,k_boundary,Normalized Threshold,Sparsity,14,0.1032967032967033,0.12085788719981676,0.1032967032967033
+All,k_boundary,Normalized Threshold,Nodes LCC,14,-0.09010989010989012,0.09015301183075064,0.09010989010989012
+Non-overlapping,k_boundary,Normalized Threshold,K,7,-0.9549937104572925,-0.8155491426997231,0.9549937104572925
+Non-overlapping,k_boundary,Normalized Threshold,Degree Assortativity,7,-0.8928571428571429,-0.8012371377721758,0.8928571428571429
+Non-overlapping,k_boundary,Normalized Threshold,Min Community Size,7,0.7857142857142859,0.49813903212707067,0.7857142857142859
+Non-overlapping,k_boundary,Normalized Threshold,Community Size CV,7,-0.642857142857143,-0.5850562471268904,0.642857142857143
+Non-overlapping,k_boundary,Normalized Threshold,Average Degree,7,-0.6071428571428572,-0.6041282377820377,0.6071428571428572
+Non-overlapping,k_boundary,Normalized Threshold,Global Clustering Coefficient,7,-0.5,-0.4606208665569289,0.5
+Non-overlapping,k_boundary,Normalized Threshold,Edges LCC,7,-0.42857142857142866,-0.23491271829734445,0.42857142857142866
+Non-overlapping,k_boundary,Normalized Threshold,Min Degree,7,-0.39405520311955033,-0.5131317505728423,0.39405520311955033
+Non-overlapping,k_boundary,Normalized Threshold,Degree CV,7,0.3214285714285715,0.38118305638580446,0.3214285714285715
+Non-overlapping,k_boundary,Normalized Threshold,Nodes LCC,7,-0.3214285714285715,0.09274348514853939,0.3214285714285715
+Non-overlapping,k_boundary,Normalized Threshold,Degree Hub Ratio,7,0.25,0.18383566012662322,0.25
+Non-overlapping,k_boundary,Normalized Threshold,Average Community Size,7,0.21428571428571433,0.5013678030983741,0.21428571428571433
+Non-overlapping,k_boundary,Normalized Threshold,Community Proportion,7,-0.21428571428571433,-0.39541640248665133,0.21428571428571433
+Non-overlapping,k_boundary,Normalized Threshold,Degree Std,7,-0.1785714285714286,-0.2513223294267991,0.1785714285714286
+Non-overlapping,k_boundary,Normalized Threshold,Community Size Std,7,-0.14285714285714288,0.18225313446187272,0.14285714285714288
+Non-overlapping,k_boundary,Normalized Threshold,Max Degree,7,-0.14285714285714288,-0.16842101962836117,0.14285714285714288
+Non-overlapping,k_boundary,Normalized Threshold,Average Clustering,7,0.10714285714285716,-0.015396789440541106,0.10714285714285716
+Non-overlapping,k_boundary,Normalized Threshold,Density,7,-0.07142857142857144,-0.197878968728631,0.07142857142857144
+Non-overlapping,k_boundary,Normalized Threshold,Sparsity,7,0.07142857142857144,0.19787896872863087,0.07142857142857144
+Non-overlapping,k_boundary,Normalized Threshold,Max Community Size,7,0.0,0.39994463605149455,0.0
+Overlapping,k_boundary,Normalized Threshold,Nodes Fraction Without Community,7,0.7142857142857144,0.48048762441058745,0.7142857142857144
+Overlapping,k_boundary,Normalized Threshold,K,7,-0.594618725379069,-0.7916247964420269,0.594618725379069
+Overlapping,k_boundary,Normalized Threshold,Min Community Size,7,0.5345224838248489,0.4169574416449018,0.5345224838248489
+Overlapping,k_boundary,Normalized Threshold,Community Size CV,7,-0.42857142857142866,-0.4387900072289312,0.42857142857142866
+Overlapping,k_boundary,Normalized Threshold,Degree Std,7,-0.39285714285714296,-0.6270171357654416,0.39285714285714296
+Overlapping,k_boundary,Normalized Threshold,Degree Assortativity,7,-0.3571428571428572,-0.5057767738770634,0.3571428571428572
+Overlapping,k_boundary,Normalized Threshold,Community Proportion,7,-0.28571428571428575,0.04966456240443148,0.28571428571428575
+Overlapping,k_boundary,Normalized Threshold,Edges LCC,7,-0.28571428571428575,-0.4801142911872367,0.28571428571428575
+Overlapping,k_boundary,Normalized Threshold,Max Degree,7,-0.28571428571428575,-0.5160262911435527,0.28571428571428575
+Overlapping,k_boundary,Normalized Threshold,Average Clustering,7,0.25,-0.21183089061951793,0.25
+Overlapping,k_boundary,Normalized Threshold,Average Degree,7,-0.25,-0.6972887523514332,0.25
+Overlapping,k_boundary,Normalized Threshold,Max Community Size,7,-0.21428571428571433,-0.2213148136839884,0.21428571428571433
+Overlapping,k_boundary,Normalized Threshold,Community Size Std,7,-0.14285714285714288,0.04452196412431295,0.14285714285714288
+Overlapping,k_boundary,Normalized Threshold,Degree CV,7,-0.14285714285714288,-0.0541032961935829,0.14285714285714288
+Overlapping,k_boundary,Normalized Threshold,Density,7,0.14285714285714288,-0.0115249646885476,0.14285714285714288
+Overlapping,k_boundary,Normalized Threshold,Nodes Without Community,7,0.14285714285714288,0.44915653054661286,0.14285714285714288
+Overlapping,k_boundary,Normalized Threshold,Sparsity,7,-0.14285714285714288,0.011524964688547596,0.14285714285714288
+Overlapping,k_boundary,Normalized Threshold,Overlap Fraction,7,0.10714285714285716,-0.08046888989817184,0.10714285714285716
+Overlapping,k_boundary,Normalized Threshold,Average Community Size,7,0.07142857142857144,0.1513144710256696,0.07142857142857144
+Overlapping,k_boundary,Normalized Threshold,Degree Hub Ratio,7,0.03571428571428572,0.19935608153988932,0.03571428571428572
+Overlapping,k_boundary,Normalized Threshold,Global Clustering Coefficient,7,0.0,-0.5176634243717575,0.0
+Overlapping,k_boundary,Normalized Threshold,Nodes LCC,7,0.0,-0.1233232096819719,0.0
