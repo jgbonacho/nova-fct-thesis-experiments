@@ -673,3 +673,274 @@
 | facebook-network-ego348            | 28.5000        | 0.2227               | Moderately Assortative + Medium Average Degree | `network_family_07` | Yes         |
 | facebook-network-ego686            | 19.7143        | 0.0841               | Near-Neutral + Medium Average Degree           | `network_family_05` | Yes         |
 | facebook-network-ego3980           | 6.2727         | 0.0530               | Near-Neutral + Low Average Degree              | `network_family_04` | Yes         |
+
+
+
+---
+---
+---
+
+
+## Experience 13 (Networks grouped by ground-truth type, degree assortativity, and average degree)
+
+[Open Folder](../results/real-world/experience13/results_2026-05-23_22-54-46-593669/)
+
+### Range Definitions
+
+#### Ground-Truth Type (Primary)
+
+| Category        | Range                               |
+|-----------------|-------------------------------------|
+| Non-Overlapping | `Overlapping Ground-Truth? = False` |
+| Overlapping     | `Overlapping Ground-Truth? = True`  |
+
+#### Degree Assortativity (Secondary)
+
+| Category                | Range                |
+|-------------------------|----------------------|
+| Strongly Disassortative | `r < -0.30`          |
+| Disassortative          | `-0.30 <= r < -0.10` |
+| Near-Neutral            | `-0.10 <= r < 0.10`  |
+| Moderately Assortative  | `0.10 <= r < 0.35`   |
+| Highly Assortative      | `r >= 0.35`          |
+
+#### Average Degree (Tertiary)
+
+| Category                  | Range          |
+|---------------------------|----------------|
+| Low Average Degree        | `a < 15`       |
+| Medium Average Degree     | `15 <= a < 35` |
+| Large Average Degree      | `35 <= a < 65` |
+| Very Large Average Degree | `a >= 65`      |
+
+---
+
+### Network Families
+
+| Combination                                                                    | Name              |
+|--------------------------------------------------------------------------------|-------------------|
+| Non-Overlapping + Strongly Disassortative + Low Average Degree                 | Network Family 1  |
+| Non-Overlapping + Strongly Disassortative + Medium Average Degree              | -                 |
+| Non-Overlapping + Strongly Disassortative + Large Average Degree               | -                 |
+| Non-Overlapping + Strongly Disassortative + Very Large Average Degree          | -                 |
+| Non-Overlapping + Disassortative + Low Average Degree                          | Network Family 2  |
+| Non-Overlapping + Disassortative + Medium Average Degree                       | Network Family 3  |
+| Non-Overlapping + Disassortative + Large Average Degree                        | -                 |
+| Non-Overlapping + Disassortative + Very Large Average Degree                   | -                 |
+| Non-Overlapping + Near-Neutral + Low Average Degree                            | Network Family 4  |
+| Non-Overlapping + Near-Neutral + Medium Average Degree                         | Network Family 5  |
+| Non-Overlapping + Near-Neutral + Large Average Degree                          | -                 |
+| Non-Overlapping + Near-Neutral + Very Large Average Degree                     | -                 |
+| Non-Overlapping + Moderately Assortative + Low Average Degree                  | Network Family 6  |
+| Non-Overlapping + Moderately Assortative + Medium Average Degree               | -                 |
+| Non-Overlapping + Moderately Assortative + Large Average Degree                | Network Family 7  |
+| Non-Overlapping + Moderately Assortative + Very Large Average Degree           | -                 |
+| Non-Overlapping + Highly Assortative + Low Average Degree                      | -                 |
+| Non-Overlapping + Highly Assortative + Medium Average Degree                   | -                 |
+| Non-Overlapping + Highly Assortative + Large Average Degree                    | -                 |
+| Non-Overlapping + Highly Assortative + Very Large Average Degree               | -                 |
+| Overlapping + Strongly Disassortative + Low Average Degree                     | -                 |
+| Overlapping + Strongly Disassortative + Medium Average Degree                  | -                 |
+| Overlapping + Strongly Disassortative + Large Average Degree                   | -                 |
+| Overlapping + Strongly Disassortative + Very Large Average Degree              | -                 |
+| Overlapping + Disassortative + Low Average Degree                              | -                 |
+| Overlapping + Disassortative + Medium Average Degree                           | -                 |
+| Overlapping + Disassortative + Large Average Degree                            | -                 |
+| Overlapping + Disassortative + Very Large Average Degree                       | -                 |
+| Overlapping + Near-Neutral + Low Average Degree                                | Network Family 8  |
+| Overlapping + Near-Neutral + Medium Average Degree                             | -                 |
+| Overlapping + Near-Neutral + Large Average Degree                              | -                 |
+| Overlapping + Near-Neutral + Very Large Average Degree                         | -                 |
+| Overlapping + Moderately Assortative + Low Average Degree                      | -                 |
+| Overlapping + Moderately Assortative + Medium Average Degree                   | Network Family 9  |
+| Overlapping + Moderately Assortative + Large Average Degree                    | Network Family 10 |
+| Overlapping + Moderately Assortative + Very Large Average Degree               | -                 |
+| Overlapping + Highly Assortative + Low Average Degree                          | -                 |
+| Overlapping + Highly Assortative + Medium Average Degree                       | -                 |
+| Overlapping + Highly Assortative + Large Average Degree                        | Network Family 11 |
+| Overlapping + Highly Assortative + Very Large Average Degree                   | Network Family 12 |
+
+### Network Family 1 (Non-Overlapping + Strongly Disassortative + Low Average Degree)
+
+#### Range
+- Non-Overlapping: `Overlapping Ground-Truth? = False`
+- Strongly Disassortative: `r < -0.30`
+- Low Average Degree: `a < 15`
+
+| Network             | Set   | Average Degree | Degree Assortativity |
+|---------------------|-------|----------------|----------------------|
+| zachary-karate-club | Train | 4.5882         | -0.4756              |
+
+### Network Family 2 (Non-Overlapping + Disassortative + Low Average Degree)
+
+#### Range
+- Non-Overlapping: `Overlapping Ground-Truth? = False`
+- Disassortative: `-0.30 <= r < -0.10`
+- Low Average Degree: `a < 15`
+
+| Network                 | Set   | Average Degree | Degree Assortativity |
+|-------------------------|-------|----------------|----------------------|
+| books-about-us-politics | Train | 8.4000         | -0.1279              |
+
+### Network Family 3 (Non-Overlapping + Disassortative + Medium Average Degree)
+
+#### Range
+- Non-Overlapping: `Overlapping Ground-Truth? = False`
+- Disassortative: `-0.30 <= r < -0.10`
+- Medium Average Degree: `15 <= a < 35`
+
+| Network            | Set   | Average Degree | Degree Assortativity |
+|--------------------|-------|----------------|----------------------|
+| us-political-blogs | Train | 27.3552        | -0.2213              |
+
+### Network Family 4 (Non-Overlapping + Near-Neutral + Low Average Degree)
+
+#### Range
+- Non-Overlapping: `Overlapping Ground-Truth? = False`
+- Near-Neutral: `-0.10 <= r < 0.10`
+- Low Average Degree: `a < 15`
+
+| Network | Set   | Average Degree | Degree Assortativity |
+|---------|-------|----------------|----------------------|
+| cora    | Train | 4.0797         | -0.0714              |
+
+### Network Family 5 (Non-Overlapping + Near-Neutral + Medium Average Degree)
+
+#### Range
+- Non-Overlapping: `Overlapping Ground-Truth? = False`
+- Near-Neutral: `-0.10 <= r < 0.10`
+- Medium Average Degree: `15 <= a < 35`
+
+| Network       | Set   | Average Degree | Degree Assortativity |
+|---------------|-------|----------------|----------------------|
+| email-eu-core | Train | 32.5842        | -0.0257              |
+
+### Network Family 6 (Non-Overlapping + Moderately Assortative + Low Average Degree)
+
+#### Range
+- Non-Overlapping: `Overlapping Ground-Truth? = False`
+- Moderately Assortative: `0.10 <= r < 0.35`
+- Low Average Degree: `a < 15`
+
+| Network                   | Set   | Average Degree | Degree Assortativity |
+|---------------------------|-------|----------------|----------------------|
+| american-college-football | Train | 10.6609        | 0.1624               |
+
+### Network Family 7 (Non-Overlapping + Moderately Assortative + Large Average Degree)
+
+#### Range
+- Non-Overlapping: `Overlapping Ground-Truth? = False`
+- Moderately Assortative: `0.10 <= r < 0.35`
+- Large Average Degree: `35 <= a < 65`
+
+| Network                            | Set   | Average Degree | Degree Assortativity |
+|------------------------------------|-------|----------------|----------------------|
+| socio-patterns-primary-school-day1 | Train | 49.9915        | 0.1729               |
+
+### Network Family 8 (Overlapping + Near-Neutral + Low Average Degree)
+
+#### Range
+- Overlapping: `Overlapping Ground-Truth? = True`
+- Near-Neutral: `-0.10 <= r < 0.10`
+- Low Average Degree: `a < 15`
+
+| Network                 | Set   | Average Degree | Degree Assortativity |
+|-------------------------|-------|----------------|----------------------|
+| facebook-network-ego698 | Train | 11.0000        | 0.0125               |
+
+### Network Family 9 (Overlapping + Moderately Assortative + Medium Average Degree)
+
+#### Range
+- Overlapping: `Overlapping Ground-Truth? = True`
+- Moderately Assortative: `0.10 <= r < 0.35`
+- Medium Average Degree: `15 <= a < 35`
+
+| Network                  | Set   | Average Degree | Degree Assortativity |
+|--------------------------|-------|----------------|----------------------|
+| facebook-network-ego0    | Train | 15.5185        | 0.2330               |
+| facebook-network-ego3437 | Train | 18.0902        | 0.2221               |
+| facebook-network-ego414  | Train | 22.8649        | 0.3039               |
+
+### Network Family 10 (Overlapping + Moderately Assortative + Large Average Degree)
+
+#### Range
+- Overlapping: `Overlapping Ground-Truth? = True`
+- Moderately Assortative: `0.10 <= r < 0.35`
+- Large Average Degree: `35 <= a < 65`
+
+| Network                  | Set   | Average Degree | Degree Assortativity |
+|--------------------------|-------|----------------|----------------------|
+| facebook-network-ego1684 | Train | 36.1445        | 0.3268               |
+
+### Network Family 11 (Overlapping + Highly Assortative + Large Average Degree)
+
+#### Range
+- Overlapping: `Overlapping Ground-Truth? = True`
+- Highly Assortative: `r >= 0.35`
+- Large Average Degree: `35 <= a < 65`
+
+| Network                 | Set   | Average Degree | Degree Assortativity |
+|-------------------------|-------|----------------|----------------------|
+| facebook-network-ego107 | Train | 51.7389        | 0.4316               |
+
+### Network Family 12 (Overlapping + Highly Assortative + Very Large Average Degree)
+
+#### Range
+- Overlapping: `Overlapping Ground-Truth? = True`
+- Highly Assortative: `r >= 0.35`
+- Very Large Average Degree: `a >= 65`
+
+| Network                  | Set   | Average Degree | Degree Assortativity |
+|--------------------------|-------|----------------|----------------------|
+| facebook-network-ego1912 | Train | 80.7070        | 0.5026               |
+
+---
+
+### Thresholds by Network
+
+| Network Family    | Network                            | K  | First Contribution Removed? | Number of Contributions | Effective Number of Contributions | Normalized c_K         | Normalized c_K+1       | gap_K                  | ratio_K            | Normalized Threshold   | Global Normalization Factor | Raw Threshold          | Valid Threshold? |
+|-------------------|------------------------------------|----|-----------------------------|-------------------------|-----------------------------------|------------------------|------------------------|------------------------|--------------------|------------------------|-----------------------------|------------------------|------------------|
+| network_family_01 | zachary-karate-club                | 2  | False                       | 19                      | 19                                | 0.014385706013361121   | 0.00489799606293479    | 0.009487709950426332   | 2.9370595297582716 | 0.008394112902265499   | 6.457799151480093           | 0.05420749517767824    | True             |
+| network_family_02 | books-about-us-politics            | 3  | False                       | 6                       | 6                                 | 0.0035397587392402576  | 0.0008197903486553482  | 0.0027199683905849096  | 4.317882913657506  | 0.0017034846788267827  | 6.457799151480093           | 0.011000761913486937   | True             |
+| network_family_03 | us-political-blogs                 | 2  | False                       | 69                      | 69                                | 0.006022762344880978   | 0.005668143736515979   | 0.0003546186083649991  | 1.06256344666781   | 0.005842763272772687   | 6.457799151480093           | 0.03773139170521051    | True             |
+| network_family_04 | cora                               | 7  | False                       | 123                     | 123                               | 0.001427264404617993   | 0.0011103937035788426  | 0.00031687070103915025 | 1.285367883497415  | 0.001258898490041999   | 6.457799151480093           | 0.00812971360079279    | True             |
+| network_family_05 | email-eu-core                      | 42 | False                       | 63                      | 63                                | 1.9915720946770424e-05 | 1.5119887617540195e-05 | 4.795833329230229e-06  | 1.317187101554029  | 1.7352909339285446e-05 | 6.457799151480093           | 0.00011206160320694854 | True             |
+| network_family_06 | american-college-football          | 12 | False                       | 43                      | 43                                | 0.0001405193796735945  | 0.00011388446551794507 | 2.6634914155649443e-05 | 1.233876622544736  | 0.0001265028634025353  | 6.457799151480093           | 0.0008169300839406946  | True             |
+| network_family_07 | socio-patterns-primary-school-day1 | 11 | False                       | 22                      | 22                                | 6.0026900568653244e-05 | 4.356550563553372e-05  | 1.6461394933119523e-05 | 1.3778538706938126 | 5.113807070087104e-05  | 6.457799151480093           | 0.000330239389580414   | True             |
+| network_family_08 | facebook-network-ego698            | 9  | False                       | 18                      | 18                                | 4.734806803854547e-05  | 3.149842751471736e-05  | 1.5849640523828106e-05 | 1.5031883104774835 | 3.861851484811437e-05  | 6.457799151480093           | 0.0002493906124175744  | True             |
+| network_family_09 | facebook-network-ego0              | 22 | False                       | 43                      | 43                                | 3.369125557765422e-06  | 3.049546292086883e-06  | 3.1957926567853897e-07 | 1.1047956761659266 | 3.2053555734518276e-06 | 6.457799151480093           | 2.06995425024292e-05   | True             |
+| network_family_09 | facebook-network-ego414            | 7  | False                       | 27                      | 27                                | 8.410582162852648e-06  | 8.013293256600164e-06  | 3.972889062524842e-07  | 1.0495787304333655 | 8.209534781561544e-06  | 6.457799151480093           | 5.3015526746414444e-05 | True             |
+| network_family_09 | facebook-network-ego3437           | 32 | False                       | 66                      | 66                                | 5.714185131809789e-05  | 1.8629538583949107e-05 | 3.8512312734148785e-05 | 3.0672714227785725 | 3.2627079610176386e-05 | 6.457799151480093           | 0.00021069912702187052 | True             |
+| network_family_10 | facebook-network-ego1684           | 17 | False                       | 36                      | 36                                | 6.994146059893707e-06  | 5.650729825612766e-06  | 1.3434162342809413e-06 | 1.2377420750487325 | 6.286654893131432e-06  | 6.457799151480093           | 4.0597954634512334e-05 | True             |
+| network_family_11 | facebook-network-ego107            | 9  | False                       | 68                      | 68                                | 0.0005686779807201585  | 0.00039259678174269634 | 0.00017608119897746214 | 1.4485039286258434 | 0.0004725051799490343  | 6.457799151480093           | 0.0030513435501448223  | True             |
+| network_family_12 | facebook-network-ego1912           | 45 | False                       | 56                      | 56                                | 6.379573842856359e-11  | 5.6704384443152e-12    | 5.812529998424839e-11  | 11.25058301135795  | 1.901972154814059e-11  | 6.457799151480093           | 1.2282554167496995e-10 | True             |
+
+### Thresholds by Network Family
+
+| Network Family    | #Networks | #Valid Thresholds | Median Normalized Threshold | Median Raw Threshold   | Median gap_K           | Median ratio_K     | Threshold              |
+|-------------------|-----------|-------------------|-----------------------------|------------------------|------------------------|--------------------|------------------------|
+| network_family_01 | 1         | 1                 | 0.008394112902265499        | 0.05420749517767824    | 0.009487709950426332   | 2.9370595297582716 | 0.05420749517767824    |
+| network_family_02 | 1         | 1                 | 0.0017034846788267827       | 0.011000761913486937   | 0.0027199683905849096  | 4.317882913657506  | 0.011000761913486937   |
+| network_family_03 | 1         | 1                 | 0.005842763272772687        | 0.03773139170521051    | 0.0003546186083649991  | 1.06256344666781   | 0.03773139170521051    |
+| network_family_04 | 1         | 1                 | 0.001258898490041999        | 0.00812971360079279    | 0.00031687070103915025 | 1.285367883497415  | 0.00812971360079279    |
+| network_family_05 | 1         | 1                 | 1.7352909339285446e-05      | 0.00011206160320694854 | 4.795833329230229e-06  | 1.317187101554029  | 0.00011206160320694854 |
+| network_family_06 | 1         | 1                 | 0.0001265028634025353       | 0.0008169300839406946  | 2.6634914155649443e-05 | 1.233876622544736  | 0.0008169300839406946  |
+| network_family_07 | 1         | 1                 | 5.113807070087104e-05       | 0.000330239389580414   | 1.6461394933119523e-05 | 1.3778538706938126 | 0.000330239389580414   |
+| network_family_08 | 1         | 1                 | 3.861851484811437e-05       | 0.0002493906124175744  | 1.5849640523828106e-05 | 1.5031883104774835 | 0.0002493906124175744  |
+| network_family_09 | 3         | 3                 | 8.209534781561544e-06       | 5.3015526746414444e-05 | 3.972889062524842e-07  | 1.1047956761659266 | 5.3015526746414444e-05 |
+| network_family_10 | 1         | 1                 | 6.286654893131432e-06       | 4.0597954634512334e-05 | 1.3434162342809413e-06 | 1.2377420750487325 | 4.0597954634512334e-05 |
+| network_family_11 | 1         | 1                 | 0.0004725051799490343       | 0.0030513435501448223  | 0.00017608119897746214 | 1.4485039286258434 | 0.0030513435501448223  |
+| network_family_12 | 1         | 1                 | 1.901972154814059e-11       | 1.2282554167496995e-10 | 5.812529998424839e-11  | 11.25058301135795  | 1.2282554167496995e-10 |
+
+---
+
+### Test Network Assignment
+
+| Network                            | Overlapping Ground-Truth? | Average Degree | Degree Assortativity | Combination                                                        | Assigned Family     | Calibrated? |
+|------------------------------------|---------------------------|----------------|----------------------|--------------------------------------------------------------------|---------------------|-------------|
+| word-adjacencies                   | False                     | 7.5893         | -0.1293              | Non-Overlapping + Disassortative + Low Average Degree              | `network_family_02` | Yes         |
+| socio-patterns-primary-school-day2 | False                     | 46.5462        | 0.2168               | Non-Overlapping + Moderately Assortative + Large Average Degree    | `network_family_07` | Yes         |
+| citeseer                           | False                     | 3.4768         | 0.0071               | Non-Overlapping + Near-Neutral + Low Average Degree                | `network_family_04` | Yes         |
+| facebook-network-ego348            | True                      | 28.5000        | 0.2227               | Overlapping + Moderately Assortative + Medium Average Degree       | `network_family_09` | Yes         |
+| facebook-network-ego686            | True                      | 19.7143        | 0.0841               | Overlapping + Near-Neutral + Medium Average Degree                 | `network_family_08` | Approx.     |
+| facebook-network-ego3980           | True                      | 6.2727         | 0.0530               | Overlapping + Near-Neutral + Low Average Degree                    | `network_family_08` | Yes         |
