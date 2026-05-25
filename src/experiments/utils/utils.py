@@ -879,7 +879,7 @@ def compute_real_world_network_properties(
         overlapping_ground_truth: bool
 ) -> dict:
     """
-    Compute structural properties of a real-world network.
+    Compute properties (structural and ground-truth) of a real-world network.
 
     Parameters:
         network_name : (str)
@@ -934,11 +934,7 @@ def compute_real_world_network_properties(
         nodes_without_community,
         nodes_fraction_without_community,
         overlap_fraction
-    ) = _compute_ground_truth_properties(
-        ground_truth_labels=ground_truth_labels,
-        overlapping_ground_truth=overlapping_ground_truth,
-        nodes=nodes
-    )
+    ) = _compute_ground_truth_properties(ground_truth_labels, overlapping_ground_truth, nodes)
 
     return {
         "Network": network_name,
@@ -1315,10 +1311,6 @@ def save_k_boundary_geometric_mean_thresholds(
 
             input_path = os.path.join(network_family_dir, input_filename)
 
-            if not os.path.exists(input_path):
-                print(f"[WARNING] {input_path} does not exist. Skipping.")
-                continue
-
             with open(input_path, "r", newline="", encoding="utf-8") as in_file:
                 reader = csv.reader(in_file)
                 next(reader, None)
@@ -1470,6 +1462,232 @@ def _median_or_none(values: list[float]) -> float:
     return float(np.median(values))
 
 
+# def save_k_boundary_geometric_mean_thresholds(
+#         results_dir: str,
+#         input_filename: str,
+#         output_by_network_filename: str,
+#         output_by_family_filename: str,
+#         remove_first_contribution: bool = False,
+#         global_sum: float = None,
+#         number_of_columns_to_skip: int = 2
+# ) -> None:
+#     """
+#     Save the K-boundary thresholds by network and by family.
+
+#     The network-level K-boundary threshold is computed as: threshold = sqrt(c_K * c_K+1),
+#     where c_K is the contribution of the K-th extracted cluster and c_K+1 is the contribution of the next extracted cluster.
+
+#     The family-level threshold is computed using the common valid threshold interval: max(c_K+1) < threshold < min(c_K).
+#     If the common interval exists, the family threshold is computed as: threshold = sqrt(max(c_K+1) * min(c_K)).
+#     If the common interval does not exist, an approximate threshold is computed using the same formula: threshold = sqrt(max(c_K+1) * min(c_K)).
+#     In this case, the threshold balances the conflict between the family lower bound and upper bound in logarithmic scale,
+#     but it is not strictly valid for all networks in the family.
+
+#     If the contributions were globally normalized as: normalized_contribution = raw_contribution / global_sum,
+#     then the raw-scale threshold is recovered as: raw_threshold = normalized_threshold * global_sum
+
+#     Parameters:
+#         results_dir : (str)
+#             The path to the results' directory.
+#         input_filename : (str)
+#             The name of the input CSV file containing normalized contributions.
+#         output_by_network_filename : (str)
+#             The name of the output CSV file to save network-level K-boundary thresholds.
+#         output_by_family_filename : (str)
+#             The name of the output CSV file to save family-level K-boundary thresholds.
+#         remove_first_contribution : (bool, optional)
+#             Whether to remove the first contribution before computing the K-boundary.
+#             This is useful for LAPIN-off, where the first contribution may behave as a global/background component.
+#             Default is False.
+#         global_sum : (float | None, optional)
+#             The global sum used to normalize the raw contributions.
+#             If provided, the function also saves the raw-scale threshold.
+#             Default is None.
+#         number_of_columns_to_skip : (int, optional)
+#             The number of columns to skip before reading contribution values.
+#             Default is 2, assuming the first two columns are "Network" and "K".
+
+#     Saves:
+#         Two CSV files:
+#             - one with K-boundary thresholds by network;
+#             - one with common-interval or approximate common-interval thresholds by family.
+#     """
+
+#     network_family_dirs = sorted(
+#         [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
+#         key=lambda path: path.name
+#     )
+
+#     family_rows = {}
+#     by_network_path = os.path.join(results_dir, output_by_network_filename)
+#     by_family_path = os.path.join(results_dir, output_by_family_filename)
+
+#     with open(by_network_path, "w", newline="", encoding="utf-8") as out_file:
+#         writer = csv.writer(out_file)
+#         writer.writerow([
+#             "Network Family", "Network", "K",
+#             "First Contribution Removed?", "Number of Contributions", "Effective Number of Contributions",
+#             "Normalized c_K", "Normalized c_K+1", "gap_K", "ratio_K", "Normalized Threshold",
+#             "Global Normalization Factor", "Raw Threshold", "Valid Threshold?"
+#         ])
+
+#         for network_family_dir in network_family_dirs:
+#             family_rows[network_family_dir.name] = {
+#                 "number_of_networks": 0,
+#                 "number_of_valid_thresholds": 0,
+#                 "normalized_c_k_values": [],
+#                 "normalized_c_k_plus_1_values": [],
+#                 "gap_values": [],
+#                 "ratio_values": []
+#             }
+
+#             input_path = os.path.join(network_family_dir, input_filename)
+
+#             with open(input_path, "r", newline="", encoding="utf-8") as in_file:
+#                 reader = csv.reader(in_file)
+#                 next(reader, None)
+
+#                 for row in reader:
+#                     network_name = row[0]
+#                     k = _parse_optional_int(row[1])
+#                     contributions = [float(x) for x in row[number_of_columns_to_skip:] if x != ""]
+
+#                     family_rows[network_family_dir.name]["number_of_networks"] += 1
+
+#                     if remove_first_contribution and len(contributions) > 0:
+#                         effective_contributions = contributions[1:]
+#                     else:
+#                         effective_contributions = contributions
+
+#                     if k is None:
+#                         writer.writerow([
+#                             network_family_dir.name, network_name, None,
+#                             remove_first_contribution, len(contributions), len(effective_contributions),
+#                             None, None, None, None, None,
+#                             global_sum, None, False
+#                         ])
+#                         continue
+
+#                     # Need both c_K and c_K+1.
+#                     if len(effective_contributions) <= k:
+#                         writer.writerow([
+#                             network_family_dir.name, network_name, k,
+#                             remove_first_contribution, len(contributions), len(effective_contributions),
+#                             None, None, None, None, None,
+#                             global_sum, None, False
+#                         ])
+#                         continue
+
+#                     c_k = effective_contributions[k - 1]
+#                     c_k_plus_1 = effective_contributions[k]
+
+#                     gap_k = c_k - c_k_plus_1
+#                     ratio_k = c_k / c_k_plus_1 if c_k_plus_1 > 0 else np.inf
+
+#                     normalized_threshold = _interval_midpoint(c_k_plus_1, c_k)
+#                     raw_threshold = (normalized_threshold * global_sum if global_sum is not None else None)
+
+#                     valid_threshold = c_k > c_k_plus_1
+
+#                     if valid_threshold:
+#                         family_rows[network_family_dir.name]["number_of_valid_thresholds"] += 1
+#                         family_rows[network_family_dir.name]["normalized_c_k_values"].append(c_k)
+#                         family_rows[network_family_dir.name]["normalized_c_k_plus_1_values"].append(c_k_plus_1)
+#                         family_rows[network_family_dir.name]["gap_values"].append(gap_k)
+#                         family_rows[network_family_dir.name]["ratio_values"].append(ratio_k)
+
+#                     writer.writerow([
+#                         network_family_dir.name, network_name, k,
+#                         remove_first_contribution, len(contributions), len(effective_contributions),
+#                         c_k, c_k_plus_1, gap_k, ratio_k, normalized_threshold,
+#                         global_sum, raw_threshold, valid_threshold
+#                     ])
+
+#     with open(by_family_path, "w", newline="", encoding="utf-8") as out_file:
+#         writer = csv.writer(out_file)
+#         writer.writerow([
+#             "Network Family",
+#             "#Networks",
+#             "#Valid Thresholds",
+#             "Normalized c_K Values",
+#             "Normalized c_K+1 Values",
+#             "Min Normalized c_K",
+#             "Max Normalized c_K+1",
+#             "Interval Overlaps?",
+#             "Family Threshold Mode",
+#             "Normalized Threshold",
+#             "Global Normalization Factor",
+#             "Raw Threshold",
+#             "Threshold"
+#         ])
+
+#         for family_name, values in family_rows.items():
+#             c_k_values = values["normalized_c_k_values"]
+#             c_k_plus_1_values = values["normalized_c_k_plus_1_values"]
+
+#             lower_bound_options = c_k_plus_1_values
+#             upper_bound_options = c_k_values
+
+#             if len(lower_bound_options) == 0 or len(upper_bound_options) == 0:
+#                 family_threshold_mode = "no_valid_interval"
+#                 common_interval_exists = False
+#                 common_interval_lower_bound = 0
+#                 common_interval_upper_bound = 0
+#                 normalized_threshold = 0
+#                 raw_threshold = 0
+
+#             else:
+#                 common_interval_lower_bound = max(lower_bound_options)
+#                 common_interval_upper_bound = min(upper_bound_options)
+
+#                 common_interval_exists = common_interval_lower_bound < common_interval_upper_bound
+
+#                 if common_interval_exists:
+#                     family_threshold_mode = "common_interval"
+#                 else:
+#                     family_threshold_mode = "approximate_common_interval"
+
+#                 normalized_threshold = _interval_midpoint(common_interval_lower_bound, common_interval_upper_bound)
+
+#                 raw_threshold = (normalized_threshold * global_sum if global_sum is not None else None)
+
+#             final_threshold = (raw_threshold if global_sum is not None else normalized_threshold)
+
+#             writer.writerow([
+#                 family_name,
+#                 values["number_of_networks"],
+#                 values["number_of_valid_thresholds"],
+#                 c_k_values,
+#                 c_k_plus_1_values,
+#                 common_interval_upper_bound,
+#                 common_interval_lower_bound,
+#                 common_interval_exists,
+#                 family_threshold_mode,
+#                 normalized_threshold,
+#                 global_sum,
+#                 raw_threshold,
+#                 final_threshold
+#             ])
+
+
+# def _interval_midpoint(lower_bound: float, upper_bound: float) -> float:
+#     """
+#     Compute a midpoint between two bounds, using the geometric mean.
+
+#     Parameters:
+#         lower_bound : (float)
+#             The first bound.
+#         upper_bound : (float)
+#             The second bound.
+
+#     Returns:
+#         midpoint : (float)
+#             A threshold between the two bounds.
+#     """
+
+#     return float(np.sqrt(lower_bound * upper_bound))
+
+
 def save_faddis_sensitivity_correlations(
         results_dir: str,
         network_properties_filename: str,
@@ -1483,17 +1701,15 @@ def save_faddis_sensitivity_correlations(
 ) -> None:
     """
     Compute correlations between network properties and FADDIS threshold values.
-
     Two threshold modes are supported:
-        - 'network_statistic': computes one threshold per network using a statistic
-          over the normalized contribution sequence, e.g., Median.
+        - 'network_statistic': computes one threshold per network using a statistic over the normalized contribution sequence, e.g., Median.
         - 'k_boundary': uses the K-boundary threshold already saved by network.
 
     Parameters:
         results_dir : (str)
             The path to the results' directory.
         network_properties_filename : (str)
-            The name of the CSV file containing network structural properties.
+            The name of the CSV file containing network properties.
         threshold_source_filename : (str)
             The name of the CSV file used to obtain the threshold values.
             For 'network_statistic', this is usually 'normalized_contributions.csv'.
@@ -1517,19 +1733,14 @@ def save_faddis_sensitivity_correlations(
             Default is 3, assuming the first columns are 'Network', 'K', and 'Stop Condition'.
 
     Saves:
-        A CSV file with Pearson and Spearman correlations between each network
-        property and the log-normalized FADDIS threshold.
+        A CSV file with Pearson and Spearman correlations between each network property and the normalized FADDIS threshold.
     """
 
     if threshold_mode not in {"network_statistic", "k_boundary"}:
         raise ValueError("[ERROR] 'threshold_mode' must be 'network_statistic' or 'k_boundary'.")
 
-    # Load network properties.
-    network_properties = _load_network_properties(
-        os.path.join(results_dir, network_properties_filename)
-    )
+    network_properties = _load_network_properties(os.path.join(results_dir, network_properties_filename))
 
-    # Load or compute one threshold value per network.
     if threshold_mode == "network_statistic":
         thresholds = _compute_network_statistic_thresholds(
             results_dir=results_dir,
@@ -1547,7 +1758,6 @@ def save_faddis_sensitivity_correlations(
         )
         threshold_label = threshold_column
 
-    # Merge network properties with threshold values.
     merged_rows = []
     for network_name, properties in network_properties.items():
         if network_name not in thresholds:
@@ -1560,39 +1770,21 @@ def save_faddis_sensitivity_correlations(
 
         row = dict(properties)
         row["Threshold"] = threshold_value
-        row["Log Threshold"] = float(np.log10(threshold_value))
         merged_rows.append(row)
 
-    if len(merged_rows) == 0:
-        print("[WARNING] No valid rows found for sensitivity analysis.")
-        return
-
-    # Compute correlations for all networks and separately by ground-truth type.
     groups = [
-        ("All", merged_rows),
+        ("Non-overlapping and Overlapping", merged_rows),
         (
             "Non-overlapping",
-            [
-                row for row in merged_rows
-                if str(row.get("Overlapping Ground-Truth?")).lower() == "false"
-            ]
+            [row for row in merged_rows if str(row.get("Overlapping Ground-Truth?")).lower() == "false"]
         ),
         (
             "Overlapping",
-            [
-                row for row in merged_rows
-                if str(row.get("Overlapping Ground-Truth?")).lower() == "true"
-            ]
+            [row for row in merged_rows if str(row.get("Overlapping Ground-Truth?")).lower() == "true"]
         )
     ]
 
-    excluded_columns = {
-        "Network",
-        "Ground-Truth?",
-        "Overlapping Ground-Truth?",
-        "Threshold",
-        "Log Threshold"
-    }
+    excluded_columns = {"Network", "Ground-Truth?", "Overlapping Ground-Truth?", "Threshold"}
 
     output_rows = []
 
@@ -1611,7 +1803,7 @@ def save_faddis_sensitivity_correlations(
 
             for row in group_rows:
                 x = _parse_optional_float(row.get(property_name))
-                y = _parse_optional_float(row.get("Log Threshold"))
+                y = _parse_optional_float(row.get("Threshold"))
 
                 if x is None or y is None:
                     continue
@@ -1633,30 +1825,28 @@ def save_faddis_sensitivity_correlations(
 
             output_rows.append({
                 "Group": group_name,
-                "Threshold Mode": threshold_mode,
-                "Threshold Label": threshold_label,
+                "Threshold": threshold_label,
                 "Property": property_name,
-                "N": len(x_values),
+                "#Networks": len(x_values),
                 "Spearman Correlation": spearman_correlation,
                 "Pearson Correlation": pearson_correlation,
-                "Abs Spearman Correlation": abs(spearman_correlation)
+                "Abs Spearman Correlation (Sort Criterion)": abs(spearman_correlation)
             })
 
     output_rows = sorted(
         output_rows,
-        key=lambda row: (row["Group"], -row["Abs Spearman Correlation"])
+        key=lambda row: (row["Group"], -row["Abs Spearman Correlation (Sort Criterion)"])
     )
 
     with open(os.path.join(results_dir, output_filename), "w", newline="", encoding="utf-8") as out_file:
         writer = csv.DictWriter(out_file, fieldnames=[
             "Group",
-            "Threshold Mode",
-            "Threshold Label",
+            "Threshold",
             "Property",
-            "N",
+            "#Networks",
             "Spearman Correlation",
             "Pearson Correlation",
-            "Abs Spearman Correlation"
+            "Abs Spearman Correlation (Sort Criterion)"
         ])
         writer.writeheader()
         writer.writerows(output_rows)
@@ -1721,10 +1911,6 @@ def _compute_network_statistic_thresholds(
     for network_family_dir in network_family_dirs:
         input_path = os.path.join(network_family_dir, input_filename)
 
-        if not os.path.exists(input_path):
-            print(f"[WARNING] {input_path} does not exist. Skipping.")
-            continue
-
         with open(input_path, "r", newline="", encoding="utf-8") as in_file:
             reader = csv.reader(in_file)
             next(reader, None)
@@ -1766,23 +1952,15 @@ def _load_k_boundary_thresholds_by_network(
     """
 
     thresholds_by_network = {}
-
     with open(input_path, "r", newline="", encoding="utf-8") as in_file:
         reader = csv.DictReader(in_file)
-
-        if threshold_column not in reader.fieldnames:
-            raise ValueError(f"[ERROR] Column '{threshold_column}' not found in {input_path}.")
-
         for row in reader:
             network_name = row["Network"]
-
             if valid_thresholds_only:
                 valid_threshold = str(row.get("Valid Threshold?", "")).lower() == "true"
-
                 if not valid_threshold:
                     thresholds_by_network[network_name] = None
                     continue
-
             thresholds_by_network[network_name] = _parse_optional_float(row.get(threshold_column))
 
     return thresholds_by_network

@@ -149,6 +149,9 @@ def run_contributions_experiments_in_real_world_networks(
                         W = np.asarray(W, dtype=np.float64)
 
                         if use_desired_k:
+                            if k is None:
+                                raise ValueError("[ERROR] K cannot be None.")
+
                             _, contributions, _, _, _, stop_condition = faddis(
                                 W=W, desired_k=k + 1 if not apply_lapin else k
                             )
@@ -226,7 +229,7 @@ def run_contributions_experiments_in_real_world_networks(
                 threshold_source_filename=K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAME,
                 output_filename=FADDIS_SENSITIVITY_CORRELATIONS,
                 threshold_mode="k_boundary",
-                threshold_column="Normalized Threshold",
+                threshold_column="Normalized c_K",
                 valid_thresholds_only=True,
                 number_of_columns_to_skip=3
             )

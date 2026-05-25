@@ -10,6 +10,7 @@
 - [Experience 10 (Networks grouped by degree assortativity, average degree, and K)](#experience-10-networks-grouped-by-degree-assortativity-average-degree-and-k)
 - [Experience 11 (Networks grouped by degree assortativity, average degree)](#experience-11-networks-grouped-by-degree-assortativity-and-average-degree)
 - [Experience 12](#experience-12)
+- [Experience 13 (Networks grouped by ground-truth type, degree assortativity, and average degree)](#experience-13-networks-grouped-by-ground-truth-type-degree-assortativity-and-average-degree)
 
 
 
@@ -139,32 +140,31 @@
 
 ### Sensitivity Analysis
 
-| Group           | Threshold Mode | Threshold Label      | Property                             | N  | Spearman Correlation | Pearson Correlation   | Abs Spearman Correlation |
-|-----------------|----------------|----------------------|--------------------------------------|----|----------------------|-----------------------|--------------------------|
-| All             | k_boundary     | Normalized Threshold | Min Community Size                   | 14 | 0.8588524480978449   | 0.3543430194985913    | 0.8588524480978449       |
-| All             | k_boundary     | Normalized Threshold | **K**                                | 14 | -0.8158809789769964  | -0.7640011118884064   | 0.8158809789769964       |
-| All             | k_boundary     | Normalized Threshold | **Degree Assortativity**             | 14 | -0.7714285714285714  | -0.702811477548056    | 0.7714285714285714       |
-| All             | k_boundary     | Normalized Threshold | Community Size CV                    | 14 | -0.767032967032967   | -0.6709707499759765   | 0.767032967032967        |
-| All             | k_boundary     | Normalized Threshold | Global Clustering Coefficient        | 14 | -0.6571428571428571  | -0.6698268187590267   | 0.6571428571428571       |
-| All             | k_boundary     | Normalized Threshold | Overlap Fraction                     | 14 | -0.6313353886964228  | -0.4060623313998195   | 0.6313353886964228       |
-| All             | k_boundary     | Normalized Threshold | Nodes Without Community              | 14 | -0.5843959545925994  | 0.04361539446566649   | 0.5843959545925994       |
-| All             | k_boundary     | Normalized Threshold | **Average Degree**                   | 14 | -0.5076923076923077  | -0.704472477335852    | 0.5076923076923077       |
-| Non-overlapping | k_boundary     | Normalized Threshold | **K**                                | 7  | -0.9549937104572925  | -0.8155491426997231   | 0.9549937104572925       |
-| Non-overlapping | k_boundary     | Normalized Threshold | **Degree Assortativity**             | 7  | -0.8928571428571429  | -0.8012371377721758   | 0.8928571428571429       |
-| Non-overlapping | k_boundary     | Normalized Threshold | Min Community Size                   | 7  | 0.7857142857142859   | 0.49813903212707067   | 0.7857142857142859       |
-| Non-overlapping | k_boundary     | Normalized Threshold | Community Size CV                    | 7  | -0.642857142857143   | -0.5850562471268904   | 0.642857142857143        |
-| Non-overlapping | k_boundary     | Normalized Threshold | **Average Degree**                   | 7  | -0.6071428571428572  | -0.6041282377820377   | 0.6071428571428572       |
-| Overlapping     | k_boundary     | Normalized Threshold | Nodes Fraction Without Community     | 7  | 0.7142857142857144   | 0.48048762441058745   | 0.7142857142857144       |
-| Overlapping     | k_boundary     | Normalized Threshold | **K**                                | 7  | -0.594618725379069   | -0.7916247964420269   | 0.594618725379069        |
-| Overlapping     | k_boundary     | Normalized Threshold | Min Community Size                   | 7  | 0.5345224838248489   | 0.4169574416449018    | 0.5345224838248489       |
-| Overlapping     | k_boundary     | Normalized Threshold | Community Size CV                    | 7  | -0.42857142857142866 | -0.4387900072289312   | 0.42857142857142866      |
-| Overlapping     | k_boundary     | Normalized Threshold | Degree Std                           | 7  | -0.39285714285714296 | -0.6270171357654416   | 0.39285714285714296      |
-| Overlapping     | k_boundary     | Normalized Threshold | **Degree Assortativity**             | 7  | -0.3571428571428572  | -0.5057767738770634   | 0.3571428571428572       |
-| Overlapping     | k_boundary     | Normalized Threshold | Community Proportion                 | 7  | -0.28571428571428575 | 0.04966456240443148   | 0.28571428571428575      |
-| Overlapping     | k_boundary     | Normalized Threshold | Edges LCC                            | 7  | -0.28571428571428575 | -0.4801142911872367   | 0.28571428571428575      |
-| Overlapping     | k_boundary     | Normalized Threshold | Max Degree                           | 7  | -0.28571428571428575 | -0.5160262911435527   | 0.28571428571428575      |
-| Overlapping     | k_boundary     | Normalized Threshold | Average Clustering                   | 7  | 0.25                 | -0.21183089061951793  | 0.25                     |
-| Overlapping     | k_boundary     | Normalized Threshold | **Average Degree**                   | 7  | -0.25                | -0.6972887523514332   | 0.25                     |
+| Group                           | Threshold      | Property                             | #Networks | Spearman Correlation | Pearson Correlation   | Abs Spearman Correlation (Sort Criterion) |
+|---------------------------------|----------------|--------------------------------------|-----------|----------------------|-----------------------|-------------------------------------------|
+| Non-overlapping and Overlapping | Normalized c_K | Min Community Size                   | 14        | 0.8588524480978449   | 0.31208952294562375   | 0.8588524480978449                        |
+| Non-overlapping and Overlapping | Normalized c_K | **K**                                | 14        | -0.791625057980383   | -0.4564636633114558   | 0.791625057980383                         |
+| Non-overlapping and Overlapping | Normalized c_K | **Degree Assortativity**             | 14        | -0.7582417582417583  | -0.7931752580647775   | 0.7582417582417583                        |
+| Non-overlapping and Overlapping | Normalized c_K | Community Size CV                    | 14        | -0.7538461538461538  | -0.5558911474220116   | 0.7538461538461538                        |
+| Non-overlapping and Overlapping | Normalized c_K | Global Clustering Coefficient        | 14        | -0.6747252747252748  | -0.4585152341146059   | 0.6747252747252748                        |
+| Non-overlapping and Overlapping | Normalized c_K | Overlap Fraction                     | 14        | -0.6266414452860405  | -0.3099360943254341   | 0.6266414452860405                        |
+| Non-overlapping and Overlapping | Normalized c_K | Nodes Without Community              | 14        | -0.5609262375406879  | -0.19238911656417     | 0.5609262375406879                        |
+| Non-overlapping and Overlapping | Normalized c_K | **Average Degree**                   | 14        | -0.49890109890109896 | -0.3487428881386482   | 0.49890109890109896                       |
+| Non-overlapping                 | Normalized c_K | **K**                                | 7         | -0.9549937104572925  | -0.5044594976112955   | 0.9549937104572925                        |
+| Non-overlapping                 | Normalized c_K | **Degree Assortativity**             | 7         | -0.8928571428571429  | -0.9266414933027981   | 0.8928571428571429                        |
+| Non-overlapping                 | Normalized c_K | Min Community Size                   | 7         | 0.7857142857142859   | 0.18031052248479496   | 0.7857142857142859                        |
+| Non-overlapping                 | Normalized c_K | Community Size CV                    | 7         | -0.642857142857143   | -0.5687231584864857   | 0.642857142857143                         |
+| Non-overlapping                 | Normalized c_K | **Average Degree**                   | 7         | -0.6071428571428572  | -0.42372202186252267  | 0.6071428571428572                        |
+| Overlapping                     | Normalized c_K | Nodes Fraction Without Community     | 7         | 0.7857142857142859   | 0.4731173325410245    | 0.7857142857142859                        |
+| Overlapping                     | Normalized c_K | Min Community Size                   | 7         | 0.5345224838248489   | 0.7837454456192526    | 0.5345224838248489                        |
+| Overlapping                     | Normalized c_K | **K**                                | 7         | -0.4684874806016907  | -0.35803549442376925  | 0.4684874806016907                        |
+| Overlapping                     | Normalized c_K | Community Proportion                 | 7         | -0.39285714285714296 | -0.32101084413375847  | 0.39285714285714296                       |
+| Overlapping                     | Normalized c_K | Community Size CV                    | 7         | -0.3571428571428572  | 0.18114535139184232   | 0.3571428571428572                        |
+| Overlapping                     | Normalized c_K | **Degree Assortativity**             | 7         | -0.3214285714285715  | 0.3189989970257345    | 0.3214285714285715                        |
+| Overlapping                     | Normalized c_K | Degree Std                           | 7         | -0.3214285714285715  | 0.35897571848102794   | 0.3214285714285715                        |
+| Overlapping                     | Normalized c_K | Nodes Without Community              | 7         | 0.3214285714285715   | 0.7939840905399307    | 0.3214285714285715                        |
+| Overlapping                     | Normalized c_K | Degree Hub Ratio                     | 7         | 0.21428571428571433  | 0.321636320752317     | 0.21428571428571433                       |
+| Overlapping                     | Normalized c_K | **Average Degree**                   | 7         | -0.1785714285714286  | 0.2604434268608927    | 0.1785714285714286                        |
 
 
 ## Experience 10 (Networks grouped by degree assortativity, average degree, and K)
