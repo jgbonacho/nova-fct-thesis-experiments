@@ -1469,6 +1469,252 @@ def _median_or_none(values: list[float]) -> float:
 #         output_by_family_filename: str,
 #         remove_first_contribution: bool = False,
 #         global_sum: float = None,
+#         number_of_columns_to_skip: int = 2,
+#         c_k_margin: float = 1e-9
+# ) -> None:
+#     """
+#     Save the K-boundary c_K-based thresholds by network and by family.
+
+#     The network-level threshold is computed as a value slightly below c_K:
+
+#         threshold = c_K * (1 - c_k_margin)
+
+#     where c_K is the contribution of the K-th extracted cluster.
+
+#     This is useful to test a threshold close to c_K, instead of using the geometric mean between c_K and c_K+1.
+
+#     The threshold is considered valid when:
+
+#         c_K+1 < threshold < c_K
+
+#     If the contributions were globally normalized as:
+
+#         normalized_contribution = raw_contribution / global_sum
+
+#     then the raw-scale threshold is recovered as:
+
+#         raw_threshold = normalized_threshold * global_sum
+
+#     The family-level threshold is computed as the median of the valid network-level thresholds inside each family.
+
+#     Parameters:
+#         results_dir : (str)
+#             The path to the results' directory.
+#         input_filename : (str)
+#             The name of the input CSV file containing normalized contributions.
+#         output_by_network_filename : (str)
+#             The name of the output CSV file to save network-level K-boundary thresholds.
+#         output_by_family_filename : (str)
+#             The name of the output CSV file to save family-level median K-boundary thresholds.
+#         remove_first_contribution : (bool, optional)
+#             Whether to remove the first contribution before computing the K-boundary.
+#             This is useful for LAPIN-off, where the first contribution may behave as a global/background component.
+#             Default is False.
+#         global_sum : (float | None, optional)
+#             The global sum used to normalize the raw contributions.
+#             If provided, the function also saves the raw-scale threshold.
+#             Default is None.
+#         number_of_columns_to_skip : (int, optional)
+#             The number of columns to skip before reading contribution values.
+#             Default is 2, assuming the first two columns are "Network" and "K".
+#         c_k_margin : (float, optional)
+#             Small relative margin used to place the threshold slightly below c_K.
+#             Default is 1e-9.
+
+#     Saves:
+#         Two CSV files:
+#             - one with c_K-based thresholds by network;
+#             - one with median c_K-based thresholds by family.
+#     """
+
+#     network_family_dirs = sorted(
+#         [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
+#         key=lambda path: path.name
+#     )
+
+#     family_rows = {}
+#     by_network_path = os.path.join(results_dir, output_by_network_filename)
+#     by_family_path = os.path.join(results_dir, output_by_family_filename)
+
+#     with open(by_network_path, "w", newline="", encoding="utf-8") as out_file:
+#         writer = csv.writer(out_file)
+#         writer.writerow([
+#             "Network Family",
+#             "Network",
+#             "K",
+#             "First Contribution Removed?",
+#             "Number of Contributions",
+#             "Effective Number of Contributions",
+#             "Normalized c_K",
+#             "Normalized c_K+1",
+#             "gap_K",
+#             "ratio_K",
+#             "Normalized Threshold",
+#             "Global Normalization Factor",
+#             "Raw Threshold",
+#             "Valid Threshold?"
+#         ])
+
+#         for network_family_dir in network_family_dirs:
+#             family_rows[network_family_dir.name] = {
+#                 "number_of_networks": 0,
+#                 "number_of_valid_thresholds": 0,
+#                 "normalized_thresholds": [],
+#                 "raw_thresholds": [],
+#                 "gap_values": [],
+#                 "ratio_values": []
+#             }
+
+#             input_path = os.path.join(network_family_dir, input_filename)
+
+#             with open(input_path, "r", newline="", encoding="utf-8") as in_file:
+#                 reader = csv.reader(in_file)
+#                 next(reader, None)
+
+#                 for row in reader:
+#                     network_name = row[0]
+#                     k = _parse_optional_int(row[1])
+#                     contributions = [float(x) for x in row[number_of_columns_to_skip:] if x != ""]
+
+#                     family_rows[network_family_dir.name]["number_of_networks"] += 1
+
+#                     if remove_first_contribution and len(contributions) > 0:
+#                         effective_contributions = contributions[1:]
+#                     else:
+#                         effective_contributions = contributions
+
+#                     if k is None:
+#                         writer.writerow([
+#                             network_family_dir.name,
+#                             network_name,
+#                             None,
+#                             remove_first_contribution,
+#                             len(contributions),
+#                             len(effective_contributions),
+#                             None,
+#                             None,
+#                             None,
+#                             None,
+#                             None,
+#                             global_sum,
+#                             None,
+#                             False
+#                         ])
+#                         continue
+
+#                     # Need both c_K and c_K+1.
+#                     if len(effective_contributions) <= k:
+#                         writer.writerow([
+#                             network_family_dir.name,
+#                             network_name,
+#                             k,
+#                             remove_first_contribution,
+#                             len(contributions),
+#                             len(effective_contributions),
+#                             None,
+#                             None,
+#                             None,
+#                             None,
+#                             None,
+#                             global_sum,
+#                             None,
+#                             False
+#                         ])
+#                         continue
+
+#                     c_k = effective_contributions[k - 1]
+#                     c_k_plus_1 = effective_contributions[k]
+
+#                     gap_k = c_k - c_k_plus_1
+#                     ratio_k = c_k / c_k_plus_1 if c_k_plus_1 > 0 else np.inf
+
+#                     # New strategy:
+#                     # Use a threshold very close to c_K, but slightly below it.
+#                     normalized_threshold = c_k * (1 - c_k_margin)
+
+#                     raw_threshold = (
+#                         normalized_threshold * global_sum
+#                         if global_sum is not None
+#                         else None
+#                     )
+
+#                     valid_threshold = c_k_plus_1 < normalized_threshold < c_k
+
+#                     if valid_threshold:
+#                         family_rows[network_family_dir.name]["number_of_valid_thresholds"] += 1
+#                         family_rows[network_family_dir.name]["normalized_thresholds"].append(normalized_threshold)
+#                         family_rows[network_family_dir.name]["gap_values"].append(gap_k)
+#                         family_rows[network_family_dir.name]["ratio_values"].append(ratio_k)
+
+#                         if raw_threshold is not None:
+#                             family_rows[network_family_dir.name]["raw_thresholds"].append(raw_threshold)
+
+#                     writer.writerow([
+#                         network_family_dir.name,
+#                         network_name,
+#                         k,
+#                         remove_first_contribution,
+#                         len(contributions),
+#                         len(effective_contributions),
+#                         c_k,
+#                         c_k_plus_1,
+#                         gap_k,
+#                         ratio_k,
+#                         normalized_threshold,
+#                         global_sum,
+#                         raw_threshold,
+#                         valid_threshold
+#                     ])
+
+#     with open(by_family_path, "w", newline="", encoding="utf-8") as out_file:
+#         writer = csv.writer(out_file)
+#         writer.writerow([
+#             "Network Family",
+#             "#Networks",
+#             "#Valid Thresholds",
+#             "Median Normalized Threshold",
+#             "Median Raw Threshold",
+#             "Median gap_K",
+#             "Median ratio_K",
+#             "Threshold"
+#         ])
+
+#         for family_name, values in family_rows.items():
+#             normalized_thresholds = values["normalized_thresholds"]
+#             raw_thresholds = values["raw_thresholds"]
+#             gap_values = values["gap_values"]
+#             ratio_values = values["ratio_values"]
+
+#             median_normalized_threshold = _median_or_none(normalized_thresholds)
+#             median_raw_threshold = _median_or_none(raw_thresholds)
+#             median_gap_k = _median_or_none(gap_values)
+#             median_ratio_k = _median_or_none(ratio_values)
+
+#             final_threshold = (
+#                 median_raw_threshold
+#                 if global_sum is not None
+#                 else median_normalized_threshold
+#             )
+
+#             writer.writerow([
+#                 family_name,
+#                 values["number_of_networks"],
+#                 values["number_of_valid_thresholds"],
+#                 median_normalized_threshold,
+#                 median_raw_threshold,
+#                 median_gap_k,
+#                 median_ratio_k,
+#                 final_threshold
+#             ])
+
+
+# def save_k_boundary_geometric_mean_thresholds(
+#         results_dir: str,
+#         input_filename: str,
+#         output_by_network_filename: str,
+#         output_by_family_filename: str,
+#         remove_first_contribution: bool = False,
+#         global_sum: float = None,
 #         number_of_columns_to_skip: int = 2
 # ) -> None:
 #     """

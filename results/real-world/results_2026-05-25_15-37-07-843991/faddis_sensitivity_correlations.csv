@@ -1,0 +1,66 @@
+Group,Threshold,Property,#Networks,Spearman Correlation,Pearson Correlation,Abs Spearman Correlation (Sort Criterion)
+Non-overlapping,Median Normalized Threshold,K,7,-0.8468812149338255,-0.5286126054511162,0.8468812149338255
+Non-overlapping,Median Normalized Threshold,Degree Assortativity,7,-0.7857142857142859,-0.6665021932132261,0.7857142857142859
+Non-overlapping,Median Normalized Threshold,Average Degree,7,-0.642857142857143,-0.5325848380235417,0.642857142857143
+Non-overlapping,Median Normalized Threshold,Min Community Size,7,0.642857142857143,-0.08565673939829076,0.642857142857143
+Non-overlapping,Median Normalized Threshold,Edges LCC,7,-0.5714285714285715,-0.4832247293082799,0.5714285714285715
+Non-overlapping,Median Normalized Threshold,Nodes LCC,7,-0.42857142857142866,-0.38999706561787384,0.42857142857142866
+Non-overlapping,Median Normalized Threshold,Community Size CV,7,-0.3214285714285715,-0.18438674266409458,0.3214285714285715
+Non-overlapping,Median Normalized Threshold,Global Clustering Coefficient,7,-0.3214285714285715,-0.016223776903039736,0.3214285714285715
+Non-overlapping,Median Normalized Threshold,Average Community Size,7,0.25,-0.14697584111063827,0.25
+Non-overlapping,Median Normalized Threshold,Community Proportion,7,-0.25,-0.13463140054459946,0.25
+Non-overlapping,Median Normalized Threshold,Max Degree,7,-0.25,-0.45669872902162784,0.25
+Non-overlapping,Median Normalized Threshold,Degree Std,7,-0.21428571428571433,-0.38442409715179154,0.21428571428571433
+Non-overlapping,Median Normalized Threshold,Min Degree,7,-0.19702760155977517,-0.3957083093443072,0.19702760155977517
+Non-overlapping,Median Normalized Threshold,Average Clustering,7,0.14285714285714288,0.49816240006637674,0.14285714285714288
+Non-overlapping,Median Normalized Threshold,Degree CV,7,0.14285714285714288,0.009885057746237618,0.14285714285714288
+Non-overlapping,Median Normalized Threshold,Community Size Std,7,-0.10714285714285716,-0.20318809918275293,0.10714285714285716
+Non-overlapping,Median Normalized Threshold,Degree Hub Ratio,7,0.10714285714285716,-0.25847166164215135,0.10714285714285716
+Non-overlapping,Median Normalized Threshold,Density,7,-0.07142857142857144,0.0856353580386895,0.07142857142857144
+Non-overlapping,Median Normalized Threshold,Sparsity,7,0.07142857142857144,-0.08563535803868969,0.07142857142857144
+Non-overlapping,Median Normalized Threshold,Max Community Size,7,0.0,-0.22778747423690687,0.0
+Non-overlapping and Overlapping,Median Normalized Threshold,Degree Assortativity,14,-0.7582417582417583,-0.6757140355455156,0.7582417582417583
+Non-overlapping and Overlapping,Median Normalized Threshold,Min Community Size,14,0.7351776955717553,0.09978364241824,0.7351776955717553
+Non-overlapping and Overlapping,Median Normalized Threshold,K,14,-0.7078318763557185,-0.49131829759557805,0.7078318763557185
+Non-overlapping and Overlapping,Median Normalized Threshold,Community Size CV,14,-0.6307692307692307,-0.45837336115923066,0.6307692307692307
+Non-overlapping and Overlapping,Median Normalized Threshold,Overlap Fraction,14,-0.5984777848237465,-0.3239047682698524,0.5984777848237465
+Non-overlapping and Overlapping,Median Normalized Threshold,Global Clustering Coefficient,14,-0.5956043956043956,-0.3725581671570048,0.5956043956043956
+Non-overlapping and Overlapping,Median Normalized Threshold,Nodes Without Community,14,-0.5656201809510703,-0.1824176087155689,0.5656201809510703
+Non-overlapping and Overlapping,Median Normalized Threshold,Nodes Fraction Without Community,14,-0.490517086384953,-0.25308021033703526,0.490517086384953
+Non-overlapping and Overlapping,Median Normalized Threshold,Average Degree,14,-0.4769230769230769,-0.4034768358632913,0.4769230769230769
+Non-overlapping and Overlapping,Median Normalized Threshold,Community Proportion,14,-0.39780219780219783,-0.17362718235352056,0.39780219780219783
+Non-overlapping and Overlapping,Median Normalized Threshold,Average Clustering,14,-0.3406593406593406,-0.06217474346748993,0.3406593406593406
+Non-overlapping and Overlapping,Median Normalized Threshold,Degree Std,14,-0.3406593406593406,-0.3278558455719917,0.3406593406593406
+Non-overlapping and Overlapping,Median Normalized Threshold,Average Community Size,14,0.2967032967032967,0.06759100948563843,0.2967032967032967
+Non-overlapping and Overlapping,Median Normalized Threshold,Edges LCC,14,-0.2527472527472528,-0.30454650107803116,0.2527472527472528
+Non-overlapping and Overlapping,Median Normalized Threshold,Min Degree,14,0.23547841054555418,-0.13698368968683516,0.23547841054555418
+Non-overlapping and Overlapping,Median Normalized Threshold,Degree CV,14,0.18681318681318684,0.05171494379457635,0.18681318681318684
+Non-overlapping and Overlapping,Median Normalized Threshold,Community Size Std,14,-0.15164835164835166,-0.13650400843694785,0.15164835164835166
+Non-overlapping and Overlapping,Median Normalized Threshold,Degree Hub Ratio,14,0.1384615384615385,-0.051747812323961986,0.1384615384615385
+Non-overlapping and Overlapping,Median Normalized Threshold,Max Degree,14,-0.1384615384615385,-0.2994653157474838,0.1384615384615385
+Non-overlapping and Overlapping,Median Normalized Threshold,Density,14,-0.1164835164835165,-0.006177190256215464,0.1164835164835165
+Non-overlapping and Overlapping,Median Normalized Threshold,Sparsity,14,0.1164835164835165,0.006177190256215343,0.1164835164835165
+Non-overlapping and Overlapping,Median Normalized Threshold,Max Community Size,14,-0.08131868131868132,-0.08736268017791414,0.08131868131868132
+Non-overlapping and Overlapping,Median Normalized Threshold,Nodes LCC,14,-0.08131868131868132,-0.21649784538035682,0.08131868131868132
+Overlapping,Median Normalized Threshold,Nodes Fraction Without Community,7,0.5714285714285715,0.34996819293784465,0.5714285714285715
+Overlapping,Median Normalized Threshold,Nodes LCC,7,0.3571428571428572,0.3400941288515773,0.3571428571428572
+Overlapping,Median Normalized Threshold,Nodes Without Community,7,0.3214285714285715,0.5972655123160905,0.3214285714285715
+Overlapping,Median Normalized Threshold,Degree Hub Ratio,7,0.28571428571428575,0.06849165284111648,0.28571428571428575
+Overlapping,Median Normalized Threshold,Community Proportion,7,-0.1785714285714286,0.09164841996656647,0.1785714285714286
+Overlapping,Median Normalized Threshold,Edges LCC,7,0.1785714285714286,0.33061839810994254,0.1785714285714286
+Overlapping,Median Normalized Threshold,Max Degree,7,0.1785714285714286,0.27024267547177955,0.1785714285714286
+Overlapping,Median Normalized Threshold,Min Community Size,7,0.13363062095621223,0.6441193935560284,0.13363062095621223
+Overlapping,Median Normalized Threshold,Community Size Std,7,0.10714285714285716,0.5367140267461665,0.10714285714285716
+Overlapping,Median Normalized Threshold,Degree Assortativity,7,-0.10714285714285716,0.002663833394718474,0.10714285714285716
+Overlapping,Median Normalized Threshold,Degree Std,7,0.07142857142857144,0.1867951987524257,0.07142857142857144
+Overlapping,Median Normalized Threshold,Density,7,-0.07142857142857144,0.15687716366939233,0.07142857142857144
+Overlapping,Median Normalized Threshold,Global Clustering Coefficient,7,0.07142857142857144,0.02719699328596135,0.07142857142857144
+Overlapping,Median Normalized Threshold,Max Community Size,7,0.07142857142857144,0.37058376649162844,0.07142857142857144
+Overlapping,Median Normalized Threshold,Overlap Fraction,7,0.07142857142857144,-0.16252885784818072,0.07142857142857144
+Overlapping,Median Normalized Threshold,Sparsity,7,0.07142857142857144,-0.15687716366939225,0.07142857142857144
+Overlapping,Median Normalized Threshold,K,7,-0.054056247761733546,-0.4923347104511447,0.054056247761733546
+Overlapping,Median Normalized Threshold,Average Community Size,7,0.03571428571428572,0.4745761274662412,0.03571428571428572
+Overlapping,Median Normalized Threshold,Degree CV,7,0.03571428571428572,0.04444521105931954,0.03571428571428572
+Overlapping,Median Normalized Threshold,Average Clustering,7,0.0,0.02745369788607326,0.0
+Overlapping,Median Normalized Threshold,Average Degree,7,0.0,0.10946389704502596,0.0
+Overlapping,Median Normalized Threshold,Community Size CV,7,0.0,-0.04236164976205519,0.0
