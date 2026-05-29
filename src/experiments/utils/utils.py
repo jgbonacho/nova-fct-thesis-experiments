@@ -1994,7 +1994,7 @@ def save_faddis_sensitivity_correlations(
             statistic_metric=statistic_metric,
             number_of_columns_to_skip=number_of_columns_to_skip
         )
-        threshold_label = f"{statistic_metric} Normalized Threshold"
+        threshold_label = f"{statistic_metric} Normalized Contributions"
 
     else:
         thresholds = _load_k_boundary_thresholds_by_network(

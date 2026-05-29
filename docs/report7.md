@@ -1,4 +1,4 @@
-# Report 7 - Best Approaches
+# Report 7 - Checkpoint
 
 ## Pipeline
 
