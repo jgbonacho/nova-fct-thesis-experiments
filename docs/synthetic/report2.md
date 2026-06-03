@@ -236,7 +236,7 @@
 
 ### Contributions Line Plots
 
-[Open Folder](../results/synthetic/experience5_cluster/results_2026-04-18_11-37-07-535201/)
+[Open Folder](../../results/synthetic/experience5_cluster/results_2026-04-18_11-37-07-535201/)
 
 ### Statistics
 
@@ -266,15 +266,15 @@
 
 ### Histograms
 
-[Open Folder](../results/synthetic/experience5_cluster/results_2026-04-18_11-37-07-535201/)
+[Open Folder](../../results/synthetic/experience5_cluster/results_2026-04-18_11-37-07-535201/)
 
 ### Line plot
 
-![](../results/synthetic/experience5_cluster/results_2026-04-18_11-37-07-535201/line_plot.png)
+![](../../results/synthetic/experience5_cluster/results_2026-04-18_11-37-07-535201/line_plot.png)
 
 ### Box plot
 
-![](../results/synthetic/experience5_cluster/results_2026-04-18_11-37-07-535201/boxplot.png)
+![](../../results/synthetic/experience5_cluster/results_2026-04-18_11-37-07-535201/boxplot.png)
 
 ### Candidate Thresholds
 
@@ -430,7 +430,7 @@
 
 ### Contributions Line Plots
 
-[Open Folder](../results/synthetic/experience6_cluster/results_2026-04-25_17-54-35-105243/)
+[Open Folder](../../results/synthetic/experience6_cluster/results_2026-04-25_17-54-35-105243/)
 
 ### Statistics
 
@@ -460,15 +460,15 @@
 
 ### Histograms
 
-[Open Folder](../results/synthetic/experience6_cluster/results_2026-04-25_17-54-35-105243/)
+[Open Folder](../../results/synthetic/experience6_cluster/results_2026-04-25_17-54-35-105243/)
 
 ### Line plot
 
-![](../results/synthetic/experience6_cluster/results_2026-04-25_17-54-35-105243/line_plot.png)
+![](../../results/synthetic/experience6_cluster/results_2026-04-25_17-54-35-105243/line_plot.png)
 
 ### Box plot
 
-![](../results/synthetic/experience6_cluster/results_2026-04-25_17-54-35-105243/boxplot.png)
+![](../../results/synthetic/experience6_cluster/results_2026-04-25_17-54-35-105243/boxplot.png)
 
 ### Candidate Thresholds
 
@@ -624,7 +624,7 @@
 
 ### Contributions Line Plots
 
-[Open Folder](../results/synthetic/experience7_cluster/results_2026-04-25_20-05-14-328211/)
+[Open Folder](../../results/synthetic/experience7_cluster/results_2026-04-25_20-05-14-328211/)
 
 ### Statistics
 
@@ -654,15 +654,15 @@
 
 ### Histograms
 
-[Open Folder](../results/synthetic/experience7_cluster/results_2026-04-25_20-05-14-328211/)
+[Open Folder](../../results/synthetic/experience7_cluster/results_2026-04-25_20-05-14-328211/)
 
 ### Line plot
 
-![](../results/synthetic/experience7_cluster/results_2026-04-25_20-05-14-328211/line_plot.png)
+![](../../results/synthetic/experience7_cluster/results_2026-04-25_20-05-14-328211/line_plot.png)
 
 ### Box plot
 
-![](../results/synthetic/experience7_cluster/results_2026-04-25_20-05-14-328211/boxplot.png)
+![](../../results/synthetic/experience7_cluster/results_2026-04-25_20-05-14-328211/boxplot.png)
 
 ### Candidate Thresholds
 
@@ -818,7 +818,7 @@
 
 ### Contributions Line Plots
 
-[Open Folder](../results/synthetic/experience8_cluster/results_2026-04-25_22-23-02-010592/)
+[Open Folder](../../results/synthetic/experience8_cluster/results_2026-04-25_22-23-02-010592/)
 
 ### Statistics
 
@@ -848,15 +848,15 @@
 
 ### Histograms
 
-[Open Folder](../results/synthetic/experience8_cluster/results_2026-04-25_22-23-02-010592/)
+[Open Folder](../../results/synthetic/experience8_cluster/results_2026-04-25_22-23-02-010592/)
 
 ### Line plot
 
-![](../results/synthetic/experience8_cluster/results_2026-04-25_22-23-02-010592/line_plot.png)
+![](../../results/synthetic/experience8_cluster/results_2026-04-25_22-23-02-010592/line_plot.png)
 
 ### Box plot
 
-![](../results/synthetic/experience8_cluster/results_2026-04-25_22-23-02-010592/boxplot.png)
+![](../../results/synthetic/experience8_cluster/results_2026-04-25_22-23-02-010592/boxplot.png)
 
 ### Candidate Thresholds
 
@@ -1010,7 +1010,7 @@
 
 ## Hardware
 
-![](./imgs/hardware.png)
+![](../imgs/hardware.png)
 
 
 
