@@ -1024,6 +1024,4 @@
   - Different normalizations are used across Stage 1 and Stage 2.
 
 - **TODO**
-  - [DONE [Report 3](./report3.md)] Extend the experiment to larger networks after optimizations in FADDIS implementation;
-  - Change $u$ to $\mu$ in network family names;
-  - Change numeration in network family names.
+  - [DONE [Report 3](./report3.md)] Extend the experiment to larger networks after optimizations in FADDIS implementation.

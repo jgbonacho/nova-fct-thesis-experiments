@@ -451,7 +451,3 @@
 - **Warnings**
   - Different normalizations are used across Stage 1 and Stage 2;
   - The last family don't have a sample of 72 networks (only 52).
-
-- **TODO**
-  - Change $u$ to $\mu$ in network family names;
-  - Change numeration in network family names.
