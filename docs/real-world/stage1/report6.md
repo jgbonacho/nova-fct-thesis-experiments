@@ -11,6 +11,7 @@
 - [Experience 11 (Networks grouped by degree assortativity, average degree)](#experience-11-networks-grouped-by-degree-assortativity-and-average-degree)
 - [Experience 12](#experience-12)
 - [Experience 13 (Networks grouped by ground-truth type, degree assortativity, and average degree)](#experience-13-networks-grouped-by-ground-truth-type-degree-assortativity-and-average-degree)
+- [Discussion](#discussion)
 
 
 
@@ -117,7 +118,7 @@
 
 ## Experience 9 (One network per family)
 
-[Open Folder](../results/real-world/experience9/results_2026-05-23_12-38-55-140706/)
+[Open Folder](../../../results/real-world/stage1/experience9/results_2026-05-23_12-38-55-140706/)
 
 ### Thresholds by Network
 
@@ -169,7 +170,7 @@
 
 ## Experience 10 (Networks grouped by degree assortativity, average degree, and K)
 
-[Open Folder](../results/real-world/experience10/results_2026-05-23_16-58-58-002155)
+[Open Folder](../../../results/real-world/stage1/experience10/results_2026-05-23_16-58-58-002155)
 
 ### Range Definitions
 
@@ -449,7 +450,7 @@
 
 ## Experience 11 (Networks grouped by degree assortativity and average degree)
 
-[Open Folder](../results/real-world/experience11/results_2026-05-23_14-35-43-611177/)
+[Open Folder](../../../results/real-world/stage1/experience11/results_2026-05-23_14-35-43-611177/)
 
 ### Range Definitions
 
@@ -683,7 +684,7 @@
 
 ## Experience 13 (Networks grouped by ground-truth type, degree assortativity, and average degree)
 
-[Open Folder](../results/real-world/experience13/results_2026-05-23_22-54-46-593669/)
+[Open Folder](../../../results/real-world/stage1/experience13/results_2026-05-23_22-54-46-593669/)
 
 ### Range Definitions
 
@@ -944,3 +945,17 @@
 | facebook-network-ego348            | True                      | 28.5000        | 0.2227               | Overlapping + Moderately Assortative + Medium Average Degree       | `network_family_09` | Yes         |
 | facebook-network-ego686            | True                      | 19.7143        | 0.0841               | Overlapping + Near-Neutral + Medium Average Degree                 | `network_family_08` | Approx.     |
 | facebook-network-ego3980           | True                      | 6.2727         | 0.0530               | Overlapping + Near-Neutral + Low Average Degree                    | `network_family_08` | Yes         |
+
+
+
+## Discussion
+
+- **Observations**
+  - None of the strategies is perfect;
+
+- **Warnings**
+  - The families do not contain the same number of networks;
+  - The total number of networks is small.
+
+- **TODO**
+  - [DONE [Report 7](./report7.md)] Select the final strategies for the checkpoint.

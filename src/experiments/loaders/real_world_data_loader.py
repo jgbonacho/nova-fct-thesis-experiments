@@ -10,10 +10,10 @@ def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple
      Load a real-world network from a .gml file, preprocess it, and extract ground-truth labels.
 
      Parameters:
-            dir_path : (str)
-                The directory path where the network files are located.
-            network_config : (NetworkConfig)
-                The configuration of the network to load.
+        dir_path : (str)
+            The directory path where the network files are located.
+        network_config : (NetworkConfig)
+            The configuration of the network to load.
 
      Returns:
          graph : (nx.Graph)
@@ -47,16 +47,16 @@ def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple
         raise ValueError(f"[ERROR] Only graphs without self-loops are supported.")
 
     print(
-        f"[DEBUG] Nodes = {graph.number_of_nodes()}; Edges = {graph.number_of_edges()}; CCs = {nx.number_connected_components(graph)}"
+        f"[INFO] Nodes = {graph.number_of_nodes()}; "
+        f"Edges = {graph.number_of_edges()}; "
+        f"CCs = {nx.number_connected_components(graph)}"
     )
 
     # Extract largest connected component.
     if not nx.is_connected(graph):
         largest_cc = max(nx.connected_components(graph), key=len)
         graph = graph.subgraph(largest_cc).copy()
-        print(f"[INFO] Extracted LCC with {graph.number_of_nodes()} nodes and {graph.number_of_edges()} edges.")
-
-    print(f"[DEBUG] Nodes LCC = {graph.number_of_nodes()}; Edges LCC = {graph.number_of_edges()}")
+        print(f"[INFO] Nodes LCC = {graph.number_of_nodes()}; Edges LCC = {graph.number_of_edges()}")
 
     # Extract ground-truth labels.
     ground_truth_labels, k = None, None
@@ -66,7 +66,8 @@ def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple
             id_to_label = nx.get_node_attributes(graph, network_config.ground_truth_attr)
             unique_label_values = sorted(set(id_to_label.values()))
             label_value_to_idx = {label: idx for idx, label in enumerate(unique_label_values)}
-            print(f"[DEBUG] Labels-to-IDs: {label_value_to_idx}")
+            print(f"[INFO] K = {k}")
+            print(f"[INFO] Labels-to-IDs = {label_value_to_idx}")
 
             # NOTE: Nodes without the ground-truth attribute are labeled as -1.
             ground_truth_labels = [
@@ -85,6 +86,8 @@ def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple
                     unique_label_values.update(labels)
             unique_label_values = sorted(unique_label_values)
             label_value_to_idx = {label: idx for idx, label in enumerate(unique_label_values)}
+            print(f"[INFO] K = {k}")
+            print(f"[INFO] Labels-to-IDs = {label_value_to_idx}")
 
             ground_truth_labels = [
                 # NOTE: Nodes without the ground-truth attribute are labeled as [-1].
@@ -104,9 +107,8 @@ def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple
         else:
             missing_labels = ground_truth_labels.count([-1])
         if missing_labels > 0:
-            print(f"[INFO] There are {missing_labels} nodes without ground-truth labels.")
+            print(f"[INFO] Nodes without ground-truth labels = {missing_labels}")
 
-    print(f"[DEBUG] K = {k}")
     return graph, ground_truth_labels, k
 
 

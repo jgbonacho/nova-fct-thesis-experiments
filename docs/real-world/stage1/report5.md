@@ -141,7 +141,7 @@
 
 `Median of the normalized contributions for each network family, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-off and extraction of K clusters configuration`
 
-[Open Folder](../results/real-world/experience7/results_2026-05-17_22-40-29-009438/)
+[Open Folder](../../../results/real-world/stage1/experience7/results_2026-05-17_22-40-29-009438/)
 
 #### Thresholds
 
@@ -182,7 +182,7 @@
 
 `Median of the normalized contributions for each network family, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-on and extraction of K clusters configuration`
 
-[Open Folder](../results/real-world/experience7/results_2026-05-17_22-49-34-021831/)
+[Open Folder](../../../results/real-world/stage1/experience7/results_2026-05-17_22-49-34-021831/)
 
 #### Thresholds
 
@@ -228,11 +228,11 @@
 
 `Median of the geometric means between the K-th and (K+1)-th normalized contributions for each network family, computed only when the K-th contribution is greater than the (K+1)-th contribution and the previous contributions are decreasing, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-off configuration`
 
-[Open Folder](../results/real-world/experience7/results_2026-05-17_22-43-29-341884/)
+[Open Folder](../../../results/real-world/stage1/experience7/results_2026-05-17_22-43-29-341884/)
 
 #### Bar plot
 
-![Open Folder](../results/real-world/experience7/results_2026-05-17_22-43-29-341884/sorted_k_contributions_barplot.png)
+![Open Folder](../../../results/real-world/stage1/experience7/results_2026-05-17_22-43-29-341884/sorted_k_contributions_barplot.png)
 
 #### Thresholds by Network
 
@@ -294,7 +294,7 @@
 
 `Median of the geometric means between the K-th and (K+1)-th normalized contributions for each network family multiplied by the global sum, computed only when the K-th contribution is greater than the (K+1)-th contribution and the previous contributions are decreasing, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-off configuration`
 
-[Open Folder](../results/real-world/experience7/results_2026-05-17_23-19-37-286945/)
+[Open Folder](../../../results/real-world/stage1/experience7/results_2026-05-17_23-19-37-286945/)
 
 #### Thresholds
 
@@ -320,11 +320,11 @@
 
 `Median of the geometric means between the K-th and (K+1)-th normalized contributions for each network family, computed only when the K-th contribution is greater than the (K+1)-th contribution and the previous contributions are decreasing, where each contribution is normalized by the global sum of all contributions across all networks and all families, under the LAPIN-on configuration`
 
-[Open Folder](../results/real-world/experience7//results_2026-05-17_22-56-32-909059/)
+[Open Folder](../../../results/real-world/stage1/experience7/results_2026-05-17_22-56-32-909059/)
 
 #### Bar plot
 
-![](../results/real-world/experience7/results_2026-05-17_22-56-32-909059/sorted_k_contributions_barplot.png)
+![](../../../results/real-world/stage1/experience7/results_2026-05-17_22-56-32-909059/sorted_k_contributions_barplot.png)
 
 #### Thresholds By Family
 
@@ -391,7 +391,7 @@
 
 #### Thresholds
 
-[Open Folder](../results/real-world/experience7/results_2026-05-17_23-25-30-050698/)
+[Open Folder](../../../results/real-world/stage1/experience7/results_2026-05-17_23-25-30-050698/)
 
 | Network Family    | #Networks | #Valid Thresholds | Median Normalized Threshold | Median Raw Threshold   | Median gap_K           | Median ratio_K     | Threshold              |
 |-------------------|-----------|-------------------|-----------------------------|------------------------|------------------------|--------------------|------------------------|
@@ -573,37 +573,37 @@
 
 ### LAPIN-off Median Normalized Contributions
 
-[Open Folder](../results/real-world/experience8/results_2026-05-18_14-59-11-608487)
+[Open Folder](../../../results/real-world/stage1/experience8/results_2026-05-18_14-59-11-608487)
 
 
 
 ### LAPIN-on Median Normalized Contributions
 
-[Open Folder](../results/real-world/experience8/results_2026-05-18_15-06-14-201183)
+[Open Folder](../../../results/real-world/stage1/experience8/results_2026-05-18_15-06-14-201183)
 
 
 
 ### LAPIN-off Median K Boundary Normalized Contributions
 
-[Open Folder](../results/real-world/experience8/results_2026-05-18_15-01-36-389057)
+[Open Folder](../../../results/real-world/stage1/experience8/results_2026-05-18_15-01-36-389057)
 
 
 
 ### LAPIN-off Median K Boundary Raw Contributions
 
-[Open Folder](../results/real-world/experience8/results_2026-05-18_15-26-12-860725)
+[Open Folder](../../../results/real-world/stage1/experience8/results_2026-05-18_15-26-12-860725)
 
 
 
 ### LAPIN-on Median K Boundary Normalized Contributions
 
-[Open Folder](../results/real-world/experience8/results_2026-05-18_15-10-55-692486)
+[Open Folder](../../../results/real-world/stage1/experience8/results_2026-05-18_15-10-55-692486)
 
 
 
 ### LAPIN-on Median K Boundary Raw Contributions
 
-[Open Folder](../results/real-world/experience8/results_2026-05-18_15-30-47-241039)
+[Open Folder](../../../results/real-world/stage1/experience8/results_2026-05-18_15-30-47-241039)
 
 #### Thresholds By Family
 
@@ -651,5 +651,5 @@
   - The total number of networks is small.
 
 - **TODO**
-  - Consider more networks and divide them into train and test sets. Also include networks without ground-truth labels;
-  - Try only the split based on structural properties available for all networks, such as degree assortativity and average degree.
+  - [DONE [Report 6](./report6.md)] Consider more networks and divide them into train and test sets. Also include networks without ground-truth labels;
+  - [DONE [Report 6](./report6.md)] Try only the split based on structural properties available for all networks, such as degree assortativity and average degree.

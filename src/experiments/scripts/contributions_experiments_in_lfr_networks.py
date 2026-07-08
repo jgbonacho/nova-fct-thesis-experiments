@@ -8,9 +8,10 @@ from experiments.faddis.faddis import faddis
 from experiments.lapin.lapin import lapin
 from experiments.loaders.adjacency_matrix import compute_adjacency_matrix
 from experiments.loaders.synthetic_data_loader import load_lfr_benchmark_network
-from experiments.utils.utils import log_progress, selected_thresholds_using_bootstrap_and_mse, create_results_dir, \
-    save_normalized_contributions_and_draw_line_plots, save_statistics_and_draw_histograms, draw_boxplot, \
-    draw_line_plot, save_candidate_thresholds, save_experiment_report
+from experiments.utils.utils import log_progress, create_results_dir
+from experiments.utils.utils_lfr_networks import save_normalized_contributions_and_draw_line_plots, \
+    save_statistics_and_draw_histograms, draw_boxplot, draw_line_plot, save_candidate_thresholds, \
+    selected_thresholds_using_bootstrap_and_mse, save_experiment_report
 
 ROOT_DIR_PATH = os.path.join(os.path.dirname(__file__), '..', '..', '..')
 NETWORKS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'networks', 'synthetic')
@@ -33,8 +34,8 @@ THRESHOLDS_METRICS = ("Mean", "Median", "75%", "90%", "95%")
 def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use_desired_k: bool = True) -> str:
     """
     Run contributions experiments in LFR benchmark networks.
-    Exceptionally, when the configuration is LAPIN-off and extraction of K desired clusters, 
-    the script extracts K + 1 clusters due to the conditional removal of the first extracted cluster, which behave as a global/background component.
+    Exceptionally, when the configuration is LAPIN-off and extraction of K desired clusters,
+    the script extracts K + 1 clusters to account for the first extracted global/background component.
 
     Parameters:
         apply_lapin : (bool)
@@ -66,7 +67,7 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use
 
     results_dir = create_results_dir(RESULTS_BASE_DIR_PATH)
 
-    # Stage 1
+    # Stage 1: Obtain candidate thresholds for each network family
     network_family_dirs = sorted(
         [directory for directory in Path(NETWORKS_BASE_DIR_PATH).iterdir() if directory.is_dir()],
         key=lambda path: path.name
@@ -116,7 +117,7 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use
     draw_line_plot(results_dir, STATISTICS_FILENAME, LINE_PLOT_FILENAME)
     save_candidate_thresholds(results_dir, STATISTICS_FILENAME, CANDIDATE_THRESHOLDS_FILENAME, THRESHOLDS_METRICS)
 
-    # Stage 2
+    # Stage 2: Choose one of the candidate thresholds for each network family
     selected_thresholds_using_bootstrap_and_mse(
         results_dir=results_dir,
         raw_contributions_input_filename=RAW_CONTRIBUTIONS_FILENAME,
@@ -128,7 +129,7 @@ def run_contributions_experiments_in_lfr_networks(apply_lapin: bool = False, use
         subsample_fraction=0.8
     )
 
-    # Report
+    # Generate report
     save_experiment_report(results_dir, REPORT_FILENAME, apply_lapin, use_desired_k, network_family_dirs)
 
     return results_dir

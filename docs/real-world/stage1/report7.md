@@ -66,11 +66,11 @@
 
 ### Train Networks
 
-[Open File](../results/real-world/results_2026-05-31_22-06-21-764261/network_properties.csv)
+[Open File](../../../results/real-world/stage1/_checkpoint/results_2026-05-31_22-06-21-764261/network_properties.csv)
 
 ### Test Networks
 
-[Open File](../results/real-world/results_2026-06-01_16-03-37-120532/network_properties.csv)
+[Open File](../../../results/real-world/stage1/_checkpoint/results_2026-06-01_16-03-37-120532/network_properties.csv)
 
 #### Legend:
 
@@ -105,11 +105,11 @@
 
 ### LAPIN-on Median Normalized Contributions
 
-[Open File](../results/real-world/results_2026-05-31_22-06-21-764261/faddis_sensitivity_correlations.csv)
+[Open File](../../../results/real-world/stage1/_checkpoint/results_2026-05-31_22-06-21-764261/faddis_sensitivity_correlations.csv)
 
 ### LAPIN-on Median K Boundary Raw Contributions
 
-[Open File](../results/real-world/results_2026-05-31_22-13-24-576635/faddis_sensitivity_correlations.csv)
+[Open File](../../../results/real-world/stage1/_checkpoint/results_2026-05-31_22-13-24-576635/faddis_sensitivity_correlations.csv)
 
 ## Networks grouped by degree assortativity and average degree
 
@@ -241,13 +241,13 @@
 
 ### LAPIN-on Median Normalized Contributions Thresholds
 
-[Open File](../results/real-world/results_2026-05-31_22-06-21-764261/thresholds.csv)
+[Open File](../../../results/real-world/stage1/_checkpoint/results_2026-05-31_22-06-21-764261/thresholds.csv)
 
 ### LAPIN-on Median K Boundary Raw Contributions Thresholds
 
-[Open File](../results/real-world/results_2026-05-31_22-13-24-576635/k_boundary_thresholds_by_network.csv)
+[Open File](../../../results/real-world/stage1/_checkpoint/results_2026-05-31_22-13-24-576635/k_boundary_thresholds_by_network.csv)
 
-[Open File](../results/real-world/results_2026-05-31_22-13-24-576635/thresholds.csv)
+[Open File](../../../results/real-world/stage1/_checkpoint/results_2026-05-31_22-13-24-576635/thresholds.csv)
 
 ## Test Networks Assignment
 

@@ -86,16 +86,16 @@
 
 ### Script 1
 
-- The same script from [Report 1](./report1.md) adapted for real-world networks.
+- The same script from [Report 1](../../synthetic/report1.md) adapted for real-world networks.
 
 
 
 ## Experience 1 (All networks in the same family)
 
-- [LAPIN-off + Extraction of K desired clusters](../results/real-world/experience1/results_2026-05-11_17-16-40-964930/)
-- [LAPIN-off + Extraction of clusters until the end](../results/real-world/experience1/results_2026-05-11_17-18-14-544345/)
-- [LAPIN-on + Extraction of K desired clusters](../results/real-world/experience1/results_2026-05-11_17-21-38-957447/)
-- [LAPIN-on + Extraction of clusters until the end](../results/real-world/experience1/results_2026-05-11_17-25-21-076820/)
+- [LAPIN-off + Extraction of K desired clusters](../../../results/real-world/stage1/experience1/results_2026-05-11_17-16-40-964930/)
+- [LAPIN-off + Extraction of clusters until the end](../../../results/real-world/stage1/experience1/results_2026-05-11_17-18-14-544345/)
+- [LAPIN-on + Extraction of K desired clusters](../../../results/real-world/stage1/experience1/results_2026-05-11_17-21-38-957447/)
+- [LAPIN-on + Extraction of clusters until the end](../../../results/real-world/stage1/experience1/results_2026-05-11_17-25-21-076820/)
 
 ### Network Family 0
 
@@ -121,10 +121,10 @@
 
 ## Experience 2 (Networks grouped by ground-truth type)
 
-- [LAPIN-off + Extraction of K desired clusters](../results/real-world/experience2/results_2026-05-11_17-47-03-401105/)
-- [LAPIN-off + Extraction of clusters until the end](../results/real-world/experience2/results_2026-05-11_17-48-32-940928/)
-- [LAPIN-on + Extraction of K desired clusters](../results/real-world/experience2/results_2026-05-11_17-52-06-196699/)
-- [LAPIN-on + Extraction of clusters until the end](../results/real-world/experience2/results_2026-05-11_17-56-11-765646/)
+- [LAPIN-off + Extraction of K desired clusters](../../../results/real-world/stage1/experience2/results_2026-05-11_17-47-03-401105/)
+- [LAPIN-off + Extraction of clusters until the end](../../../results/real-world/stage1/experience2/results_2026-05-11_17-48-32-940928/)
+- [LAPIN-on + Extraction of K desired clusters](../../../results/real-world/stage1/experience2/results_2026-05-11_17-52-06-196699/)
+- [LAPIN-on + Extraction of clusters until the end](../../../results/real-world/stage1/experience2/results_2026-05-11_17-56-11-765646/)
 
 ### Network Family 1 (Non-Overlapping)
 
@@ -155,10 +155,10 @@
 
 ## Experience 3 (Networks grouped by ground-truth type and K range)
 
-- [LAPIN-off + Extraction of K desired clusters](../results/real-world/experience3/results_2026-05-11_18-17-41-621402/)
-- [LAPIN-off + Extraction of clusters until the end](../results/real-world/experience3/results_2026-05-11_18-19-22-543537/)
-- [LAPIN-on + Extraction of K desired clusters](../results/real-world/experience3/results_2026-05-11_18-23-13-894772/)
-- [LAPIN-on + Extraction of clusters until the end](../results/real-world/experience3/results_2026-05-11_18-26-52-927522/)
+- [LAPIN-off + Extraction of K desired clusters](../../../results/real-world/stage1/experience3/results_2026-05-11_18-17-41-621402/)
+- [LAPIN-off + Extraction of clusters until the end](../../../results/real-world/stage1/experience3/results_2026-05-11_18-19-22-543537/)
+- [LAPIN-on + Extraction of K desired clusters](../../../results/real-world/stage1/experience3/results_2026-05-11_18-23-13-894772/)
+- [LAPIN-on + Extraction of clusters until the end](../../../results/real-world/stage1/experience3/results_2026-05-11_18-26-52-927522/)
 
 ### Network Family 1 (Non-Overlapping + K $\in$ [2, 9])
 
@@ -219,10 +219,10 @@
 
 ## Experience 4 (Networks grouped by ground-truth type and the proportion of communities relative to the number of nodes)
 
-- [LAPIN-off + Extraction of K desired clusters](../results/real-world/experience4/results_2026-05-11_23-34-42-406663/)
-- [LAPIN-off + Extraction of clusters until the end](../results/real-world/experience4/results_2026-05-11_23-36-52-310392/)
-- [LAPIN-on + Extraction of K desired clusters](../results/real-world/experience4/results_2026-05-11_23-41-13-551792/)
-- [LAPIN-on + Extraction of clusters until the end](../results/real-world/experience4/results_2026-05-11_23-45-02-136334/)
+- [LAPIN-off + Extraction of K desired clusters](../../../results/real-world/stage1/experience4/results_2026-05-11_23-34-42-406663/)
+- [LAPIN-off + Extraction of clusters until the end](../../../results/real-world/stage1/experience4/results_2026-05-11_23-36-52-310392/)
+- [LAPIN-on + Extraction of K desired clusters](../../../results/real-world/stage1/experience4/results_2026-05-11_23-41-13-551792/)
+- [LAPIN-on + Extraction of clusters until the end](../../../results/real-world/stage1/experience4/results_2026-05-11_23-45-02-136334/)
 
 ### Network Family 1 (Non-Overlapping + Low Community Proportion (p < 0.03))
 
@@ -277,10 +277,10 @@
 
 ## Experience 5 (Networks grouped by ground-truth type and average degree)
 
-- [LAPIN-off + Extraction of K desired clusters](../results/real-world/experience5/results_2026-05-12_02-27-04-176865/)
-- [LAPIN-off + Extraction of clusters until the end](../results/real-world/experience5/results_2026-05-12_02-29-10-846671/)
-- [LAPIN-on + Extraction of K desired clusters](../results/real-world/experience5/results_2026-05-12_02-33-23-950371/)
-- [LAPIN-on + Extraction of clusters until the end](../results/real-world/experience5/results_2026-05-12_02-37-04-129501/)
+- [LAPIN-off + Extraction of K desired clusters](../../../results/real-world/stage1/experience5/results_2026-05-12_02-27-04-176865/)
+- [LAPIN-off + Extraction of clusters until the end](../../../results/real-world/stage1/experience5/results_2026-05-12_02-29-10-846671/)
+- [LAPIN-on + Extraction of K desired clusters](../../../results/real-world/stage1/experience5/results_2026-05-12_02-33-23-950371/)
+- [LAPIN-on + Extraction of clusters until the end](../../../results/real-world/stage1/experience5/results_2026-05-12_02-37-04-129501/)
 
 ### Network Family 1 (Non-Overlapping + Low Average Degree (a < 15))
 
@@ -326,10 +326,10 @@
 
 ## Experience 6 (One network per family)
 
-- [LAPIN-off + Extraction of K desired clusters](../results/real-world/experience6/results_2026-05-13_12-01-05-197153/)
-- [LAPIN-off + Extraction of clusters until the end](../results/real-world/experience6/results_2026-05-13_12-02-34-958486/)
-- [LAPIN-on + Extraction of K desired clusters](../results/real-world/experience6/results_2026-05-13_12-05-25-258749/)
-- [LAPIN-on + Extraction of clusters until the end](../results/real-world/experience6/results_2026-05-13_12-08-29-341122/)
+- [LAPIN-off + Extraction of K desired clusters](../../../results/real-world/stage1/experience6/results_2026-05-13_12-01-05-197153/)
+- [LAPIN-off + Extraction of clusters until the end](../../../results/real-world/stage1/experience6/results_2026-05-13_12-02-34-958486/)
+- [LAPIN-on + Extraction of K desired clusters](../../../results/real-world/stage1/experience6/results_2026-05-13_12-05-25-258749/)
+- [LAPIN-on + Extraction of clusters until the end](../../../results/real-world/stage1/experience6/results_2026-05-13_12-08-29-341122/)
 
 
 ### Network Family 1
@@ -435,5 +435,5 @@
   - The total number of networks is small.
 
 - **TODO**
-  - Perform a sensitivity analysis to identify which structural properties are more appropriate for splitting the networks into families;
-  - Test an alternative threshold-definition strategy based on the normalized contributions around the ground-truth K, instead of relying only on a statistic such as the median.
+  - [DONE [Report 5](./report5.md)] Perform a sensitivity analysis to identify which structural properties are more appropriate for splitting the networks into families;
+  - [DONE [Report 5](./report5.md)] Test an alternative threshold-definition strategy based on the normalized contributions around the ground-truth K, instead of relying only on a statistic such as the median.
