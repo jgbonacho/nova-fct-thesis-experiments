@@ -28,6 +28,23 @@ def create_results_dir(base_dir: str) -> str:
     return results_dir
 
 
+def create_dir(path: str) -> str:
+    """
+    Create a directory.
+
+    Parameters:
+        path : (str)
+            The path of the directory.
+
+    Returns:
+        path : (str)
+            The path of the directory.
+    """
+
+    os.makedirs(path, exist_ok=True)
+    return path
+
+
 def log_progress(
         current_step: int,
         total_steps: int,

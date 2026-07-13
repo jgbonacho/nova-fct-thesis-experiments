@@ -5,6 +5,9 @@ Entry point.
 from experiments.scripts.contributions_experiments_in_lfr_networks import run_contributions_experiments_in_lfr_networks
 from experiments.scripts.contributions_experiments_in_real_world_networks import \
     run_contributions_experiments_in_real_world_networks
+from experiments.scripts.sensitivity_experiments_in_real_world_networks import \
+    run_sensitivity_experiments_in_real_world_networks
+from experiments.utils.dataclasses.real_world_threshold_estimation_config import RealWorldThresholdEstimationConfig
 
 
 def main(estimate_lfr_network_thresholds=True, estimate_real_world_network_thresholds=True):
@@ -33,23 +36,30 @@ def main(estimate_lfr_network_thresholds=True, estimate_real_world_network_thres
         ## LFR experience with 'LAPIN-on + Extraction of clusters until the end'
         # run_contributions_experiments_in_lfr_networks(apply_lapin=True, use_desired_k=False)
 
-    # TODO: Review
     if estimate_real_world_network_thresholds:
-        # Real-world experience with 'LAPIN-off + Extraction of K desired clusters'
-        # run_contributions_experiments_in_real_world_networks(apply_lapin=False, use_desired_k=True)
+        run_sensitivity_experiments_in_real_world_networks(apply_lapin=True)
+        # run_sensitivity_experiments_in_real_world_networks(apply_lapin=False)
 
-        # Real-world experience with 'LAPIN-off + Extraction of clusters until the end'
-        # run_contributions_experiments_in_real_world_networks(apply_lapin=False, use_desired_k=False)
-
-        # Real-world experience with 'LAPIN-on + Extraction of K desired clusters'
-        run_contributions_experiments_in_real_world_networks(apply_lapin=True, use_desired_k=True)
-
-        # Real-world experience with 'LAPIN-on + Extraction of clusters until the end'
-        run_contributions_experiments_in_real_world_networks(apply_lapin=True, use_desired_k=False)
+        run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
+            apply_lapin=True,
+            overlapping_communities=False
+        ))
+        # run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
+        #    apply_lapin=True,
+        #    overlapping_communities=True
+        # ))
+        # run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
+        #    apply_lapin=False,
+        #    overlapping_communities=False
+        # ))
+        # run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
+        #    apply_lapin=False,
+        #    overlapping_communities=True
+        # ))
 
 
 if __name__ == "__main__":
     main(
-        estimate_lfr_network_thresholds=True,
+        estimate_lfr_network_thresholds=False,
         estimate_real_world_network_thresholds=True,
     )

@@ -1,68 +1,57 @@
-# TODO: Review.
-
 import csv
 import json
 import os
+from dataclasses import asdict
 from pathlib import Path
 
-import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib.lines import Line2D
+from matplotlib.patches import Patch
+from networkx import connected_double_edge_swap
+from numpy.linalg import norm
+from sklearn.metrics import normalized_mutual_info_score
 
-from experiments.utils.network_config_dataclass import NetworkConfig
+from experiments.defuzzification.defuzzification import apply_defuzzification_rule
+from experiments.evaluation.community_properties.community_properties import compute_community_properties
+from experiments.evaluation.computational_metrics.computational_metrics import get_computation_start_time, \
+    get_computation_end_time, compute_computational_metrics
+from experiments.evaluation.extrinsic_metrics.extrinsic_metrics import compute_extrinsic_metrics
+from experiments.evaluation.intrinsic_metrics.intrinsic_metrics import compute_intrinsic_metrics
+from experiments.faddis.faddis import faddis
+from experiments.lapin.lapin import lapin
+from experiments.loaders.adjacency_matrix import compute_adjacency_matrix
+from experiments.utils.dataclasses.candidate_threshold_dataclass import CandidateThreshold, IntrinsicEvaluation, \
+    StabilityEvaluation, CandidateThresholdName, NullModelEvaluation, ParetoPlusParsimonySelection, ExtrinsicEvaluation
+from experiments.utils.dataclasses.ground_truth_properties_dataclass import GroundTruthProperties
+from experiments.utils.dataclasses.network_config_dataclass import NetworkConfig
+from experiments.utils.dataclasses.network_properties_dataclass import NetworkProperties
+from experiments.utils.dataclasses.real_world_threshold_estimation_config import RealWorldThresholdEstimationConfig
+
+THRESHOLD_PLOT_STYLES = {
+    "e_family": {"label": r"$\epsilon_{\mathrm{family}}$", "color": "tab:red", "marker": "o"},
+    "e_global": {"label": r"$\epsilon_{\mathrm{global}}$", "color": "tab:grey", "marker": "s"},
+    "e_below": {"label": r"$\epsilon_{\mathrm{below}}$", "color": "tab:brown", "marker": "^"},
+    "e_above": {"label": r"$\epsilon_{\mathrm{above}}$", "color": "tab:green", "marker": "D"},
+    "e_elbow": {"label": r"$\epsilon_{\mathrm{elbow}}$", "color": "tab:purple", "marker": "*"}
+}
 
 
 def load_real_world_network_configs(network_directory: Path, input_filename: str) -> list[NetworkConfig]:
-    """
-    Load real-world network configs from a JSON file.
-
-    Parameters:
-        network_directory : (Path)
-            The path to the directory containing the JSON file.
-        input_filename : (str)
-            The name of the input JSON file, without the ".json" extension.
-
-    Returns:
-        networks : (list[NetworkConfig])
-             A list of NetworkConfig objects loaded from the JSON file.
-    """
-
-    with open(os.path.join(network_directory, f"{input_filename}.json"), "r", encoding="utf-8") as in_file:
+    file = os.path.join(network_directory, f"{input_filename}.json")
+    with open(file=file, mode="r", encoding="utf-8") as in_file:
         json_networks = json.load(in_file)
 
     return [NetworkConfig.from_dict(json_network) for json_network in json_networks]
 
 
-def compute_real_world_network_properties(
+def compute_network_properties(
         network_name: str,
         graph: nx.Graph,
-        ground_truth_labels: list,
-        k: int,
         ground_truth: bool,
         overlapping_ground_truth: bool
-) -> dict:
-    """
-    Compute properties (structural and ground-truth) of a real-world network.
-
-    Parameters:
-        network_name : (str)
-            The network name.
-        graph : (nx.Graph)
-            The preprocessed graph. It is assumed that this graph is already the LCC.
-        ground_truth_labels : (list[int] | list[list[int]] | None)
-            The ground-truth labels.
-        k : (int | None)
-            The number of ground-truth communities.
-        ground_truth : (bool)
-            Whether the network has ground-truth labels.
-        overlapping_ground_truth : (bool)
-            Whether the ground-truth labels are overlapping.
-
-    Returns:
-        properties : (dict)
-            Dictionary with structural network properties.
-    """
-
+) -> NetworkProperties:
     nodes = graph.number_of_nodes()
     edges = graph.number_of_edges()
 
@@ -81,91 +70,42 @@ def compute_real_world_network_properties(
         if max_degree is not None and average_degree is not None and average_degree > 0
         else None
     )
+    degree_assortativity = float(nx.degree_assortativity_coefficient(graph)) if nodes > 0 else None
 
     density = nx.density(graph) if nodes > 1 else 0.0
     sparsity = 1.0 - density
     global_clustering_coefficient = nx.transitivity(graph) if nodes > 0 else None
-    degree_assortativity = float(nx.degree_assortativity_coefficient(graph))
     average_clustering = nx.average_clustering(graph) if nodes > 0 else None
 
-    (
-        min_community_size,
-        max_community_size,
-        average_community_size,
-        community_size_std,
-        community_size_cv,
-        nodes_without_community,
-        nodes_fraction_without_community,
-        overlap_fraction
-    ) = _compute_ground_truth_properties(ground_truth_labels, overlapping_ground_truth, nodes)
-
-    return {
-        "Network": network_name,
-        "Ground-Truth?": ground_truth,
-        "Nodes LCC": nodes,
-        "Edges LCC": edges,
-        "Min Degree": min_degree,
-        "Max Degree": max_degree,
-        "Average Degree": average_degree,
-        "Degree Std": degree_std,
-        "Degree CV": degree_cv,
-        "Degree Hub Ratio": degree_hub_ratio,
-        "Density": density,
-        "Sparsity": sparsity,
-        "Global Clustering Coefficient": global_clustering_coefficient,
-        "Degree Assortativity": degree_assortativity,
-        "Average Clustering": average_clustering,
-        "Overlapping Ground-Truth?": overlapping_ground_truth,
-        "Overlap Fraction": overlap_fraction,
-        "K": k,
-        "Community Proportion": k / nodes if k is not None and nodes > 0 else None,
-        "Min Community Size": min_community_size,
-        "Max Community Size": max_community_size,
-        "Average Community Size": average_community_size,
-        "Community Size Std": community_size_std,
-        "Community Size CV": community_size_cv,
-        "Nodes Without Community": nodes_without_community,
-        "Nodes Fraction Without Community": nodes_fraction_without_community
-    }
+    return NetworkProperties(
+        network=network_name,
+        nodes_lcc=nodes,
+        edges_lcc=edges,
+        min_degree=min_degree,
+        max_degree=max_degree,
+        average_degree=average_degree,
+        degree_std=degree_std,
+        degree_cv=degree_cv,
+        degree_hub_ratio=degree_hub_ratio,
+        degree_assortativity=degree_assortativity,
+        density=density,
+        sparsity=sparsity,
+        global_clustering_coefficient=global_clustering_coefficient,
+        average_clustering=average_clustering,
+        ground_truth=ground_truth,
+        overlapping_ground_truth=overlapping_ground_truth
+    )
 
 
-def _compute_ground_truth_properties(
+def compute_ground_truth_properties(
+        network_name: str,
         ground_truth_labels: list,
+        k: int,
         overlapping_ground_truth: bool,
-        nodes: int
-) -> tuple[float, float, float, float, float, int, float, float]:
-    """
-    Compute ground-truth community properties.
-
-    Parameters:
-        ground_truth_labels : (list[int] | list[list[int]] | None)
-            The ground-truth labels.
-        overlapping_ground_truth : (bool)
-            Whether the ground-truth labels are overlapping.
-        nodes : (int)
-            The number of nodes.
-
-    Returns:
-        min_community_size : (float | None)
-            Minimum community size.
-        max_community_size : (float | None)
-            Maximum community size.
-        average_community_size : (float | None)
-            Average community size.
-        community_size_std : (float | None)
-            Standard deviation of community sizes.
-        community_size_cv : (float | None)
-            Coefficient of variation of community sizes.
-        nodes_without_community : (int | None)
-            Number of nodes without ground-truth community.
-        nodes_fraction_without_community : (float | None)
-            Fraction of nodes without ground-truth community.
-        overlap_fraction : (float | None)
-            Fraction of labeled nodes that belong to more than one community.
-    """
-
-    if ground_truth_labels is None or nodes == 0:
-        return None, None, None, None, None, None, None, None
+        number_of_nodes: int
+) -> GroundTruthProperties:
+    if ground_truth_labels is None:
+        return None
 
     community_sizes = {}
     nodes_without_community = 0
@@ -182,7 +122,6 @@ def _compute_ground_truth_properties(
             community_sizes[label] = community_sizes.get(label, 0) + 1
 
         overlap_fraction = 0.0
-
     else:
         for labels in ground_truth_labels:
             if labels == [-1] or len(labels) == 0:
@@ -224,1006 +163,96 @@ def _compute_ground_truth_properties(
             else None
         )
 
-    nodes_fraction_without_community = nodes_without_community / nodes
+    nodes_fraction_without_community = nodes_without_community / number_of_nodes
 
-    return (
-        min_community_size,
-        max_community_size,
-        average_community_size,
-        community_size_std,
-        community_size_cv,
-        nodes_without_community,
-        nodes_fraction_without_community,
-        overlap_fraction
+    return GroundTruthProperties(
+        network=network_name,
+        overlapping_ground_truth=overlapping_ground_truth,
+        overlap_fraction=overlap_fraction,
+        k=k,
+        community_proportion=k / number_of_nodes,
+        min_community_size=min_community_size,
+        max_community_size=max_community_size,
+        average_community_size=average_community_size,
+        community_size_std=community_size_std,
+        community_size_cv=community_size_cv,
+        nodes_without_community=nodes_without_community,
+        nodes_fraction_without_community=nodes_fraction_without_community
     )
 
 
-def selected_thresholds_using_a_statistic_metric(
+def append_properties(
         results_dir: str,
-        candidate_thresholds_input_filename: str,
-        thresholds_output_filename: str,
-        statistics_metric: str = "Median"
-) -> None:
-    """
-    Select thresholds using a fixed statistic metric.
-
-    Parameters:
-        results_dir : (str)
-            The path to the results' directory.
-        candidate_thresholds_input_filename : (str)
-            The name of the input CSV file containing candidate thresholds.
-        thresholds_output_filename : (str)
-            The name of the output CSV file to save the selected thresholds.
-        statistics_metric : (str, optional)
-            The statistic metric used to select the threshold.
-            Default is "Median".
-
-    Saves:
-        A CSV file with the selected threshold for each network family.
-    """
-
-    with open(os.path.join(results_dir, candidate_thresholds_input_filename), "r", newline="",
-              encoding="utf-8") as in_file, \
-            open(os.path.join(results_dir, thresholds_output_filename), "w", newline="",
-                 encoding="utf-8") as out_file:
-        reader = csv.DictReader(in_file)
-        writer = csv.writer(out_file)
-        writer.writerow(["Network Family", "Selected Metric", "Threshold"])
-
-        for row in reader:
-            writer.writerow([row["Network Family"], statistics_metric, row[statistics_metric]])
-
-
-def draw_sorted_k_contributions_bar_plot(
-        results_dir: str,
-        input_filename: str,
         output_filename: str,
-        remove_first_contribution: bool = False,
-        number_of_columns_to_skip: int = 2
+        output_fieldnames: list[str],
+        properties
 ) -> None:
-    """
-    Draw a bar plot of the normalized contribution at K for each network.
+    os.makedirs(results_dir, exist_ok=True)
 
-    If 'remove_first_contribution' is True, the first extracted contribution is ignored.
-    In that case, the effective c_K corresponds to the original c_{K+1}.
+    file = os.path.join(results_dir, output_filename)
+    write_header = not os.path.exists(file) or os.path.getsize(file) == 0
 
-    Parameters:
-        results_dir : (str)
-            The path to the results' directory.
-        input_filename : (str)
-            The name of the input CSV file containing normalized contributions.
-        output_filename : (str)
-            The name of the output file to save the bar plot.
-        remove_first_contribution : (bool, optional)
-            Whether to remove the first contribution before selecting c_K.
-            This is useful for LAPIN-off, where the first contribution may behave as a global/background component.
-            Default is False.
-        number_of_columns_to_skip : (int, optional)
-            The number of columns to skip before reading contribution values.
-            Default is 2, assuming the first two columns are "Network" and "K".
-
-    Saves:
-        A sorted bar plot of normalized c_K values across all networks.
-    """
-
-    k_contribution_rows = []
-
-    network_family_dirs = sorted(
-        [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
-        key=lambda path: path.name
-    )
-    for network_family_dir in network_family_dirs:
-        with open(os.path.join(network_family_dir, input_filename), "r", newline="", encoding="utf-8") as in_file:
-            reader = csv.reader(in_file)
-            next(reader, None)
-
-            for row in reader:
-                network_name = row[0]
-                k = _parse_optional_int(row[1])
-                contributions = [float(x) for x in row[number_of_columns_to_skip:] if x != ""]
-
-                if k is None:
-                    continue
-
-                if remove_first_contribution and len(contributions) > 0:
-                    effective_contributions = contributions[1:]
-                else:
-                    effective_contributions = contributions
-
-                if len(effective_contributions) < k:
-                    continue
-
-                k_contribution = effective_contributions[k - 1]
-
-                k_contribution_rows.append({
-                    "family": network_family_dir.name,
-                    "network": network_name,
-                    "k": k,
-                    "k_contribution": k_contribution
-                })
-
-    k_contribution_rows = sorted(
-        k_contribution_rows,
-        key=lambda item: item["k_contribution"],
-        reverse=True
-    )
-
-    labels = [row["network"] for row in k_contribution_rows]
-    values = [row["k_contribution"] for row in k_contribution_rows]
-
-    plt.figure(figsize=(max(10, 0.5 * len(values)), 5))
-    plt.bar(range(len(values)), values)
-
-    positive_values = [value for value in values if value > 0]
-    if len(positive_values) > 0:
-        plt.yscale("log")
-        plt.ylim(min(positive_values) / 2, max(positive_values) * 2)
-
-    plt.xticks(range(len(values)), labels, rotation=90)
-    plt.xlabel("Network")
-    plt.ylabel("Normalized Contribution at K")
-    plt.grid(axis="y", alpha=0.3)
-    plt.tight_layout()
-    plt.savefig(os.path.join(results_dir, output_filename), dpi=300)
-    plt.close()
+    with open(file=file, mode="a", newline="", encoding="utf-8") as out_file:
+        writer = csv.DictWriter(out_file, fieldnames=output_fieldnames)
+        if write_header:
+            writer.writeheader()
+        writer.writerow(properties.to_dict())
 
 
-def _parse_optional_int(value: str) -> int:
-    """
-    Parse an optional integer value.
-
-    Parameters:
-        value : (str)
-            The value to parse.
-
-    Returns:
-        value : (int | None)
-            The parsed integer, or None if the value is empty.
-    """
-
-    if value is None or value == "" or value == "None":
-        return None
-
-    return int(value)
-
-
-def save_k_boundary_geometric_mean_thresholds(
+def perform_faddis_sensitivity_analysis(
         results_dir: str,
-        input_filename: str,
-        output_by_network_filename: str,
-        output_by_family_filename: str,
-        remove_first_contribution: bool = False,
-        global_sum: float = None,
-        number_of_columns_to_skip: int = 2
-) -> None:
-    """
-    Save the K-boundary geometric mean thresholds by network and by family.
-
-    The network-level K-boundary threshold is computed as: threshold = sqrt(c_K * c_K+1),
-    where c_K is the contribution of the K-th extracted cluster and c_K+1 is the contribution of the next extracted cluster.
-
-    If the contributions were globally normalized as: normalized_contribution = raw_contribution / global_sum,
-    then the raw-scale threshold is recovered as: raw_threshold = normalized_threshold * global_sum.
-
-    The family-level threshold is computed as the median of the valid network-level thresholds inside each family.
-
-    Parameters:
-        results_dir : (str)
-            The path to the results' directory.
-        input_filename : (str)
-            The name of the input CSV file containing normalized contributions.
-        output_by_network_filename : (str)
-            The name of the output CSV file to save network-level K-boundary thresholds.
-        output_by_family_filename : (str)
-            The name of the output CSV file to save family-level median K-boundary thresholds.
-        remove_first_contribution : (bool, optional)
-            Whether to remove the first contribution before computing the K-boundary.
-            This is useful for LAPIN-off, where the first contribution may behave as a global/background component.
-            Default is False.
-        global_sum : (float | None, optional)
-            The global sum used to normalize the raw contributions.
-            If provided, the function also saves the raw-scale threshold.
-            Default is None.
-        number_of_columns_to_skip : (int, optional)
-            The number of columns to skip before reading contribution values.
-            Default is 2, assuming the first two columns are "Network" and "K".
-
-    Saves:
-        Two CSV files:
-            - one with K-boundary thresholds by network;
-            - one with median K-boundary thresholds by family.
-    """
-
-    network_family_dirs = sorted(
-        [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
-        key=lambda path: path.name
-    )
-
-    family_rows = {}
-    by_network_path = os.path.join(results_dir, output_by_network_filename)
-    by_family_path = os.path.join(results_dir, output_by_family_filename)
-
-    with open(by_network_path, "w", newline="", encoding="utf-8") as out_file:
-        writer = csv.writer(out_file)
-        writer.writerow([
-            "Network Family",
-            "Network",
-            "K",
-            "First Contribution Removed?",
-            "Number of Contributions",
-            "Effective Number of Contributions",
-            "Normalized c_K",
-            "Normalized c_K+1",
-            "gap_K",
-            "ratio_K",
-            "Normalized Threshold",
-            "Global Normalization Factor",
-            "Raw Threshold",
-            "Valid Threshold?"
-        ])
-
-        for network_family_dir in network_family_dirs:
-            family_rows[network_family_dir.name] = {
-                "number_of_networks": 0,
-                "number_of_valid_thresholds": 0,
-                "normalized_thresholds": [],
-                "raw_thresholds": [],
-                "gap_values": [],
-                "ratio_values": []
-            }
-
-            input_path = os.path.join(network_family_dir, input_filename)
-
-            with open(input_path, "r", newline="", encoding="utf-8") as in_file:
-                reader = csv.reader(in_file)
-                next(reader, None)
-
-                for row in reader:
-                    network_name = row[0]
-                    k = _parse_optional_int(row[1])
-                    contributions = [float(x) for x in row[number_of_columns_to_skip:] if x != ""]
-
-                    family_rows[network_family_dir.name]["number_of_networks"] += 1
-
-                    if remove_first_contribution and len(contributions) > 0:
-                        effective_contributions = contributions[1:]
-                    else:
-                        effective_contributions = contributions
-
-                    if k is None:
-                        writer.writerow([
-                            network_family_dir.name,
-                            network_name,
-                            None,
-                            remove_first_contribution,
-                            len(contributions),
-                            len(effective_contributions),
-                            None,
-                            None,
-                            None,
-                            None,
-                            None,
-                            global_sum,
-                            None,
-                            False
-                        ])
-                        continue
-
-                    # Need both c_K and c_K+1.
-                    if len(effective_contributions) <= k:
-                        writer.writerow([
-                            network_family_dir.name,
-                            network_name,
-                            k,
-                            remove_first_contribution,
-                            len(contributions),
-                            len(effective_contributions),
-                            None,
-                            None,
-                            None,
-                            None,
-                            None,
-                            global_sum,
-                            None,
-                            False
-                        ])
-                        continue
-
-                    c_k = effective_contributions[k - 1]
-                    c_k_plus_1 = effective_contributions[k]
-
-                    gap_k = c_k - c_k_plus_1
-                    ratio_k = c_k / c_k_plus_1 if c_k_plus_1 > 0 else np.inf
-
-                    normalized_threshold = np.sqrt(c_k * c_k_plus_1)
-                    raw_threshold = (
-                        normalized_threshold * global_sum
-                        if global_sum is not None
-                        else None
-                    )
-
-                    valid_threshold = c_k > c_k_plus_1
-
-                    if valid_threshold:
-                        family_rows[network_family_dir.name]["number_of_valid_thresholds"] += 1
-                        family_rows[network_family_dir.name]["normalized_thresholds"].append(normalized_threshold)
-                        family_rows[network_family_dir.name]["gap_values"].append(gap_k)
-                        family_rows[network_family_dir.name]["ratio_values"].append(ratio_k)
-
-                        if raw_threshold is not None:
-                            family_rows[network_family_dir.name]["raw_thresholds"].append(raw_threshold)
-
-                    writer.writerow([
-                        network_family_dir.name,
-                        network_name,
-                        k,
-                        remove_first_contribution,
-                        len(contributions),
-                        len(effective_contributions),
-                        c_k,
-                        c_k_plus_1,
-                        gap_k,
-                        ratio_k,
-                        normalized_threshold,
-                        global_sum,
-                        raw_threshold,
-                        valid_threshold
-                    ])
-
-    with open(by_family_path, "w", newline="", encoding="utf-8") as out_file:
-        writer = csv.writer(out_file)
-        writer.writerow([
-            "Network Family",
-            "#Networks",
-            "#Valid Thresholds",
-            "Median Normalized Threshold",
-            "Median Raw Threshold",
-            "Median gap_K",
-            "Median ratio_K",
-            "Threshold"
-        ])
-
-        for family_name, values in family_rows.items():
-            normalized_thresholds = values["normalized_thresholds"]
-            raw_thresholds = values["raw_thresholds"]
-            gap_values = values["gap_values"]
-            ratio_values = values["ratio_values"]
-
-            median_normalized_threshold = _median_or_none(normalized_thresholds)
-            median_raw_threshold = _median_or_none(raw_thresholds)
-            median_gap_k = _median_or_none(gap_values)
-            median_ratio_k = _median_or_none(ratio_values)
-
-            writer.writerow([
-                family_name,
-                values["number_of_networks"],
-                values["number_of_valid_thresholds"],
-                median_normalized_threshold,
-                median_raw_threshold,
-                median_gap_k,
-                median_ratio_k,
-                median_raw_threshold
-            ])
-
-
-def _median_or_none(values: list[float]) -> float:
-    """
-    Compute the median of a list, or return None if the list is empty.
-
-    Parameters:
-        values : (list[float])
-            The list of values.
-
-    Returns:
-        median : (float | None)
-            The median value, or None if the list is empty.
-    """
-
-    if len(values) == 0:
-        return None
-
-    return float(np.median(values))
-
-
-# def save_k_boundary_geometric_mean_thresholds(
-#         results_dir: str,
-#         input_filename: str,
-#         output_by_network_filename: str,
-#         output_by_family_filename: str,
-#         remove_first_contribution: bool = False,
-#         global_sum: float = None,
-#         number_of_columns_to_skip: int = 2,
-#         c_k_margin: float = 1e-9
-# ) -> None:
-#     """
-#     Save the K-boundary c_K-based thresholds by network and by family.
-
-#     The network-level threshold is computed as a value slightly below c_K:
-
-#         threshold = c_K * (1 - c_k_margin)
-
-#     where c_K is the contribution of the K-th extracted cluster.
-
-#     This is useful to test a threshold close to c_K, instead of using the geometric mean between c_K and c_K+1.
-
-#     The threshold is considered valid when:
-
-#         c_K+1 < threshold < c_K
-
-#     If the contributions were globally normalized as:
-
-#         normalized_contribution = raw_contribution / global_sum
-
-#     then the raw-scale threshold is recovered as:
-
-#         raw_threshold = normalized_threshold * global_sum
-
-#     The family-level threshold is computed as the median of the valid network-level thresholds inside each family.
-
-#     Parameters:
-#         results_dir : (str)
-#             The path to the results' directory.
-#         input_filename : (str)
-#             The name of the input CSV file containing normalized contributions.
-#         output_by_network_filename : (str)
-#             The name of the output CSV file to save network-level K-boundary thresholds.
-#         output_by_family_filename : (str)
-#             The name of the output CSV file to save family-level median K-boundary thresholds.
-#         remove_first_contribution : (bool, optional)
-#             Whether to remove the first contribution before computing the K-boundary.
-#             This is useful for LAPIN-off, where the first contribution may behave as a global/background component.
-#             Default is False.
-#         global_sum : (float | None, optional)
-#             The global sum used to normalize the raw contributions.
-#             If provided, the function also saves the raw-scale threshold.
-#             Default is None.
-#         number_of_columns_to_skip : (int, optional)
-#             The number of columns to skip before reading contribution values.
-#             Default is 2, assuming the first two columns are "Network" and "K".
-#         c_k_margin : (float, optional)
-#             Small relative margin used to place the threshold slightly below c_K.
-#             Default is 1e-9.
-
-#     Saves:
-#         Two CSV files:
-#             - one with c_K-based thresholds by network;
-#             - one with median c_K-based thresholds by family.
-#     """
-
-#     network_family_dirs = sorted(
-#         [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
-#         key=lambda path: path.name
-#     )
-
-#     family_rows = {}
-#     by_network_path = os.path.join(results_dir, output_by_network_filename)
-#     by_family_path = os.path.join(results_dir, output_by_family_filename)
-
-#     with open(by_network_path, "w", newline="", encoding="utf-8") as out_file:
-#         writer = csv.writer(out_file)
-#         writer.writerow([
-#             "Network Family",
-#             "Network",
-#             "K",
-#             "First Contribution Removed?",
-#             "Number of Contributions",
-#             "Effective Number of Contributions",
-#             "Normalized c_K",
-#             "Normalized c_K+1",
-#             "gap_K",
-#             "ratio_K",
-#             "Normalized Threshold",
-#             "Global Normalization Factor",
-#             "Raw Threshold",
-#             "Valid Threshold?"
-#         ])
-
-#         for network_family_dir in network_family_dirs:
-#             family_rows[network_family_dir.name] = {
-#                 "number_of_networks": 0,
-#                 "number_of_valid_thresholds": 0,
-#                 "normalized_thresholds": [],
-#                 "raw_thresholds": [],
-#                 "gap_values": [],
-#                 "ratio_values": []
-#             }
-
-#             input_path = os.path.join(network_family_dir, input_filename)
-
-#             with open(input_path, "r", newline="", encoding="utf-8") as in_file:
-#                 reader = csv.reader(in_file)
-#                 next(reader, None)
-
-#                 for row in reader:
-#                     network_name = row[0]
-#                     k = _parse_optional_int(row[1])
-#                     contributions = [float(x) for x in row[number_of_columns_to_skip:] if x != ""]
-
-#                     family_rows[network_family_dir.name]["number_of_networks"] += 1
-
-#                     if remove_first_contribution and len(contributions) > 0:
-#                         effective_contributions = contributions[1:]
-#                     else:
-#                         effective_contributions = contributions
-
-#                     if k is None:
-#                         writer.writerow([
-#                             network_family_dir.name,
-#                             network_name,
-#                             None,
-#                             remove_first_contribution,
-#                             len(contributions),
-#                             len(effective_contributions),
-#                             None,
-#                             None,
-#                             None,
-#                             None,
-#                             None,
-#                             global_sum,
-#                             None,
-#                             False
-#                         ])
-#                         continue
-
-#                     # Need both c_K and c_K+1.
-#                     if len(effective_contributions) <= k:
-#                         writer.writerow([
-#                             network_family_dir.name,
-#                             network_name,
-#                             k,
-#                             remove_first_contribution,
-#                             len(contributions),
-#                             len(effective_contributions),
-#                             None,
-#                             None,
-#                             None,
-#                             None,
-#                             None,
-#                             global_sum,
-#                             None,
-#                             False
-#                         ])
-#                         continue
-
-#                     c_k = effective_contributions[k - 1]
-#                     c_k_plus_1 = effective_contributions[k]
-
-#                     gap_k = c_k - c_k_plus_1
-#                     ratio_k = c_k / c_k_plus_1 if c_k_plus_1 > 0 else np.inf
-
-#                     # New strategy:
-#                     # Use a threshold very close to c_K, but slightly below it.
-#                     normalized_threshold = c_k * (1 - c_k_margin)
-
-#                     raw_threshold = (
-#                         normalized_threshold * global_sum
-#                         if global_sum is not None
-#                         else None
-#                     )
-
-#                     valid_threshold = c_k_plus_1 < normalized_threshold < c_k
-
-#                     if valid_threshold:
-#                         family_rows[network_family_dir.name]["number_of_valid_thresholds"] += 1
-#                         family_rows[network_family_dir.name]["normalized_thresholds"].append(normalized_threshold)
-#                         family_rows[network_family_dir.name]["gap_values"].append(gap_k)
-#                         family_rows[network_family_dir.name]["ratio_values"].append(ratio_k)
-
-#                         if raw_threshold is not None:
-#                             family_rows[network_family_dir.name]["raw_thresholds"].append(raw_threshold)
-
-#                     writer.writerow([
-#                         network_family_dir.name,
-#                         network_name,
-#                         k,
-#                         remove_first_contribution,
-#                         len(contributions),
-#                         len(effective_contributions),
-#                         c_k,
-#                         c_k_plus_1,
-#                         gap_k,
-#                         ratio_k,
-#                         normalized_threshold,
-#                         global_sum,
-#                         raw_threshold,
-#                         valid_threshold
-#                     ])
-
-#     with open(by_family_path, "w", newline="", encoding="utf-8") as out_file:
-#         writer = csv.writer(out_file)
-#         writer.writerow([
-#             "Network Family",
-#             "#Networks",
-#             "#Valid Thresholds",
-#             "Median Normalized Threshold",
-#             "Median Raw Threshold",
-#             "Median gap_K",
-#             "Median ratio_K",
-#             "Threshold"
-#         ])
-
-#         for family_name, values in family_rows.items():
-#             normalized_thresholds = values["normalized_thresholds"]
-#             raw_thresholds = values["raw_thresholds"]
-#             gap_values = values["gap_values"]
-#             ratio_values = values["ratio_values"]
-
-#             median_normalized_threshold = _median_or_none(normalized_thresholds)
-#             median_raw_threshold = _median_or_none(raw_thresholds)
-#             median_gap_k = _median_or_none(gap_values)
-#             median_ratio_k = _median_or_none(ratio_values)
-
-#             final_threshold = (
-#                 median_raw_threshold
-#                 if global_sum is not None
-#                 else median_normalized_threshold
-#             )
-
-#             writer.writerow([
-#                 family_name,
-#                 values["number_of_networks"],
-#                 values["number_of_valid_thresholds"],
-#                 median_normalized_threshold,
-#                 median_raw_threshold,
-#                 median_gap_k,
-#                 median_ratio_k,
-#                 final_threshold
-#             ])
-
-
-# def save_k_boundary_geometric_mean_thresholds(
-#         results_dir: str,
-#         input_filename: str,
-#         output_by_network_filename: str,
-#         output_by_family_filename: str,
-#         remove_first_contribution: bool = False,
-#         global_sum: float = None,
-#         number_of_columns_to_skip: int = 2
-# ) -> None:
-#     """
-#     Save the K-boundary thresholds by network and by family.
-
-#     The network-level K-boundary threshold is computed as: threshold = sqrt(c_K * c_K+1),
-#     where c_K is the contribution of the K-th extracted cluster and c_K+1 is the contribution of the next extracted cluster.
-
-#     The family-level threshold is computed using the common valid threshold interval: max(c_K+1) < threshold < min(c_K).
-#     If the common interval exists, the family threshold is computed as: threshold = sqrt(max(c_K+1) * min(c_K)).
-#     If the common interval does not exist, an approximate threshold is computed using the same formula: threshold = sqrt(max(c_K+1) * min(c_K)).
-#     In this case, the threshold balances the conflict between the family lower bound and upper bound in logarithmic scale,
-#     but it is not strictly valid for all networks in the family.
-
-#     If the contributions were globally normalized as: normalized_contribution = raw_contribution / global_sum,
-#     then the raw-scale threshold is recovered as: raw_threshold = normalized_threshold * global_sum
-
-#     Parameters:
-#         results_dir : (str)
-#             The path to the results' directory.
-#         input_filename : (str)
-#             The name of the input CSV file containing normalized contributions.
-#         output_by_network_filename : (str)
-#             The name of the output CSV file to save network-level K-boundary thresholds.
-#         output_by_family_filename : (str)
-#             The name of the output CSV file to save family-level K-boundary thresholds.
-#         remove_first_contribution : (bool, optional)
-#             Whether to remove the first contribution before computing the K-boundary.
-#             This is useful for LAPIN-off, where the first contribution may behave as a global/background component.
-#             Default is False.
-#         global_sum : (float | None, optional)
-#             The global sum used to normalize the raw contributions.
-#             If provided, the function also saves the raw-scale threshold.
-#             Default is None.
-#         number_of_columns_to_skip : (int, optional)
-#             The number of columns to skip before reading contribution values.
-#             Default is 2, assuming the first two columns are "Network" and "K".
-
-#     Saves:
-#         Two CSV files:
-#             - one with K-boundary thresholds by network;
-#             - one with common-interval or approximate common-interval thresholds by family.
-#     """
-
-#     network_family_dirs = sorted(
-#         [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
-#         key=lambda path: path.name
-#     )
-
-#     family_rows = {}
-#     by_network_path = os.path.join(results_dir, output_by_network_filename)
-#     by_family_path = os.path.join(results_dir, output_by_family_filename)
-
-#     with open(by_network_path, "w", newline="", encoding="utf-8") as out_file:
-#         writer = csv.writer(out_file)
-#         writer.writerow([
-#             "Network Family", "Network", "K",
-#             "First Contribution Removed?", "Number of Contributions", "Effective Number of Contributions",
-#             "Normalized c_K", "Normalized c_K+1", "gap_K", "ratio_K", "Normalized Threshold",
-#             "Global Normalization Factor", "Raw Threshold", "Valid Threshold?"
-#         ])
-
-#         for network_family_dir in network_family_dirs:
-#             family_rows[network_family_dir.name] = {
-#                 "number_of_networks": 0,
-#                 "number_of_valid_thresholds": 0,
-#                 "normalized_c_k_values": [],
-#                 "normalized_c_k_plus_1_values": [],
-#                 "gap_values": [],
-#                 "ratio_values": []
-#             }
-
-#             input_path = os.path.join(network_family_dir, input_filename)
-
-#             with open(input_path, "r", newline="", encoding="utf-8") as in_file:
-#                 reader = csv.reader(in_file)
-#                 next(reader, None)
-
-#                 for row in reader:
-#                     network_name = row[0]
-#                     k = _parse_optional_int(row[1])
-#                     contributions = [float(x) for x in row[number_of_columns_to_skip:] if x != ""]
-
-#                     family_rows[network_family_dir.name]["number_of_networks"] += 1
-
-#                     if remove_first_contribution and len(contributions) > 0:
-#                         effective_contributions = contributions[1:]
-#                     else:
-#                         effective_contributions = contributions
-
-#                     if k is None:
-#                         writer.writerow([
-#                             network_family_dir.name, network_name, None,
-#                             remove_first_contribution, len(contributions), len(effective_contributions),
-#                             None, None, None, None, None,
-#                             global_sum, None, False
-#                         ])
-#                         continue
-
-#                     # Need both c_K and c_K+1.
-#                     if len(effective_contributions) <= k:
-#                         writer.writerow([
-#                             network_family_dir.name, network_name, k,
-#                             remove_first_contribution, len(contributions), len(effective_contributions),
-#                             None, None, None, None, None,
-#                             global_sum, None, False
-#                         ])
-#                         continue
-
-#                     c_k = effective_contributions[k - 1]
-#                     c_k_plus_1 = effective_contributions[k]
-
-#                     gap_k = c_k - c_k_plus_1
-#                     ratio_k = c_k / c_k_plus_1 if c_k_plus_1 > 0 else np.inf
-
-#                     normalized_threshold = _interval_midpoint(c_k_plus_1, c_k)
-#                     raw_threshold = (normalized_threshold * global_sum if global_sum is not None else None)
-
-#                     valid_threshold = c_k > c_k_plus_1
-
-#                     if valid_threshold:
-#                         family_rows[network_family_dir.name]["number_of_valid_thresholds"] += 1
-#                         family_rows[network_family_dir.name]["normalized_c_k_values"].append(c_k)
-#                         family_rows[network_family_dir.name]["normalized_c_k_plus_1_values"].append(c_k_plus_1)
-#                         family_rows[network_family_dir.name]["gap_values"].append(gap_k)
-#                         family_rows[network_family_dir.name]["ratio_values"].append(ratio_k)
-
-#                     writer.writerow([
-#                         network_family_dir.name, network_name, k,
-#                         remove_first_contribution, len(contributions), len(effective_contributions),
-#                         c_k, c_k_plus_1, gap_k, ratio_k, normalized_threshold,
-#                         global_sum, raw_threshold, valid_threshold
-#                     ])
-
-#     with open(by_family_path, "w", newline="", encoding="utf-8") as out_file:
-#         writer = csv.writer(out_file)
-#         writer.writerow([
-#             "Network Family",
-#             "#Networks",
-#             "#Valid Thresholds",
-#             "Normalized c_K Values",
-#             "Normalized c_K+1 Values",
-#             "Min Normalized c_K",
-#             "Max Normalized c_K+1",
-#             "Interval Overlaps?",
-#             "Family Threshold Mode",
-#             "Normalized Threshold",
-#             "Global Normalization Factor",
-#             "Raw Threshold",
-#             "Threshold"
-#         ])
-
-#         for family_name, values in family_rows.items():
-#             c_k_values = values["normalized_c_k_values"]
-#             c_k_plus_1_values = values["normalized_c_k_plus_1_values"]
-
-#             lower_bound_options = c_k_plus_1_values
-#             upper_bound_options = c_k_values
-
-#             if len(lower_bound_options) == 0 or len(upper_bound_options) == 0:
-#                 family_threshold_mode = "no_valid_interval"
-#                 common_interval_exists = False
-#                 common_interval_lower_bound = 0
-#                 common_interval_upper_bound = 0
-#                 normalized_threshold = 0
-#                 raw_threshold = 0
-
-#             else:
-#                 common_interval_lower_bound = max(lower_bound_options)
-#                 common_interval_upper_bound = min(upper_bound_options)
-
-#                 common_interval_exists = common_interval_lower_bound < common_interval_upper_bound
-
-#                 if common_interval_exists:
-#                     family_threshold_mode = "common_interval"
-#                 else:
-#                     family_threshold_mode = "approximate_common_interval"
-
-#                 normalized_threshold = _interval_midpoint(common_interval_lower_bound, common_interval_upper_bound)
-
-#                 raw_threshold = (normalized_threshold * global_sum if global_sum is not None else None)
-
-#             final_threshold = (raw_threshold if global_sum is not None else normalized_threshold)
-
-#             writer.writerow([
-#                 family_name,
-#                 values["number_of_networks"],
-#                 values["number_of_valid_thresholds"],
-#                 c_k_values,
-#                 c_k_plus_1_values,
-#                 common_interval_upper_bound,
-#                 common_interval_lower_bound,
-#                 common_interval_exists,
-#                 family_threshold_mode,
-#                 normalized_threshold,
-#                 global_sum,
-#                 raw_threshold,
-#                 final_threshold
-#             ])
-
-
-# def _interval_midpoint(lower_bound: float, upper_bound: float) -> float:
-#     """
-#     Compute a midpoint between two bounds, using the geometric mean.
-
-#     Parameters:
-#         lower_bound : (float)
-#             The first bound.
-#         upper_bound : (float)
-#             The second bound.
-
-#     Returns:
-#         midpoint : (float)
-#             A threshold between the two bounds.
-#     """
-
-#     return float(np.sqrt(lower_bound * upper_bound))
-
-
-def save_faddis_sensitivity_correlations(
-        results_dir: str,
-        network_properties_filename: str,
-        threshold_source_filename: str,
+        network_properties_input_filename: str,
+        network_properties_input_fieldnames: list,
+        raw_contributions_input_filename: str,
+        raw_contributions_input_fieldnames: list,
         output_filename: str,
-        threshold_mode: str,
-        statistic_metric: str = "Median",
-        threshold_column: str = "Normalized Threshold",
-        valid_thresholds_only: bool = True,
-        number_of_columns_to_skip: int = 3
+        output_fieldnames: list,
+        apply_lapin: bool
 ) -> None:
-    """
-    Compute correlations between network properties and FADDIS threshold values.
-    Two threshold modes are supported:
-        - 'network_statistic': computes one threshold per network using a statistic over the normalized contribution sequence, e.g., Median.
-        - 'k_boundary': uses the K-boundary threshold already saved by network.
+    network_properties = _load_network_properties(os.path.join(results_dir, network_properties_input_filename))
+    contributions_at_k = _load_valid_contributions_at_k(
+        results_dir, raw_contributions_input_filename, raw_contributions_input_fieldnames, apply_lapin
+    )
 
-    Parameters:
-        results_dir : (str)
-            The path to the results' directory.
-        network_properties_filename : (str)
-            The name of the CSV file containing network properties.
-        threshold_source_filename : (str)
-            The name of the CSV file used to obtain the threshold values.
-            For 'network_statistic', this is usually 'normalized_contributions.csv'.
-            For 'k_boundary', this is usually 'k_boundary_thresholds_by_network.csv'.
-        output_filename : (str)
-            The name of the output CSV file to save the sensitivity correlations.
-        threshold_mode : (str)
-            The threshold source mode. Supported values are 'network_statistic' and 'k_boundary'.
-        statistic_metric : (str, optional)
-            The statistic used in 'network_statistic' mode.
-            Supported values are 'Mean', 'Median', '75%', '90%', and '95%'.
-            Default is 'Median'.
-        threshold_column : (str, optional)
-            The threshold column used in 'k_boundary' mode.
-            Default is 'Normalized Threshold'.
-        valid_thresholds_only : (bool, optional)
-            Whether to use only valid thresholds in 'k_boundary' mode.
-            Default is True.
-        number_of_columns_to_skip : (int, optional)
-            The number of metadata columns to skip before reading contribution values.
-            Default is 3, assuming the first columns are 'Network', 'K', and 'Stop Condition'.
-
-    Saves:
-        A CSV file with Pearson and Spearman correlations between each network property and the normalized FADDIS threshold.
-    """
-
-    if threshold_mode not in {"network_statistic", "k_boundary"}:
-        raise ValueError("[ERROR] 'threshold_mode' must be 'network_statistic' or 'k_boundary'.")
-
-    network_properties = _load_network_properties(os.path.join(results_dir, network_properties_filename))
-
-    if threshold_mode == "network_statistic":
-        thresholds = _compute_network_statistic_thresholds(
-            results_dir=results_dir,
-            input_filename=threshold_source_filename,
-            statistic_metric=statistic_metric,
-            number_of_columns_to_skip=number_of_columns_to_skip
-        )
-        threshold_label = f"{statistic_metric} Normalized Contributions"
-
-    else:
-        thresholds = _load_k_boundary_thresholds_by_network(
-            input_path=os.path.join(results_dir, threshold_source_filename),
-            threshold_column=threshold_column,
-            valid_thresholds_only=valid_thresholds_only
-        )
-        threshold_label = threshold_column
-
-    merged_rows = []
-    for network_name, properties in network_properties.items():
-        if network_name not in thresholds:
-            continue
-
-        threshold_value = thresholds[network_name]
-
-        if threshold_value is None or threshold_value <= 0:
-            continue
-
-        row = dict(properties)
-        row["Threshold"] = threshold_value
-        merged_rows.append(row)
-
-    groups = [
-        ("Non-overlapping and Overlapping", merged_rows),
-        (
-            "Non-overlapping",
-            [row for row in merged_rows if str(row.get("Overlapping Ground-Truth?")).lower() == "false"]
-        ),
-        (
-            "Overlapping",
-            [row for row in merged_rows if str(row.get("Overlapping Ground-Truth?")).lower() == "true"]
-        )
+    ground_truth_groups = [
+        ("Non-overlapping and Overlapping", network_properties),
+        ("Non-overlapping",
+         {
+             network_name: properties for network_name, properties in network_properties.items()
+             if str(properties.get("Overlapping Ground-Truth?")).lower() == "false"
+         }
+         ),
+        ("Overlapping",
+         {
+             network_name: properties for network_name, properties in network_properties.items()
+             if str(properties.get("Overlapping Ground-Truth?")).lower() == "true"
+         }
+         )
     ]
 
-    excluded_columns = {"Network", "Ground-Truth?", "Overlapping Ground-Truth?", "Threshold"}
-
+    excluded_columns = {"Network", "Ground-Truth?", "Overlapping Ground-Truth?"}
     output_rows = []
-
-    for group_name, group_rows in groups:
-        if len(group_rows) < 3:
-            continue
-
-        candidate_properties = sorted(set().union(*(row.keys() for row in group_rows)))
-
-        for property_name in candidate_properties:
+    for ground_truth_type, group_network_properties in ground_truth_groups:
+        for property_name in network_properties_input_fieldnames:
             if property_name in excluded_columns:
                 continue
 
             x_values = []
             y_values = []
-
-            for row in group_rows:
-                x = _parse_optional_float(row.get(property_name))
-                y = _parse_optional_float(row.get("Threshold"))
-
-                if x is None or y is None:
+            for network_name, properties in group_network_properties.items():
+                if network_name not in contributions_at_k:
                     continue
 
-                x_values.append(x)
-                y_values.append(y)
+                property_value = _parse_optional_float(properties.get(property_name))
+                contribution_at_k = contributions_at_k[network_name]
 
-            if len(x_values) < 3:
-                continue
+                if property_value is None:
+                    continue
 
-            if len(set(x_values)) <= 1:
+                x_values.append(property_value)
+                y_values.append(contribution_at_k)
+
+            if len(x_values) < 3 or len(set(x_values)) <= 1:
                 continue
 
             pearson_correlation = _pearson_correlation(x_values, y_values)
@@ -1233,84 +262,66 @@ def save_faddis_sensitivity_correlations(
                 continue
 
             output_rows.append({
-                "Group": group_name,
-                "Threshold": threshold_label,
-                "Property": property_name,
+                "Ground-Truth Type": ground_truth_type,
+                "Network Property": property_name,
+                "FADDIS Property": "c_K",
                 "#Networks": len(x_values),
                 "Spearman Correlation": spearman_correlation,
                 "Pearson Correlation": pearson_correlation,
                 "Abs Spearman Correlation (Sort Criterion)": abs(spearman_correlation)
             })
 
-    output_rows = sorted(
-        output_rows,
-        key=lambda row: (row["Group"], -row["Abs Spearman Correlation (Sort Criterion)"])
+    ground_truth_type_order = {"Non-overlapping and Overlapping": 0, "Non-overlapping": 1, "Overlapping": 2}
+    output_rows.sort(
+        key=lambda r: (
+            ground_truth_type_order[r["Ground-Truth Type"]],
+            r["FADDIS Property"],
+            -r["Abs Spearman Correlation (Sort Criterion)"]
+        )
     )
+    for row in output_rows:
+        row.pop("Abs Spearman Correlation (Sort Criterion)")
 
-    with open(os.path.join(results_dir, output_filename), "w", newline="", encoding="utf-8") as out_file:
-        writer = csv.DictWriter(out_file, fieldnames=[
-            "Group",
-            "Threshold",
-            "Property",
-            "#Networks",
-            "Spearman Correlation",
-            "Pearson Correlation",
-            "Abs Spearman Correlation (Sort Criterion)"
-        ])
+    file = os.path.join(results_dir, output_filename)
+    with open(file=file, mode="w", newline="", encoding="utf-8") as out_file:
+        writer = csv.DictWriter(out_file, fieldnames=output_fieldnames)
         writer.writeheader()
         writer.writerows(output_rows)
 
 
 def _load_network_properties(input_path: str) -> dict[str, dict]:
-    """
-    Load network properties from a CSV file.
-
-    Parameters:
-        input_path : (str)
-            The path to the network properties CSV file.
-
-    Returns:
-        properties_by_network : (dict[str, dict])
-            Dictionary mapping each network name to its properties.
-    """
-
     properties_by_network = {}
-
     with open(input_path, "r", newline="", encoding="utf-8") as in_file:
         reader = csv.DictReader(in_file)
-
         for row in reader:
             properties_by_network[row["Network"]] = row
 
     return properties_by_network
 
 
-def _compute_network_statistic_thresholds(
+def save_sensitivity_experiment_report(
         results_dir: str,
-        input_filename: str,
-        statistic_metric: str,
-        number_of_columns_to_skip: int = 3
+        output_filename: str,
+        execution_elapsed_time: float,
+        apply_lapin: bool
+) -> None:
+    report = {
+        "apply_lapin": apply_lapin,
+        "execution_elapsed_time_secs": execution_elapsed_time
+    }
+
+    file = os.path.join(results_dir, output_filename)
+    with open(file=file, mode="w", encoding="utf-8") as out_file:
+        json.dump(report, out_file, indent=2)
+
+
+def _load_valid_contributions_at_k(
+        results_dir: str,
+        raw_contributions_input_filename: str,
+        raw_contributions_input_fieldnames: list,
+        apply_lapin: bool
 ) -> dict[str, float]:
-    """
-    Compute one statistic-based normalized threshold per network.
-
-    Parameters:
-        results_dir : (str)
-            The path to the results' directory.
-        input_filename : (str)
-            The name of the normalized contributions CSV file.
-        statistic_metric : (str)
-            The statistic used to compute the network-level threshold.
-        number_of_columns_to_skip : (int, optional)
-            The number of metadata columns to skip before reading contribution values.
-            Default is 3.
-
-    Returns:
-        thresholds_by_network : (dict[str, float | None])
-            Dictionary mapping each network name to its statistic-based threshold.
-    """
-
-    thresholds_by_network = {}
+    contributions_at_k = {}
 
     network_family_dirs = sorted(
         [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
@@ -1318,7 +329,10 @@ def _compute_network_statistic_thresholds(
     )
 
     for network_family_dir in network_family_dirs:
-        input_path = os.path.join(network_family_dir, input_filename)
+        input_path = os.path.join(network_family_dir, raw_contributions_input_filename)
+
+        if not os.path.exists(input_path):
+            continue
 
         with open(input_path, "r", newline="", encoding="utf-8") as in_file:
             reader = csv.reader(in_file)
@@ -1326,189 +340,1276 @@ def _compute_network_statistic_thresholds(
 
             for row in reader:
                 network_name = row[0]
-                values = [float(x) for x in row[number_of_columns_to_skip:] if x != ""]
+                k = int(row[1])
+                contributions = [float(value) for value in row[len(raw_contributions_input_fieldnames):] if value != ""]
 
-                if len(values) == 0:
-                    thresholds_by_network[network_name] = None
+                # Without LAPIN, the first extracted component is the background component, so community K is K+1.
+                contribution_idx = k - 1 if apply_lapin else k
+
+                if contribution_idx >= len(contributions):
                     continue
 
-                thresholds_by_network[network_name] = _compute_statistic(values, statistic_metric)
+                contribution_at_k = contributions[contribution_idx]
+                contributions_at_k[network_name] = contribution_at_k
 
-    return thresholds_by_network
-
-
-def _load_k_boundary_thresholds_by_network(
-        input_path: str,
-        threshold_column: str = "Normalized Threshold",
-        valid_thresholds_only: bool = True
-) -> dict[str, float]:
-    """
-    Load K-boundary thresholds by network.
-
-    Parameters:
-        input_path : (str)
-            The path to the K-boundary thresholds by network CSV file.
-        threshold_column : (str, optional)
-            The threshold column to load.
-            Default is 'Normalized Threshold'.
-        valid_thresholds_only : (bool, optional)
-            Whether to keep only valid thresholds.
-            Default is True.
-
-    Returns:
-        thresholds_by_network : (dict[str, float | None])
-            Dictionary mapping each network name to its K-boundary threshold.
-    """
-
-    thresholds_by_network = {}
-    with open(input_path, "r", newline="", encoding="utf-8") as in_file:
-        reader = csv.DictReader(in_file)
-        for row in reader:
-            network_name = row["Network"]
-            if valid_thresholds_only:
-                valid_threshold = str(row.get("Valid Threshold?", "")).lower() == "true"
-                if not valid_threshold:
-                    thresholds_by_network[network_name] = None
-                    continue
-            thresholds_by_network[network_name] = _parse_optional_float(row.get(threshold_column))
-
-    return thresholds_by_network
+    return contributions_at_k
 
 
-def _compute_statistic(values: list[float], statistic_metric: str) -> float:
-    """
-    Compute a statistic from a list of values.
-
-    Parameters:
-        values : (list[float])
-            The list of values.
-        statistic_metric : (str)
-            The statistic metric to compute.
-
-    Returns:
-        statistic : (float)
-            The computed statistic.
-    """
-
-    if statistic_metric == "Mean":
-        return float(np.mean(values))
-    if statistic_metric == "Median":
-        return float(np.median(values))
-    if statistic_metric == "75%":
-        return float(np.percentile(values, 75))
-    if statistic_metric == "90%":
-        return float(np.percentile(values, 90))
-    if statistic_metric == "95%":
-        return float(np.percentile(values, 95))
-
-    raise ValueError(f"[ERROR] Statistic metric '{statistic_metric}' not supported.")
-
-
-def _parse_optional_float(value) -> float:
-    """
-    Parse an optional float value.
-
-    Parameters:
-        value : (str | float | int | None)
-            The value to parse.
-
-    Returns:
-        value : (float | None)
-            The parsed float value, or None if the value is empty or invalid.
-    """
-
-    if value is None:
+def _parse_optional_float(value: any) -> float:
+    if value is None or value == "":
         return None
-
-    if isinstance(value, str):
-        if value == "" or value == "None" or value.lower() == "nan":
-            return None
 
     try:
         parsed_value = float(value)
-
-        if np.isnan(parsed_value):
+        if not np.isfinite(parsed_value):
             return None
-
         return parsed_value
-
-    except ValueError:
+    except (TypeError, ValueError):
         return None
 
 
 def _pearson_correlation(x_values: list[float], y_values: list[float]) -> float:
-    """
-    Compute Pearson correlation.
-
-    Parameters:
-        x_values : (list[float])
-            The first variable.
-        y_values : (list[float])
-            The second variable.
-
-    Returns:
-        correlation : (float | None)
-            The Pearson correlation, or None if it cannot be computed.
-    """
-
     x = np.asarray(x_values, dtype=np.float64)
     y = np.asarray(y_values, dtype=np.float64)
 
-    if len(x) < 2 or np.std(x) == 0 or np.std(y) == 0:
+    if np.std(x) == 0 or np.std(y) == 0:
         return None
 
     return float(np.corrcoef(x, y)[0, 1])
 
 
 def _spearman_correlation(x_values: list[float], y_values: list[float]) -> float:
-    """
-    Compute Spearman correlation.
-
-    Parameters:
-        x_values : (list[float])
-            The first variable.
-        y_values : (list[float])
-            The second variable.
-
-    Returns:
-        correlation : (float | None)
-            The Spearman correlation, or None if it cannot be computed.
-    """
-
-    x_ranks = _rank_values(x_values)
-    y_ranks = _rank_values(y_values)
-
-    return _pearson_correlation(x_ranks, y_ranks)
+    return _pearson_correlation(_rank_values(x_values), _rank_values(y_values))
 
 
 def _rank_values(values: list[float]) -> list[float]:
-    """
-    Compute average ranks for a list of values.
-
-    Parameters:
-        values : (list[float])
-            The values to rank.
-
-    Returns:
-        ranks : (list[float])
-            The average ranks.
-    """
-
     sorted_indices = sorted(range(len(values)), key=lambda idx: values[idx])
-    ranks = [0.0] * len(values)
 
+    ranks = [0.0] * len(values)
     i = 0
     while i < len(values):
         j = i
 
-        while j + 1 < len(values) and values[sorted_indices[j + 1]] == values[sorted_indices[i]]:
+        while (
+                j + 1 < len(values)
+                and values[sorted_indices[j + 1]]
+                == values[sorted_indices[i]]
+        ):
             j += 1
 
         average_rank = (i + j + 2) / 2
 
-        for k in range(i, j + 1):
-            ranks[sorted_indices[k]] = average_rank
+        for rank_idx in range(i, j + 1):
+            ranks[sorted_indices[rank_idx]] = average_rank
 
         i = j + 1
 
     return ranks
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+def compute_thresholds_per_family(
+        results_dir: str,
+        input_filename: str,
+        input_fieldnames: list,
+        k_boundary_thresholds_by_network_output_filename: str,
+        k_boundary_thresholds_by_network_output_fieldnames: list,
+        k_boundary_thresholds_by_family_output_filename: str,
+        k_boundary_thresholds_by_family_output_fieldnames: list,
+        discard_global_component: bool
+) -> list[dict]:
+    family_dirs = sorted(
+        [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
+        key=lambda path: path.name
+    )
+
+    # K-boundary thresholds by network
+    families = {}
+    k_boundary_thresholds_by_network_file = os.path.join(results_dir, k_boundary_thresholds_by_network_output_filename)
+    with open(file=k_boundary_thresholds_by_network_file, mode="w", newline="", encoding="utf-8") as out_file:
+        writer = csv.writer(out_file)
+        writer.writerow(k_boundary_thresholds_by_network_output_fieldnames)
+
+        for network_family_dir in family_dirs:
+            families[network_family_dir.name] = {
+                "number_of_networks": 0,
+                "number_of_valid_thresholds": 0,
+                "valid_thresholds": [],
+            }
+
+            input_file = os.path.join(network_family_dir, input_filename)
+            with open(file=input_file, mode="r", newline="", encoding="utf-8") as in_file:
+                reader = csv.reader(in_file)
+                next(reader, None)
+
+                for network in reader:
+                    families[network_family_dir.name]["number_of_networks"] += 1
+
+                    network_name = network[0]
+                    k = int(network[1])
+                    contributions = [float(x) for x in network[len(input_fieldnames):] if x != ""]
+
+                    k_index = k if discard_global_component else k - 1
+                    k_plus_1_index = k + 1 if discard_global_component else k
+                    c_k = contributions[k_index] if 0 <= k_index < len(contributions) else None
+                    c_k_plus_1 = contributions[k_plus_1_index] if 0 <= k_plus_1_index < len(contributions) else None
+
+                    if c_k is None or c_k_plus_1 is None or c_k_plus_1 > c_k:
+                        writer.writerow([network_name, len(contributions), k, c_k, c_k_plus_1, False, None])
+                    else:
+                        threshold = float(np.sqrt(c_k * c_k_plus_1))
+                        writer.writerow([network_name, len(contributions), k, c_k, c_k_plus_1, True, threshold])
+
+                        families[network_family_dir.name]["valid_thresholds"].append(threshold)
+                        families[network_family_dir.name]["number_of_valid_thresholds"] += 1
+
+    # K-boundary thresholds by network family
+    thresholds_per_family = []
+    all_valid_thresholds = []
+    for family_name, values in families.items():
+        number_of_networks = values["number_of_networks"]
+        valid_thresholds = values["valid_thresholds"]
+
+        all_valid_thresholds.extend(valid_thresholds)
+        e_family = _median_or_none(valid_thresholds)
+
+        thresholds_per_family.append({
+            "network_family": family_name,
+            "number_of_networks": number_of_networks,
+            "number_of_valid_thresholds": len(valid_thresholds),
+            "valid_thresholds": valid_thresholds,
+            "e_family": e_family
+        })
+
+    e_global = _median_or_none(all_valid_thresholds)
+
+    k_boundary_thresholds_by_family_file = os.path.join(results_dir, k_boundary_thresholds_by_family_output_filename)
+    with open(file=k_boundary_thresholds_by_family_file, mode="w", newline="", encoding="utf-8") as out_file:
+        writer = csv.writer(out_file)
+        writer.writerow(k_boundary_thresholds_by_family_output_fieldnames)
+
+        for family in thresholds_per_family:
+            family["e_global"] = e_global
+
+            writer.writerow([
+                family["network_family"],
+                family["number_of_networks"],
+                family["number_of_valid_thresholds"],
+                family["valid_thresholds"],
+                family["e_family"],
+                family["e_global"]
+            ])
+
+    return thresholds_per_family
+
+
+def compute_candidate_thresholds(
+        results_dir: str,
+        network_family: str,
+        k_boundary_thresholds_per_family: list[dict],
+        input_filename: str,
+        input_fieldnames: list,
+        output_filename: str,
+        output_fieldnames: list
+) -> list[CandidateThreshold]:
+    family_thresholds = next(
+        family for family in k_boundary_thresholds_per_family
+        if family["network_family"] == network_family
+    )
+    e_family = family_thresholds["e_family"]
+    e_global = family_thresholds["e_global"]
+
+    input_file = os.path.join(results_dir, input_filename)
+    with open(file=input_file, mode="r", newline="", encoding="utf-8") as in_file:
+        reader = csv.reader(in_file)
+        next(reader, None)
+
+        network = next(reader, None)
+        network_name = network[0]
+        contributions = [float(x) for x in network[len(input_fieldnames):] if x != ""]
+
+        contribution_boundaries = []
+        adjacent_drops = []
+        for j in range(len(contributions) - 1):
+            c_j = contributions[j]
+            c_j_plus_1 = contributions[j + 1]
+            if c_j > c_j_plus_1:
+                contribution_boundaries.append(float(np.sqrt(c_j * c_j_plus_1)))
+                adjacent_drops.append(float(np.log(c_j / c_j_plus_1)))
+
+        below_boundaries = [boundary for boundary in contribution_boundaries if boundary < e_family]
+        e_below = max(below_boundaries) if below_boundaries else None
+
+        above_boundaries = [boundary for boundary in contribution_boundaries if boundary > e_family]
+        e_above = min(above_boundaries) if above_boundaries else None
+
+        e_elbow = contribution_boundaries[int(np.argmax(adjacent_drops))] if adjacent_drops else None
+
+        candidate_thresholds = [
+            CandidateThreshold(
+                family=network_family, network=network_name, name=CandidateThresholdName.E_FAMILY, value=e_family
+            ),
+            CandidateThreshold(
+                family=network_family, network=network_name, name=CandidateThresholdName.E_GLOBAL, value=e_global
+            ),
+            CandidateThreshold(
+                family=network_family, network=network_name, name=CandidateThresholdName.E_BELOW, value=e_below
+            ),
+            CandidateThreshold(
+                family=network_family, network=network_name, name=CandidateThresholdName.E_ABOVE, value=e_above
+            ),
+            CandidateThreshold(
+                family=network_family, network=network_name, name=CandidateThresholdName.E_ELBOW, value=e_elbow
+            )
+        ]
+
+        _write_candidate_thresholds_to_file(
+            candidate_thresholds=candidate_thresholds,
+            output_file=os.path.join(results_dir, output_filename),
+            output_fieldnames=output_fieldnames
+        )
+
+        return candidate_thresholds
+
+
+def evaluate_candidate_thresholds_using_intrinsic_metrics(
+        results_dir: str,
+        graph_and_matrices: tuple,
+        candidate_thresholds: list[CandidateThreshold],
+        output_filename: str,
+        output_fieldnames: list,
+        config: RealWorldThresholdEstimationConfig
+) -> list[CandidateThreshold]:
+    graph, A, W = graph_and_matrices
+    tau, k_max = config.tau, config.compute_k_max(graph.number_of_nodes())
+
+    updated_candidate_thresholds = []
+    for candidate_threshold in candidate_thresholds:
+        if candidate_threshold.value is None:
+            continue
+
+        start_time = get_computation_start_time()
+        U, _, _, _, _, _ = faddis(W=W, epsilon=candidate_threshold.value, tau=tau, k_max=k_max)
+        end_time = get_computation_end_time()
+
+        if U.shape[1] == 0:
+            continue
+
+        predicted_labels, k_predicted, first_cluster_discarded = apply_defuzzification_rule(
+            U=U,
+            gamma=config.defuzzification_gamma,
+            overlapping=config.overlapping_communities
+        )
+
+        intrinsic_results = compute_intrinsic_metrics(
+            graph=graph,
+            A=A,
+            U=U if not first_cluster_discarded else np.asarray(U)[:, 1:],
+            predicted_labels=predicted_labels,
+            overlapping=config.overlapping_communities
+        )
+        computational_results = compute_computational_metrics(start_time, end_time)
+
+        community_properties = compute_community_properties(
+            number_of_nodes=graph.number_of_nodes(),
+            predicted_labels=predicted_labels,
+            overlapping_communities=config.overlapping_communities,
+            near_singleton_boundary=config.near_singleton_boundary
+        )
+
+        candidate_threshold.intrinsic_evaluation = IntrinsicEvaluation(
+            k_predicted=community_properties.number_of_communities,
+            overlapping_communities=config.overlapping_communities,
+            community_size_distribution=community_properties.community_size_distribution,
+            singleton_or_near_singleton_communities=community_properties.singleton_or_near_singleton_count,
+            singleton_or_near_singleton_fraction=community_properties.singleton_or_near_singleton_fraction,
+            largest_community_fraction=community_properties.largest_community_fraction,
+            modularity=intrinsic_results.modularity if not config.overlapping_communities else intrinsic_results.fuzzy_modularity,
+            conductance=intrinsic_results.conductance if not config.overlapping_communities else intrinsic_results.conductance_bn,
+            runtime=computational_results.runtime
+        )
+
+        updated_candidate_thresholds.append(candidate_threshold)
+
+    # Sort by: 1) Highest modularity; 2) Lowest conductance
+    updated_candidate_thresholds.sort(
+        key=lambda th: (
+            -th.intrinsic_evaluation.modularity,
+            th.intrinsic_evaluation.conductance
+        )
+    )
+
+    _write_candidate_thresholds_to_file(
+        candidate_thresholds=updated_candidate_thresholds,
+        output_file=os.path.join(results_dir, output_filename),
+        output_fieldnames=output_fieldnames
+    )
+
+    filtered_candidate_thresholds = _filter_candidate_thresholds(
+        updated_candidate_thresholds,
+        number_of_thresholds_to_retain=config.number_of_thresholds_to_retain_after_intrinsic_evaluation
+    )
+
+    return filtered_candidate_thresholds
+
+
+def apply_trivial_validity_filters(
+        candidate_thresholds: list[CandidateThreshold]
+) -> list[CandidateThreshold]:
+    updated_candidate_thresholds = [
+        threshold
+        for threshold in candidate_thresholds
+        if threshold.intrinsic_evaluation.k_predicted > 1
+    ]
+
+    return updated_candidate_thresholds
+
+
+def evaluate_candidate_thresholds_under_perturbation_stability(
+        results_dir: str,
+        graph_and_matrices: tuple,
+        candidate_thresholds: list[CandidateThreshold],
+        output_filename: str,
+        output_fieldnames: list,
+        config: RealWorldThresholdEstimationConfig
+) -> list[CandidateThreshold]:
+    graph, A, W = graph_and_matrices
+    tau, k_max = config.tau, config.compute_k_max(graph.number_of_nodes())
+
+    updated_candidate_thresholds = []
+    for candidate_threshold in candidate_thresholds:
+
+        U, _, _, _, _, _ = faddis(W=W, epsilon=candidate_threshold.value, tau=tau, k_max=k_max)
+        predicted_labels, k_predicted, first_cluster_discarded = apply_defuzzification_rule(
+            U=U,
+            gamma=config.defuzzification_gamma,
+            overlapping=config.overlapping_communities
+        )
+
+        sims = []
+        for perturbation_number in range(1, config.number_of_perturbed_graphs + 1):
+            perturbed_graph, perturbed_A, perturbed_W = _generate_a_perturbed_graph(
+                graph=graph,
+                number_of_swaps=config.compute_number_of_edges_swaps_in_perturbed_graphs(graph.number_of_edges()),
+                apply_lapin=config.apply_lapin,
+                seed=perturbation_number
+            )
+
+            perturbed_U, _, _, _, _, _ = faddis(W=perturbed_W, epsilon=candidate_threshold.value, tau=tau, k_max=k_max)
+
+            if perturbed_U.shape[1] == 0:
+                continue
+
+            perturbed_predicted_labels, perturbed_k_predicted, perturbed_first_cluster_discarded = apply_defuzzification_rule(
+                perturbed_U,
+                gamma=config.defuzzification_gamma,
+                overlapping=config.overlapping_communities
+            )
+
+            if not config.overlapping_communities:
+                sim = float(normalized_mutual_info_score(predicted_labels, perturbed_predicted_labels))
+            else:
+                sim = _compute_fuzzy_co_membership_similarity(
+                    U, first_cluster_discarded, perturbed_U, perturbed_first_cluster_discarded
+                )
+
+            if sim is None:
+                continue
+
+            sims.append(sim)
+
+        stability = float(sum(sims) / len(sims)) if len(sims) > 0 else 0
+
+        candidate_threshold.stability_evaluation = StabilityEvaluation(
+            number_of_perturbed_graphs=config.number_of_perturbed_graphs,
+            number_of_valid_similarities=len(sims),
+            similarities=sims,
+            stability=stability
+        )
+
+        updated_candidate_thresholds.append(candidate_threshold)
+
+    # Sort by: 1) Highest perturbation stability; 2) Highest modularity; 3) Lowest conductance;
+    updated_candidate_thresholds.sort(
+        key=lambda th: (
+            -th.stability_evaluation.stability,
+            - th.intrinsic_evaluation.modularity,
+            th.intrinsic_evaluation.conductance
+        )
+    )
+
+    _write_candidate_thresholds_to_file(
+        candidate_thresholds=updated_candidate_thresholds,
+        output_file=os.path.join(results_dir, output_filename),
+        output_fieldnames=output_fieldnames
+    )
+
+    filtered_candidate_thresholds = _filter_candidate_thresholds(
+        updated_candidate_thresholds,
+        number_of_thresholds_to_retain=config.number_of_thresholds_to_retain_after_stability_evaluation
+    )
+
+    return filtered_candidate_thresholds
+
+
+def evaluate_candidate_thresholds_under_null_model(
+        results_dir: str,
+        graph_and_matrices: tuple,
+        candidate_thresholds: list[CandidateThreshold],
+        output_filename: str,
+        output_fieldnames: list,
+        config: RealWorldThresholdEstimationConfig
+) -> list[CandidateThreshold]:
+    graph, A, W = graph_and_matrices
+    tau, k_max = config.tau, config.compute_k_max(graph.number_of_nodes())
+
+    updated_candidate_thresholds = []
+    for candidate_threshold in candidate_thresholds:
+
+        threshold_value = candidate_threshold.value
+        real_modularity = candidate_threshold.intrinsic_evaluation.modularity
+        real_conductance = candidate_threshold.intrinsic_evaluation.conductance
+
+        null_modularities = []
+        null_conductances = []
+        for null_number in range(1, config.number_of_null_models + 1):
+            null_graph, null_A, null_W = _generate_a_perturbed_graph(
+                graph=graph,
+                number_of_swaps=config.compute_number_of_edges_swaps_in_null_models(graph.number_of_edges()),
+                apply_lapin=config.apply_lapin,
+                seed=null_number
+            )
+
+            null_U, _, _, _, _, _ = faddis(W=null_W, epsilon=threshold_value, tau=tau, k_max=k_max)
+
+            if null_U.shape[1] == 0:
+                continue
+
+            null_predicted_labels, null_k_predicted, null_first_cluster_discarded = apply_defuzzification_rule(
+                null_U,
+                gamma=config.defuzzification_gamma,
+                overlapping=config.overlapping_communities
+            )
+
+            null_intrinsic_results = compute_intrinsic_metrics(
+                graph=null_graph,
+                A=null_A,
+                U=null_U if not null_first_cluster_discarded else np.asarray(null_U)[:, 1:],
+                predicted_labels=null_predicted_labels,
+                overlapping=config.overlapping_communities
+            )
+
+            null_modularities.append(
+                float(
+                    null_intrinsic_results.modularity
+                    if not config.overlapping_communities
+                    else null_intrinsic_results.fuzzy_modularity
+                )
+            )
+            null_conductances.append(
+                float(
+                    null_intrinsic_results.conductance
+                    if not config.overlapping_communities else
+                    null_intrinsic_results.conductance_bn)
+            )
+
+        if null_modularities:
+            mean_null_modularity = float(np.mean(null_modularities))
+            std_null_modularity = float(np.std(null_modularities, ddof=1)) if len(null_modularities) > 1 else 0.0
+
+            modularity_z_score = (
+                (real_modularity - mean_null_modularity) / std_null_modularity
+                if std_null_modularity > 0 else None
+            )
+            modularity_empirical_p_value = (
+                    (1 + sum(q_null >= real_modularity for q_null in null_modularities)) /
+                    (len(null_modularities) + 1)
+            )
+            modularity_rank = 1 + sum(q_null > real_modularity for q_null in null_modularities)
+        else:
+            mean_null_modularity = None
+            std_null_modularity = None
+            modularity_z_score = None
+            modularity_empirical_p_value = None
+            modularity_rank = None
+
+        if null_conductances:
+            mean_null_conductance = float(np.mean(null_conductances))
+            std_null_conductance = float(np.std(null_conductances, ddof=1)) if len(null_conductances) > 1 else 0.0
+
+            conductance_z_score = (
+                (mean_null_conductance - real_conductance) / std_null_conductance
+                if std_null_conductance > 0 else None
+            )
+
+            conductance_empirical_p_value = (
+                    (1 + sum(phi_null <= real_conductance for phi_null in null_conductances)) /
+                    (len(null_conductances) + 1))
+            conductance_rank = 1 + sum(phi_null < real_conductance for phi_null in null_conductances)
+        else:
+            mean_null_conductance = None
+            std_null_conductance = None
+            conductance_z_score = None
+            conductance_empirical_p_value = None
+            conductance_rank = None
+
+        candidate_threshold.null_model_evaluation = NullModelEvaluation(
+            number_of_null_graphs=config.number_of_null_models,
+            number_of_valid_results=min(len(null_modularities), len(null_conductances)),
+            null_modularities=null_modularities,
+            mean_null_modularity=mean_null_modularity,
+            std_null_modularity=std_null_modularity,
+            modularity_z_score=modularity_z_score,
+            modularity_empirical_p_value=modularity_empirical_p_value,
+            modularity_rank=modularity_rank,
+            null_conductances=null_conductances,
+            mean_null_conductance=mean_null_conductance,
+            std_null_conductance=std_null_conductance,
+            conductance_z_score=conductance_z_score,
+            conductance_empirical_p_value=conductance_empirical_p_value,
+            conductance_rank=conductance_rank
+        )
+
+        updated_candidate_thresholds.append(candidate_threshold)
+
+    _write_candidate_thresholds_to_file(
+        candidate_thresholds=updated_candidate_thresholds,
+        output_file=os.path.join(results_dir, output_filename),
+        output_fieldnames=output_fieldnames
+    )
+
+    return updated_candidate_thresholds
+
+
+def select_final_threshold_by_pareto_and_parsimony(
+        results_dir: str,
+        candidate_thresholds: list[CandidateThreshold],
+        final_thresholds_output_filename: str,
+        final_thresholds_output_fieldnames: list,
+        threshold_output_filename: str,
+        config: RealWorldThresholdEstimationConfig
+) -> CandidateThreshold:
+    modularities = [float(th.intrinsic_evaluation.modularity) for th in candidate_thresholds]
+    conductances = [float(th.intrinsic_evaluation.conductance) for th in candidate_thresholds]
+    stabilities = [float(th.stability_evaluation.stability) for th in candidate_thresholds]
+
+    q_max = max(modularities)
+    phi_min = min(conductances)
+    s_max = max(stabilities)
+
+    delta_q = config.pareto_tolerance_fraction_modularity * (max(modularities) - min(modularities))
+    delta_phi = config.pareto_tolerance_fraction_conductance * (max(conductances) - min(conductances))
+    delta_s = config.pareto_tolerance_fraction_stability * (max(stabilities) - min(stabilities))
+
+    updated_candidate_thresholds = []
+    for candidate_threshold in candidate_thresholds:
+        modularity = float(candidate_threshold.intrinsic_evaluation.modularity)
+        conductance = float(candidate_threshold.intrinsic_evaluation.conductance)
+        stability = float(candidate_threshold.stability_evaluation.stability)
+
+        k_predicted = int(candidate_threshold.intrinsic_evaluation.k_predicted)
+        largest_community_fraction = float(candidate_threshold.intrinsic_evaluation.largest_community_fraction)
+        singleton_or_near_singleton_fraction = float(
+            candidate_threshold.intrinsic_evaluation.singleton_or_near_singleton_fraction)
+
+        modularity_is_acceptable = modularity >= q_max - delta_q
+        conductance_is_acceptable = conductance <= phi_min + delta_phi
+        stability_is_acceptable = stability >= s_max - delta_s
+
+        non_degenerate = (
+                k_predicted > 1
+                and largest_community_fraction < config.pareto_largest_community_fraction_boundary
+                and singleton_or_near_singleton_fraction < config.pareto_singleton_or_near_singleton_fraction_boundary
+        )
+
+        modularity_p_value = candidate_threshold.null_model_evaluation.modularity_empirical_p_value
+        conductance_p_value = candidate_threshold.null_model_evaluation.conductance_empirical_p_value
+
+        modularity_p_value = float(modularity_p_value) if modularity_p_value not in [None, ""] else None
+        conductance_p_value = float(conductance_p_value) if conductance_p_value not in [None, ""] else None
+
+        null_model_is_acceptable = (
+                (modularity_p_value is not None and modularity_p_value <= config.pareto_null_model_p_value_boundary)
+                or
+                (conductance_p_value is not None and conductance_p_value <= config.pareto_null_model_p_value_boundary)
+        )
+
+        acceptable = (
+                modularity_is_acceptable
+                and conductance_is_acceptable
+                and stability_is_acceptable
+                and non_degenerate
+                and null_model_is_acceptable
+        )
+
+        candidate_threshold.pareto_plus_parsimony_selection = ParetoPlusParsimonySelection(
+            acceptable_modularity=modularity_is_acceptable,
+            acceptable_conductance=conductance_is_acceptable,
+            acceptable_stability=stability_is_acceptable,
+            non_degenerate=non_degenerate,
+            acceptable_null_model=null_model_is_acceptable,
+            acceptable=acceptable
+        )
+
+        updated_candidate_thresholds.append(candidate_threshold)
+
+    acceptable_thresholds = [
+        th for th in updated_candidate_thresholds if th.pareto_plus_parsimony_selection.acceptable
+    ]
+
+    # TODO: Check is "e_family" is practically indistinguishable from the best candidate.
+
+    if acceptable_thresholds:
+        final_threshold = max(acceptable_thresholds, key=lambda th: th.value)
+    else:
+        final_threshold = max(
+            updated_candidate_thresholds,
+            key=lambda th: (
+                th.intrinsic_evaluation.modularity,
+                -th.intrinsic_evaluation.conductance,
+                th.stability_evaluation.stability
+            )
+        )
+
+    # Sort by: 1) selected final threshold; 2) acceptable thresholds; 3) largest threshold value (parsimony principle)
+    updated_candidate_thresholds.sort(key=lambda th: (
+        th.name != final_threshold.name,
+        not th.pareto_plus_parsimony_selection.acceptable,
+        -th.value
+    ))
+
+    _write_candidate_thresholds_to_file(
+        candidate_thresholds=updated_candidate_thresholds,
+        output_file=os.path.join(results_dir, final_thresholds_output_filename),
+        output_fieldnames=final_thresholds_output_fieldnames
+    )
+
+    _write_candidate_threshold_to_file(
+        candidate_threshold=final_threshold,
+        output_file=os.path.join(results_dir, threshold_output_filename),
+        output_fieldnames=final_thresholds_output_fieldnames
+    )
+
+    return final_threshold
+
+
+def generate_final_outputs(
+        results_dir: str,
+        raw_contributions_filename: str,
+        raw_contributions_fieldnames: list,
+        candidate_thresholds_filename: str,
+        intrinsic_evaluation_filename: str,
+        stability_evaluation_filename: str,
+        null_model_evaluation_filename: str,
+        final_threshold: CandidateThreshold,
+        config: RealWorldThresholdEstimationConfig
+) -> None:
+    candidate_thresholds = _load_csv_rows(os.path.join(results_dir, candidate_thresholds_filename))
+    intrinsic_results = _load_csv_rows(os.path.join(results_dir, intrinsic_evaluation_filename))
+    stability_results = _load_csv_rows(os.path.join(results_dir, stability_evaluation_filename))
+    null_model_results = _load_csv_rows(os.path.join(results_dir, null_model_evaluation_filename))
+
+    e_family_candidate = next(
+        (row for row in candidate_thresholds if row["Name"] == CandidateThresholdName.E_FAMILY.value),
+        None
+    )
+    e_global_candidate = next(
+        (row for row in candidate_thresholds if row["Name"] == CandidateThresholdName.E_GLOBAL.value),
+        None
+    )
+
+    e_family_intrinsic = next(
+        (row for row in intrinsic_results if row["Name"] == CandidateThresholdName.E_FAMILY.value),
+        None
+    )
+
+    summary = {
+        "Family": final_threshold.family,
+        "Network": final_threshold.network,
+        "e_family": (e_family_candidate["Value"] if e_family_candidate is not None else None),
+        "e_global": (e_global_candidate["Value"] if e_global_candidate is not None else None),
+        "e*": final_threshold.value,
+        "K'(e_family)": (e_family_intrinsic["K'"] if e_family_intrinsic is not None else None),
+        "K'(e*)": final_threshold.intrinsic_evaluation.k_predicted,
+        "Modularity": final_threshold.intrinsic_evaluation.modularity,
+        "Conductance": final_threshold.intrinsic_evaluation.conductance,
+        "Singleton/Near-Singleton Fraction": final_threshold.intrinsic_evaluation.singleton_or_near_singleton_fraction,
+        "Largest-Community Fraction": final_threshold.intrinsic_evaluation.largest_community_fraction,
+        "Stability": final_threshold.stability_evaluation.stability,
+        "Z Modularity": final_threshold.null_model_evaluation.modularity_z_score,
+        "Modularity Empirical p-value": final_threshold.null_model_evaluation.modularity_empirical_p_value,
+        "Modularity Rank": final_threshold.null_model_evaluation.modularity_rank,
+        "Z Conductance": final_threshold.null_model_evaluation.conductance_z_score,
+        "Conductance Empirical p-value": final_threshold.null_model_evaluation.conductance_empirical_p_value,
+        "Conductance Rank": final_threshold.null_model_evaluation.conductance_rank,
+        "Acceptable?": final_threshold.pareto_plus_parsimony_selection.acceptable
+    }
+
+    summary_file = os.path.join(results_dir, "_summary.csv")
+    with open(file=summary_file, mode="w", newline="", encoding="utf-8") as out_file:
+        writer = csv.DictWriter(out_file, fieldnames=list(summary.keys()))
+        writer.writeheader()
+        writer.writerow(summary)
+
+    _plot_candidate_thresholds(
+        results_dir=results_dir,
+        raw_contributions_filename=raw_contributions_filename,
+        raw_contributions_fieldnames=raw_contributions_fieldnames,
+        candidate_thresholds=candidate_thresholds,
+        final_threshold=final_threshold
+    )
+
+    _plot_k_line_by_threshold(results_dir, intrinsic_results)
+    _plot_intrinsic_evaluation(results_dir, intrinsic_results)
+    _plot_stability_evaluation(results_dir, stability_results)
+    _plot_null_model_z_scores(results_dir, null_model_results)
+    _plot_null_model_empirical_p_values(results_dir, null_model_results, config.pareto_null_model_p_value_boundary)
+    _plot_null_model_empirical_ranks(results_dir, null_model_results)
+
+
+def evaluate_final_threshold_using_extrinsic_metrics(
+        results_dir: str,
+        graph_and_matrices: tuple,
+        overlapping_ground_truth: bool,
+        ground_truth: tuple,
+        final_threshold: CandidateThreshold,
+        output_filename: str,
+        output_base_fieldnames: list,
+        config: RealWorldThresholdEstimationConfig
+) -> None:
+    graph, A, W = graph_and_matrices
+    tau, epsilon, k_max = config.tau, final_threshold.value, config.compute_k_max(graph.number_of_nodes())
+    ground_truth_labels, k = ground_truth
+
+    U, _, _, _, _, _ = faddis(W=W, epsilon=epsilon, tau=tau, k_max=k_max)
+
+    if U.shape[1] == 0:
+        return
+
+    predicted_labels, k_predicted, _ = apply_defuzzification_rule(
+        U=U,
+        gamma=config.defuzzification_gamma,
+        overlapping=overlapping_ground_truth
+    )
+
+    extrinsic_results = compute_extrinsic_metrics(
+        graph, ground_truth_labels, predicted_labels, k, k_predicted, overlapping_ground_truth
+    )
+
+    if not overlapping_ground_truth:
+        extrinsic_fieldnames = ["K' | K", "|K'-K|/K", "AMI", "F-measure", "ARI", "FMI", "NMI", "VI"]
+        final_threshold.extrinsic_evaluation = ExtrinsicEvaluation(
+            diff_of_k=extrinsic_results.diff_of_k,
+            relative_error_of_k=extrinsic_results.relative_error_of_k,
+            ami=extrinsic_results.ami,
+            f_measure=extrinsic_results.f_measure,
+            ari=extrinsic_results.ari,
+            fmi=extrinsic_results.fmi,
+            nmi=extrinsic_results.nmi,
+            vi=extrinsic_results.vi
+        )
+    else:
+        extrinsic_fieldnames = ["K' | K", "|K'-K|/K", "ONMI", "Omega"]
+        final_threshold.extrinsic_evaluation = ExtrinsicEvaluation(
+            diff_of_k=extrinsic_results.diff_of_k,
+            relative_error_of_k=extrinsic_results.relative_error_of_k,
+            onmi=extrinsic_results.onmi,
+            omega=extrinsic_results.omega
+        )
+
+    _write_candidate_threshold_to_file(
+        candidate_threshold=final_threshold,
+        output_file=os.path.join(results_dir, output_filename),
+        output_fieldnames=output_base_fieldnames + extrinsic_fieldnames
+    )
+
+
+def save_contributions_experiment_report(
+        results_dir: str,
+        output_filename: str,
+        execution_elapsed_time: float,
+        config: RealWorldThresholdEstimationConfig
+) -> None:
+    report = asdict(config)
+    report["execution_elapsed_time_secs"] = execution_elapsed_time
+
+    output_file = os.path.join(results_dir, output_filename)
+    with open(file=output_file, mode="w", encoding="utf-8") as out_file:
+        json.dump(report, out_file, indent=2)
+
+
+def _median_or_none(values: list[float]) -> float:
+    if len(values) == 0:
+        return None
+
+    return float(np.median(values))
+
+
+def _filter_candidate_thresholds(
+        candidate_thresholds: list[CandidateThreshold],
+        number_of_thresholds_to_retain: int,
+        keep_e_family: bool = True
+) -> list[CandidateThreshold]:
+    filtered_candidate_thresholds = candidate_thresholds[:number_of_thresholds_to_retain]
+
+    if keep_e_family:
+        if CandidateThresholdName.E_FAMILY not in [th.name for th in filtered_candidate_thresholds]:
+            e_family = next(
+                (th for th in candidate_thresholds if th.name == CandidateThresholdName.E_FAMILY),
+                None
+            )
+            if e_family is not None:
+                filtered_candidate_thresholds.append(e_family)
+
+    return filtered_candidate_thresholds
+
+
+def _write_candidate_thresholds_to_file(
+        candidate_thresholds: list[CandidateThreshold],
+        output_file,
+        output_fieldnames
+):
+    with open(file=output_file, mode="w", newline="", encoding="utf-8") as out_file:
+        writer = csv.DictWriter(out_file, fieldnames=output_fieldnames)
+        writer.writeheader()
+        writer.writerows(threshold.to_dict() for threshold in candidate_thresholds)
+
+
+def _write_candidate_threshold_to_file(
+        candidate_threshold: CandidateThreshold,
+        output_file,
+        output_fieldnames
+):
+    candidate_threshold_dict = candidate_threshold.to_dict()
+    output_row = {fieldname: candidate_threshold_dict.get(fieldname) for fieldname in output_fieldnames}
+
+    with open(file=output_file, mode="w", newline="", encoding="utf-8") as out_file:
+        writer = csv.DictWriter(out_file, fieldnames=output_fieldnames)
+        writer.writeheader()
+        writer.writerow(output_row)
+
+
+def _generate_a_perturbed_graph(
+        graph: nx.Graph,
+        number_of_swaps: int,
+        apply_lapin: bool,
+        seed: int
+) -> tuple[nx.Graph, np.ndarray, np.ndarray]:
+    perturbed_graph = graph.copy()
+    successful_swaps = connected_double_edge_swap(perturbed_graph, nswap=number_of_swaps, seed=seed)
+    print(f"[DEBUG] {number_of_swaps} / {successful_swaps}")
+
+    perturbed_A = compute_adjacency_matrix(perturbed_graph)
+    perturbed_W = np.asarray(perturbed_A if not apply_lapin else lapin(perturbed_A), dtype=np.float64)
+
+    return perturbed_graph, perturbed_A, perturbed_W
+
+
+def _compute_fuzzy_co_membership_similarity(
+        U: np.ndarray,
+        first_cluster_discarded: bool,
+        perturbed_U: np.ndarray,
+        perturbed_first_cluster_discarded: bool
+) -> float:
+    U = np.asarray(U)[:, 1:] if first_cluster_discarded else np.asarray(U)
+    perturbed_U = np.asarray(perturbed_U)[:, 1:] if perturbed_first_cluster_discarded else np.asarray(perturbed_U)
+    if U.shape[1] == 0 or perturbed_U.shape[1] == 0:
+        return None
+
+    co_membership = U @ U.T
+    perturbed_co_membership = perturbed_U @ perturbed_U.T
+
+    denominator = (norm(co_membership, "fro") * norm(perturbed_co_membership, "fro"))
+    if denominator == 0:
+        return None
+
+    similarity = (np.sum(co_membership * perturbed_co_membership) / denominator)
+
+    return float(np.clip(similarity, 0.0, 1.0))
+
+
+def _load_csv_rows(input_file: str) -> list[dict]:
+    with open(file=input_file, mode="r", newline="", encoding="utf-8") as in_file:
+        return list(csv.DictReader(in_file))
+
+
+def _plot_candidate_thresholds(
+        results_dir: str,
+        raw_contributions_filename: str,
+        raw_contributions_fieldnames: list,
+        candidate_thresholds: list[dict],
+        final_threshold: CandidateThreshold
+) -> None:
+    input_file = os.path.join(results_dir, raw_contributions_filename)
+    with open(file=input_file, mode="r", newline="", encoding="utf-8") as in_file:
+        reader = csv.reader(in_file)
+        next(reader, None)
+        network = next(reader, None)
+
+    contributions = [float(value) for value in network[len(raw_contributions_fieldnames):] if value != ""]
+    extraction_numbers = list(range(1, len(contributions) + 1))
+
+    plt.figure()
+    plt.plot(extraction_numbers, contributions, marker="o", markersize=4, linewidth=1.5)
+    plt.grid(axis="both", linestyle=":", alpha=0.5)
+
+    for candidate in candidate_thresholds:
+        if candidate["Value"] in [None, ""]:
+            continue
+
+        candidate_name = candidate["Name"]
+        candidate_value = float(candidate["Value"])
+        style = THRESHOLD_PLOT_STYLES.get(candidate_name, {"label": candidate_name, "color": "black"})
+
+        if candidate_name == final_threshold.name.value:
+            plt.axhline(
+                final_threshold.value,
+                color=style["color"],
+                linewidth=2,
+                label=f'{style["label"]} = {round(final_threshold.value, 6)}'
+            )
+        else:
+            plt.axhline(
+                candidate_value,
+                color=style["color"],
+                linestyle="--",
+                label=f'{style["label"]} = {round(candidate_value, 6)}'
+            )
+
+    plt.xlabel("Extraction Number")
+    plt.ylabel("Contribution")
+
+    handles, labels = plt.gca().get_legend_handles_labels()
+    if handles:
+        plt.legend(handles=handles, labels=labels, fontsize=8)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, "_candidate_thresholds_plot.pdf"))
+    plt.close()
+
+
+def _plot_k_line_by_threshold(
+        results_dir: str,
+        intrinsic_results: list[dict]
+) -> None:
+    points = sorted(
+        [
+            (np.log(float(row["Value"])), int(row["K'"]), row["Name"])
+            for row in intrinsic_results if row["Value"] not in [None, ""]
+        ],
+        key=lambda point: point[0]
+    )
+
+    if not points:
+        return
+
+    log_thresholds = [point[0] for point in points]
+    k_values = [point[1] for point in points]
+
+    plt.figure()
+    plt.plot(log_thresholds, k_values, linestyle="--")
+    plt.grid(axis="both", linestyle=":", alpha=0.5)
+
+    for log_threshold, k_value, name in points:
+        style = THRESHOLD_PLOT_STYLES.get(name, {"label": name, "color": "black", "marker": "o"})
+        plt.plot(
+            log_threshold,
+            k_value,
+            marker=style["marker"],
+            color=style["color"],
+            linestyle="None",
+            markersize=5,
+            label=style["label"]
+        )
+
+    plt.xlabel(r"$\log(\epsilon)$")
+    plt.ylabel(r"$K'(\epsilon)$")
+
+    handles, labels = plt.gca().get_legend_handles_labels()
+    if handles:
+        plt.legend(handles=handles, labels=labels, fontsize=8)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, "_k_line_by_threshold_plot.pdf"))
+    plt.close()
+
+
+def _plot_intrinsic_evaluation(
+        results_dir: str,
+        intrinsic_results: list[dict]
+) -> None:
+    points = sorted(
+        [
+            (row["Name"], np.log(float(row["Value"])), float(row["Modularity"]), float(row["Conductance"]))
+            for row in intrinsic_results if row["Value"] not in [None, ""]
+        ],
+        key=lambda point: point[1]
+    )
+
+    if not points:
+        return
+
+    threshold_names = [point[0] for point in points]
+    log_thresholds = [point[1] for point in points]
+    modularities = [point[2] for point in points]
+    conductances = [point[3] for point in points]
+
+    plt.figure()
+    plt.plot(log_thresholds, modularities, linestyle="--", color="tab:blue", label="Modularity")
+    plt.plot(log_thresholds, conductances, linestyle=":", color="tab:orange", label="Conductance")
+    plt.grid(axis="both", linestyle=":", alpha=0.5)
+
+    for threshold_name, log_threshold, modularity, conductance in zip(
+            threshold_names,
+            log_thresholds,
+            modularities,
+            conductances
+    ):
+        style = THRESHOLD_PLOT_STYLES.get(threshold_name, {"label": threshold_name, "marker": "o"})
+
+        plt.plot(log_threshold, modularity, marker=style["marker"], color="tab:blue", linestyle="None")
+        plt.plot(log_threshold, conductance, marker=style["marker"], color="tab:orange", linestyle="None")
+
+    legend_handles = [
+        Line2D([0], [0], color="tab:blue", linestyle="--", label="Modularity"),
+        Line2D([0], [0], color="tab:orange", linestyle=":", label="Conductance")
+    ]
+
+    for threshold_name in dict.fromkeys(threshold_names):
+        style = THRESHOLD_PLOT_STYLES.get(threshold_name, {"label": threshold_name, "marker": "o"})
+
+        legend_handles.append(
+            Line2D([0], [0], color="black", marker=style["marker"], linestyle="None", label=style["label"])
+        )
+
+    plt.xlabel(r"$\log(\epsilon)$")
+    plt.ylabel("Intrinsic Metric")
+
+    plt.legend(handles=legend_handles, fontsize=8)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, "_intrinsic_evaluation_plot.pdf"))
+    plt.close()
+
+
+def _plot_stability_evaluation(
+        results_dir: str,
+        stability_results: list[dict]
+) -> None:
+    if not stability_results:
+        return
+
+    names = [row["Name"] for row in stability_results]
+    labels = [THRESHOLD_PLOT_STYLES.get(name, {"label": name})["label"] for name in names]
+    colors = [THRESHOLD_PLOT_STYLES.get(name, {"color": "black"})["color"] for name in names]
+    stabilities = [float(row["Stability"]) for row in stability_results]
+
+    plt.figure()
+    plt.bar(labels, stabilities, color=colors)
+    plt.grid(axis="both", linestyle=":", alpha=0.5)
+
+    plt.xlabel(r"$\epsilon$")
+    plt.ylabel("Stability")
+    plt.tight_layout()
+
+    plt.savefig(os.path.join(results_dir, "_stability_evaluation_plot.pdf"))
+    plt.close()
+
+
+def _plot_null_model_z_scores(
+        results_dir: str,
+        null_model_results: list[dict]
+) -> None:
+    points = sorted(
+        [
+            (
+                row["Name"],
+                np.log(float(row["Value"])),
+                float(row["Z Modularity"]),
+                float(row["Z Conductance"])
+            )
+            for row in null_model_results
+            if (
+                row["Value"] not in [None, ""]
+                and row["Z Modularity"] not in [None, ""]
+                and row["Z Conductance"] not in [None, ""]
+        )
+        ],
+        key=lambda point: point[1]
+    )
+
+    if not points:
+        return
+
+    threshold_names = [point[0] for point in points]
+    log_thresholds = [point[1] for point in points]
+    modularity_z_scores = [point[2] for point in points]
+    conductance_z_scores = [point[3] for point in points]
+
+    plt.figure()
+
+    plt.plot(log_thresholds, modularity_z_scores, linestyle="--", color="tab:blue", label="Z Modularity")
+    plt.plot(log_thresholds, conductance_z_scores, linestyle=":", color="tab:orange", label="Z Conductance")
+    plt.axhline(y=0, color="black", linewidth=1, linestyle="-")
+    plt.grid(axis="both", linestyle=":", alpha=0.5)
+
+    for threshold_name, log_threshold, modularity_z_score, conductance_z_score in zip(
+            threshold_names,
+            log_thresholds,
+            modularity_z_scores,
+            conductance_z_scores
+    ):
+        style = THRESHOLD_PLOT_STYLES.get(threshold_name, {"label": threshold_name, "marker": "o"})
+
+        plt.plot(log_threshold, modularity_z_score, marker=style["marker"], color="tab:blue", linestyle="None")
+        plt.plot(log_threshold, conductance_z_score, marker=style["marker"], color="tab:orange", linestyle="None")
+
+    legend_handles = [
+        Line2D([0], [0], color="tab:blue", linestyle="--", label="Z Modularity"),
+        Line2D([0], [0], color="tab:orange", linestyle=":", label="Z Conductance")
+    ]
+
+    for threshold_name in dict.fromkeys(threshold_names):
+        style = THRESHOLD_PLOT_STYLES.get(threshold_name, {"label": threshold_name, "marker": "o"})
+
+        legend_handles.append(
+            Line2D([0], [0], color="black", marker=style["marker"], linestyle="None", label=style["label"])
+        )
+
+    plt.xlabel(r"$\log(\epsilon)$")
+    plt.ylabel("Null-Model Z-Score")
+
+    plt.legend(handles=legend_handles, fontsize=8)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, "_null_model_z_scores_plot.pdf"))
+    plt.close()
+
+
+def _plot_null_model_empirical_p_values(
+        results_dir: str,
+        null_model_results: list[dict],
+        p_value_boundary: float
+) -> None:
+    points = sorted(
+        [
+            (
+                row["Name"],
+                np.log(float(row["Value"])),
+                float(row["Modularity Empirical p-value"]),
+                float(row["Conductance Empirical p-value"])
+            )
+            for row in null_model_results
+            if (
+                row["Value"] not in [None, ""]
+                and row["Modularity Empirical p-value"] not in [None, ""]
+                and row["Conductance Empirical p-value"] not in [None, ""]
+        )
+        ],
+        key=lambda point: point[1]
+    )
+
+    if not points:
+        return
+
+    threshold_names = [point[0] for point in points]
+    log_thresholds = [point[1] for point in points]
+    modularity_p_values = [point[2] for point in points]
+    conductance_p_values = [point[3] for point in points]
+
+    plt.figure()
+
+    plt.plot(log_thresholds, modularity_p_values, linestyle="--", color="tab:blue")
+    plt.plot(log_thresholds, conductance_p_values, linestyle=":", color="tab:orange")
+
+    plt.axhline(y=p_value_boundary, color="black", linestyle="-.", linewidth=1)
+    plt.grid(axis="both", linestyle=":", alpha=0.5)
+
+    for threshold_name, log_threshold, modularity_p_value, conductance_p_value in zip(
+            threshold_names,
+            log_thresholds,
+            modularity_p_values,
+            conductance_p_values
+    ):
+        style = THRESHOLD_PLOT_STYLES.get(threshold_name, {"label": threshold_name, "marker": "o"})
+
+        plt.plot(log_threshold, modularity_p_value, marker=style["marker"], color="tab:blue", linestyle="None")
+        plt.plot(log_threshold, conductance_p_value, marker=style["marker"], color="tab:orange", linestyle="None")
+
+    legend_handles = [
+        Line2D([0], [0], color="tab:blue", linestyle="--", label="Modularity empirical p-value"),
+        Line2D([0], [0], color="tab:orange", linestyle=":", label="Conductance empirical p-value"),
+        Line2D([0], [0], color="black", linestyle="-.", label=f"Boundary = {p_value_boundary:g}")
+    ]
+
+    for threshold_name in dict.fromkeys(threshold_names):
+        style = THRESHOLD_PLOT_STYLES.get(threshold_name, {"label": threshold_name, "marker": "o"})
+
+        legend_handles.append(
+            Line2D([0], [0], color="black", marker=style["marker"], linestyle="None", label=style["label"])
+        )
+
+    plt.xlabel(r"$\log(\epsilon)$")
+    plt.ylabel("Empirical p-value")
+    plt.ylim(0.0, 1.0)
+    plt.legend(handles=legend_handles, fontsize=8)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, "_null_model_empirical_p_values_plot.pdf"))
+    plt.close()
+
+
+def _plot_null_model_empirical_ranks(
+        results_dir: str,
+        null_model_results: list[dict]
+) -> None:
+    valid_results = [
+        row
+        for row in null_model_results
+        if (
+                row["Modularity Rank"] not in [None, ""]
+                and row["Conductance Rank"] not in [None, ""]
+        )
+    ]
+
+    if not valid_results:
+        return
+
+    names = [row["Name"] for row in valid_results]
+    labels = [THRESHOLD_PLOT_STYLES.get(name, {"label": name})["label"] for name in names]
+    colors = [THRESHOLD_PLOT_STYLES.get(name, {"color": "black"})["color"] for name in names]
+
+    modularity_ranks = [int(row["Modularity Rank"]) for row in valid_results]
+    conductance_ranks = [int(row["Conductance Rank"]) for row in valid_results]
+
+    x = np.arange(len(labels))
+    width = 0.35
+
+    plt.figure()
+    plt.bar(x - width / 2, modularity_ranks, width, color=colors, edgecolor="black", hatch="//")
+    plt.bar(x + width / 2, conductance_ranks, width, color=colors, edgecolor="black", hatch="\\")
+
+    legend_handles = [
+        Patch(facecolor="white", edgecolor="black", hatch="//", label="Modularity rank"),
+        Patch(facecolor="white", edgecolor="black", hatch="\\", label="Conductance rank")
+    ]
+
+    for name in dict.fromkeys(names):
+        style = THRESHOLD_PLOT_STYLES.get(name, {"label": name, "color": "black"})
+
+        legend_handles.append(
+            Patch(facecolor=style["color"], label=style["label"])
+        )
+
+    plt.xticks(x, labels)
+    plt.ylabel("Empirical Rank")
+    plt.xlabel(r"$\epsilon$")
+    plt.yticks(np.arange(0, max(modularity_ranks + conductance_ranks) + 1, 1))
+
+    plt.grid(axis="y", linestyle=":", alpha=0.5)
+    plt.legend(handles=legend_handles, fontsize=8)
+
+    plt.tight_layout()
+    plt.savefig(os.path.join(results_dir, "_null_model_empirical_ranks_plot.pdf"))
+    plt.close()

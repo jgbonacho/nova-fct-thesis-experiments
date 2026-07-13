@@ -185,6 +185,7 @@ def faddis(
         intensities.append([np.sqrt(max_contribution), max_contribution])
         eigenvalues.append(curr_eigenvalues[eigenvalues_pos[max_contribution_index]])
         number_of_clusters += 1
+        print(f"[DEBUG] K' = {number_of_clusters}")
 
         # Check stop condition 4: 'number_of_clusters' is equal to 'k_max'.
         if desired_k is None and number_of_clusters == k_max:

@@ -1,0 +1,2 @@
+Family,Network,e_family,e_global,e*,K'(e_family),K'(e*),Modularity,Conductance,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Stability,Z Modularity,Modularity Empirical p-value,Modularity Rank,Z Conductance,Conductance Empirical p-value,Conductance Rank,Acceptable?
+05_aM_davdL,email-urv,0.00517444269995048,0.0002898150010003975,0.005347645826241863,8,8,0.4752620543168384,0.24347413383958236,0.0,0.22241835834068843,0.33861371739004165,16.25059416236578,0.09090909090909091,1,6.0977803433018645,0.09090909090909091,1,False

@@ -1,0 +1,105 @@
+import csv
+import os
+from pathlib import Path
+
+def combine_csv_files(
+        root_dir: str,
+        input_filename: str,
+        output_filename: str,
+        concatenate_columns: bool = False
+) -> None:
+    root_path = Path(root_dir)
+    output_path = os.path.join(root_path,output_filename)
+
+    csv_paths = sorted(path for path in root_path.rglob(input_filename) if path != output_path)
+
+    if not csv_paths:
+        return
+
+    if concatenate_columns:
+        fieldnames = []
+
+        for csv_path in csv_paths:
+            with open(csv_path, mode="r", newline="", encoding="utf-8") as input_file:
+                reader = csv.DictReader(input_file)
+
+                for fieldname in reader.fieldnames or []:
+                    if fieldname not in fieldnames:
+                        fieldnames.append(fieldname)
+
+        if not fieldnames:
+            return
+
+        # Second pass: combine all rows.
+        with open(output_path, mode="w", newline="", encoding="utf-8") as output_file:
+            writer = csv.DictWriter(output_file, fieldnames=fieldnames, extrasaction="ignore")
+            writer.writeheader()
+
+            for csv_path in csv_paths:
+                with open(csv_path, mode="r", newline="", encoding="utf-8") as input_file:
+                    reader = csv.DictReader(input_file)
+                    writer.writerows(reader)
+
+    else:
+        expected_fieldnames = None
+
+        with open(output_path, mode="w", newline="", encoding="utf-8") as output_file:
+            writer = None
+
+            for csv_path in csv_paths:
+                with open(csv_path, mode="r", newline="", encoding="utf-8") as input_file:
+                    reader = csv.DictReader(input_file)
+
+                    if expected_fieldnames is None:
+                        expected_fieldnames = reader.fieldnames
+
+                        if not expected_fieldnames:
+                            continue
+
+                        writer = csv.DictWriter(output_file, fieldnames=expected_fieldnames)
+                        writer.writeheader()
+
+                    elif reader.fieldnames != expected_fieldnames:
+                        raise ValueError(f"[ERROR] Columns in {csv_path} do not match the expected columns: {expected_fieldnames}.")
+
+                    if writer is not None:
+                        writer.writerows(reader)
+
+if __name__ == "__main__":
+
+    TEST_NETWORKS_WITHOUT_GT_DIR = "test_networks_without_gt"
+    TEST_NETWORKS_WITH_GT_DIR = "test_networks_with_gt"
+
+    SUMMARY_FILENAME = "_summary.csv"
+
+    COMBINE_SUMMARY_FILENAME = "_combine_summary.csv"
+    COMBINE_THRESHOLDS_FILENAME = "_combine_threshold_details.csv"
+
+    for base_dir in [
+        "results_2026-07-12_23-54-12-394620"
+    ]:
+
+        combine_csv_files(
+            root_dir=os.path.join(base_dir, TEST_NETWORKS_WITHOUT_GT_DIR),
+            input_filename=SUMMARY_FILENAME,
+            output_filename=COMBINE_SUMMARY_FILENAME
+        )
+
+        combine_csv_files(
+            root_dir=os.path.join(base_dir, TEST_NETWORKS_WITHOUT_GT_DIR),
+            input_filename="07_threshold.csv",
+            output_filename=COMBINE_THRESHOLDS_FILENAME
+        )
+
+        combine_csv_files(
+            root_dir=os.path.join(base_dir, TEST_NETWORKS_WITH_GT_DIR),
+            input_filename="_summary.csv",
+            output_filename=COMBINE_SUMMARY_FILENAME
+        )
+
+        combine_csv_files(
+            root_dir=os.path.join(base_dir, TEST_NETWORKS_WITH_GT_DIR),
+            input_filename="08_extrinsic_evaluation.csv",
+            output_filename=COMBINE_THRESHOLDS_FILENAME,
+            concatenate_columns=True
+        )

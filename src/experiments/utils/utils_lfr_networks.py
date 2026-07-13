@@ -163,7 +163,8 @@ def save_statistics_and_draw_histograms(
             Default is 2, assuming the first two columns are "Network" and "K".
 
     Saves:
-        A CSV file with computed statistics for each network family and histogram plots for each family, within each network family directory.
+        A CSV file with computed statistics for each network family and histogram plots for each family, within each
+        network family directory.
     """
 
     network_family_dirs = sorted(
@@ -285,7 +286,8 @@ def _draw_histogram(
             The 95th percentile of the normalized contributions.
 
     Saves:
-        A histogram plot saved as "{output_filename}" in the specified results directory, with shaded areas and lines indicating key statistics.
+        A histogram plot saved as "{output_filename}" in the specified results directory, with shaded areas and lines
+        indicating key statistics.
     """
 
     plt.figure(figsize=(8, 5))
@@ -339,7 +341,8 @@ def draw_boxplot(results_dir: str, input_filename: str, output_filename: str, nu
             Default is 2, assuming the first two columns are "Network" and "K".
 
     Saves:
-        A boxplot saved as "{output_filename}" in the specified results directory, comparing normalized contributions across different network families.
+        A boxplot saved as "{output_filename}" in the specified results directory, comparing normalized contributions
+        across different network families.
     """
 
     boxplot_data = []
@@ -373,7 +376,8 @@ def draw_boxplot(results_dir: str, input_filename: str, output_filename: str, nu
 
 def draw_line_plot(results_dir: str, input_filename: str, output_filename: str) -> None:
     """
-    Draw a line plot of mean normalized contributions with error bars for each network family, along with median and percentiles.
+    Draw a line plot of mean normalized contributions with error bars for each network family, along with median
+    and percentiles.
 
     Parameters:
         results_dir : (str)
@@ -384,7 +388,8 @@ def draw_line_plot(results_dir: str, input_filename: str, output_filename: str) 
             The name of the output file to save the line plot.
 
     Saves:
-        A line plot saved as "{output_filename}" in the specified results directory, showing mean normalized contributions with error bars, and lines for median and percentiles for each network family.
+        A line plot saved as "{output_filename}" in the specified results directory, showing mean normalized
+        contributions with error bars, and lines for median and percentiles for each network family.
     """
 
     families = []
@@ -451,7 +456,8 @@ def save_candidate_thresholds(
             The list of threshold metrics to extract from the input file (e.g., ("Mean", "Median", "75%", "90%", "95%")).
 
     Saves:
-        A CSV file saved as "{output_filename}" in the specified results directory, containing candidate thresholds for each network family based on the specified threshold metrics.
+        A CSV file saved as "{output_filename}" in the specified results directory, containing candidate thresholds
+        for each network family based on the specified threshold metrics.
     """
 
     with open(os.path.join(results_dir, input_filename), "r", newline="", encoding="utf-8") as in_file, \
@@ -479,7 +485,8 @@ def selected_thresholds_using_bootstrap_and_mse(
         number_of_columns_to_skip: int = 2
 ) -> None:
     """
-    For each network family, perform bootstrapping to compute new thresholds and their MSE against pre-computed candidate thresholds, then select the best threshold metric based on MSE.
+    For each network family, perform bootstrapping to compute new thresholds and their MSE against pre-computed
+    candidate thresholds, then select the best threshold metric based on MSE.
 
     Parameters:
         results_dir : (str)
@@ -505,8 +512,8 @@ def selected_thresholds_using_bootstrap_and_mse(
             Default is 2, assuming the first two columns are "Network" and "K".
 
     Saves:
-        A CSV file with bootstrap statistics and MSE for each threshold metric,
-        and a CSV file with the selected threshold metric and value for each network family, both within the specified results' directory.
+        A CSV file with bootstrap statistics and MSE for each threshold metric, and a CSV file with the selected
+        threshold metric and value for each network family, both within the specified results' directory.
     """
 
     candidate_thresholds_by_family = _load_candidate_thresholds(
@@ -739,7 +746,8 @@ def _compute_candidate_thresholds(normalized_values: list[float], threshold_metr
 
     Returns:
         thresholds : (dict[str, float])
-            A dictionary mapping each specified threshold metric to its computed value based on the normalized contribution values.
+            A dictionary mapping each specified threshold metric to its computed value based on the normalized
+            contribution values.
     """
 
     mean, _, median, p75, p90, p95, _, _ = _compute_statistics(normalized_values)
@@ -777,7 +785,8 @@ def save_experiment_report(
             A list of Path objects representing the directories of network families included in the experiment.
 
     Saves:
-        A JSON file saved as "{output_filename}" in the specified results directory, containing a report of the experiment settings.
+        A JSON file saved as "{output_filename}" in the specified results directory, containing a report of the
+        experiment settings.
     """
 
     report = {

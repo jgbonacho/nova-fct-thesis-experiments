@@ -1,0 +1,2 @@
+Family,Network,e_family,e_global,e*,K'(e_family),K'(e*),Modularity,Conductance,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Stability,Z Modularity,Modularity Empirical p-value,Modularity Rank,Z Conductance,Conductance Empirical p-value,Conductance Rank,Acceptable?
+10_aH_davdM,facebook-network-ego348,5.301525375833059e-05,0.0002898150010003975,6.414810348671026e-05,18,18,0.21253507751207587,0.24,0.3888888888888889,0.27232142857142855,0.5534923368261204,34.111875287370275,0.09090909090909091,1,27.546288363388246,0.09090909090909091,1,True

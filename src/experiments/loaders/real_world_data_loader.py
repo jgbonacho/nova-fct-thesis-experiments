@@ -2,7 +2,7 @@ import os
 
 import networkx as nx
 
-from experiments.utils.network_config_dataclass import NetworkConfig
+from experiments.utils.dataclasses.network_config_dataclass import NetworkConfig
 
 
 def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple[nx.Graph, list, int]:
@@ -66,14 +66,14 @@ def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple
             id_to_label = nx.get_node_attributes(graph, network_config.ground_truth_attr)
             unique_label_values = sorted(set(id_to_label.values()))
             label_value_to_idx = {label: idx for idx, label in enumerate(unique_label_values)}
-            print(f"[INFO] K = {k}")
-            print(f"[INFO] Labels-to-IDs = {label_value_to_idx}")
 
             # NOTE: Nodes without the ground-truth attribute are labeled as -1.
             ground_truth_labels = [
                 label_value_to_idx[id_to_label[node]] if node in id_to_label else -1 for node in original_nodes
             ]
             k = len(unique_label_values)
+
+            print(f"[INFO] K = {k}; Labels-to-IDs = {label_value_to_idx}")
         else:
             id_to_raw_labels = nx.get_node_attributes(graph, network_config.ground_truth_attr)
             id_to_labels = {}
@@ -86,8 +86,6 @@ def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple
                     unique_label_values.update(labels)
             unique_label_values = sorted(unique_label_values)
             label_value_to_idx = {label: idx for idx, label in enumerate(unique_label_values)}
-            print(f"[INFO] K = {k}")
-            print(f"[INFO] Labels-to-IDs = {label_value_to_idx}")
 
             ground_truth_labels = [
                 # NOTE: Nodes without the ground-truth attribute are labeled as [-1].
@@ -95,6 +93,8 @@ def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple
                 for node_id in original_nodes
             ]
             k = len(unique_label_values)
+
+            print(f"[INFO] K = {k}; Labels-to-IDs = {label_value_to_idx}")
 
     # Relabel nodes to ensure they are labeled from 0 to n-1.
     mapping = {node: idx for idx, node in enumerate(original_nodes)}
