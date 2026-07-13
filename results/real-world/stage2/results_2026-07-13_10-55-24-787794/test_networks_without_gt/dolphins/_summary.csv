@@ -1,0 +1,2 @@
+Family,Network,e_family,e_global,e*,K'(e_family),K'(e*),Modularity,Conductance,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Stability,Z Modularity,Modularity Empirical p-value,Modularity Rank,Z Conductance,Conductance Empirical p-value,Conductance Rank,Acceptable?
+05_aM_davdL,dolphins,0.00517444269995048,0.0002898150010003975,0.013938562276953103,2,2,0.019277385165251716,0.02438791554357592,0.0,0.6451612903225806,0.8334116976285113,-2.3481442388282034,1.0,11,6.270185582737237,0.09090909090909091,1,True

@@ -1,0 +1,4 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime
+01_aL_davdL,c-elegans-neural-network,e_elbow,1.2461521332244188e-11,38,True,"[20, 15, 33, 25, 25, 24, 20, 29, 17, 25, 18, 24, 17, 15, 23, 13, 22, 14, 15, 19, 14, 23, 20, 24, 4, 3, 4, 5, 4, 2, 2, 2, 3, 3, 3, 3, 3, 3]",3,0.07894736842105263,0.1111111111111111,0.028782408709858896,0.0,3.425516754388809
+01_aL_davdL,c-elegans-neural-network,e_global,0.0002898150010003975,16,True,"[33, 59, 45, 31, 36, 10, 39, 23, 33, 43, 23, 8, 29, 7, 6, 2]",1,0.0625,0.19865319865319866,0.01606104842691872,0.0,1.4767267107963562
+01_aL_davdL,c-elegans-neural-network,e_below,0.02199386338314654,1,True,[297],0,0.0,1.0,0.0017036723121499594,1.0,0.1734163174405694

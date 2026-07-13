@@ -1,0 +1,2 @@
+Family,Network,e_family,e_global,e*,K'(e_family),K'(e*),Modularity,Conductance,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Stability,Z Modularity,Modularity Empirical p-value,Modularity Rank,Z Conductance,Conductance Empirical p-value,Conductance Rank,Acceptable?
+01_aL_davdL,c-elegans-neural-network,0.027720654563708487,0.0002898150010003975,1.2461521332244188e-11,,38,0.028782408709858896,0.0,0.07894736842105263,0.1111111111111111,0.5600342689191836,4.28862962730567,0.09090909090909091,1,0.7584401570086422,0.6363636363636364,1,False

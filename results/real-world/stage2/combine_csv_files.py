@@ -76,7 +76,8 @@ if __name__ == "__main__":
     COMBINE_THRESHOLDS_FILENAME = "_combine_threshold_details.csv"
 
     for base_dir in [
-        "results_2026-07-12_23-54-12-394620"
+        "results_2026-07-12_23-54-12-394620",
+        "results_2026-07-13_10-55-24-787794"
     ]:
 
         combine_csv_files(

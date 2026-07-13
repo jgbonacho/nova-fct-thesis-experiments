@@ -1,0 +1,2 @@
+Family,Network,e_family,e_global,e*,K'(e_family),K'(e*),Modularity,Conductance,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Stability,Z Modularity,Modularity Empirical p-value,Modularity Rank,Z Conductance,Conductance Empirical p-value,Conductance Rank,Acceptable?
+01_aL_davdL,les-miserables,0.027720654563708487,0.0002898150010003975,0.021558116419948353,4,5,0.041066744129782326,0.10408712615986418,0.0,0.3246753246753247,0.8315318060875819,9.289244973055629,0.09090909090909091,1,0.9074030718615549,0.2727272727272727,3,False

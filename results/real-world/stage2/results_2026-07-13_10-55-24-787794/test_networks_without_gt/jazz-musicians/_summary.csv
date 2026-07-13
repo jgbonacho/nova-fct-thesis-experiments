@@ -1,0 +1,2 @@
+Family,Network,e_family,e_global,e*,K'(e_family),K'(e*),Modularity,Conductance,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Stability,Z Modularity,Modularity Empirical p-value,Modularity Rank,Z Conductance,Conductance Empirical p-value,Conductance Rank,Acceptable?
+06_aM_davdM,jazz-musicians,9.27556171347821e-05,0.0002898150010003975,9.27556171347821e-05,24,24,0.017946870694294657,0.0,0.375,0.1919191919191919,0.7195917553705065,7.972024766664742,0.09090909090909091,1,1.7910269085015522,0.2727272727272727,1,True

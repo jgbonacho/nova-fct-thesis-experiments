@@ -1,0 +1,2 @@
+Family,Network,e_family,e_global,e*,K'(e_family),K'(e*),Modularity,Conductance,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Stability,Z Modularity,Modularity Empirical p-value,Modularity Rank,Z Conductance,Conductance Empirical p-value,Conductance Rank,Acceptable?
+01_aL_davdL,c-elegans-metabolic,0.027720654563708487,0.0002898150010003975,0.01563527520019711,2,3,0.0026532813020887637,0.045421203662466526,0.0,0.8741721854304636,0.7248363450581694,9.164952552445696,0.3333333333333333,1,,0.3333333333333333,1,False
