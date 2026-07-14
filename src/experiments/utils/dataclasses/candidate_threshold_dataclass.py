@@ -21,9 +21,15 @@ class IntrinsicEvaluation(CsvDataclass):
     singleton_or_near_singleton_communities: int = field(metadata={"label": "#Singleton/Near-Singleton Communities"})
     singleton_or_near_singleton_fraction: float = field(metadata={"label": "Singleton/Near-Singleton Fraction"})
     largest_community_fraction: float = field(metadata={"label": "Largest-Community Fraction"})
+
     modularity: float = field(metadata={"label": "Modularity"})
     conductance: float = field(metadata={"label": "Conductance"})
+
     runtime: float = field(metadata={"label": "Runtime"})
+
+    acceptable_modularity: bool = field(metadata={"label": "Acceptable Modularity?"}, default=None)
+    acceptable_conductance: bool = field(metadata={"label": "Acceptable Conductance?"}, default=None)
+    acceptable_non_degenerate: bool = field(metadata={"label": "Acceptable Non-Degenerate?"}, default=None)
 
 
 @dataclass
@@ -32,6 +38,8 @@ class StabilityEvaluation(CsvDataclass):
     number_of_valid_similarities: int = field(metadata={"label": "#Valid Similarities"})
     similarities: list[float] = field(metadata={"label": "Similarities"})
     stability: float = field(metadata={"label": "Stability"})
+
+    acceptable_stability: bool = field(metadata={"label": "Acceptable Stability?"}, default=None)
 
 
 @dataclass
@@ -53,14 +61,11 @@ class NullModelEvaluation(CsvDataclass):
     conductance_empirical_p_value: float = field(metadata={"label": "Conductance Empirical p-value"})
     conductance_rank: int = field(metadata={"label": "Conductance Rank"})
 
+    acceptable_null_model: bool = field(metadata={"label": "Acceptable Null Model?"}, default=None)
+
 
 @dataclass
 class ParetoPlusParsimonySelection(CsvDataclass):
-    acceptable_modularity: bool = field(metadata={"label": "Acceptable Modularity?"})
-    acceptable_conductance: bool = field(metadata={"label": "Acceptable Conductance?"})
-    acceptable_stability: bool = field(metadata={"label": "Acceptable Stability?"})
-    non_degenerate: bool = field(metadata={"label": "Non-Degenerate?"})
-    acceptable_null_model: bool = field(metadata={"label": "Acceptable Null Model?"})
     acceptable: bool = field(metadata={"label": "Acceptable?"})
 
 

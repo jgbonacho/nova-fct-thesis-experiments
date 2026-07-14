@@ -45,10 +45,6 @@ def main(estimate_lfr_network_thresholds=True, estimate_real_world_network_thres
         ))
         run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
             apply_lapin=True,
-            overlapping_communities=True
-        ))
-        run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
-            apply_lapin=True,
             overlapping_communities=False,
             pareto_tolerance_fraction_modularity=0.10,
             pareto_tolerance_fraction_conductance=0.10,
@@ -56,10 +52,7 @@ def main(estimate_lfr_network_thresholds=True, estimate_real_world_network_thres
         ))
         run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
             apply_lapin=True,
-            overlapping_communities=True,
-            pareto_tolerance_fraction_modularity=0.10,
-            pareto_tolerance_fraction_conductance=0.10,
-            pareto_tolerance_fraction_stability=0.10
+            overlapping_communities=True
         ))
 
 

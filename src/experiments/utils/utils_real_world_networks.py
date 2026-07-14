@@ -409,23 +409,53 @@ def _rank_values(values: list[float]) -> list[float]:
 
 # ----------------------------------------------------------------------------------------------------------------------
 
+
 def compute_thresholds_per_family(
         results_dir: str,
         input_filename: str,
-        input_fieldnames: list,
+        input_fieldnames: list[str],
         k_boundary_thresholds_by_network_output_filename: str,
-        k_boundary_thresholds_by_network_output_fieldnames: list,
+        k_boundary_thresholds_by_network_output_fieldnames: list[str],
         k_boundary_thresholds_by_family_output_filename: str,
-        k_boundary_thresholds_by_family_output_fieldnames: list,
+        k_boundary_thresholds_by_family_output_fieldnames: list[str],
         discard_global_component: bool
 ) -> list[dict]:
+    # K-boundary thresholds by network
+    families = compute_k_boundary_thresholds_by_network(
+        input_filename=input_filename,
+        input_fieldnames=input_fieldnames,
+        results_dir=results_dir,
+        k_boundary_thresholds_by_network_output_filename=k_boundary_thresholds_by_network_output_filename,
+        k_boundary_thresholds_by_network_output_fieldnames=k_boundary_thresholds_by_network_output_fieldnames,
+        discard_global_component=discard_global_component
+    )
+
+    # K-boundary thresholds by network family
+    thresholds_per_family = compute_k_boundary_thresholds_by_family(
+        families=families,
+        results_dir=results_dir,
+        k_boundary_thresholds_by_family_output_filename=k_boundary_thresholds_by_family_output_filename,
+        k_boundary_thresholds_by_family_output_fieldnames=k_boundary_thresholds_by_family_output_fieldnames,
+    )
+
+    return thresholds_per_family
+
+
+def compute_k_boundary_thresholds_by_network(
+        input_filename: str,
+        input_fieldnames: list[str],
+        results_dir: str,
+        k_boundary_thresholds_by_network_output_filename: str,
+        k_boundary_thresholds_by_network_output_fieldnames: list[str],
+        discard_global_component: bool
+) -> dict:
     family_dirs = sorted(
         [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
         key=lambda path: path.name
     )
 
-    # K-boundary thresholds by network
     families = {}
+
     k_boundary_thresholds_by_network_file = os.path.join(results_dir, k_boundary_thresholds_by_network_output_filename)
     with open(file=k_boundary_thresholds_by_network_file, mode="w", newline="", encoding="utf-8") as out_file:
         writer = csv.writer(out_file)
@@ -455,16 +485,26 @@ def compute_thresholds_per_family(
                     c_k = contributions[k_index] if 0 <= k_index < len(contributions) else None
                     c_k_plus_1 = contributions[k_plus_1_index] if 0 <= k_plus_1_index < len(contributions) else None
 
-                    if c_k is None or c_k_plus_1 is None or c_k_plus_1 > c_k:
+                    if c_k is None or c_k_plus_1 is None or c_k_plus_1 >= c_k:
+                        # Invalid K-Boundary Threshold
                         writer.writerow([network_name, len(contributions), k, c_k, c_k_plus_1, False, None])
                     else:
+                        # Valid K-Boundary Threshold
                         threshold = float(np.sqrt(c_k * c_k_plus_1))
                         writer.writerow([network_name, len(contributions), k, c_k, c_k_plus_1, True, threshold])
 
                         families[network_family_dir.name]["valid_thresholds"].append(threshold)
                         families[network_family_dir.name]["number_of_valid_thresholds"] += 1
 
-    # K-boundary thresholds by network family
+    return families
+
+
+def compute_k_boundary_thresholds_by_family(
+        families: dict,
+        results_dir: str,
+        k_boundary_thresholds_by_family_output_filename: str,
+        k_boundary_thresholds_by_family_output_fieldnames: list[str]
+) -> list[dict]:
     thresholds_per_family = []
     all_valid_thresholds = []
     for family_name, values in families.items():
@@ -504,21 +544,22 @@ def compute_thresholds_per_family(
     return thresholds_per_family
 
 
+# ----------------------------------------------------------------------------------------------------------------------
+
+
 def compute_candidate_thresholds(
         results_dir: str,
         network_family: str,
         k_boundary_thresholds_per_family: list[dict],
         input_filename: str,
-        input_fieldnames: list,
+        input_fieldnames: list[str],
         output_filename: str,
-        output_fieldnames: list
+        output_fieldnames: list[str]
 ) -> list[CandidateThreshold]:
-    family_thresholds = next(
-        family for family in k_boundary_thresholds_per_family
-        if family["network_family"] == network_family
-    )
-    e_family = family_thresholds["e_family"]
-    e_global = family_thresholds["e_global"]
+    # Assuming the network family and its thresholds always exist.
+    family = next(family for family in k_boundary_thresholds_per_family if family["network_family"] == network_family)
+    e_family = family["e_family"]
+    e_global = family["e_global"]
 
     input_file = os.path.join(results_dir, input_filename)
     with open(file=input_file, mode="r", newline="", encoding="utf-8") as in_file:
@@ -535,32 +576,38 @@ def compute_candidate_thresholds(
             c_j = contributions[j]
             c_j_plus_1 = contributions[j + 1]
             if c_j > c_j_plus_1:
+                # Valid K-Contribution Threshold
                 contribution_boundaries.append(float(np.sqrt(c_j * c_j_plus_1)))
                 adjacent_drops.append(float(np.log(c_j / c_j_plus_1)))
 
         below_boundaries = [boundary for boundary in contribution_boundaries if boundary < e_family]
-        e_below = max(below_boundaries) if below_boundaries else None
-
         above_boundaries = [boundary for boundary in contribution_boundaries if boundary > e_family]
-        e_above = min(above_boundaries) if above_boundaries else None
-
-        e_elbow = contribution_boundaries[int(np.argmax(adjacent_drops))] if adjacent_drops else None
 
         candidate_thresholds = [
+            # 'e_family'
             CandidateThreshold(
-                family=network_family, network=network_name, name=CandidateThresholdName.E_FAMILY, value=e_family
+                family=network_family, network=network_name, name=CandidateThresholdName.E_FAMILY,
+                value=e_family
             ),
+            # 'e_global'
             CandidateThreshold(
-                family=network_family, network=network_name, name=CandidateThresholdName.E_GLOBAL, value=e_global
+                family=network_family, network=network_name, name=CandidateThresholdName.E_GLOBAL,
+                value=e_global
             ),
+            # Closest valid contribution-boundary value below 'e_family'
             CandidateThreshold(
-                family=network_family, network=network_name, name=CandidateThresholdName.E_BELOW, value=e_below
+                family=network_family, network=network_name, name=CandidateThresholdName.E_BELOW,
+                value=max(below_boundaries) if below_boundaries else None
             ),
+            # Closest valid contribution-boundary value above 'e_family'
             CandidateThreshold(
-                family=network_family, network=network_name, name=CandidateThresholdName.E_ABOVE, value=e_above
+                family=network_family, network=network_name, name=CandidateThresholdName.E_ABOVE,
+                value=min(above_boundaries) if above_boundaries else None
             ),
+            # Valid boundary associated with the strongest adjacent drop
             CandidateThreshold(
-                family=network_family, network=network_name, name=CandidateThresholdName.E_ELBOW, value=e_elbow
+                family=network_family, network=network_name, name=CandidateThresholdName.E_ELBOW,
+                value=contribution_boundaries[int(np.argmax(adjacent_drops))] if adjacent_drops else None
             )
         ]
 
@@ -586,15 +633,15 @@ def evaluate_candidate_thresholds_using_intrinsic_metrics(
 
     updated_candidate_thresholds = []
     for candidate_threshold in candidate_thresholds:
-        if candidate_threshold.value is None:
-            continue
+        # Check candidate exists
+        if candidate_threshold.value is None: continue
 
         start_time = get_computation_start_time()
         U, _, _, _, _, _ = faddis(W=W, epsilon=candidate_threshold.value, tau=tau, k_max=k_max)
         end_time = get_computation_end_time()
 
-        if U.shape[1] == 0:
-            continue
+        # Check if clusters were extracted
+        if U.shape[1] == 0: continue
 
         predicted_labels, k_predicted, first_cluster_discarded = apply_defuzzification_rule(
             U=U,
@@ -609,14 +656,13 @@ def evaluate_candidate_thresholds_using_intrinsic_metrics(
             predicted_labels=predicted_labels,
             overlapping=config.overlapping_communities
         )
-        computational_results = compute_computational_metrics(start_time, end_time)
-
         community_properties = compute_community_properties(
             number_of_nodes=graph.number_of_nodes(),
             predicted_labels=predicted_labels,
             overlapping_communities=config.overlapping_communities,
             near_singleton_boundary=config.near_singleton_boundary
         )
+        computational_results = compute_computational_metrics(start_time, end_time)
 
         candidate_threshold.intrinsic_evaluation = IntrinsicEvaluation(
             k_predicted=community_properties.number_of_communities,
@@ -632,12 +678,12 @@ def evaluate_candidate_thresholds_using_intrinsic_metrics(
 
         updated_candidate_thresholds.append(candidate_threshold)
 
-    # Sort by: 1) Highest modularity; 2) Lowest conductance
-    updated_candidate_thresholds.sort(
-        key=lambda th: (
-            -th.intrinsic_evaluation.modularity,
-            th.intrinsic_evaluation.conductance
-        )
+    _evaluate_acceptability_in_place_of_candidate_thresholds_using_pareto(
+        candidate_thresholds=updated_candidate_thresholds,
+        config=config,
+        check_modularity=True,
+        check_conductance=True,
+        check_non_degenerate=True
     )
 
     _write_candidate_thresholds_to_file(
@@ -646,24 +692,15 @@ def evaluate_candidate_thresholds_using_intrinsic_metrics(
         output_fieldnames=output_fieldnames
     )
 
-    filtered_candidate_thresholds = _filter_candidate_thresholds(
-        updated_candidate_thresholds,
-        number_of_thresholds_to_retain=config.number_of_thresholds_to_retain_after_intrinsic_evaluation
+    filtered_candidate_thresholds = _filter_candidate_thresholds_using_pareto_and_parsimony(
+        candidate_thresholds=updated_candidate_thresholds,
+        number_of_thresholds_to_retain=config.number_of_thresholds_to_retain_after_intrinsic_evaluation,
+        check_modularity=True,
+        check_conductance=True,
+        check_non_degenerate=True
     )
 
     return filtered_candidate_thresholds
-
-
-def apply_trivial_validity_filters(
-        candidate_thresholds: list[CandidateThreshold]
-) -> list[CandidateThreshold]:
-    updated_candidate_thresholds = [
-        threshold
-        for threshold in candidate_thresholds
-        if threshold.intrinsic_evaluation.k_predicted > 1
-    ]
-
-    return updated_candidate_thresholds
 
 
 def evaluate_candidate_thresholds_under_perturbation_stability(
@@ -698,11 +735,11 @@ def evaluate_candidate_thresholds_under_perturbation_stability(
 
             perturbed_U, _, _, _, _, _ = faddis(W=perturbed_W, epsilon=candidate_threshold.value, tau=tau, k_max=k_max)
 
-            if perturbed_U.shape[1] == 0:
-                continue
+            # Check if clusters were extracted
+            if perturbed_U.shape[1] == 0: continue
 
             perturbed_predicted_labels, perturbed_k_predicted, perturbed_first_cluster_discarded = apply_defuzzification_rule(
-                perturbed_U,
+                U=perturbed_U,
                 gamma=config.defuzzification_gamma,
                 overlapping=config.overlapping_communities
             )
@@ -730,13 +767,13 @@ def evaluate_candidate_thresholds_under_perturbation_stability(
 
         updated_candidate_thresholds.append(candidate_threshold)
 
-    # Sort by: 1) Highest perturbation stability; 2) Highest modularity; 3) Lowest conductance;
-    updated_candidate_thresholds.sort(
-        key=lambda th: (
-            -th.stability_evaluation.stability,
-            - th.intrinsic_evaluation.modularity,
-            th.intrinsic_evaluation.conductance
-        )
+    _evaluate_acceptability_in_place_of_candidate_thresholds_using_pareto(
+        candidate_thresholds=updated_candidate_thresholds,
+        config=config,
+        # check_modularity=True,
+        # check_conductance=True,
+        # check_non_degenerate=True,
+        check_stability=True
     )
 
     _write_candidate_thresholds_to_file(
@@ -745,9 +782,13 @@ def evaluate_candidate_thresholds_under_perturbation_stability(
         output_fieldnames=output_fieldnames
     )
 
-    filtered_candidate_thresholds = _filter_candidate_thresholds(
-        updated_candidate_thresholds,
-        number_of_thresholds_to_retain=config.number_of_thresholds_to_retain_after_stability_evaluation
+    filtered_candidate_thresholds = _filter_candidate_thresholds_using_pareto_and_parsimony(
+        candidate_thresholds=updated_candidate_thresholds,
+        number_of_thresholds_to_retain=config.number_of_thresholds_to_retain_after_stability_evaluation,
+        check_modularity=True,
+        check_conductance=True,
+        check_non_degenerate=True,
+        check_stability=True
     )
 
     return filtered_candidate_thresholds
@@ -766,11 +807,6 @@ def evaluate_candidate_thresholds_under_null_model(
 
     updated_candidate_thresholds = []
     for candidate_threshold in candidate_thresholds:
-
-        threshold_value = candidate_threshold.value
-        real_modularity = candidate_threshold.intrinsic_evaluation.modularity
-        real_conductance = candidate_threshold.intrinsic_evaluation.conductance
-
         null_modularities = []
         null_conductances = []
         for null_number in range(1, config.number_of_null_models + 1):
@@ -781,13 +817,13 @@ def evaluate_candidate_thresholds_under_null_model(
                 seed=null_number
             )
 
-            null_U, _, _, _, _, _ = faddis(W=null_W, epsilon=threshold_value, tau=tau, k_max=k_max)
+            null_U, _, _, _, _, _ = faddis(W=null_W, epsilon=candidate_threshold.value, tau=tau, k_max=k_max)
 
-            if null_U.shape[1] == 0:
-                continue
+            # Check if clusters were extracted
+            if null_U.shape[1] == 0: continue
 
             null_predicted_labels, null_k_predicted, null_first_cluster_discarded = apply_defuzzification_rule(
-                null_U,
+                U=null_U,
                 gamma=config.defuzzification_gamma,
                 overlapping=config.overlapping_communities
             )
@@ -811,10 +847,13 @@ def evaluate_candidate_thresholds_under_null_model(
                 float(
                     null_intrinsic_results.conductance
                     if not config.overlapping_communities else
-                    null_intrinsic_results.conductance_bn)
+                    null_intrinsic_results.conductance_bn
+                )
             )
 
         if null_modularities:
+            real_modularity = candidate_threshold.intrinsic_evaluation.modularity
+
             mean_null_modularity = float(np.mean(null_modularities))
             std_null_modularity = float(np.std(null_modularities, ddof=1)) if len(null_modularities) > 1 else 0.0
 
@@ -835,6 +874,8 @@ def evaluate_candidate_thresholds_under_null_model(
             modularity_rank = None
 
         if null_conductances:
+            real_conductance = candidate_threshold.intrinsic_evaluation.conductance
+
             mean_null_conductance = float(np.mean(null_conductances))
             std_null_conductance = float(np.std(null_conductances, ddof=1)) if len(null_conductances) > 1 else 0.0
 
@@ -842,7 +883,6 @@ def evaluate_candidate_thresholds_under_null_model(
                 (mean_null_conductance - real_conductance) / std_null_conductance
                 if std_null_conductance > 0 else None
             )
-
             conductance_empirical_p_value = (
                     (1 + sum(phi_null <= real_conductance for phi_null in null_conductances)) /
                     (len(null_conductances) + 1))
@@ -873,6 +913,16 @@ def evaluate_candidate_thresholds_under_null_model(
 
         updated_candidate_thresholds.append(candidate_threshold)
 
+    _evaluate_acceptability_in_place_of_candidate_thresholds_using_pareto(
+        candidate_thresholds=updated_candidate_thresholds,
+        config=config,
+        # check_modularity=True,
+        # check_conductance=True,
+        # check_non_degenerate=True,
+        # check_stability=True,
+        check_null_model=True
+    )
+
     _write_candidate_thresholds_to_file(
         candidate_thresholds=updated_candidate_thresholds,
         output_file=os.path.join(results_dir, output_filename),
@@ -887,102 +937,32 @@ def select_final_threshold_by_pareto_and_parsimony(
         candidate_thresholds: list[CandidateThreshold],
         final_thresholds_output_filename: str,
         final_thresholds_output_fieldnames: list,
-        threshold_output_filename: str,
-        config: RealWorldThresholdEstimationConfig
+        threshold_output_filename: str
 ) -> CandidateThreshold:
-    modularities = [float(th.intrinsic_evaluation.modularity) for th in candidate_thresholds]
-    conductances = [float(th.intrinsic_evaluation.conductance) for th in candidate_thresholds]
-    stabilities = [float(th.stability_evaluation.stability) for th in candidate_thresholds]
-
-    q_max = max(modularities)
-    phi_min = min(conductances)
-    s_max = max(stabilities)
-
-    delta_q = config.pareto_tolerance_fraction_modularity * (max(modularities) - min(modularities))
-    delta_phi = config.pareto_tolerance_fraction_conductance * (max(conductances) - min(conductances))
-    delta_s = config.pareto_tolerance_fraction_stability * (max(stabilities) - min(stabilities))
-
     updated_candidate_thresholds = []
     for candidate_threshold in candidate_thresholds:
-        modularity = float(candidate_threshold.intrinsic_evaluation.modularity)
-        conductance = float(candidate_threshold.intrinsic_evaluation.conductance)
-        stability = float(candidate_threshold.stability_evaluation.stability)
-
-        k_predicted = int(candidate_threshold.intrinsic_evaluation.k_predicted)
-        largest_community_fraction = float(candidate_threshold.intrinsic_evaluation.largest_community_fraction)
-        singleton_or_near_singleton_fraction = float(
-            candidate_threshold.intrinsic_evaluation.singleton_or_near_singleton_fraction)
-
-        modularity_is_acceptable = modularity >= q_max - delta_q
-        conductance_is_acceptable = conductance <= phi_min + delta_phi
-        stability_is_acceptable = stability >= s_max - delta_s
-
-        non_degenerate = (
-                k_predicted > 1
-                and largest_community_fraction < config.pareto_largest_community_fraction_boundary
-                and singleton_or_near_singleton_fraction < config.pareto_singleton_or_near_singleton_fraction_boundary
-        )
-
-        modularity_p_value = candidate_threshold.null_model_evaluation.modularity_empirical_p_value
-        conductance_p_value = candidate_threshold.null_model_evaluation.conductance_empirical_p_value
-
-        modularity_p_value = float(modularity_p_value) if modularity_p_value not in [None, ""] else None
-        conductance_p_value = float(conductance_p_value) if conductance_p_value not in [None, ""] else None
-
-        null_model_is_acceptable = (
-                (modularity_p_value is not None and modularity_p_value <= config.pareto_null_model_p_value_boundary)
-                or
-                (conductance_p_value is not None and conductance_p_value <= config.pareto_null_model_p_value_boundary)
-        )
-
         acceptable = (
-                modularity_is_acceptable
-                and conductance_is_acceptable
-                and stability_is_acceptable
-                and non_degenerate
-                and null_model_is_acceptable
+                candidate_threshold.intrinsic_evaluation.acceptable_modularity
+                and candidate_threshold.intrinsic_evaluation.acceptable_conductance
+                and candidate_threshold.intrinsic_evaluation.acceptable_non_degenerate
+                and candidate_threshold.stability_evaluation.acceptable_stability
+                and candidate_threshold.null_model_evaluation.acceptable_null_model
         )
 
         candidate_threshold.pareto_plus_parsimony_selection = ParetoPlusParsimonySelection(
-            acceptable_modularity=modularity_is_acceptable,
-            acceptable_conductance=conductance_is_acceptable,
-            acceptable_stability=stability_is_acceptable,
-            non_degenerate=non_degenerate,
-            acceptable_null_model=null_model_is_acceptable,
             acceptable=acceptable
         )
 
         updated_candidate_thresholds.append(candidate_threshold)
 
-    acceptable_thresholds = [
-        th for th in updated_candidate_thresholds if th.pareto_plus_parsimony_selection.acceptable
-    ]
-
-    # TODO: Check is "e_family" is practically indistinguishable from the best candidate.
-
-    if acceptable_thresholds:
-        final_threshold = max(acceptable_thresholds, key=lambda th: th.value)
-    else:
-        final_threshold = max(
-            updated_candidate_thresholds,
-            key=lambda th: (
-                th.intrinsic_evaluation.modularity,
-                -th.intrinsic_evaluation.conductance,
-                th.stability_evaluation.stability
-            )
-        )
-
-    # Sort by: 1) selected final threshold; 2) acceptable thresholds; 3) largest threshold value (parsimony principle)
-    updated_candidate_thresholds.sort(key=lambda th: (
-        th.name != final_threshold.name,
-        not th.pareto_plus_parsimony_selection.acceptable,
-        -th.value
-    ))
-
     _write_candidate_thresholds_to_file(
         candidate_thresholds=updated_candidate_thresholds,
         output_file=os.path.join(results_dir, final_thresholds_output_filename),
         output_fieldnames=final_thresholds_output_fieldnames
+    )
+
+    final_threshold = _select_final_threshold_using_pareto_and_parsimony(
+        candidate_thresholds=updated_candidate_thresholds
     )
 
     _write_candidate_threshold_to_file(
@@ -1029,6 +1009,7 @@ def generate_final_outputs(
         "Network": final_threshold.network,
         "e_family": (e_family_candidate["Value"] if e_family_candidate is not None else None),
         "e_global": (e_global_candidate["Value"] if e_global_candidate is not None else None),
+        "e* (Name)": final_threshold.name,
         "e*": final_threshold.value,
         "K'(e_family)": (e_family_intrinsic["K'"] if e_family_intrinsic is not None else None),
         "K'(e*)": final_threshold.intrinsic_evaluation.k_predicted,
@@ -1036,6 +1017,7 @@ def generate_final_outputs(
         "Conductance": final_threshold.intrinsic_evaluation.conductance,
         "Singleton/Near-Singleton Fraction": final_threshold.intrinsic_evaluation.singleton_or_near_singleton_fraction,
         "Largest-Community Fraction": final_threshold.intrinsic_evaluation.largest_community_fraction,
+        "Runtime": final_threshold.intrinsic_evaluation.runtime,
         "Stability": final_threshold.stability_evaluation.stability,
         "Z Modularity": final_threshold.null_model_evaluation.modularity_z_score,
         "Modularity Empirical p-value": final_threshold.null_model_evaluation.modularity_empirical_p_value,
@@ -1043,6 +1025,11 @@ def generate_final_outputs(
         "Z Conductance": final_threshold.null_model_evaluation.conductance_z_score,
         "Conductance Empirical p-value": final_threshold.null_model_evaluation.conductance_empirical_p_value,
         "Conductance Rank": final_threshold.null_model_evaluation.conductance_rank,
+        "Acceptable Modularity?": final_threshold.intrinsic_evaluation.acceptable_modularity,
+        "Acceptable Conductance?": final_threshold.intrinsic_evaluation.acceptable_conductance,
+        "Acceptable Non-Degenerate?": final_threshold.intrinsic_evaluation.acceptable_non_degenerate,
+        "Acceptable Stability?": final_threshold.stability_evaluation.acceptable_stability,
+        "Acceptable Null Model?": final_threshold.null_model_evaluation.acceptable_null_model,
         "Acceptable?": final_threshold.pareto_plus_parsimony_selection.acceptable
     }
 
@@ -1083,9 +1070,6 @@ def evaluate_final_threshold_using_extrinsic_metrics(
     ground_truth_labels, k = ground_truth
 
     U, _, _, _, _, _ = faddis(W=W, epsilon=epsilon, tau=tau, k_max=k_max)
-
-    if U.shape[1] == 0:
-        return
 
     predicted_labels, k_predicted, _ = apply_defuzzification_rule(
         U=U,
@@ -1139,30 +1123,153 @@ def save_contributions_experiment_report(
         json.dump(report, out_file, indent=2)
 
 
+def _evaluate_acceptability_in_place_of_candidate_thresholds_using_pareto(
+        candidate_thresholds: list[CandidateThreshold],
+        config: RealWorldThresholdEstimationConfig,
+        check_modularity: bool = False,
+        check_conductance: bool = False,
+        check_non_degenerate: bool = False,
+        check_stability: bool = False,
+        check_null_model: bool = False
+) -> None:
+    if check_modularity:
+        modularities = [threshold.intrinsic_evaluation.modularity for threshold in candidate_thresholds]
+        q_max = max(modularities)
+        delta_q = config.pareto_tolerance_fraction_modularity * (max(modularities) - min(modularities))
+
+        for threshold in candidate_thresholds:
+            threshold.intrinsic_evaluation.acceptable_modularity = (
+                    threshold.intrinsic_evaluation.modularity >= q_max - delta_q
+            )
+
+    if check_conductance:
+        conductances = [threshold.intrinsic_evaluation.conductance for threshold in candidate_thresholds]
+        phi_min = min(conductances)
+        delta_phi = config.pareto_tolerance_fraction_conductance * (max(conductances) - min(conductances))
+
+        for threshold in candidate_thresholds:
+            threshold.intrinsic_evaluation.acceptable_conductance = (
+                    threshold.intrinsic_evaluation.conductance <= phi_min + delta_phi
+            )
+
+    if check_non_degenerate:
+        for threshold in candidate_thresholds:
+            threshold.intrinsic_evaluation.acceptable_non_degenerate = (
+                    threshold.intrinsic_evaluation.k_predicted > 1
+                    and threshold.intrinsic_evaluation.largest_community_fraction < config.pareto_largest_community_fraction_boundary
+                    and threshold.intrinsic_evaluation.singleton_or_near_singleton_fraction < config.pareto_singleton_or_near_singleton_fraction_boundary
+            )
+
+    if check_stability:
+        stabilities = [threshold.stability_evaluation.stability for threshold in candidate_thresholds]
+        s_max = max(stabilities)
+        delta_s = config.pareto_tolerance_fraction_stability * (max(stabilities) - min(stabilities))
+
+        for threshold in candidate_thresholds:
+            threshold.stability_evaluation.acceptable_stability = (
+                    threshold.stability_evaluation.stability >= s_max - delta_s
+            )
+
+    if check_null_model:
+        for threshold in candidate_thresholds:
+            modularity_p_value = threshold.null_model_evaluation.modularity_empirical_p_value
+            conductance_p_value = threshold.null_model_evaluation.conductance_empirical_p_value
+
+            threshold.null_model_evaluation.acceptable_null_model = (
+                    (modularity_p_value is not None and modularity_p_value <= config.pareto_null_model_p_value_boundary)
+                    or  # and
+                    (
+                            conductance_p_value is not None and conductance_p_value <= config.pareto_null_model_p_value_boundary)
+            )
+
+
+def _filter_candidate_thresholds_using_pareto_and_parsimony(
+        candidate_thresholds: list[CandidateThreshold],
+        number_of_thresholds_to_retain: int,
+        check_modularity: bool = False,
+        check_conductance: bool = False,
+        check_non_degenerate: bool = False,
+        check_stability: bool = False,
+        keep_e_family: bool = True
+) -> list[CandidateThreshold]:
+    # Check acceptability
+    acceptable_candidate_thresholds = [
+        threshold
+        for threshold in candidate_thresholds
+        if (
+                (
+                        not check_modularity
+                        or threshold.intrinsic_evaluation.acceptable_modularity
+                )
+                and (
+                        not check_conductance
+                        or threshold.intrinsic_evaluation.acceptable_conductance
+                )
+                and (
+                        not check_non_degenerate
+                        or threshold.intrinsic_evaluation.acceptable_non_degenerate
+                )
+                and (
+                        not check_stability
+                        or threshold.stability_evaluation.acceptable_stability
+                )
+        )
+    ]
+
+    # Filter
+    if acceptable_candidate_thresholds:
+        # Parsimony among acceptable candidates
+        acceptable_candidate_thresholds.sort(key=lambda threshold: threshold.value, reverse=True)
+        filtered_candidate_thresholds = acceptable_candidate_thresholds[:number_of_thresholds_to_retain]
+    else:
+        # Fallback: use the evaluation criteria in priority order
+        fallback_candidate_thresholds = candidate_thresholds.copy()
+        fallback_candidate_thresholds.sort(
+            key=lambda threshold: (
+                not threshold.intrinsic_evaluation.acceptable_non_degenerate if check_non_degenerate else False,
+                -threshold.intrinsic_evaluation.modularity if check_modularity else 0,
+                threshold.intrinsic_evaluation.conductance if check_conductance else 0,
+                -threshold.stability_evaluation.stability if check_stability else 0,
+                -threshold.value
+            )
+        )
+        filtered_candidate_thresholds = fallback_candidate_thresholds[:number_of_thresholds_to_retain]
+
+    # Keep 'e_family' if required
+    if keep_e_family:
+        if CandidateThresholdName.E_FAMILY not in [threshold.name for threshold in filtered_candidate_thresholds]:
+            e_family = next(
+                (threshold for threshold in candidate_thresholds if threshold.name == CandidateThresholdName.E_FAMILY),
+                None
+            )
+
+            if e_family is not None:
+                filtered_candidate_thresholds.append(e_family)
+
+    return filtered_candidate_thresholds
+
+
+def _select_final_threshold_using_pareto_and_parsimony(
+        candidate_thresholds: list[CandidateThreshold]
+) -> CandidateThreshold:
+    # TODO: Check is "e_family" is practically indistinguishable from the best candidate.
+
+    acceptable_thresholds = [th for th in candidate_thresholds if th.pareto_plus_parsimony_selection.acceptable]
+    if acceptable_thresholds:
+        # Parsimony: prefer the largest thresholds of the acceptable thresholds
+        final_threshold = max(acceptable_thresholds, key=lambda th: th.value)
+    else:
+        # Fallback: Prefer the largest thresholds of the candidate thresholds
+        final_threshold = max(candidate_thresholds, key=lambda th: th.value)
+
+    return final_threshold
+
+
 def _median_or_none(values: list[float]) -> float:
     if len(values) == 0:
         return None
 
     return float(np.median(values))
-
-
-def _filter_candidate_thresholds(
-        candidate_thresholds: list[CandidateThreshold],
-        number_of_thresholds_to_retain: int,
-        keep_e_family: bool = True
-) -> list[CandidateThreshold]:
-    filtered_candidate_thresholds = candidate_thresholds[:number_of_thresholds_to_retain]
-
-    if keep_e_family:
-        if CandidateThresholdName.E_FAMILY not in [th.name for th in filtered_candidate_thresholds]:
-            e_family = next(
-                (th for th in candidate_thresholds if th.name == CandidateThresholdName.E_FAMILY),
-                None
-            )
-            if e_family is not None:
-                filtered_candidate_thresholds.append(e_family)
-
-    return filtered_candidate_thresholds
 
 
 def _write_candidate_thresholds_to_file(
@@ -1214,6 +1321,7 @@ def _compute_fuzzy_co_membership_similarity(
 ) -> float:
     U = np.asarray(U)[:, 1:] if first_cluster_discarded else np.asarray(U)
     perturbed_U = np.asarray(perturbed_U)[:, 1:] if perturbed_first_cluster_discarded else np.asarray(perturbed_U)
+
     if U.shape[1] == 0 or perturbed_U.shape[1] == 0:
         return None
 

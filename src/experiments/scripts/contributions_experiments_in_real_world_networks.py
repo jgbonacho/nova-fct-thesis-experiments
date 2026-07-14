@@ -17,8 +17,7 @@ from experiments.utils.utils_real_world_networks import load_real_world_network_
     compute_thresholds_per_family, compute_candidate_thresholds, \
     evaluate_candidate_thresholds_using_intrinsic_metrics, evaluate_candidate_thresholds_under_perturbation_stability, \
     evaluate_candidate_thresholds_under_null_model, select_final_threshold_by_pareto_and_parsimony, \
-    evaluate_final_threshold_using_extrinsic_metrics, save_contributions_experiment_report, generate_final_outputs, \
-    apply_trivial_validity_filters
+    evaluate_final_threshold_using_extrinsic_metrics, save_contributions_experiment_report, generate_final_outputs
 
 ROOT_DIR_PATH = os.path.join(os.path.dirname(__file__), '..', '..', '..')
 
@@ -203,21 +202,16 @@ def run_contributions_experiments_in_real_world_networks(config: RealWorldThresh
                 )
 
                 # Stage 2.3
-                candidate_thresholds_after_trivial_validity_filters = apply_trivial_validity_filters(
-                    candidate_thresholds=candidate_thresholds_after_intrinsic_evaluation
-                )
-
-                # Stage 2.4
                 candidate_thresholds_after_perturbation_stability = evaluate_candidate_thresholds_under_perturbation_stability(
                     results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                     graph_and_matrices=(graph, A, W),
-                    candidate_thresholds=candidate_thresholds_after_trivial_validity_filters,
+                    candidate_thresholds=candidate_thresholds_after_intrinsic_evaluation,
                     output_filename=STABILITY_EVALUATION_FILENAME,
                     output_fieldnames=STABILITY_EVALUATION_FIELDNAMES,
                     config=config
                 )
 
-                # Stage 2.5
+                # Stage 2.4
                 candidate_thresholds_after_null_model = evaluate_candidate_thresholds_under_null_model(
                     results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                     graph_and_matrices=(graph, A, W),
@@ -227,14 +221,13 @@ def run_contributions_experiments_in_real_world_networks(config: RealWorldThresh
                     config=config
                 )
 
-                # Stage 2.6
+                # Stage 2.5
                 final_threshold = select_final_threshold_by_pareto_and_parsimony(
                     results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                     candidate_thresholds=candidate_thresholds_after_null_model,
                     final_thresholds_output_filename=FINAL_THRESHOLDS_FILENAME,
                     final_thresholds_output_fieldnames=FINAL_THRESHOLDS_FIELDNAMES,
-                    threshold_output_filename=THRESHOLD_FILENAME,
-                    config=config
+                    threshold_output_filename=THRESHOLD_FILENAME
                 )
 
                 generate_final_outputs(
