@@ -17,12 +17,12 @@
   - [Combinations](#combinations)
   - [Train Assignment](#train-assignment)
   - [Test Assignment](#test-assignment)
-- [(5) Experience 1 (Baseline) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#5-experience-1-baseline---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(6) Experience 2 (Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#6-experience-2-tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(7) Experience 3 (Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#7-experience-3-overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(8) Experience 4 (Pareto and Parsimony) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#8-experience-4-pareto-and-parsimony---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(9) Experience 5 (Pareto and Parsimony + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#9-experience-5-pareto-and-parsimony--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(10) Experience 6 (Pareto and Parsimony + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#10-experience-6-pareto-and-parsimony--overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(5) Experience 1 (V1) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#5-experience-1-v1---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(6) Experience 2 (V1 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#6-experience-2-v1--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(7) Experience 3 (V1 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#7-experience-3-v1--overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(8) Experience 4 (V2) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#8-experience-4-v2---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(9) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#9-experience-5-v2--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(10) Experience 6 (V2 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#10-experience-6-v2--overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
 
 
 ## (1) Network Selection and Division
@@ -201,9 +201,14 @@
 | co-authorships-in-network-science    |         4.8232 |              -0.0817 | Near-Neutral + Low Average Degree          | 05_aM_davdL     | Yes         |
 
 
-## (5) Experience 1 (Baseline) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+---
+---
+---
 
-- [Open File](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/)
+
+## (5) Experience 1 (V1) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+
+- [Open Folder](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/)
 
 ### Configuration
 
@@ -265,12 +270,12 @@
 
 ### Networks Without Ground-Truth
 
-- [les-miserables](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_without_gt/les-miserables/)
-- [jazz-musicians](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_without_gt/jazz-musicians/)
-- [c-elegans-neural-network](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_without_gt/c-elegans-neural-network/)
-- [c-elegans-metabolic](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_without_gt/c-elegans-metabolic/)
-- [email-urv](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_without_gt/email-urv/)
-- [co-authorships-in-network-science](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_without_gt/co-authorships-in-network-science/)
+- [les-miserables](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/co-authorships-in-network-science/)
 
 #### Summary
 
@@ -286,15 +291,15 @@
 
 #### Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_without_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/_combine_threshold_details.csv)
 
 ### Networks With Ground-Truth
 
-- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_with_gt/socio-patterns-primary-school-day2/)
-- [citeseer](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_with_gt/citeseer/)
-- [facebook-network-ego3980](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego3980/)
-- [facebook-network-ego686](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego686/)
-- [facebook-network-ego348](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego348/)
+- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/socio-patterns-primary-school-day2/)
+- [citeseer](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/citeseer/)
+- [facebook-network-ego3980](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego3980/)
+- [facebook-network-ego686](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego686/)
+- [facebook-network-ego348](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego348/)
 
 #### Summary
 
@@ -308,12 +313,12 @@
 
 #### Blind Validation + Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/results_2026-07-12_23-54-12-394620/test_networks_with_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/_combine_threshold_details.csv)
 
 
-## (6) Experience 2 (Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (6) Experience 2 (V1 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-- [Open File](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/)
+- [Open Folder](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/)
 
 ### Configuration
 
@@ -351,12 +356,12 @@
 
 ### Networks Without Ground-Truth
 
-- [les-miserables](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_without_gt/les-miserables/)
-- [jazz-musicians](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_without_gt/jazz-musicians/)
-- [c-elegans-neural-network](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_without_gt/c-elegans-neural-network/)
-- [c-elegans-metabolic](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_without_gt/c-elegans-metabolic/)
-- [email-urv](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_without_gt/email-urv/)
-- [co-authorships-in-network-science](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_without_gt/co-authorships-in-network-science/)
+- [les-miserables](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/co-authorships-in-network-science/)
 
 #### Summary
 
@@ -372,15 +377,15 @@
 
 #### Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_without_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/_combine_threshold_details.csv)
 
 ### Networks With Ground-Truth
 
-- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_with_gt/socio-patterns-primary-school-day2/)
-- [citeseer](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_with_gt/citeseer/)
-- [facebook-network-ego3980](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego3980/)
-- [facebook-network-ego686](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego686/)
-- [facebook-network-ego348](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego348/)
+- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/socio-patterns-primary-school-day2/)
+- [citeseer](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/citeseer/)
+- [facebook-network-ego3980](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego3980/)
+- [facebook-network-ego686](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego686/)
+- [facebook-network-ego348](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego348/)
 
 #### Summary
 
@@ -394,10 +399,12 @@
 
 #### Blind Validation + Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/results_2026-07-14_00-00-52-195086/test_networks_with_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/_combine_threshold_details.csv)
 
 
-## (7) Experience 3 (Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (7) Experience 3 (V1 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+
+- [Open Folder](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/)
 
 ### Configuration
 
@@ -435,12 +442,12 @@
 
 ### Networks Without Ground-Truth
 
-- [les-miserables](../../../results/real-world/stage2/results_2026-07-14_10-55-24-787794/test_networks_without_gt/les-miserables/)
-- [jazz-musicians](../../../results/real-world/stage2/results_2026-07-14_10-55-24-787794/test_networks_without_gt/jazz-musicians/)
-- [c-elegans-neural-network](../../../results/real-world/stage2/results_2026-07-14_10-55-24-787794/test_networks_without_gt/c-elegans-neural-network/)
-- [c-elegans-metabolic](../../../results/real-world/stage2/results_2026-07-14_10-55-24-787794/test_networks_without_gt/c-elegans-metabolic/)
-- [email-urv](../../../results/real-world/stage2/results_2026-07-14_10-55-24-787794/test_networks_without_gt/email-urv/)
-- [co-authorships-in-network-science](../../../results/real-world/stage2/results_2026-07-14_10-55-24-787794/test_networks_without_gt/co-authorships-in-network-science/)
+- [les-miserables](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/co-authorships-in-network-science/)
 
 #### Summary
 
@@ -456,33 +463,269 @@
 
 #### Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/results_2026-07-14_10-55-24-787794/test_networks_without_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/_combine_threshold_details.csv)
 
 ### Networks With Ground-Truth
 
-- [citeseer](../../../results/real-world/stage2/results_2026-07-14_10-55-24-787794/test_networks_with_gt/citeseer/)
+- TODO
 
 #### Summary
 
-| Family      | Network  | e_family            | e_global              | e*                    | K'(e_family) | K'(e*) | Modularity          | Conductance | Singleton/Near-Singleton Fraction | Largest-Community Fraction | Stability          | Z Modularity       | Modularity Empirical p-value | Modularity Rank | Z Conductance | Conductance Empirical p-value | Conductance Rank | Acceptable? |
-|-------------|----------|---------------------|-----------------------|-----------------------|--------------|--------|---------------------|-------------|-----------------------------------|----------------------------|--------------------|--------------------|------------------------------|-----------------|---------------|-------------------------------|------------------|-------------|
-| 05_aM_davdL | citeseer | 0.00517444269995048 | 0.0002898150010003975 | 3.382083336757719e-08 | 9            | 137    | 0.02158787716053368 | 0.0         | 0.043795620437956206              | 0.13175355450236967        | 0.5011595663741013 | 4.4404504522764885 | 0.09090909090909091          | 1               |               | 1.0                           | 1                | False       |
+- TODO
 
 #### Blind Validation + Thresholds Details
 
 - TODO
 
 
-## (8) Experience 4 (Pareto and Parsimony) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
-
-TODO
-
-
-## (9) Experience 5 (Pareto and Parsimony + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
-
-TODO
+---
+---
+---
 
 
-## (10) Experience 6 (Pareto and Parsimony + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (8) Experience 4 (V2) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-TODO
+- [Open Folder](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/)
+
+### Configuration
+
+```json
+{
+  "apply_lapin": true,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": false,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "fraction_of_edges_swaps_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "fraction_of_edges_swaps_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.05,
+  "pareto_tolerance_fraction_conductance": 0.05,
+  "pareto_tolerance_fraction_stability": 0.05,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.5,
+  "execution_elapsed_time_secs": 18655.70619255677
+}
+```
+
+### K-Boundary Thresholds by Network
+
+``
+
+### K-Boundary Thresholds by Family
+
+``
+
+### Networks Without Ground-Truth
+
+- [les-miserables](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/co-authorships-in-network-science/)
+
+#### Summary
+
+| Family      | Network                           | e_family              | e_global               | e* (Name) | e*                     | K'(e_family) | K'(e*) | Modularity          | Conductance          | Singleton/Near-Singleton Fraction | Largest-Community Fraction | Runtime              | Stability          | Z Modularity       | Modularity Empirical p-value | Modularity Rank | Z Conductance      | Conductance Empirical p-value | Conductance Rank | Acceptable Modularity? | Acceptable Conductance? | Acceptable Non-Degenerate? | Acceptable Stability? | Acceptable Null Model? | Acceptable? |
+|-------------|-----------------------------------|-----------------------|------------------------|-----------|------------------------|--------------|--------|---------------------|----------------------|-----------------------------------|----------------------------|----------------------|--------------------|--------------------|------------------------------|-----------------|--------------------|-------------------------------|------------------|------------------------|-------------------------|----------------------------|-----------------------|------------------------|-------------|
+| 01_aL_davdL | c-elegans-metabolic               | 0.028080065029042933  | 0.00028981500100176477 | e_global  | 0.00028981500100176477 | 2            | 44     | 0.23949019966468527 | 0.1                  | 0.3409090909090909                | 0.11920529801324503        | 6.374951345846057    | 0.5220908374696105 | 6.291086957439757  | 0.09090909090909091          | 1               | 15.169280518320992 | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 01_aL_davdL | c-elegans-neural-network          | 0.028080065029042933  | 0.00028981500100176477 | e_global  | 0.00028981500100176477 |              | 15     | 0.2913849096123369  | 0.39045553145336226  | 0.0                               | 0.19528619528619529        | 0.9493749253451824   | 0.5059237544986177 | 31.987684758093874 | 0.09090909090909091          | 1               | 7.496780139756489  | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 05_aM_davdL | co-authorships-in-network-science | 0.004363122171917465  | 0.00028981500100176477 | e_family  | 0.004363122171917465   | 7            | 7      | 0.7602209012252873  | 0.021739130434782608 | 0.0                               | 0.31398416886543534        | 0.768794784322381    | 0.546836540493014  | 65.66964073115368  | 0.09090909090909091          | 1               | 14.13075992531666  | 0.09090909090909091           | 1                | True                   | False                   | True                       | False                 | True                   | False       |
+| 05_aM_davdL | dolphins                          | 0.004363122171917465  | 0.00028981500100176477 | e_above   | 0.012602118948721593   | 2            | 2      | 0.38477512756615634 | 0.0707070707070707   | 0.0                               | 0.6451612903225806         | 0.015210874378681183 | 0.5935080201453792 | 4.68409402587843   | 0.09090909090909091          | 1               | 6.639080835580617  | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 05_aM_davdL | email-urv                         | 0.004363122171917465  | 0.00028981500100176477 | e_above   | 0.004663807868446709   | 11           | 10     | 0.46375682474045976 | 0.22097625329815304  | 0.0                               | 0.2418358340688438         | 7.808940853923559    | 0.3807104935240541 | 23.791808418239977 | 0.09090909090909091          | 1               | 12.312083332926166 | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 06_aM_davdM | jazz-musicians                    | 7.588552945420201e-05 | 0.00028981500100176477 | e_global  | 0.00028981500100176477 | 25           | 23     | 0.26522770837622717 | 0.20977596741344195  | 0.43478260869565216               | 0.1919191919191919         | 0.6483434308320284   | 0.5904498366910051 | 29.530481509316328 | 0.09090909090909091          | 1               | 38.69488783928572  | 0.09090909090909091           | 1                | True                   | True                    | True                       | False                 | True                   | False       |
+| 01_aL_davdL | les-miserables                    | 0.028080065029042933  | 0.00028981500100176477 | e_above   | 0.03812106247407752    | 4            | 4      | 0.42300359600719195 | 0.1557377049180328   | 0.0                               | 0.37662337662337664        | 0.030305463820695877 | 0.5973478824696391 | 3.529654813639928  | 0.09090909090909091          | 1               | 1.5931131604663968 | 0.09090909090909091           | 1                | False                  | True                    | True                       | False                 | True                   | False       |
+
+#### Thresholds Details
+
+- [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/_combine_threshold_details.csv)
+
+### Networks With Ground-Truth
+
+- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/socio-patterns-primary-school-day2/)
+- [citeseer](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/citeseer/)
+- [facebook-network-ego3980](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/facebook-network-ego3980/)
+- [facebook-network-ego686](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/facebook-network-ego686/)
+- [facebook-network-ego348](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/facebook-network-ego348/)
+
+#### Summary
+
+| Family      | Network                            | e_family              | e_global               | e* (Name) | e*                     | K'(e_family) | K'(e*) | Modularity          | Conductance          | Singleton/Near-Singleton Fraction | Largest-Community Fraction | Runtime             | Stability           | Z Modularity       | Modularity Empirical p-value | Modularity Rank | Z Conductance      | Conductance Empirical p-value | Conductance Rank | Acceptable Modularity? | Acceptable Conductance? | Acceptable Non-Degenerate? | Acceptable Stability? | Acceptable Null Model? | Acceptable? |
+|-------------|------------------------------------|-----------------------|------------------------|-----------|------------------------|--------------|--------|---------------------|----------------------|-----------------------------------|----------------------------|---------------------|---------------------|--------------------|------------------------------|-----------------|--------------------|-------------------------------|------------------|------------------------|-------------------------|----------------------------|-----------------------|------------------------|-------------|
+| 05_aM_davdL | citeseer                           | 0.004363122171917465  | 0.00028981500100176477 | e_global  | 0.00028981500100176477 | 11           | 34     | 0.7155972354853021  | 0.005076142131979695 | 0.0                               | 0.3127962085308057         | 228.16781814023852  | 0.43893379661566795 | 59.79536373509533  | 0.09090909090909091          | 1               | 3.517708357610432  | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 10_aH_davdM | facebook-network-ego348            | 5.301634600929657e-05 | 0.00028981500100176477 | e_global  | 0.00028981500100176477 | 19           | 10     | 0.26271108339457666 | 0.015873015873015872 | 0.1                               | 0.3794642857142857         | 0.37763713113963604 | 0.5464112115252049  | 27.38235941213545  | 0.09090909090909091          | 1               | 7.399103266050899  | 0.09090909090909091           | 1                | True                   | True                    | True                       | False                 | True                   | False       |
+| 05_aM_davdL | facebook-network-ego3980           | 0.004363122171917465  | 0.00028981500100176477 | e_above   | 0.004370862049253332   | 7            | 7      | 0.35320835958832175 | 0.34831460674157305  | 0.2857142857142857                | 0.2727272727272727         | 0.02337164618074894 | 0.74526744180572    | 5.129444014180584  | 0.09090909090909091          | 1               | 2.222551052706473  | 0.18181818181818182           | 2                | True                   | True                    | True                       | True                  | True                   | True        |
+| 06_aM_davdM | facebook-network-ego686            | 7.588552945420201e-05 | 0.00028981500100176477 | e_global  | 0.00028981500100176477 | 21           | 17     | 0.1996146715792667  | 0.38461538461538464  | 0.17647058823529413               | 0.16666666666666666        | 0.36107429303228855 | 0.5948303702369957  | 18.768904990837214 | 0.09090909090909091          | 1               | 3.9625825119867626 | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 11_aH_davdH | socio-patterns-primary-school-day2 | 0.0003302393895804786 | 0.00028981500100176477 | e_above   | 0.000521566300561776   | 13           | 13     | 0.3438556177061009  | 0.38663171690694625  | 0.07692307692307693               | 0.18067226890756302        | 0.5356441475450993  | 0.8829606582908681  | 73.61561861606107  | 0.09090909090909091          | 1               | 38.550193348199514 | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+
+#### Blind Validation + Thresholds Details
+
+- [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/_combine_threshold_details.csv)
+
+
+## (9) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+
+- [Open Folder](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/)
+
+### Configuration
+
+```json
+{
+  "apply_lapin": true,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": false,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "fraction_of_edges_swaps_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "fraction_of_edges_swaps_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.1,
+  "pareto_tolerance_fraction_conductance": 0.1,
+  "pareto_tolerance_fraction_stability": 0.1,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.5,
+  "execution_elapsed_time_secs": 16401.477376449853
+}
+```
+
+### K-Boundary Thresholds by Network
+
+``
+
+### K-Boundary Thresholds by Family
+
+``
+
+### Networks Without Ground-Truth
+
+- [les-miserables](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/co-authorships-in-network-science/)
+
+#### Summary
+
+| Family      | Network                           | e_family              | e_global               | e* (Name) | e*                     | K'(e_family) | K'(e*) | Modularity          | Conductance          | Singleton/Near-Singleton Fraction | Largest-Community Fraction | Runtime              | Stability           | Z Modularity       | Modularity Empirical p-value | Modularity Rank | Z Conductance      | Conductance Empirical p-value | Conductance Rank | Acceptable Modularity? | Acceptable Conductance? | Acceptable Non-Degenerate? | Acceptable Stability? | Acceptable Null Model? | Acceptable? |
+|-------------|-----------------------------------|-----------------------|------------------------|-----------|------------------------|--------------|--------|---------------------|----------------------|-----------------------------------|----------------------------|----------------------|---------------------|--------------------|------------------------------|-----------------|--------------------|-------------------------------|------------------|------------------------|-------------------------|----------------------------|-----------------------|------------------------|-------------|
+| 01_aL_davdL | c-elegans-metabolic               | 0.028080065029042933  | 0.00028981500100176477 | e_global  | 0.00028981500100176477 | 2            | 44     | 0.23949019966468527 | 0.1                  | 0.3409090909090909                | 0.11920529801324503        | 6.443678721785545    | 0.5220908374696105  | 6.291086957439757  | 0.09090909090909091          | 1               | 15.169280518320992 | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 01_aL_davdL | c-elegans-neural-network          | 0.028080065029042933  | 0.00028981500100176477 | e_global  | 0.00028981500100176477 |              | 15     | 0.2913849096123369  | 0.39045553145336226  | 0.0                               | 0.19528619528619529        | 0.9605815783143044   | 0.5059237544986177  | 31.987684758093874 | 0.09090909090909091          | 1               | 7.496780139756489  | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 05_aM_davdL | co-authorships-in-network-science | 0.004363122171917465  | 0.00028981500100176477 | e_family  | 0.004363122171917465   | 7            | 7      | 0.7602209012252873  | 0.021739130434782608 | 0.0                               | 0.31398416886543534        | 0.7767880018800497   | 0.546836540493014   | 65.66964073115368  | 0.09090909090909091          | 1               | 14.13075992531666  | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 05_aM_davdL | dolphins                          | 0.004363122171917465  | 0.00028981500100176477 | e_above   | 0.012602118948721593   | 2            | 2      | 0.38477512756615634 | 0.0707070707070707   | 0.0                               | 0.6451612903225806         | 0.013360997661948204 | 0.5935080201453792  | 4.68409402587843   | 0.09090909090909091          | 1               | 6.639080835580617  | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 05_aM_davdL | email-urv                         | 0.004363122171917465  | 0.00028981500100176477 | e_below   | 0.004134568218102241   | 11           | 11     | 0.457439119809947   | 0.22022621423819028  | 0.0                               | 0.22859664607237423        | 8.334643641486764    | 0.38956158755033055 | 20.9916526997366   | 0.09090909090909091          | 1               | 20.039234649310075 | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 06_aM_davdM | jazz-musicians                    | 7.588552945420201e-05 | 0.00028981500100176477 | e_global  | 0.00028981500100176477 | 25           | 23     | 0.26522770837622717 | 0.20977596741344195  | 0.43478260869565216               | 0.1919191919191919         | 0.6524173356592655   | 0.5904498366910051  | 29.530481509316328 | 0.09090909090909091          | 1               | 38.69488783928572  | 0.09090909090909091           | 1                | True                   | True                    | True                       | False                 | True                   | False       |
+| 01_aL_davdL | les-miserables                    | 0.028080065029042933  | 0.00028981500100176477 | e_below   | 0.021815121633352176   | 4            | 5      | 0.47517670035340065 | 0.16666666666666666  | 0.0                               | 0.2727272727272727         | 0.03669731877744198  | 0.6351915179720857  | 6.769313341340573  | 0.09090909090909091          | 1               | 7.743297729344654  | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+
+#### Thresholds Details
+
+- [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/_combine_threshold_details.csv)
+
+### Networks With Ground-Truth
+
+- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/socio-patterns-primary-school-day2/)
+- [citeseer](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/citeseer/)
+- [facebook-network-ego3980](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/facebook-network-ego3980/)
+- [facebook-network-ego686](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/facebook-network-ego686/)
+- [facebook-network-ego348](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/facebook-network-ego348/)
+
+#### Summary
+
+| Family      | Network                            | e_family              | e_global               | e* (Name) | e*                     | K'(e_family) | K'(e*) | Modularity          | Conductance          | Singleton/Near-Singleton Fraction | Largest-Community Fraction | Runtime              | Stability          | Z Modularity       | Modularity Empirical p-value | Modularity Rank | Z Conductance      | Conductance Empirical p-value | Conductance Rank | Acceptable Modularity? | Acceptable Conductance? | Acceptable Non-Degenerate? | Acceptable Stability? | Acceptable Null Model? | Acceptable? |
+|-------------|------------------------------------|-----------------------|------------------------|-----------|------------------------|--------------|--------|---------------------|----------------------|-----------------------------------|----------------------------|----------------------|--------------------|--------------------|------------------------------|-----------------|--------------------|-------------------------------|------------------|------------------------|-------------------------|----------------------------|-----------------------|------------------------|-------------|
+| 05_aM_davdL | citeseer                           | 0.004363122171917465  | 0.00028981500100176477 | e_below   | 0.0034848743111167086  | 11           | 14     | 0.6887774426826849  | 0.005076142131979695 | 0.0                               | 0.3819905213270142         | 84.23463627882302    | 0.3860131985902274 | 20.437528887262687 | 0.09090909090909091          | 1               | 13.30591785039913  | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 10_aH_davdM | facebook-network-ego348            | 5.301634600929657e-05 | 0.00028981500100176477 | e_global  | 0.00028981500100176477 | 19           | 10     | 0.26271108339457666 | 0.015873015873015872 | 0.1                               | 0.3794642857142857         | 0.370725866407156    | 0.5464112115252049 | 27.38235941213545  | 0.09090909090909091          | 1               | 7.399103266050899  | 0.09090909090909091           | 1                | True                   | True                    | True                       | False                 | True                   | False       |
+| 05_aM_davdL | facebook-network-ego3980           | 0.004363122171917465  | 0.00028981500100176477 | e_above   | 0.004370862049253332   | 7            | 7      | 0.35320835958832175 | 0.34831460674157305  | 0.2857142857142857                | 0.2727272727272727         | 0.024328209459781647 | 0.74526744180572   | 5.129444014180584  | 0.09090909090909091          | 1               | 2.222551052706473  | 0.18181818181818182           | 2                | True                   | True                    | True                       | True                  | True                   | True        |
+| 06_aM_davdM | facebook-network-ego686            | 7.588552945420201e-05 | 0.00028981500100176477 | e_global  | 0.00028981500100176477 | 21           | 17     | 0.1996146715792667  | 0.38461538461538464  | 0.17647058823529413               | 0.16666666666666666        | 0.37371474876999855  | 0.5948303702369957 | 18.768904990837214 | 0.09090909090909091          | 1               | 3.9625825119867626 | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 11_aH_davdH | socio-patterns-primary-school-day2 | 0.0003302393895804786 | 0.00028981500100176477 | e_above   | 0.000521566300561776   | 13           | 13     | 0.3438556177061009  | 0.38663171690694625  | 0.07692307692307693               | 0.18067226890756302        | 0.5343852806836367   | 0.8829606582908681 | 73.61561861606107  | 0.09090909090909091          | 1               | 38.550193348199514 | 0.09090909090909091           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+
+#### Blind Validation + Thresholds Details
+
+- [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/_combine_threshold_details.csv)
+
+
+## (10) Experience 6 (V2 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+
+- [Open Folder](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/)
+
+### Configuration
+
+```json
+{
+  "apply_lapin": true,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": true,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "fraction_of_edges_swaps_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "fraction_of_edges_swaps_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.05,
+  "pareto_tolerance_fraction_conductance": 0.05,
+  "pareto_tolerance_fraction_stability": 0.05,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.5,
+  "execution_elapsed_time_secs": "-"
+}
+```
+
+### K-Boundary Thresholds by Network
+
+``
+
+### K-Boundary Thresholds by Family
+
+``
+
+### Networks Without Ground-Truth
+
+- [les-miserables](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/co-authorships-in-network-science/)
+
+#### Summary
+
+| Family      | Network                           | e_family              | e_global               | e* (Name) | e*                     | K'(e_family) | K'(e*) | Modularity           | Conductance          | Singleton/Near-Singleton Fraction | Largest-Community Fraction | Runtime              | Stability          | Z Modularity       | Modularity Empirical p-value | Modularity Rank | Z Conductance      | Conductance Empirical p-value | Conductance Rank | Acceptable Modularity? | Acceptable Conductance? | Acceptable Non-Degenerate? | Acceptable Stability? | Acceptable Null Model? | Acceptable? |
+|-------------|-----------------------------------|-----------------------|------------------------|-----------|------------------------|--------------|--------|----------------------|----------------------|-----------------------------------|----------------------------|----------------------|--------------------|--------------------|------------------------------|-----------------|--------------------|-------------------------------|------------------|------------------------|-------------------------|----------------------------|-----------------------|------------------------|-------------|
+| 01_aL_davdL | c-elegans-metabolic               | 0.028080065029042933  | 0.00028981500100176477 | e_family  | 0.028080065029042933   | 2            | 2      | 0.00222199354578602  | 0.019544961746700035 | 0.0                               | 0.9558498896247241         | 0.4360369350761175   | 0.8189446354990911 |                    | 0.5                          | 1               |                    | 0.5                           | 1                | False                  | False                   | False                      | True                  | True                   | False       |
+| 01_aL_davdL | c-elegans-neural-network          | 0.028080065029042933  | 0.00028981500100176477 | e_elbow   | 1.5597606978890488e-20 |              | 66     | 0.02796129334610027  | 0.0                  | 0.015151515151515152              | 0.13468013468013468        | 4.016998283565044    | 0.3187950892964603 | 0.7762619625274938 | 0.18181818181818182          | 2               | 0.7584401570086422 | 0.6363636363636364            | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 05_aM_davdL | co-authorships-in-network-science | 0.004363122171917465  | 0.00028981500100176477 | e_family  | 0.004363122171917465   | 7            | 7      | 0.016961192574523155 | 0.010980177511617673 | 0.0                               | 0.316622691292876          | 0.7642318587750196   | 0.5790444947433135 | 4.9876718355766645 | 0.09090909090909091          | 1               | 22.98397734941673  | 0.09090909090909091           | 1                | False                  | False                   | True                       | True                  | True                   | False       |
+| 05_aM_davdL | dolphins                          | 0.004363122171917465  | 0.00028981500100176477 | e_family  | 0.004363122171917465   | 2            | 2      | 0.019277385165251716 | 0.02438791554357592  | 0.0                               | 0.6451612903225806         | 0.018761711195111275 | 0.6863826033070823 | -4.711440067059297 | 1.0                          | 11              | 0.6254260636019793 | 0.6363636363636364            | 7                | False                  | False                   | True                       | True                  | False                  | False       |
+| 05_aM_davdL | email-urv                         | 0.004363122171917465  | 0.00028981500100176477 | e_elbow   | 5.0591288420340946e-06 | 11           | 60     | 0.014546307204618962 | 0.0                  | 0.03333333333333333               | 0.12268314210061783        | 43.47265254892409    | 0.6742654591819897 | 10.310816099930953 | 0.09090909090909091          | 1               |                    | 1.0                           | 1                | True                   | True                    | True                       | True                  | True                   | True        |
+| 06_aM_davdM | jazz-musicians                    | 7.588552945420201e-05 | 0.00028981500100176477 | e_family  | 7.588552945420201e-05  | 25           | 25     | 0.01900795179582708  | 0.0                  | 0.36                              | 0.1919191919191919         | 0.7309540808200836   | 0.7247722266219945 | 11.041292212260425 | 0.09090909090909091          | 1               | 1.7862746508211103 | 0.2727272727272727            | 1                | False                  | True                    | True                       | True                  | True                   | False       |
+| 01_aL_davdL | les-miserables                    | 0.028080065029042933  | 0.00028981500100176477 | e_family  | 0.028080065029042933   | 4            | 4      | 0.03877543424896348  | 0.09746692622976323  | 0.0                               | 0.45454545454545453        | 0.031031902879476547 | 0.799058519501774  | 7.502488555876716  | 0.09090909090909091          | 1               | 1.0604210797692872 | 0.09090909090909091           | 1                | False                  | False                   | True                       | False                 | True                   | False       |
+
+#### Thresholds Details
+
+- [Open File](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/_combine_threshold_details.csv)
+
+### Networks With Ground-Truth
+
+- TODO
+
+#### Summary
+
+- TODO
+
+#### Blind Validation + Thresholds Details
+
+- TODO
