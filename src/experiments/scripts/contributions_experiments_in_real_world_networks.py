@@ -242,7 +242,7 @@ def run_contributions_experiments_in_real_world_networks(config: RealWorldThresh
                     config=config
                 )
 
-                # Stage 2.7
+                # Stage 2.6
                 if network_type_name == RESULTS_NETWORKS_WITH_GT_NAME:
                     evaluate_final_threshold_using_extrinsic_metrics(
                         results_dir=os.path.join(results_dir, network_type_name, network_config.name),

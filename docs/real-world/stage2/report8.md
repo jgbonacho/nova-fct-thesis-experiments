@@ -17,24 +17,28 @@
   - [Combinations](#combinations)
   - [Train Assignment](#train-assignment)
   - [Test Assignment](#test-assignment)
-- [(5) Experience 1 (V1) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#5-experience-1-v1---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(6) Experience 2 (V1 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#6-experience-2-v1--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(7) Experience 3 (V1 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#7-experience-3-v1--overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(8) Experience 4 (V2) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#8-experience-4-v2---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(9) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#9-experience-5-v2--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(10) Experience 6 (V2 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#10-experience-6-v2--overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(5) Pipeline Configuration](#5-pipeline-configuration)
+- [(6) Pipeline](#6-pipeline)
+- [(7) Version 1 (V1) / Version 2 (V2)](#7-version-1-v1--version-2-v2)
+- [(8) Experience 1 (V1) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#8-experience-1-v1---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(9) Experience 2 (V1 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#9-experience-2-v1--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(10) Experience 3 (V1 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#10-experience-3-v1--overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(11) Experience 4 (V2) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#11-experience-4-v2---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(12) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#12-experience-5-v2--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(13) Experience 6 (V2 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#13-experience-6-v2--overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(14) Observations](#14-observations)
 
 
 ## (1) Network Selection and Division
 
-- `Reasonable meta-data or informal labels to be considered ground-truth`
+- `Networks with reasonable meta-data or informal labels to be considered ground-truth`
 - Networks pre-processed to **undirected, unweighted simple graphs without self-loops**, saved as .gml files.
 - **26 small- to medium-size networks**:
     - 9 networks with non-overlapping ground-truth: **7 train + 2 test**
     - 10 networks with overlapping ground-truth: **7 train + 3 test**
     - 7 networks without ground-truth: **7 test**
 - **2 large networks**:
-    - LASTFM Asia (with ground-truth) [[8](https://archive.ics.uci.edu/dataset/595/lastfm+asia+social+network)]
+    - LASTFM Asia (with non-overlapping ground-truth) [[8](https://archive.ics.uci.edu/dataset/595/lastfm+asia+social+network)]
     - US Power Grid (without ground-truth) [[2](https://websites.umich.edu/~mejn/netdata/)]
 
 ### Train Networks
@@ -77,8 +81,23 @@
 ## (2) Observations from Stage 1
 
 - `The LFR network threshold estimation pipeline is not applicable due to the limited network sample size, the varying number of networks per family and the quality of the metadata or informal labels, which cannot be automatically treated as ground truth`
-- `LAPIN-on allows the ground-truth number of communities, K, to be extracted for all considered networks`
-- `Overall, using the adjacency matrix as the affinity matrix and K as the FADDIS stopping criterion achieves better results`
+- `LAPIN-on allows the ground-truth number of communities, K, to be extracted for all considered training networks`
+- `Overall, using the adjacency matrix as the affinity matrix and K as the FADDIS stopping criterion, LAPIN-on achieves better results:`
+  - `LAPIN-on:`
+    - `books-about-us-politics`
+    - `cora`
+    - `facebook-network-ego698`
+    - `email-eu-core`
+    - `facebook-network-ego0`
+    - `facebook-network-ego414`
+    - `facebook-network-ego3437`
+    - `facebook-network-ego107`
+    - `facebook-network-ego1684`
+  - `LAPIN-off:`
+	  - `[CRITICAL] us-political-blogs`
+	  - `american-college-football`
+  - `LAPIN-on/LAPIN-off:`
+	  - `zachary-karate-club`
 
 
 ## (3) FADDIS Sensitivity Analysis
@@ -87,18 +106,18 @@
 
 ### Network Properties
 
-- [Train networks](../../../results/real-world/stage2/results_2026-07-12_22-54-20-144373/train_networks/network_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/results_2026-07-12_22-54-20-144373/test_networks_with_gt/network_properties.csv)
-- [Test networks without ground-truth](../../../results/real-world/stage2/results_2026-07-12_22-54-20-144373/test_networks_without_gt/network_properties.csv)
+- [Train networks](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/train_networks/network_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/test_networks_with_gt/network_properties.csv)
+- [Test networks without ground-truth](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/test_networks_without_gt/network_properties.csv)
 
 ### Ground-Truth Properties
 
-- [Train networks](../../../results/real-world/stage2/results_2026-07-12_22-54-20-144373/train_networks/ground_truth_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/results_2026-07-12_22-54-20-144373/test_networks_with_gt/ground_truth_properties.csv)
+- [Train networks](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/train_networks/ground_truth_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/test_networks_with_gt/ground_truth_properties.csv)
 
 ### FADDIS Correlations
 
-- [Open File](../../../results/real-world/stage2/results_2026-07-12_22-54-20-144373/train_networks/faddis_sensitivity_analysis.csv)
+- [Open File](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/train_networks/faddis_sensitivity_analysis.csv)
 
 | Ground-Truth Type               | Network Property              | FADDIS Property | #Networks | Spearman Correlation | Pearson Correlation   |
 |---------------------------------|-------------------------------|-----------------|-----------|----------------------|-----------------------|
@@ -123,82 +142,82 @@
 | Overlapping                     | Nodes LCC                     | c_K             | 7         | 0.0                  | 0.5956963447712103    |
 | Overlapping                     | Global Clustering Coefficient | c_K             | 7         | 0.0                  | -0.14814982050285025  |
 
-- `Only network properties are considered, rather than ground-truth properties, because they are available for all networks`
-- `Degree assortativity is clearly the network property most strongly correlated with (c_K) for the combined and non-overlapping ground-truth groups`
-- `Average degree exhibits a balanced correlated with (c_K) for the combined, non-overlapping and overlapping ground-truth groups`
+- `Only network properties are considered in sensitivity correlations, rather than ground-truth properties, because they are available for all networks`
+- `Degree assortativity is clearly the network property most strongly correlated with c_K for the combined and non-overlapping ground-truth groups`
+- `Average degree exhibits a balanced correlated with c_K for the combined, non-overlapping and overlapping ground-truth groups`
 
 ### Degree Assortativity (Primary)
 
-| Category       | Empirical Range         | Group      |
-|----------------|-------------------------|------------|
-| Disassortative | \(r < -0.10\)           | Low (L)    |
-| Near-Neutral   | \(-0.10 \leq r < 0.10\) | Medium (M) |
-| Assortative    | \(r \geq 0.10\)         | High (H)   |
+| Category       | Empirical Range     | Group      |
+|----------------|---------------------|------------|
+| Disassortative | $a < -0.10$         | Low (L)    |
+| Near-Neutral   | $-0.10 <= a < 0.10$ | Medium (M) |
+| Assortative    | $a >= 0.10$         | High (H)   |
 
 ### Average Degree (Secondary)
 
 | Category                  | Empirical Range    | Group          |
 |---------------------------|--------------------|----------------|
-| Low Average Degree        | \(a < 15\)         | Low (L)        |
-| Medium Average Degree     | \(15 \leq a < 35\) | Medium (M)     |
-| Large Average Degree      | \(35 \leq a < 65\) | High (H)       |
-| Very Large Average Degree | \(a \geq 65\)      | Very High (VH) |
+| Low Average Degree        | $d_{avg} < 15$        | Low (L)        |
+| Medium Average Degree     | $15 <= d_{avg} < 35$  | Medium (M)     |
+| Large Average Degree      | $35 <= d_{avg} < 65$  | High (H)       |
+| Very Large Average Degree | $d_{avg} >= 65$       | Very High (VH) |
 
 
 ## (4) Real-World Network Families
 
 ### Combinations
 
-| Network Family | Degree Assortativity Range | Average Degree Range | Combination                                    |
-|----------------|----------------------------|----------------------|------------------------------------------------|
-| 01_aL_davdL    | \(r < -0.10\)              | \(a < 15\)           | Disassortative + Low Average Degree            |
-| 02_aL_davdM    | \(r < -0.10\)              | \(15 \leq a < 35\)   | Disassortative + Medium Average Degree         |
-| 03_aL_davdH    | \(r < -0.10\)              | \(35 \leq a < 65\)   | Disassortative + Large Average Degree          |
-| 04_aL_davdVH   | \(r < -0.10\)              | \(a \geq 65\)        | Disassortative + Very Large Average Degree     |
-| 05_aM_davdL    | \(-0.10 \leq r < 0.10\)    | \(a < 15\)           | Near-Neutral + Low Average Degree              |
-| 06_aM_davdM    | \(-0.10 \leq r < 0.10\)    | \(15 \leq a < 35\)   | Near-Neutral + Medium Average Degree           |
-| 07_aM_davdH    | \(-0.10 \leq r < 0.10\)    | \(35 \leq a < 65\)   | Near-Neutral + Large Average Degree            |
-| 08_aM_davdVH   | \(-0.10 \leq r < 0.10\)    | \(a \geq 65\)        | Near-Neutral + Very Large Average Degree       |
-| 09_aH_davdL    | \(r \geq 0.10\)            | \(a < 15\)           | Assortative + Low Average Degree               |
-| 10_aH_davdM    | \(r \geq 0.10\)            | \(15 \leq a < 35\)   | Assortative + Medium Average Degree            |
-| 11_aH_davdH    | \(r \geq 0.10\)            | \(35 \leq a < 65\)   | Assortative + Large Average Degree             |
-| 12_aH_davdVH   | \(r \geq 0.10\)            | \(a \geq 65\)        | Assortative + Very Large Average Degree        |
+| Network Family | Degree Assortativity Range | Average Degree Range       | Combination                                    | Calibrated? |
+|----------------|----------------------------|----------------------------|------------------------------------------------|-------------|
+| 01_aL_davgL    | $a < -0.10$                | $d_{avg} < 15$             | Disassortative + Low Average Degree            | Yes         |
+| 02_aL_davgM    | $a < -0.10$                | $15 <= d_{avg} < 35$       | Disassortative + Medium Average Degree         | Yes         |
+| 03_aL_davgH    | $a < -0.10$                | $35 <= d_{avg} < 65$       | Disassortative + Large Average Degree          | No          |
+| 04_aL_davgVH   | $a < -0.10$                | $d_{avg} >= 65$            | Disassortative + Very Large Average Degree     | No          |
+| 05_aM_davgL    | $-0.10 <= a < 0.10$        | $d_{avg} < 15$             | Near-Neutral + Low Average Degree              | Yes         |
+| 06_aM_davgM    | $-0.10 <= a < 0.10$        | $15 <= d_{avg} < 35$       | Near-Neutral + Medium Average Degree           | Yes         |
+| 07_aM_davgH    | $-0.10 <= a < 0.10$        | $35 <= d_{avg} < 65$       | Near-Neutral + Large Average Degree            | No          |
+| 08_aM_davgVH   | $-0.10 <= a < 0.10$        | $d_{avg} >= 65$            | Near-Neutral + Very Large Average Degree       | No          |
+| 09_aH_davgL    | $a >= 0.10$                | $d_{avg} < 15$             | Assortative + Low Average Degree               | Yes         |
+| 10_aH_davgM    | $a >= 0.10$                | $15 <= d_{avg} < 35$       | Assortative + Medium Average Degree            | Yes         |
+| 11_aH_davgH    | $a >= 0.10$                | $35 <= d_{avg} < 65$       | Assortative + Large Average Degree             | Yes         |
+| 12_aH_davgVH   | $a >= 0.10$                | $d_{avg} >= 65$            | Assortative + Very Large Average Degree        | Yes         |
 
 ### Train Assignment
 
 | Network                            | Average Degree | Degree Assortativity | Combination                             | Assigned Family   | Set   |
 |------------------------------------|----------------|----------------------|-----------------------------------------|-------------------|-------|
-| zachary-karate-club                | 4.5882         | -0.4756              | Disassortative + Low Average Degree     | 01_aL_davdL       | Train |
-| books-about-us-politics            | 8.4000         | -0.1279              | Disassortative + Low Average Degree     | 01_aL_davdL       | Train |
-| us-political-blogs                 | 27.3552        | -0.2213              | Disassortative + Medium Average Degree  | 02_aL_davdM       | Train |
-| cora                               | 4.0797         | -0.0714              | Near-Neutral + Low Average Degree       | 05_aM_davdL       | Train |
-| facebook-network-ego698            | 11.0000        | 0.0125               | Near-Neutral + Low Average Degree       | 05_aM_davdL       | Train |
-| email-eu-core                      | 32.5842        | -0.0257              | Near-Neutral + Medium Average Degree    | 06_aM_davdM       | Train |
-| american-college-football          | 10.6609        | 0.1624               | Assortative + Low Average Degree        | 09_aH_davdL       | Train |
-| facebook-network-ego0              | 15.5185        | 0.2330               | Assortative + Medium Average Degree     | 10_aH_davdM       | Train |
-| facebook-network-ego3437           | 18.0902        | 0.2221               | Assortative + Medium Average Degree     | 10_aH_davdM       | Train |
-| facebook-network-ego414            | 22.8649        | 0.3039               | Assortative + Medium Average Degree     | 10_aH_davdM       | Train |
-| facebook-network-ego1684           | 36.1445        | 0.3268               | Assortative + Large Average Degree      | 11_aH_davdH       | Train |
-| socio-patterns-primary-school-day1 | 49.9915        | 0.1729               | Assortative + Large Average Degree      | 11_aH_davdH       | Train |
-| facebook-network-ego107            | 51.7389        | 0.4316               | Assortative + Large Average Degree      | 11_aH_davdH       | Train |
-| facebook-network-ego1912           | 80.7070        | 0.5026               | Assortative + Very Large Average Degree | 12_aH_davdVH      | Train |
+| zachary-karate-club                | 4.5882         | -0.4756              | Disassortative + Low Average Degree     | 01_aL_davgL       | Train |
+| books-about-us-politics            | 8.4000         | -0.1279              | Disassortative + Low Average Degree     | 01_aL_davgL       | Train |
+| us-political-blogs                 | 27.3552        | -0.2213              | Disassortative + Medium Average Degree  | 02_aL_davgM       | Train |
+| cora                               | 4.0797         | -0.0714              | Near-Neutral + Low Average Degree       | 05_aM_davgL       | Train |
+| facebook-network-ego698            | 11.0000        | 0.0125               | Near-Neutral + Low Average Degree       | 05_aM_davgL       | Train |
+| email-eu-core                      | 32.5842        | -0.0257              | Near-Neutral + Medium Average Degree    | 06_aM_davgM       | Train |
+| american-college-football          | 10.6609        | 0.1624               | Assortative + Low Average Degree        | 09_aH_davgL       | Train |
+| facebook-network-ego0              | 15.5185        | 0.2330               | Assortative + Medium Average Degree     | 10_aH_davgM       | Train |
+| facebook-network-ego3437           | 18.0902        | 0.2221               | Assortative + Medium Average Degree     | 10_aH_davgM       | Train |
+| facebook-network-ego414            | 22.8649        | 0.3039               | Assortative + Medium Average Degree     | 10_aH_davgM       | Train |
+| facebook-network-ego1684           | 36.1445        | 0.3268               | Assortative + Large Average Degree      | 11_aH_davgH       | Train |
+| socio-patterns-primary-school-day1 | 49.9915        | 0.1729               | Assortative + Large Average Degree      | 11_aH_davgH       | Train |
+| facebook-network-ego107            | 51.7389        | 0.4316               | Assortative + Large Average Degree      | 11_aH_davgH       | Train |
+| facebook-network-ego1912           | 80.7070        | 0.5026               | Assortative + Very Large Average Degree | 12_aH_davgVH      | Train |
 
 ### Test Assignment
 
 | Network                              | Average Degree | Degree Assortativity | Combination                                | Assigned Family | Calibrated? |
 |--------------------------------------|---------------:|---------------------:|--------------------------------------------|-----------------|-------------|
-| socio-patterns-primary-school-day2   |        46.5462 |               0.2168 | Assortative + Large Average Degree         | 11_aH_davdH     | Yes         |
-| citeseer                             |         3.4768 |               0.0071 | Near-Neutral + Low Average Degree          | 05_aM_davdL     | Yes         |
-| facebook-network-ego3980             |         6.2727 |               0.0530 | Near-Neutral + Low Average Degree          | 05_aM_davdL     | Yes         |
-| facebook-network-ego686              |        19.7143 |               0.0841 | Near-Neutral + Medium Average Degree       | 06_aM_davdM     | Yes         |
-| facebook-network-ego348              |        28.5000 |               0.2227 | Assortative + Medium Average Degree        | 10_aH_davdM     | Yes         |
-| dolphins                             |         5.1290 |              -0.0436 | Near-Neutral + Low Average Degree          | 05_aM_davdL     | Yes         |
-| les-miserables                       |         6.5974 |              -0.1652 | Disassortative + Low Average Degree        | 01_aL_davdL     | Yes         |
-| jazz-musicians                       |        27.6970 |               0.0202 | Near-Neutral + Medium Average Degree       | 06_aM_davdM     | Yes         |
-| c-elegans-neural-network             |        14.4646 |              -0.1632 | Disassortative + Low Average Degree        | 01_aL_davdL     | Yes         |
-| c-elegans-metabolic                  |         8.9404 |              -0.2258 | Disassortative + Low Average Degree        | 01_aL_davdL     | Yes         |
-| email-urv                            |         9.6222 |               0.0782 | Near-Neutral + Low Average Degree          | 05_aM_davdL     | Yes         |
-| co-authorships-in-network-science    |         4.8232 |              -0.0817 | Near-Neutral + Low Average Degree          | 05_aM_davdL     | Yes         |
+| socio-patterns-primary-school-day2   |        46.5462 |               0.2168 | Assortative + Large Average Degree         | 11_aH_davgH     | Yes         |
+| citeseer                             |         3.4768 |               0.0071 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
+| facebook-network-ego3980             |         6.2727 |               0.0530 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
+| facebook-network-ego686              |        19.7143 |               0.0841 | Near-Neutral + Medium Average Degree       | 06_aM_davgM     | Yes         |
+| facebook-network-ego348              |        28.5000 |               0.2227 | Assortative + Medium Average Degree        | 10_aH_davgM     | Yes         |
+| dolphins                             |         5.1290 |              -0.0436 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
+| les-miserables                       |         6.5974 |              -0.1652 | Disassortative + Low Average Degree        | 01_aL_davgL     | Yes         |
+| jazz-musicians                       |        27.6970 |               0.0202 | Near-Neutral + Medium Average Degree       | 06_aM_davgM     | Yes         |
+| c-elegans-neural-network             |        14.4646 |              -0.1632 | Disassortative + Low Average Degree        | 01_aL_davgL     | Yes         |
+| c-elegans-metabolic                  |         8.9404 |              -0.2258 | Disassortative + Low Average Degree        | 01_aL_davgL     | Yes         |
+| email-urv                            |         9.6222 |               0.0782 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
+| co-authorships-in-network-science    |         4.8232 |              -0.0817 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
 
 
 ---
@@ -206,7 +225,192 @@
 ---
 
 
-## (5) Experience 1 (V1) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (5) Pipeline Configuration
+
+```json
+{
+  "apply_lapin": true,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": false,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "fraction_of_edges_swaps_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "fraction_of_edges_swaps_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.05,
+  "pareto_tolerance_fraction_conductance": 0.05,
+  "pareto_tolerance_fraction_stability": 0.05,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.5,
+  "execution_elapsed_time_secs": "-"
+}
+```
+
+## (6) Pipeline
+
+### Stage 1: Network Family K-Boundary Thresholds
+
+- For each network:
+  - $c_{K}$ = $c_{K}$ if `apply_lapin` else $c_{K+1}$
+  - $c_{K+1}$ = $c_{K+1}$ if `apply_lapin` else $c_{K+2}$
+  - Valid Threshold? $c_{K}$ > $c_{K+1}$ 
+  - Threshold = $\sqrt{c_{K}c_{K+1}}$
+- For each network family:
+  - $e_{family}$ = median(valid_thresholds)
+  - $e_{global}$ = median(all_valid_thresholds)
+
+### Stage 2: Network Contribution-Boundary Thresholds
+
+#### Stage 2.1: Candidate Thresholds
+
+- For each network:
+  - $\epsilon_{family}$
+  - $\epsilon_{global}$
+  - $\epsilon_{below}$ = max(below_thresholds)
+  - $\epsilon_{above}$ = min(above_thresholds)
+  - $\epsilon_{elbow}$ = max(adjacent_drops)
+
+#### Stage 2.2: Intrinsic Evaluation -> `number_of_thresholds_to_retain_after_intrinsic_evaluation` + [$\epsilon_{family}$]
+
+- For each network and threshold $\epsilon$:
+  - **Modularity** ($Q$):
+    - Modularity if not `overlapping_communities`
+    - Fuzzy-Modularity if `overlapping_communities`
+  - **Conductance** ($\phi$):
+    - Conductance if not `overlapping_communities`
+    - Conductance-BN if `overlapping_communities`
+  - **Runtime FADDIS**
+  - **K'**
+  - **Overlapping Communities**
+  - **Community Size Distribution**
+  - **#Singleton/Near-Singleton Communities** = [community_size <= `near_singleton_boundary`]
+  - **Singleton/Near-Singleton Fraction** = $\frac{\#Singleton/Near-Singleton Communities}{K'}$
+  - **Largest Community Fraction** = $\frac{max(community\_size)}{n}$
+
+#### Stage 2.3: Stability Evaluation -> `number_of_thresholds_to_retain_after_stability_evaluation` + [$e_{family}$]
+
+- For each network and threshold $\epsilon$:
+  - **#Pertubed Graphs** = `number_of_perturbed_graphs` => `fraction_of_edges_swaps_in_perturbed_graphs`*e
+  - **#Valid Similarities ($B$)** [!0/1 extracted communities]
+  - **Similarities** ($\times$ `number_of_perturbed_graphs`):
+    - Sim = NMI if not `overlapping_communities` 
+    - Sim = Fuzzy co-Memberships Similarities if `overlapping_communities`
+  - **Stability** = $\frac{1}{B} \sum_{b=1}^{B} \mathrm{Sim} \!\left(C_{\epsilon}(G_i),C_{\epsilon}\!\left(G_i^{(b)}\right)\right)$
+
+#### Stage 2.5: Null Model Diagnostic
+
+- For each network and threshold $\epsilon$:
+  - **#Null Graphs** = `number_of_null_models` => `fraction_of_edges_swaps_in_null_models`*e
+  - **#Valid Null Modularities and Conductances** ($R$) [!0/1 extracted communities]
+  - **Null Modularities** ($\times$ `number_of_null_models`)
+  - **Mean Null Modularities** ($\mu$)
+  - **Std Null Modularities** ($\sigma$)
+  - **Modularity Z Score** = $ \frac{Q_{\mathrm{real}}(\epsilon)-\mu\!\left(Q_{\mathrm{null}}(\epsilon)\right)}{\sigma\!\left(Q_{\mathrm{null}}(\epsilon)\right)}$
+  - **Modularity Empirical p-value** = $\frac{1 + \sum_{r=1}^{R} \mathbf{1} \!\left(Q_{\mathrm{null}}^{(r)}(\epsilon) \ge Q_{\mathrm{real}}(\epsilon) \right) }{R+1}$
+  - **Modularity Rank** = $1 + \sum_{r=1}^{R} \mathbf{1} \!\left(Q_{\mathrm{null}}^{(r)}(\epsilon) > Q_{\mathrm{real}}(\epsilon) \right)$
+  - **Null Conductances**
+  - **Mean Null Conductances**
+  - **Std Null Conductances**
+  - **Conductance Z Score**
+  - **Conductance Empirical p-value**
+  - **Conductance Rank**
+
+#### Stage 2.6: Pareto-based Filtering and Parsimony
+
+- For each network:
+
+$$
+\mathcal{A}_i
+=
+\left\{
+\epsilon \in E_i :
+Q(\epsilon) \geq Q_{\max}-\delta_Q,\;
+\phi(\epsilon) \leq \phi_{\min}+\delta_{\phi},\;
+S(\epsilon) \geq S_{\max}-\delta_S,\;
+\epsilon \text{ is non-degenerate},\;
+\epsilon \text{ passes the null-model evaluation}
+\right\}
+$$
+
+$$
+\epsilon_i^{*}
+=
+\max \left\{
+\epsilon : \epsilon \in \mathcal{A}_i
+\right\}
+$$
+
+- Acceptable:
+  - Acceptable Modularity (high modularity or fuzzy modularity):
+    - $Q(\epsilon) \geq Q_{\max}-\delta_Q$
+      - $Q_{\max}=\max(Q(\epsilon))$
+      - $\delta_Q=$ `pareto_tolerance_fraction_modularity` $\times (Q_{\max}-Q_{\min})$
+  - Acceptable Conductance (low conductance or boundary-node conductance):
+    - $\phi(\epsilon) \leq \phi_{\min}+\delta_{\phi}$
+        - $\phi_{\min}=\min(\phi(\epsilon))$
+        - $\delta_{\phi}=$ `pareto_tolerance_fraction_conductance` $\times (\phi_{\max}-\phi_{\min})$
+  - Acceptable Stability (high perturbation stability):
+    - $S(\epsilon) \geq S_{\max}-\delta_S$
+      - $S_{\max}=\max(S(\epsilon))$
+      - $\delta_S=$ `pareto_tolerance_fraction_stability` $\times (S_{\max}-S_{\min})$
+  - Acceptable Non-degenerate (non-degenerate K' and non-degenerate community-size distribution):
+    - K' $>$ 1 $\land$ 
+    Largest Community Fraction $<$ `pareto_largest_community_fraction_boundary` $\land$ 
+    Singleton/Near-Singleton Fraction $<$ `pareto_singleton_or_near_singleton_fraction_boundary`
+  - Acceptable Null Model (favourable, or at least non-poor, null-model evidence):
+    - Modularity Empirical p-value <= `pareto_null_model_p_value_boundary` $\lor$
+    Conductance Empirical p-value <= `pareto_null_model_p_value_boundary`
+
+#### Stage 2.7: Extrinsic Evaluation
+
+- For each network with ground-truth and final threshold $\epsilon$:
+  - K' | K, |K'-K|/K, AMI, F-measure, ARI, FMI, NMI, VI if not network.overlapping_ground_truth
+  - K' | K, |K'-K|/K, ONMI, Omega if network.overlapping_ground_truth
+
+## (7) Version 1 (V1) / Version 2 (V2)
+
+- [<= 5 candidates] --> **Intrinsic Evaluation** --> [<= 3 candidates (+1)] --> **Stability Evaluation** --> [<= 2 candidates (+1)] --> **Null Model Diagnostic** --> **Pareto-based Filtering and Parsimony**
+
+- V1:
+  - **Intrinsic Evaluation**
+    - *Sort*: Non-degenerate; Highest Modularity; Lowest Conductance
+    - *Filter*: Top-3
+  - **Stability Evaluation**
+    - *Sort*: Highest Stability; Highest Modularity; Lowest Conductance
+    - *Filter*: Top-2
+  - **Null Model Diagnostic**
+  - **Pareto-based Filtering and Parsimony**
+    - *Evaluate*: Acceptable $==$ Acceptable Modularity $\land$ Acceptable Conductance $\land$ Acceptable Stability $\land$ Acceptable Non-degenerate $\land$ Acceptable Null Model
+    - *Select*: Parsimony Principle over Acceptables
+      - *Fallback*: Non-degenerate; Highest Modularity; Lowest Conductance; Highest Stability
+
+- V2:
+  - **Intrinsic Evaluation**
+    - *Evaluate*: Acceptable Modularity; Acceptable Conductance; Acceptable Non-degenerate
+    - *Filter*: Parsimony Principle (Top-3) over Acceptables
+      - *Fallback*: Non-degenerate; Highest Modularity; Lowest Conductance;
+  - **Stability Evaluation**
+    - *Evaluate*: Acceptable Stability
+    - *Filter*: Parsimony Principle (Top-2) over Acceptables
+      - *Fallback*: Non-degenerate; Highest Modularity; Lowest Conductance; Highest Stability
+  - **Null Model Diagnostic**
+    - *Evaluate*: Acceptable Null Model
+  - **Pareto-based Filtering and Parsimony**
+    - *Select*: Parsimony Principle over Acceptables
+      - *Fallback*: Parsimony Principle over Non-Acceptables
+
+
+---
+---
+---
+
+
+## (8) Experience 1 (V1) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
 - [Open Folder](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/)
 
@@ -316,7 +520,7 @@
 - [Open File](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/_combine_threshold_details.csv)
 
 
-## (6) Experience 2 (V1 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (9) Experience 2 (V1 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
 - [Open Folder](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/)
 
@@ -402,7 +606,7 @@
 - [Open File](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/_combine_threshold_details.csv)
 
 
-## (7) Experience 3 (V1 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (10) Experience 3 (V1 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
 - [Open Folder](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/)
 
@@ -483,7 +687,7 @@
 ---
 
 
-## (8) Experience 4 (V2) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (11) Experience 4 (V2) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
 - [Open Folder](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/)
 
@@ -569,7 +773,7 @@
 - [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/_combine_threshold_details.csv)
 
 
-## (9) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (12) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
 - [Open Folder](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/)
 
@@ -655,7 +859,7 @@
 - [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/_combine_threshold_details.csv)
 
 
-## (10) Experience 6 (V2 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (13) Experience 6 (V2 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
 - [Open Folder](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/)
 
@@ -729,3 +933,34 @@
 #### Blind Validation + Thresholds Details
 
 - TODO
+
+
+## (14) Observations:
+
+- **V1 versus V2:**
+  - **V1:**
+    - Inconsistent, with different rules at each stage.
+    - Fewer acceptable thresholds, mainly due to the conductance and stability criteria.
+  - **V2:**
+    - Consistent, with progressively stricter rules at each stage.
+    - More acceptable thresholds.
+
+- **5% Tolerance Fraction versus 10% Tolerance Fraction:**
+  - 5% is too strict.
+  - 10% is less strict.
+  - Values greater than 10% are too permissive.
+
+- **Non-overlapping Communities versus Overlapping Communities:**
+  - Overlapping communities tend to favor larger $K'$ values, resulting in a larger number of small communities.
+
+- **TODO**:
+  - Doc:
+    - More candidates;
+	  - Increase generations;
+    - Retain the 'e_family' if it is practically indistinguishable from the best candidate; 
+  - Check correctness and robustness (edge cases):
+    - No calibrated family;
+    - No candidate thresholds;
+    - ...
+  - Other configurations? Other rules?
+  - Affinity Designs with LAPIN-off/LAPIN-on.
