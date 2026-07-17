@@ -345,24 +345,24 @@ $$
 \right\}
 $$
 
-- Acceptable:
-  - Acceptable Modularity (high modularity or fuzzy modularity):
+- **Acceptable**:
+  - **Acceptable Modularity** (high modularity or fuzzy modularity):
     - $Q(\epsilon) \geq Q_{\max}-\delta_Q$
       - $Q_{\max}=\max(Q(\epsilon))$
       - $\delta_Q=$ `pareto_tolerance_fraction_modularity` $\times (Q_{\max}-Q_{\min})$
-  - Acceptable Conductance (low conductance or boundary-node conductance):
+  - **Acceptable Conductance** (low conductance or boundary-node conductance):
     - $\phi(\epsilon) \leq \phi_{\min}+\delta_{\phi}$
         - $\phi_{\min}=\min(\phi(\epsilon))$
         - $\delta_{\phi}=$ `pareto_tolerance_fraction_conductance` $\times (\phi_{\max}-\phi_{\min})$
-  - Acceptable Stability (high perturbation stability):
+  - **Acceptable Stability** (high perturbation stability):
     - $S(\epsilon) \geq S_{\max}-\delta_S$
       - $S_{\max}=\max(S(\epsilon))$
       - $\delta_S=$ `pareto_tolerance_fraction_stability` $\times (S_{\max}-S_{\min})$
-  - Acceptable Non-degenerate (non-degenerate K' and non-degenerate community-size distribution):
+  - **Acceptable Non-degenerate** (non-degenerate K' and non-degenerate community-size distribution):
     - K' $>$ 1 $\land$ 
     Largest Community Fraction $<$ `pareto_largest_community_fraction_boundary` $\land$ 
     Singleton/Near-Singleton Fraction $<$ `pareto_singleton_or_near_singleton_fraction_boundary`
-  - Acceptable Null Model (favourable, or at least non-poor, null-model evidence):
+  - **Acceptable Null Model** (favourable, or at least non-poor, null-model evidence):
     - Modularity Empirical p-value <= `pareto_null_model_p_value_boundary` $\lor$
     Conductance Empirical p-value <= `pareto_null_model_p_value_boundary`
 
@@ -374,7 +374,7 @@ $$
 
 ## (7) Version 1 (V1) / Version 2 (V2)
 
-- [<= 5 candidates] --> **Intrinsic Evaluation** --> [<= 3 candidates (+1)] --> **Stability Evaluation** --> [<= 2 candidates (+1)] --> **Null Model Diagnostic** --> **Pareto-based Filtering and Parsimony**
+[<= 5 candidates] --> **Intrinsic Evaluation** --> [<= 3 candidates (+1)] --> **Stability Evaluation** --> [<= 2 candidates (+1)] --> **Null Model Diagnostic** --> **Pareto-based Filtering and Parsimony**
 
 - V1:
   - **Intrinsic Evaluation**
@@ -953,14 +953,5 @@ $$
 - **Non-overlapping Communities versus Overlapping Communities:**
   - Overlapping communities tend to favor larger $K'$ values, resulting in a larger number of small communities.
 
-- **TODO**:
-  - Doc:
-    - More candidates;
-	  - Increase generations;
-    - Retain the 'e_family' if it is practically indistinguishable from the best candidate; 
-  - Check correctness and robustness (edge cases):
-    - No calibrated family;
-    - No candidate thresholds;
-    - ...
-  - Other configurations? Other rules?
-  - Affinity Designs with LAPIN-off/LAPIN-on.
+- [(12) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#12-experience-5-v2--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+  - Improvements over baseline
