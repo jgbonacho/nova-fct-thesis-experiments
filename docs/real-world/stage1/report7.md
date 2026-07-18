@@ -266,3 +266,16 @@
 | c-elegans-metabolic                | 8.9404         | -0.2258              | Disassortative + Low Average Degree  | `network_family_01` | Yes         |
 | email-urv                          | 9.6222         | 0.0782               | Near-Neutral + Low Average Degree    | `network_family_03` | Yes         |
 | co-authorships-in-network-science  | 4.8232         | -0.0817              | Near-Neutral + Low Average Degree    | `network_family_03` | Yes         |
+
+
+## Discussion
+
+- **Observations**
+  - The results are not sufficiently strong to be considered final.
+
+- **Warnings**
+  - The families do not contain the same number of networks;
+  - The total number of networks is small.
+
+- **TODO**
+  - [DONE [Report 8](../stage2/report8.md)] A new experimental protocol for FADDIS threshold selection is required.

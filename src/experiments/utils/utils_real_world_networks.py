@@ -714,6 +714,17 @@ def evaluate_candidate_thresholds_under_perturbation_stability(
     graph, A, W = graph_and_matrices
     tau, k_max = config.tau, config.compute_k_max(graph.number_of_nodes())
 
+    perturbed_Ws = []
+    number_of_swaps = config.compute_number_of_edges_swaps_in_perturbed_graphs(graph.number_of_edges())
+    for perturbation_number in range(1, config.number_of_perturbed_graphs + 1):
+        _, _, perturbed_W = _generate_a_perturbed_graph(
+            graph=graph,
+            number_of_swaps=number_of_swaps,
+            apply_lapin=config.apply_lapin,
+            seed=perturbation_number
+        )
+        perturbed_Ws.append(perturbed_W)
+
     updated_candidate_thresholds = []
     for candidate_threshold in candidate_thresholds:
 
@@ -725,14 +736,7 @@ def evaluate_candidate_thresholds_under_perturbation_stability(
         )
 
         sims = []
-        for perturbation_number in range(1, config.number_of_perturbed_graphs + 1):
-            perturbed_graph, perturbed_A, perturbed_W = _generate_a_perturbed_graph(
-                graph=graph,
-                number_of_swaps=config.compute_number_of_edges_swaps_in_perturbed_graphs(graph.number_of_edges()),
-                apply_lapin=config.apply_lapin,
-                seed=perturbation_number
-            )
-
+        for perturbed_W in perturbed_Ws:
             perturbed_U, _, _, _, _, _ = faddis(W=perturbed_W, epsilon=candidate_threshold.value, tau=tau, k_max=k_max)
 
             # Check if clusters were extracted
@@ -805,17 +809,24 @@ def evaluate_candidate_thresholds_under_null_model(
     graph, A, W = graph_and_matrices
     tau, k_max = config.tau, config.compute_k_max(graph.number_of_nodes())
 
+    null_graphs_and_matrices = []
+    number_of_swaps = config.compute_number_of_edges_swaps_in_null_models(graph.number_of_edges())
+    for null_number in range(1, config.number_of_null_models + 1):
+        null_graph, null_A, null_W = _generate_a_perturbed_graph(
+            graph=graph,
+            number_of_swaps=number_of_swaps,
+            apply_lapin=config.apply_lapin,
+            seed=null_number
+        )
+        null_graphs_and_matrices.append((null_graph, null_A, null_W))
+
+
     updated_candidate_thresholds = []
     for candidate_threshold in candidate_thresholds:
         null_modularities = []
         null_conductances = []
-        for null_number in range(1, config.number_of_null_models + 1):
-            null_graph, null_A, null_W = _generate_a_perturbed_graph(
-                graph=graph,
-                number_of_swaps=config.compute_number_of_edges_swaps_in_null_models(graph.number_of_edges()),
-                apply_lapin=config.apply_lapin,
-                seed=null_number
-            )
+        for null_graph_and_matrices in null_graphs_and_matrices:
+            null_graph, null_A, null_W = null_graph_and_matrices
 
             null_U, _, _, _, _, _ = faddis(W=null_W, epsilon=candidate_threshold.value, tau=tau, k_max=k_max)
 
@@ -1172,15 +1183,28 @@ def _evaluate_acceptability_in_place_of_candidate_thresholds_using_pareto(
 
     if check_null_model:
         for threshold in candidate_thresholds:
-            modularity_p_value = threshold.null_model_evaluation.modularity_empirical_p_value
-            conductance_p_value = threshold.null_model_evaluation.conductance_empirical_p_value
+            null_evaluation = threshold.null_model_evaluation
 
-            threshold.null_model_evaluation.acceptable_null_model = (
-                    (modularity_p_value is not None and modularity_p_value <= config.pareto_null_model_p_value_boundary)
-                    or  # and
-                    (
-                            conductance_p_value is not None and conductance_p_value <= config.pareto_null_model_p_value_boundary)
+            modularity_is_acceptable = (
+                    null_evaluation.modularity_z_score is not None
+                    and null_evaluation.modularity_z_score >= config.pareto_null_model_z_score_boundary
+                    and null_evaluation.modularity_empirical_p_value is not None
+                    and null_evaluation.modularity_empirical_p_value <= config.pareto_null_model_p_value_boundary
+                    and null_evaluation.modularity_rank is not None
+                    and null_evaluation.modularity_rank <= config.pareto_null_model_rank_boundary
+
             )
+
+            conductance_is_acceptable = (
+                    null_evaluation.conductance_z_score is not None
+                    and null_evaluation.conductance_z_score >= config.pareto_null_model_z_score_boundary
+                    and null_evaluation.conductance_empirical_p_value is not None
+                    and null_evaluation.conductance_empirical_p_value <= config.pareto_null_model_p_value_boundary
+                    and null_evaluation.conductance_rank is not None
+                    and null_evaluation.conductance_rank <= config.pareto_null_model_rank_boundary
+            )
+
+            null_evaluation.acceptable_null_model = modularity_is_acceptable and conductance_is_acceptable
 
 
 def _filter_candidate_thresholds_using_pareto_and_parsimony(
@@ -1252,17 +1276,28 @@ def _filter_candidate_thresholds_using_pareto_and_parsimony(
 def _select_final_threshold_using_pareto_and_parsimony(
         candidate_thresholds: list[CandidateThreshold]
 ) -> CandidateThreshold:
-    # TODO: Check is "e_family" is practically indistinguishable from the best candidate.
-
     acceptable_thresholds = [th for th in candidate_thresholds if th.pareto_plus_parsimony_selection.acceptable]
     if acceptable_thresholds:
         # Parsimony: prefer the largest thresholds of the acceptable thresholds
-        final_threshold = max(acceptable_thresholds, key=lambda th: th.value)
+        best_candidate = max(acceptable_thresholds, key=lambda th: th.value)
     else:
         # Fallback: Prefer the largest thresholds of the candidate thresholds
-        final_threshold = max(candidate_thresholds, key=lambda th: th.value)
+        best_candidate = max(candidate_thresholds, key=lambda th: th.value)
 
-    return final_threshold
+    # Retain 'e_family' if it is practically indistinguishable from the best candidate
+    e_family = next(
+        (th for th in candidate_thresholds if th.name == CandidateThresholdName.E_FAMILY),
+        None
+    )
+
+    if (
+            e_family is not None
+            and e_family.pareto_plus_parsimony_selection.acceptable
+            and e_family.intrinsic_evaluation.k_predicted == best_candidate.intrinsic_evaluation.k_predicted
+    ):
+        return e_family
+
+    return best_candidate
 
 
 def _median_or_none(values: list[float]) -> float:

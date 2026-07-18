@@ -26,7 +26,7 @@
 - [(11) Experience 4 (V2) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#11-experience-4-v2---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
 - [(12) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#12-experience-5-v2--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
 - [(13) Experience 6 (V2 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#13-experience-6-v2--overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(14) Observations](#14-observations)
+- [(14) Discussion](#14-discussion)
 
 
 ## (1) Network Selection and Division
@@ -37,9 +37,6 @@
     - 9 networks with non-overlapping ground-truth: **7 train + 2 test**
     - 10 networks with overlapping ground-truth: **7 train + 3 test**
     - 7 networks without ground-truth: **7 test**
-- **2 large networks**:
-    - LASTFM Asia (with non-overlapping ground-truth) [[8](https://archive.ics.uci.edu/dataset/595/lastfm+asia+social+network)]
-    - US Power Grid (without ground-truth) [[2](https://websites.umich.edu/~mejn/netdata/)]
 
 ### Train Networks
 
@@ -106,18 +103,18 @@
 
 ### Network Properties
 
-- [Train networks](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/train_networks/network_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/test_networks_with_gt/network_properties.csv)
-- [Test networks without ground-truth](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/test_networks_without_gt/network_properties.csv)
+- [Train networks](../../../results/real-world/stage2/experience1/sensitivity/results_2026-07-12_22-54-20-144373/train_networks/network_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience1/sensitivity/results_2026-07-12_22-54-20-144373/test_networks_with_gt/network_properties.csv)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience1/sensitivity/results_2026-07-12_22-54-20-144373/test_networks_without_gt/network_properties.csv)
 
 ### Ground-Truth Properties
 
-- [Train networks](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/train_networks/ground_truth_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/test_networks_with_gt/ground_truth_properties.csv)
+- [Train networks](../../../results/real-world/stage2/experience1/sensitivity/results_2026-07-12_22-54-20-144373/train_networks/ground_truth_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience1/sensitivity/results_2026-07-12_22-54-20-144373/test_networks_with_gt/ground_truth_properties.csv)
 
 ### FADDIS Correlations
 
-- [Open File](../../../results/real-world/stage2/sensitivity/results_2026-07-12_22-54-20-144373/train_networks/faddis_sensitivity_analysis.csv)
+- [Open File](../../../results/real-world/stage2/experience1/sensitivity/results_2026-07-12_22-54-20-144373/train_networks/faddis_sensitivity_analysis.csv)
 
 | Ground-Truth Type               | Network Property              | FADDIS Property | #Networks | Spearman Correlation | Pearson Correlation   |
 |---------------------------------|-------------------------------|-----------------|-----------|----------------------|-----------------------|
@@ -412,7 +409,7 @@ $$
 
 ## (8) Experience 1 (V1) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-- [Open Folder](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/)
+- [Open Folder](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/)
 
 ### Configuration
 
@@ -474,12 +471,12 @@ $$
 
 ### Networks Without Ground-Truth
 
-- [les-miserables](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/les-miserables/)
-- [jazz-musicians](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/jazz-musicians/)
-- [c-elegans-neural-network](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/c-elegans-neural-network/)
-- [c-elegans-metabolic](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/c-elegans-metabolic/)
-- [email-urv](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/email-urv/)
-- [co-authorships-in-network-science](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/co-authorships-in-network-science/)
+- [les-miserables](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/co-authorships-in-network-science/)
 
 #### Summary
 
@@ -495,15 +492,15 @@ $$
 
 #### Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_without_gt/_combine_threshold_details.csv)
 
 ### Networks With Ground-Truth
 
-- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/socio-patterns-primary-school-day2/)
-- [citeseer](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/citeseer/)
-- [facebook-network-ego3980](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego3980/)
-- [facebook-network-ego686](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego686/)
-- [facebook-network-ego348](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego348/)
+- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/socio-patterns-primary-school-day2/)
+- [citeseer](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/citeseer/)
+- [facebook-network-ego3980](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego3980/)
+- [facebook-network-ego686](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego686/)
+- [facebook-network-ego348](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/facebook-network-ego348/)
 
 #### Summary
 
@@ -517,12 +514,12 @@ $$
 
 #### Blind Validation + Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v1/results_2026-07-12_23-54-12-394620/test_networks_with_gt/_combine_threshold_details.csv)
 
 
 ## (9) Experience 2 (V1 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-- [Open Folder](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/)
+- [Open Folder](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/)
 
 ### Configuration
 
@@ -560,12 +557,12 @@ $$
 
 ### Networks Without Ground-Truth
 
-- [les-miserables](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/les-miserables/)
-- [jazz-musicians](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/jazz-musicians/)
-- [c-elegans-neural-network](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/c-elegans-neural-network/)
-- [c-elegans-metabolic](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/c-elegans-metabolic/)
-- [email-urv](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/email-urv/)
-- [co-authorships-in-network-science](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/co-authorships-in-network-science/)
+- [les-miserables](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/co-authorships-in-network-science/)
 
 #### Summary
 
@@ -581,15 +578,15 @@ $$
 
 #### Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_without_gt/_combine_threshold_details.csv)
 
 ### Networks With Ground-Truth
 
-- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/socio-patterns-primary-school-day2/)
-- [citeseer](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/citeseer/)
-- [facebook-network-ego3980](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego3980/)
-- [facebook-network-ego686](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego686/)
-- [facebook-network-ego348](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego348/)
+- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/socio-patterns-primary-school-day2/)
+- [citeseer](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/citeseer/)
+- [facebook-network-ego3980](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego3980/)
+- [facebook-network-ego686](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego686/)
+- [facebook-network-ego348](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/facebook-network-ego348/)
 
 #### Summary
 
@@ -603,12 +600,12 @@ $$
 
 #### Blind Validation + Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_00-00-52-195086/test_networks_with_gt/_combine_threshold_details.csv)
 
 
 ## (10) Experience 3 (V1 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-- [Open Folder](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/)
+- [Open Folder](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_10-55-24-787794/)
 
 ### Configuration
 
@@ -646,12 +643,12 @@ $$
 
 ### Networks Without Ground-Truth
 
-- [les-miserables](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/les-miserables/)
-- [jazz-musicians](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/jazz-musicians/)
-- [c-elegans-neural-network](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/c-elegans-neural-network/)
-- [c-elegans-metabolic](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/c-elegans-metabolic/)
-- [email-urv](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/email-urv/)
-- [co-authorships-in-network-science](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/co-authorships-in-network-science/)
+- [les-miserables](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/co-authorships-in-network-science/)
 
 #### Summary
 
@@ -667,7 +664,7 @@ $$
 
 #### Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v1/results_2026-07-14_10-55-24-787794/test_networks_without_gt/_combine_threshold_details.csv)
 
 ### Networks With Ground-Truth
 
@@ -689,7 +686,7 @@ $$
 
 ## (11) Experience 4 (V2) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-- [Open Folder](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/)
+- [Open Folder](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/)
 
 ### Configuration
 
@@ -727,12 +724,12 @@ $$
 
 ### Networks Without Ground-Truth
 
-- [les-miserables](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/les-miserables/)
-- [jazz-musicians](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/jazz-musicians/)
-- [c-elegans-neural-network](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/c-elegans-neural-network/)
-- [c-elegans-metabolic](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/c-elegans-metabolic/)
-- [email-urv](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/email-urv/)
-- [co-authorships-in-network-science](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/co-authorships-in-network-science/)
+- [les-miserables](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/co-authorships-in-network-science/)
 
 #### Summary
 
@@ -748,15 +745,15 @@ $$
 
 #### Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_without_gt/_combine_threshold_details.csv)
 
 ### Networks With Ground-Truth
 
-- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/socio-patterns-primary-school-day2/)
-- [citeseer](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/citeseer/)
-- [facebook-network-ego3980](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/facebook-network-ego3980/)
-- [facebook-network-ego686](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/facebook-network-ego686/)
-- [facebook-network-ego348](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/facebook-network-ego348/)
+- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/socio-patterns-primary-school-day2/)
+- [citeseer](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/citeseer/)
+- [facebook-network-ego3980](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/facebook-network-ego3980/)
+- [facebook-network-ego686](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/facebook-network-ego686/)
+- [facebook-network-ego348](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/facebook-network-ego348/)
 
 #### Summary
 
@@ -770,12 +767,12 @@ $$
 
 #### Blind Validation + Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_18-35-00-623858/test_networks_with_gt/_combine_threshold_details.csv)
 
 
 ## (12) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-- [Open Folder](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/)
+- [Open Folder](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/)
 
 ### Configuration
 
@@ -813,12 +810,12 @@ $$
 
 ### Networks Without Ground-Truth
 
-- [les-miserables](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/les-miserables/)
-- [jazz-musicians](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/jazz-musicians/)
-- [c-elegans-neural-network](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/c-elegans-neural-network/)
-- [c-elegans-metabolic](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/c-elegans-metabolic/)
-- [email-urv](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/email-urv/)
-- [co-authorships-in-network-science](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/co-authorships-in-network-science/)
+- [les-miserables](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/co-authorships-in-network-science/)
 
 #### Summary
 
@@ -834,15 +831,15 @@ $$
 
 #### Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_without_gt/_combine_threshold_details.csv)
 
 ### Networks With Ground-Truth
 
-- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/socio-patterns-primary-school-day2/)
-- [citeseer](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/citeseer/)
-- [facebook-network-ego3980](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/facebook-network-ego3980/)
-- [facebook-network-ego686](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/facebook-network-ego686/)
-- [facebook-network-ego348](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/facebook-network-ego348/)
+- [socio-patterns-primary-school-day2](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/socio-patterns-primary-school-day2/)
+- [citeseer](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/citeseer/)
+- [facebook-network-ego3980](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/facebook-network-ego3980/)
+- [facebook-network-ego686](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/facebook-network-ego686/)
+- [facebook-network-ego348](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/facebook-network-ego348/)
 
 #### Summary
 
@@ -856,12 +853,12 @@ $$
 
 #### Blind Validation + Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v2/results_2026-07-14_23-45-56-297136/test_networks_with_gt/_combine_threshold_details.csv)
 
 
 ## (13) Experience 6 (V2 + Overlapping Communities) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-- [Open Folder](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/)
+- [Open Folder](../../../results/real-world/stage2/experience1/v2/results_2026-07-15_04-19-17-796221/)
 
 ### Configuration
 
@@ -899,12 +896,12 @@ $$
 
 ### Networks Without Ground-Truth
 
-- [les-miserables](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/les-miserables/)
-- [jazz-musicians](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/jazz-musicians/)
-- [c-elegans-neural-network](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/c-elegans-neural-network/)
-- [c-elegans-metabolic](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/c-elegans-metabolic/)
-- [email-urv](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/email-urv/)
-- [co-authorships-in-network-science](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/co-authorships-in-network-science/)
+- [les-miserables](../../../results/real-world/stage2/experience1/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/les-miserables/)
+- [jazz-musicians](../../../results/real-world/stage2/experience1/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/jazz-musicians/)
+- [c-elegans-neural-network](../../../results/real-world/stage2/experience1/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/c-elegans-neural-network/)
+- [c-elegans-metabolic](../../../results/real-world/stage2/experience1/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/c-elegans-metabolic/)
+- [email-urv](../../../results/real-world/stage2/experience1/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/email-urv/)
+- [co-authorships-in-network-science](../../../results/real-world/stage2/experience1/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/co-authorships-in-network-science/)
 
 #### Summary
 
@@ -920,7 +917,7 @@ $$
 
 #### Thresholds Details
 
-- [Open File](../../../results/real-world/stage2/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/_combine_threshold_details.csv)
+- [Open File](../../../results/real-world/stage2/experience1/v2/results_2026-07-15_04-19-17-796221/test_networks_without_gt/_combine_threshold_details.csv)
 
 ### Networks With Ground-Truth
 
@@ -935,23 +932,31 @@ $$
 - TODO
 
 
-## (14) Observations:
+## (14) Discussion:
 
-- **V1 versus V2:**
-  - **V1:**
-    - Inconsistent, with different rules at each stage.
-    - Fewer acceptable thresholds, mainly due to the conductance and stability criteria.
-  - **V2:**
-    - Consistent, with progressively stricter rules at each stage.
-    - More acceptable thresholds.
+- **Observations**
+  - **V1 versus V2:**
+    - **V1:**
+      - Inconsistent, with different rules at each stage.
+      - Fewer acceptable thresholds, mainly due to the conductance and stability criteria.
+    - **V2:**
+      - Consistent, with progressively stricter rules at each stage.
+      - More acceptable thresholds.
+  - **5% Tolerance Fraction versus 10% Tolerance Fraction:**
+    - 5% is too strict.
+    - 10% is less strict.
+    - Values greater than 10% are too permissive.
+  - **Non-overlapping Communities versus Overlapping Communities:**
+    - Overlapping communities tend to favor larger $K'$ values, resulting in a larger number of small communities.
+  - [(12) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#12-experience-5-v2--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+    - Improvements over baseline
 
-- **5% Tolerance Fraction versus 10% Tolerance Fraction:**
-  - 5% is too strict.
-  - 10% is less strict.
-  - Values greater than 10% are too permissive.
-
-- **Non-overlapping Communities versus Overlapping Communities:**
-  - Overlapping communities tend to favor larger $K'$ values, resulting in a larger number of small communities.
-
-- [(12) Experience 5 (V2 + Tolerance Values) - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#12-experience-5-v2--tolerance-values---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-  - Improvements over baseline
+- **TODO**
+  - [DONE [Report 9](./report9.md)] Fix network family names; 
+  - [DONE [Report 9](./report9.md)] Fine-tune null model acceptability -> use && conditions, and also consider Z-scores and ranks;
+  - [DONE [Report 9](./report9.md)] Discard V1;
+  - [DONE [Report 9](./report9.md)] Keep V2;
+  - [DONE [Report 9](./report9.md)] Adjust configurations;
+  - [DONE [Report 9](./report9.md)] Retain the 'e_family' if it is practically indistinguishable from the best candidate;
+  - [DONE [Report 9](./report9.md)] Execute also for training networks;
+  - [DONE [Report 9](./report9.md)] Execute also for overlapping communities

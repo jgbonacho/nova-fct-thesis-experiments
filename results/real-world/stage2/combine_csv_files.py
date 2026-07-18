@@ -76,13 +76,13 @@ if __name__ == "__main__":
     COMBINE_THRESHOLDS_FILENAME = "_combine_threshold_details.csv"
 
     for base_dir in [
-        "results_2026-07-12_23-54-12-394620",
-        "results_2026-07-14_00-00-52-195086",
-        "results_2026-07-14_10-55-24-787794",
+        os.path.join("experience1", "v1", "results_2026-07-12_23-54-12-394620"),
+        os.path.join("experience1", "v1", "results_2026-07-14_00-00-52-195086"),
+        os.path.join("experience1", "v1", "results_2026-07-14_10-55-24-787794"),
 
-        os.path.join("v2", "results_2026-07-14_18-35-00-623858"),
-        os.path.join("v2", "results_2026-07-14_23-45-56-297136"),
-        os.path.join("v2", "results_2026-07-15_04-19-17-796221")
+        os.path.join("experience1", "v2", "results_2026-07-14_18-35-00-623858"),
+        os.path.join("experience1", "v2", "results_2026-07-14_23-45-56-297136"),
+        os.path.join("experience1", "v2", "results_2026-07-15_04-19-17-796221")
     ]:
 
         combine_csv_files(

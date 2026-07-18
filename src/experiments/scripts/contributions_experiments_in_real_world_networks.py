@@ -27,8 +27,9 @@ TEST_NETWORKS_WITHOUT_GT_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'networks',
 
 RESULTS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'results', 'real-world')
 RESULTS_TRAIN_NETWORKS_NAME = "train_networks"
-RESULTS_NETWORKS_WITH_GT_NAME = "test_networks_with_gt"
-RESULTS_NETWORKS_WITHOUT_GT_NAME = "test_networks_without_gt"
+RESULTS_TRAIN_NETWORKS_WITH_GT_NAME = "train_networks_with_gt"
+RESULTS_TEST_NETWORKS_WITH_GT_NAME = "test_networks_with_gt"
+RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME = "test_networks_without_gt"
 
 RAW_CONTRIBUTIONS_FILENAME = "01_raw_contributions.csv"
 RAW_CONTRIBUTIONS_FILENAMES = [
@@ -141,8 +142,9 @@ def run_contributions_experiments_in_real_world_networks(config: RealWorldThresh
 
     # Stage 2
     for network_type_name, networks_base_dir_path in [
-        (RESULTS_NETWORKS_WITHOUT_GT_NAME, TEST_NETWORKS_WITHOUT_GT_BASE_DIR_PATH),
-        (RESULTS_NETWORKS_WITH_GT_NAME, TEST_NETWORKS_WITH_GT_BASE_DIR_PATH),
+        (RESULTS_TRAIN_NETWORKS_WITH_GT_NAME, TRAIN_NETWORKS_BASE_DIR_PATH),
+        (RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME, TEST_NETWORKS_WITHOUT_GT_BASE_DIR_PATH),
+        (RESULTS_TEST_NETWORKS_WITH_GT_NAME, TEST_NETWORKS_WITH_GT_BASE_DIR_PATH),
     ]:
         family_dirs = sorted(
             [directory for directory in Path(networks_base_dir_path).iterdir() if directory.is_dir()],
@@ -243,7 +245,7 @@ def run_contributions_experiments_in_real_world_networks(config: RealWorldThresh
                 )
 
                 # Stage 2.6
-                if network_type_name == RESULTS_NETWORKS_WITH_GT_NAME:
+                if network_type_name in {RESULTS_TRAIN_NETWORKS_WITH_GT_NAME, RESULTS_TEST_NETWORKS_WITH_GT_NAME}:
                     evaluate_final_threshold_using_extrinsic_metrics(
                         results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                         graph_and_matrices=(graph, A, W),

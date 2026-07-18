@@ -39,21 +39,14 @@ def main(estimate_lfr_network_thresholds=True, estimate_real_world_network_thres
     if estimate_real_world_network_thresholds:
         run_sensitivity_experiments_in_real_world_networks(apply_lapin=True)
 
-        run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
-            apply_lapin=True,
-            overlapping_communities=False
-        ))
-        run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
-            apply_lapin=True,
-            overlapping_communities=False,
-            pareto_tolerance_fraction_modularity=0.10,
-            pareto_tolerance_fraction_conductance=0.10,
-            pareto_tolerance_fraction_stability=0.10
-        ))
-        run_contributions_experiments_in_real_world_networks(config=RealWorldThresholdEstimationConfig(
-            apply_lapin=True,
-            overlapping_communities=True
-        ))
+        run_contributions_experiments_in_real_world_networks(
+            config=RealWorldThresholdEstimationConfig()
+        )
+        run_contributions_experiments_in_real_world_networks(
+            config=RealWorldThresholdEstimationConfig(
+                overlapping_communities=True,
+            )
+        )
 
 
 if __name__ == "__main__":
