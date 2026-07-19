@@ -2,55 +2,68 @@
 Entry point.
 """
 
-from experiments.scripts.contributions_experiments_in_lfr_networks import run_contributions_experiments_in_lfr_networks
-from experiments.scripts.contributions_experiments_in_real_world_networks import \
-    run_contributions_experiments_in_real_world_networks
-from experiments.scripts.sensitivity_experiments_in_real_world_networks import \
-    run_sensitivity_experiments_in_real_world_networks
-from experiments.utils.dataclasses.real_world_threshold_estimation_config import RealWorldThresholdEstimationConfig
+from experiments.scripts.lfr_networks.thresholds.estimate_lfr_network_family_thresholds import \
+    estimate_lfr_network_family_thresholds
+from experiments.scripts.lfr_networks.thresholds.lfr_threshold_estimation_config import LFRThresholdEstimationConfig
+from experiments.scripts.real_world_networks.sensitivity_analysis.sensitivity_analysis_in_real_world_networks import \
+    sensitivity_analysis_in_real_world_networks
+from experiments.scripts.real_world_networks.thresholds.estimate_real_world_network_thresholds import \
+    estimate_real_world_network_thresholds
+from experiments.scripts.real_world_networks.thresholds.real_world_threshold_estimation_config import \
+    RealWorldThresholdEstimationConfig
 
 
-def main(estimate_lfr_network_thresholds=True, estimate_real_world_network_thresholds=True):
+def main(run_lfr_networks_scripts=True, run_real_world_networks_scripts=True):
     """
     Entry point.
 
     Parameters:
-        estimate_lfr_network_thresholds : (bool, optional)
+        run_lfr_networks_scripts : (bool, optional)
             Whether to estimate thresholds in LFR networks.
             Defaults to True.
-        estimate_real_world_network_thresholds : (bool, optional)
+        run_real_world_networks_scripts : (bool, optional)
             Whether to estimate thresholds in real-world networks.
             Defaults to True.
     """
 
-    if estimate_lfr_network_thresholds:
+    if run_lfr_networks_scripts:
         ## LFR experience with 'LAPIN-off + Extraction of K desired clusters'
-        run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired_k=True)
+        estimate_lfr_network_family_thresholds(
+            config=LFRThresholdEstimationConfig(apply_lapin=False, use_desired_k=True)
+        )
 
         ## LFR experience with 'LAPIN-off + Extraction of clusters until the end'
-        # run_contributions_experiments_in_lfr_networks(apply_lapin=False, use_desired_k=False)
+        # estimate_lfr_network_family_thresholds(
+        #    config=LFRThresholdEstimationConfig(apply_lapin=False, use_desired_k=False)
+        # )
 
         ## LFR experience with 'LAPIN-on + Extraction of K desired clusters'
-        # run_contributions_experiments_in_lfr_networks(apply_lapin=True, use_desired_k=True)
+        # estimate_lfr_network_family_thresholds(
+        #    config=LFRThresholdEstimationConfig(apply_lapin=True, use_desired_k=True)
+        # )
 
         ## LFR experience with 'LAPIN-on + Extraction of clusters until the end'
-        # run_contributions_experiments_in_lfr_networks(apply_lapin=True, use_desired_k=False)
+        # estimate_lfr_network_family_thresholds(
+        #    config=LFRThresholdEstimationConfig(apply_lapin=True, use_desired_k=False)
+        # )
 
-    if estimate_real_world_network_thresholds:
-        run_sensitivity_experiments_in_real_world_networks(apply_lapin=True)
+    if run_real_world_networks_scripts:
+        sensitivity_analysis_in_real_world_networks(apply_lapin=True)
 
-        run_contributions_experiments_in_real_world_networks(
-            config=RealWorldThresholdEstimationConfig()
-        )
-        run_contributions_experiments_in_real_world_networks(
+        estimate_real_world_network_thresholds(
             config=RealWorldThresholdEstimationConfig(
-                overlapping_communities=True,
+                overlapping_communities=False
+            )
+        )
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                overlapping_communities=True
             )
         )
 
 
 if __name__ == "__main__":
     main(
-        estimate_lfr_network_thresholds=False,
-        estimate_real_world_network_thresholds=True,
+        run_lfr_networks_scripts=False,
+        run_real_world_networks_scripts=True,
     )
