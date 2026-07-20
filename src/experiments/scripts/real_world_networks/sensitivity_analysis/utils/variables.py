@@ -4,7 +4,7 @@ from experiments.scripts.real_world_networks.sensitivity_analysis.network_proper
     NetworkProperties
 
 RAW_CONTRIBUTIONS_FILENAME = "raw_contributions.csv"
-RAW_CONTRIBUTIONS_FILENAMES = [
+RAW_CONTRIBUTIONS_FIELDNAMES = [
     "Network", "K", "Stop Condition"
 ]
 NETWORK_PROPERTIES_FILENAME = "network_properties.csv"

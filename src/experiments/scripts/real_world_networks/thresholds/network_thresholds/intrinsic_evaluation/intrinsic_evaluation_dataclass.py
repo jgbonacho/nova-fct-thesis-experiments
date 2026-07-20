@@ -1,6 +1,6 @@
 from dataclasses import field, dataclass
 
-from experiments.scripts.real_world_networks.thresholds.utils.csv_dataclass import CsvDataclass
+from experiments.scripts.real_world_networks.utils.csv_dataclass import CsvDataclass
 
 
 @dataclass

@@ -18,8 +18,8 @@ from experiments.scripts.real_world_networks.thresholds.network_thresholds.paret
     filter_candidate_thresholds_using_pareto_and_parsimony
 from experiments.scripts.real_world_networks.thresholds.real_world_threshold_estimation_config import \
     RealWorldThresholdEstimationConfig
-from experiments.scripts.real_world_networks.thresholds.utils.defuzzification import apply_defuzzification_rule
 from experiments.scripts.real_world_networks.thresholds.utils.utils import write_candidate_thresholds_to_file
+from experiments.scripts.real_world_networks.utils.defuzzification.defuzzification import apply_defuzzification_rule
 
 
 def evaluate_candidate_thresholds_using_intrinsic_metrics(
@@ -57,14 +57,14 @@ def evaluate_candidate_thresholds_using_intrinsic_metrics(
 
     updated_candidate_thresholds = []
     for candidate_threshold in candidate_thresholds:
-        # Check candidate exists
+        # Check candidate exists.
         if candidate_threshold.value is None: continue
 
         start_time = get_computation_start_time()
         U, _, _, _, _, _ = faddis(W=W, epsilon=candidate_threshold.value, tau=tau, k_max=k_max)
         end_time = get_computation_end_time()
 
-        # Check if clusters were extracted
+        # Check if clusters were extracted.
         if U.shape[1] == 0: continue
 
         predicted_labels, _, first_cluster_discarded = apply_defuzzification_rule(

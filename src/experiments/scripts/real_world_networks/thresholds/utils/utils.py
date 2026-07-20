@@ -12,6 +12,7 @@ from experiments.scripts.real_world_networks.thresholds.network_thresholds.netwo
     CandidateThreshold
 from experiments.scripts.real_world_networks.thresholds.real_world_threshold_estimation_config import \
     RealWorldThresholdEstimationConfig
+from experiments.scripts.real_world_networks.utils.affinity_designs.affinity_design_dataclass import AffinityDesign
 from experiments.scripts.utils.adjacency_matrix import compute_adjacency_matrix
 
 
@@ -73,6 +74,7 @@ def write_candidate_threshold_to_file(
 def generate_a_perturbed_graph(
         graph: nx.Graph,
         number_of_swaps: int,
+        affinity_design: AffinityDesign,
         apply_lapin: bool,
         seed: int
 ) -> tuple[nx.Graph, np.ndarray, np.ndarray]:
@@ -84,6 +86,8 @@ def generate_a_perturbed_graph(
             Original graph to perturb.
         number_of_swaps : (int)
             Number of connected double-edge swaps to attempt.
+        affinity_design : (AffinityDesign)
+            The affinity design to apply.
         apply_lapin : (bool)
             Whether to apply the LAPIN transformation to the perturbed adjacency matrix.
         seed : (int)
@@ -100,10 +104,11 @@ def generate_a_perturbed_graph(
 
     perturbed_graph = graph.copy()
     successful_swaps = connected_double_edge_swap(perturbed_graph, nswap=number_of_swaps, seed=seed)
-    print(f"[DEBUG] {number_of_swaps} / {successful_swaps}")
+    print(f"[DEBUG] Successful swaps = " f"{successful_swaps}/{number_of_swaps}")
 
     perturbed_A = compute_adjacency_matrix(perturbed_graph)
-    perturbed_W = np.asarray(perturbed_A if not apply_lapin else lapin(perturbed_A), dtype=np.float64)
+    perturbed_W = affinity_design.apply_affinity_design(perturbed_A)
+    perturbed_W = np.asarray(perturbed_W if not apply_lapin else lapin(perturbed_W), dtype=np.float64)
 
     return perturbed_graph, perturbed_A, perturbed_W
 
@@ -132,6 +137,7 @@ def save_contributions_experiment_report(
     """
 
     report = asdict(config)
+    report["affinity_design"] = config.affinity_design.value
     report["execution_elapsed_time_secs"] = execution_elapsed_time
 
     output_file = os.path.join(results_dir, output_filename)

@@ -41,7 +41,7 @@ def compute_candidate_thresholds(
             Family, global, adjacent-boundary, and elbow candidate thresholds for the network.
     """
 
-    # Assuming the network family and its thresholds always exist.
+    # Assuming the network family and at least e_global threshold exist.
     family = next(family for family in k_boundary_thresholds_per_family if family["network_family"] == network_family)
     e_family = family["e_family"]
     e_global = family["e_global"]
@@ -61,35 +61,39 @@ def compute_candidate_thresholds(
             c_j = contributions[j]
             c_j_plus_1 = contributions[j + 1]
             if c_j > c_j_plus_1:
-                # Valid K-Contribution Threshold
+                # Valid K-Contribution Threshold.
                 contribution_boundaries.append(float(np.sqrt(c_j * c_j_plus_1)))
                 adjacent_drops.append(float(np.log(c_j / c_j_plus_1)))
 
-        below_boundaries = [boundary for boundary in contribution_boundaries if boundary < e_family]
-        above_boundaries = [boundary for boundary in contribution_boundaries if boundary > e_family]
+        below_boundaries = [
+            boundary for boundary in contribution_boundaries if e_family is not None and boundary < e_family
+        ]
+        above_boundaries = [
+            boundary for boundary in contribution_boundaries if e_family is not None and boundary > e_family
+        ]
 
         candidate_thresholds = [
-            # 'e_family'
+            # 'e_family'.
             CandidateThreshold(
                 family=network_family, network=network_name, name=CandidateThresholdName.E_FAMILY,
                 value=e_family
             ),
-            # 'e_global'
+            # 'e_global'.
             CandidateThreshold(
                 family=network_family, network=network_name, name=CandidateThresholdName.E_GLOBAL,
                 value=e_global
             ),
-            # Closest valid contribution-boundary value below 'e_family'
+            # Closest valid contribution-boundary value below 'e_family'.
             CandidateThreshold(
                 family=network_family, network=network_name, name=CandidateThresholdName.E_BELOW,
                 value=max(below_boundaries) if below_boundaries else None
             ),
-            # Closest valid contribution-boundary value above 'e_family'
+            # Closest valid contribution-boundary value above 'e_family'.
             CandidateThreshold(
                 family=network_family, network=network_name, name=CandidateThresholdName.E_ABOVE,
                 value=min(above_boundaries) if above_boundaries else None
             ),
-            # Valid boundary associated with the strongest adjacent drop
+            # Valid boundary associated with the strongest adjacent drop.
             CandidateThreshold(
                 family=network_family, network=network_name, name=CandidateThresholdName.E_ELBOW,
                 value=contribution_boundaries[int(np.argmax(adjacent_drops))] if adjacent_drops else None

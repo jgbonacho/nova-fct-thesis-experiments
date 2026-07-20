@@ -3,7 +3,7 @@ import json
 import os
 from pathlib import Path
 
-from experiments.scripts.utils.network_config_dataclass import NetworkConfig
+from experiments.scripts.real_world_networks.utils.network_config_dataclass import NetworkConfig
 
 
 def load_real_world_network_configs(network_directory: Path, input_filename: str) -> list[NetworkConfig]:

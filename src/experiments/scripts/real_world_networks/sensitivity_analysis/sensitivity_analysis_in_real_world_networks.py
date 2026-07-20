@@ -21,10 +21,11 @@ from experiments.scripts.real_world_networks.sensitivity_analysis.utils.utils im
     append_properties, \
     save_sensitivity_experiment_report
 from experiments.scripts.real_world_networks.sensitivity_analysis.utils.variables import \
-    RAW_CONTRIBUTIONS_FILENAME, RAW_CONTRIBUTIONS_FILENAMES, NETWORK_PROPERTIES_FILENAME, NETWORK_PROPERTIES_FIELDNAMES, \
+    RAW_CONTRIBUTIONS_FILENAME, RAW_CONTRIBUTIONS_FIELDNAMES, NETWORK_PROPERTIES_FILENAME, \
+    NETWORK_PROPERTIES_FIELDNAMES, \
     GROUND_TRUTH_PROPERTIES_FILENAME, GROUND_TRUTH_PROPERTIES_FIELDNAMES, FADDIS_SENSITIVITY_ANALYSIS_FILENAME, \
     FADDIS_SENSITIVITY_ANALYSIS_FIELDNAMES, REPORT_FILENAME
-from experiments.scripts.real_world_networks.thresholds.utils.real_world_data_loader import load_network_from_gml
+from experiments.scripts.real_world_networks.utils.real_world_data_loader import load_network_from_gml
 from experiments.scripts.utils.adjacency_matrix import compute_adjacency_matrix
 from experiments.scripts.utils.utils import create_results_dir, log_progress, create_dir
 
@@ -65,7 +66,7 @@ def sensitivity_analysis_in_real_world_networks(apply_lapin: bool = True) -> str
 
             with open(file=raw_contributions_file, mode="w", newline="", encoding="utf-8") as out_file:
                 writer = csv.writer(out_file)
-                writer.writerow(RAW_CONTRIBUTIONS_FILENAMES)
+                writer.writerow(RAW_CONTRIBUTIONS_FIELDNAMES)
 
                 for network_config_idx, network_config in enumerate(network_configs, start=1):
                     log_progress(network_config_idx, len(network_configs), network_config.name, 2)
@@ -118,13 +119,13 @@ def sensitivity_analysis_in_real_world_networks(apply_lapin: bool = True) -> str
         network_properties_input_filename=NETWORK_PROPERTIES_FILENAME,
         network_properties_input_fieldnames=NETWORK_PROPERTIES_FIELDNAMES,
         raw_contributions_input_filename=RAW_CONTRIBUTIONS_FILENAME,
-        raw_contributions_input_fieldnames=RAW_CONTRIBUTIONS_FILENAMES,
+        raw_contributions_input_fieldnames=RAW_CONTRIBUTIONS_FIELDNAMES,
         output_filename=FADDIS_SENSITIVITY_ANALYSIS_FILENAME,
         output_fieldnames=FADDIS_SENSITIVITY_ANALYSIS_FIELDNAMES,
         apply_lapin=apply_lapin
     )
 
-    # Generate report
+    # Generate report.
     execution_elapsed_time = time.perf_counter() - execution_start_time
     save_sensitivity_experiment_report(
         results_dir=os.path.join(results_dir),

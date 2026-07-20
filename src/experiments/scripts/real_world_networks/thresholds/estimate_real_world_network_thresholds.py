@@ -29,17 +29,17 @@ from experiments.scripts.real_world_networks.thresholds.network_thresholds.stabi
     evaluate_candidate_thresholds_under_perturbation_stability
 from experiments.scripts.real_world_networks.thresholds.real_world_threshold_estimation_config import \
     RealWorldThresholdEstimationConfig
-from experiments.scripts.real_world_networks.thresholds.utils.real_world_data_loader import load_network_from_gml
 from experiments.scripts.real_world_networks.thresholds.utils.utils import save_contributions_experiment_report
 from experiments.scripts.real_world_networks.thresholds.utils.variables import RAW_CONTRIBUTIONS_FILENAME, \
-    RAW_CONTRIBUTIONS_FILENAMES, \
+    RAW_CONTRIBUTIONS_FIELDNAMES, \
     K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAME, K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAMES, \
-    K_BOUNDARY_THRESHOLDS_BY_FAMILY_FILENAME, K_BOUNDARY_THRESHOLDS_BY_FAMIL_FIELDNAMES, \
+    K_BOUNDARY_THRESHOLDS_BY_FAMILY_FILENAME, K_BOUNDARY_THRESHOLDS_BY_FAMILY_FIELDNAMES, \
     CANDIDATE_THRESHOLDS_FILENAME, \
     CANDIDATE_THRESHOLDS_FIELDNAMES, INTRINSIC_EVALUATION_FILENAME, INTRINSIC_EVALUATION_FIELDNAMES, \
     STABILITY_EVALUATION_FILENAME, STABILITY_EVALUATION_FIELDNAMES, NULL_MODEL_EVALUATION_FILENAME, \
     NULL_MODEL_EVALUATION_FIELDNAMES, FINAL_THRESHOLDS_FILENAME, FINAL_THRESHOLDS_FIELDNAMES, THRESHOLD_FILENAME, \
     EXTRINSIC_EVALUATION_FILENAME, REPORT_FILENAME
+from experiments.scripts.real_world_networks.utils.real_world_data_loader import load_network_from_gml
 from experiments.scripts.utils.adjacency_matrix import compute_adjacency_matrix
 from experiments.scripts.utils.utils import create_results_dir, log_progress, create_dir
 
@@ -49,7 +49,7 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
     Estimate real-world network thresholds.
 
     Parameters:
-        config : (LFRThresholdEstimationConfig)
+        config : (RealWorldThresholdEstimationConfig)
             Configuration of the threshold estimation.
 
     Returns:
@@ -60,7 +60,7 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
     execution_start_time = time.perf_counter()
     results_dir = create_results_dir(REAL_WORLD_RESULTS_BASE_DIR_PATH)
 
-    # Stage 1
+    # Stage 1: Estimate threshold for each training network family.
     family_dirs = sorted(
         [directory for directory in Path(REAL_WORLD_TRAIN_NETWORKS_BASE_DIR_PATH).iterdir() if directory.is_dir()],
         key=lambda path: path.name
@@ -70,13 +70,14 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
         log_progress(network_family_idx, len(family_dirs), network_family_dir.name, 4, True)
 
         family_results_dir = create_dir(
-            os.path.join(results_dir, REAL_WORLD_RESULTS_TRAIN_NETWORKS_NAME, network_family_dir.name))
+            os.path.join(results_dir, REAL_WORLD_RESULTS_TRAIN_NETWORKS_NAME, network_family_dir.name)
+        )
         raw_contributions_file = os.path.join(family_results_dir, RAW_CONTRIBUTIONS_FILENAME)
         network_configs = load_real_world_network_configs(network_family_dir, network_family_dir.name)
 
         with open(file=raw_contributions_file, mode="w", newline="", encoding="utf-8") as out_file:
             writer = csv.writer(out_file)
-            writer.writerow(RAW_CONTRIBUTIONS_FILENAMES)
+            writer.writerow(RAW_CONTRIBUTIONS_FIELDNAMES)
 
             for network_config_idx, network_config in enumerate(network_configs, start=1):
                 log_progress(network_config_idx, len(network_configs), network_config.name, 2)
@@ -85,7 +86,8 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
                     graph, ground_truth_labels, k = load_network_from_gml(str(network_family_dir), network_config)
 
                     A = compute_adjacency_matrix(graph)
-                    W = np.asarray(A if not config.apply_lapin else lapin(A), dtype=np.float64)
+                    W = config.affinity_design.apply_affinity_design(A)
+                    W = np.asarray(W if not config.apply_lapin else lapin(W), dtype=np.float64)
                     epsilon, tau, k_max = -np.inf, config.tau, config.compute_k_max(graph.number_of_nodes())
                     _, contributions, _, _, _, stop_condition = faddis(
                         W=W, epsilon=epsilon, tau=tau, k_max=k_max
@@ -101,15 +103,15 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
     thresholds_per_family = compute_thresholds_per_family(
         results_dir=os.path.join(results_dir, REAL_WORLD_RESULTS_TRAIN_NETWORKS_NAME),
         input_filename=RAW_CONTRIBUTIONS_FILENAME,
-        input_fieldnames=RAW_CONTRIBUTIONS_FILENAMES,
+        input_fieldnames=RAW_CONTRIBUTIONS_FIELDNAMES,
         k_boundary_thresholds_by_network_output_filename=K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAME,
         k_boundary_thresholds_by_network_output_fieldnames=K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAMES,
         k_boundary_thresholds_by_family_output_filename=K_BOUNDARY_THRESHOLDS_BY_FAMILY_FILENAME,
-        k_boundary_thresholds_by_family_output_fieldnames=K_BOUNDARY_THRESHOLDS_BY_FAMIL_FIELDNAMES,
+        k_boundary_thresholds_by_family_output_fieldnames=K_BOUNDARY_THRESHOLDS_BY_FAMILY_FIELDNAMES,
         discard_global_component=not config.apply_lapin
     )
 
-    # Stage 2
+    # Stage 2: Estimate the final threshold for each network.
     for network_type_name, networks_base_dir_path in [
         (REAL_WORLD_RESULTS_TRAIN_NETWORKS_WITH_GT_NAME, REAL_WORLD_TRAIN_NETWORKS_BASE_DIR_PATH),
         (REAL_WORLD_RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME, REAL_WORLD_TEST_NETWORKS_WITHOUT_GT_BASE_DIR_PATH),
@@ -132,13 +134,14 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
 
                 with open(file=raw_contributions_file_2, mode="w", newline="", encoding="utf-8") as out_file:
                     writer = csv.writer(out_file)
-                    writer.writerow(RAW_CONTRIBUTIONS_FILENAMES)
+                    writer.writerow(RAW_CONTRIBUTIONS_FIELDNAMES)
 
                     try:
                         graph, ground_truth_labels, k = load_network_from_gml(str(network_family_dir), network_config)
 
                         A = compute_adjacency_matrix(graph)
-                        W = np.asarray(A if not config.apply_lapin else lapin(A), dtype=np.float64)
+                        W = config.affinity_design.apply_affinity_design(A)
+                        W = np.asarray(W if not config.apply_lapin else lapin(W), dtype=np.float64)
                         epsilon, tau, k_max = -np.inf, config.tau, config.compute_k_max(graph.number_of_nodes())
                         _, contributions, _, _, _, stop_condition = faddis(
                             W=W, epsilon=epsilon, tau=tau, k_max=k_max
@@ -151,18 +154,18 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
                         print(f"[ERROR] {e}")
                         continue
 
-                # Stage 2.1
+                # Stage 2.1: Generate candidate thresholds for the network.
                 candidate_thresholds = compute_candidate_thresholds(
                     results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                     network_family=network_family_dir.name,
                     k_boundary_thresholds_per_family=thresholds_per_family,
                     input_filename=RAW_CONTRIBUTIONS_FILENAME,
-                    input_fieldnames=RAW_CONTRIBUTIONS_FILENAMES,
+                    input_fieldnames=RAW_CONTRIBUTIONS_FIELDNAMES,
                     output_filename=CANDIDATE_THRESHOLDS_FILENAME,
                     output_fieldnames=CANDIDATE_THRESHOLDS_FIELDNAMES
                 )
 
-                # Stage 2.2
+                # Stage 2.2: Evaluate candidate thresholds using intrinsic metrics.
                 candidate_thresholds_after_intrinsic_evaluation = evaluate_candidate_thresholds_using_intrinsic_metrics(
                     results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                     graph_and_matrices=(graph, A, W),
@@ -172,7 +175,7 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
                     config=config
                 )
 
-                # Stage 2.3
+                # Stage 2.3: Evaluate candidate thresholds using perturbation stability.
                 candidate_thresholds_after_perturbation_stability = evaluate_candidate_thresholds_under_perturbation_stability(
                     results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                     graph_and_matrices=(graph, A, W),
@@ -182,7 +185,7 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
                     config=config
                 )
 
-                # Stage 2.4
+                # Stage 2.4: Evaluate candidate thresholds using null-model diagnostic.
                 candidate_thresholds_after_null_model = evaluate_candidate_thresholds_under_null_model(
                     results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                     graph_and_matrices=(graph, A, W),
@@ -192,7 +195,7 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
                     config=config
                 )
 
-                # Stage 2.5
+                # Stage 2.5: Select the final threshold using Pareto acceptability and parsimony.
                 final_threshold = select_final_threshold_by_pareto_and_parsimony(
                     results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                     candidate_thresholds=candidate_thresholds_after_null_model,
@@ -201,10 +204,11 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
                     threshold_output_filename=THRESHOLD_FILENAME
                 )
 
+                # Generate final outputs.
                 generate_final_outputs(
                     results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                     raw_contributions_filename=RAW_CONTRIBUTIONS_FILENAME,
-                    raw_contributions_fieldnames=RAW_CONTRIBUTIONS_FILENAMES,
+                    raw_contributions_fieldnames=RAW_CONTRIBUTIONS_FIELDNAMES,
                     candidate_thresholds_filename=CANDIDATE_THRESHOLDS_FILENAME,
                     intrinsic_evaluation_filename=INTRINSIC_EVALUATION_FILENAME,
                     stability_evaluation_filename=STABILITY_EVALUATION_FILENAME,
@@ -213,9 +217,10 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
                     config=config
                 )
 
-                # Stage 2.6
-                if network_type_name in {REAL_WORLD_RESULTS_TRAIN_NETWORKS_WITH_GT_NAME,
-                                         REAL_WORLD_RESULTS_TEST_NETWORKS_WITH_GT_NAME}:
+                # Stage 2.6: Evaluate the final threshold using extrinsic metrics when ground truth is available.
+                if network_type_name in {
+                    REAL_WORLD_RESULTS_TRAIN_NETWORKS_WITH_GT_NAME, REAL_WORLD_RESULTS_TEST_NETWORKS_WITH_GT_NAME
+                }:
                     evaluate_final_threshold_using_extrinsic_metrics(
                         results_dir=os.path.join(results_dir, network_type_name, network_config.name),
                         graph_and_matrices=(graph, A, W),
@@ -227,7 +232,7 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
                         config=config
                     )
 
-    # Generate report
+    # Generate report.
     execution_elapsed_time = time.perf_counter() - execution_start_time
     save_contributions_experiment_report(
         results_dir=results_dir,

@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
 
+from experiments.scripts.real_world_networks.utils.affinity_designs.affinity_design_dataclass import AffinityDesign
+
 
 @dataclass
 class RealWorldThresholdEstimationConfig:
@@ -7,11 +9,14 @@ class RealWorldThresholdEstimationConfig:
     Dataclass for the real-world threshold estimation configuration.
 
     Attributes:
+        affinity_design : (AffinityDesign)
+            The affinity design to apply to the network.
+            Default is AffinityDesign.DEFAULT.
         apply_lapin : (bool)
             Whether to apply the LAPIN transformation before running FADDIS.
             Default is True.
         tau : (float)
-            Minimum cluster intensity used by the FADDIS stopping criterion.
+            FADDIS stopping criterion tau parameter.
             Default is 0.05.
         k_max_boundary : (int)
             Upper boundary for the maximum number of clusters extracted by FADDIS.
@@ -34,13 +39,13 @@ class RealWorldThresholdEstimationConfig:
         number_of_perturbed_graphs : (int)
             Number of perturbed graphs generated for the stability evaluation.
             Default is 10.
-        fraction_of_edges_swaps_in_perturbed_graphs : (float)
+        edge_swap_multiplier_in_perturbed_graphs : (float)
             Fraction of network edges used to determine the number of edge swaps in each perturbed graph.
             Default is 0.05.
         number_of_null_models : (int)
             Number of null-model graphs generated for the null-model evaluation.
             Default is 10.
-        fraction_of_edges_swaps_in_null_models : (float)
+        edge_swap_multiplier_in_null_models : (float)
             Fraction of network edges used to determine the number of edge swaps in each null-model graph.
             Default is 10.
         pareto_tolerance_fraction_modularity : (float)
@@ -69,6 +74,7 @@ class RealWorldThresholdEstimationConfig:
             Default is 1.645.
     """
 
+    affinity_design: AffinityDesign = field(default=AffinityDesign.DEFAULT)
     apply_lapin: bool = field(default=True)
     tau: float = field(default=0.05)
     k_max_boundary: int = field(default=500)
@@ -78,9 +84,9 @@ class RealWorldThresholdEstimationConfig:
     number_of_thresholds_to_retain_after_stability_evaluation: int = field(default=2)
     near_singleton_boundary: int = field(default=2)
     number_of_perturbed_graphs: int = field(default=10)
-    fraction_of_edges_swaps_in_perturbed_graphs: float = field(default=0.05)
+    edge_swap_multiplier_in_perturbed_graphs: float = field(default=0.05)
     number_of_null_models: int = field(default=10)
-    fraction_of_edges_swaps_in_null_models: float = field(default=10)
+    edge_swap_multiplier_in_null_models: float = field(default=10)
     pareto_tolerance_fraction_modularity: float = field(default=0.10)
     pareto_tolerance_fraction_conductance: float = field(default=0.10)
     pareto_tolerance_fraction_stability: float = field(default=0.15)
@@ -94,7 +100,7 @@ class RealWorldThresholdEstimationConfig:
         return min(self.k_max_boundary, int(number_of_nodes / 2))
 
     def compute_number_of_edges_swaps_in_perturbed_graphs(self, number_of_edges: int):
-        return int(number_of_edges * self.fraction_of_edges_swaps_in_perturbed_graphs)
+        return int(number_of_edges * self.edge_swap_multiplier_in_perturbed_graphs)
 
     def compute_number_of_edges_swaps_in_null_models(self, number_of_edges: int):
-        return int(number_of_edges * self.fraction_of_edges_swaps_in_null_models)
+        return int(number_of_edges * self.edge_swap_multiplier_in_null_models)

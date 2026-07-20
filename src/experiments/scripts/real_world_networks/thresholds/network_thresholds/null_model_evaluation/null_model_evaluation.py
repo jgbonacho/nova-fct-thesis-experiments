@@ -14,9 +14,9 @@ from experiments.scripts.real_world_networks.thresholds.network_thresholds.paret
     evaluate_acceptability_in_place_of_candidate_thresholds_using_pareto
 from experiments.scripts.real_world_networks.thresholds.real_world_threshold_estimation_config import \
     RealWorldThresholdEstimationConfig
-from experiments.scripts.real_world_networks.thresholds.utils.defuzzification import apply_defuzzification_rule
 from experiments.scripts.real_world_networks.thresholds.utils.utils import generate_a_perturbed_graph, \
     write_candidate_thresholds_to_file
+from experiments.scripts.real_world_networks.utils.defuzzification.defuzzification import apply_defuzzification_rule
 
 
 def evaluate_candidate_thresholds_under_null_model(
@@ -57,6 +57,7 @@ def evaluate_candidate_thresholds_under_null_model(
         null_graph, null_A, null_W = generate_a_perturbed_graph(
             graph=graph,
             number_of_swaps=number_of_swaps,
+            affinity_design=config.affinity_design,
             apply_lapin=config.apply_lapin,
             seed=null_number
         )
@@ -74,14 +75,16 @@ def evaluate_candidate_thresholds_under_null_model(
         mean_null_modularity, std_null_modularity, modularity_z_score, modularity_empirical_p_value, modularity_rank = (
             _compute_null_modularities_statistics(
                 candidate_threshold=candidate_threshold,
-                null_modularities=null_modularities
+                null_modularities=null_modularities,
+                number_of_null_models=config.number_of_null_models
             )
         )
 
         mean_null_conductance, std_null_conductance, conductance_z_score, conductance_empirical_p_value, conductance_rank = (
             _compute_null_conductances_statistics(
                 candidate_threshold=candidate_threshold,
-                null_conductances=null_conductances
+                null_conductances=null_conductances,
+                number_of_null_models=config.number_of_null_models
             )
         )
 
@@ -192,7 +195,8 @@ def _compute_null_modularities_and_conductances(
 
 def _compute_null_modularities_statistics(
         candidate_threshold: CandidateThreshold,
-        null_modularities: list
+        null_modularities: list,
+        number_of_null_models: int
 ) -> tuple[float, float, float, float, int]:
     """
     Compute modularity statistics by comparing a candidate threshold against null-model results.
@@ -202,6 +206,8 @@ def _compute_null_modularities_statistics(
             Candidate threshold containing the modularity obtained for the real network.
         null_modularities : (list[float])
             Modularity values obtained from the null-model networks.
+        number_of_null_models : (int)
+            Total number of null models.
 
     Returns:
         mean_null_modularity : (float | None)
@@ -221,8 +227,10 @@ def _compute_null_modularities_statistics(
             None if no null modularities are provided.
     """
 
+    number_of_invalid_results = number_of_null_models - len(null_modularities)
+
     if not null_modularities:
-        return None, None, None, None, None
+        return None, None, None, 1.0, number_of_null_models + 1
 
     real_modularity = candidate_threshold.intrinsic_evaluation.modularity
 
@@ -233,17 +241,19 @@ def _compute_null_modularities_statistics(
         if std_null_modularity > 0 else None
     )
     modularity_empirical_p_value = (
-            (1 + sum(q_null >= real_modularity for q_null in null_modularities)) /
-            (len(null_modularities) + 1)
+            (1 + number_of_invalid_results + sum(q_null >= real_modularity for q_null in null_modularities)) /
+            (number_of_null_models + 1))
+    modularity_rank = (
+            1 + number_of_invalid_results + sum(q_null > real_modularity for q_null in null_modularities)
     )
-    modularity_rank = 1 + sum(q_null > real_modularity for q_null in null_modularities)
 
     return mean_null_modularity, std_null_modularity, modularity_z_score, modularity_empirical_p_value, modularity_rank
 
 
 def _compute_null_conductances_statistics(
         candidate_threshold: CandidateThreshold,
-        null_conductances: list
+        null_conductances: list,
+        number_of_null_models: int
 ) -> tuple[float, float, float, float, int]:
     """
     Compute conductance statistics by comparing a candidate threshold against null-model results.
@@ -253,6 +263,8 @@ def _compute_null_conductances_statistics(
             Candidate threshold containing the conductance obtained for the real network.
         null_conductances : (list[float])
             Conductance values obtained from the null-model networks.
+        number_of_null_models : (int)
+            Total number of null models.
 
     Returns:
         mean_null_conductance : (float | None)
@@ -272,8 +284,10 @@ def _compute_null_conductances_statistics(
             None if no null conductances are provided.
     """
 
+    number_of_invalid_results = number_of_null_models - len(null_conductances)
+
     if not null_conductances:
-        return None, None, None, None, None
+        return None, None, None, 1.0, number_of_null_models + 1
 
     real_conductance = candidate_threshold.intrinsic_evaluation.conductance
 
@@ -284,8 +298,10 @@ def _compute_null_conductances_statistics(
         if std_null_conductance > 0 else None
     )
     conductance_empirical_p_value = (
-            (1 + sum(phi_null <= real_conductance for phi_null in null_conductances)) /
-            (len(null_conductances) + 1))
-    conductance_rank = 1 + sum(phi_null < real_conductance for phi_null in null_conductances)
+            (1 + number_of_invalid_results + sum(phi_null <= real_conductance for phi_null in null_conductances)) /
+            (number_of_null_models + 1))
+    conductance_rank = (
+            1 + number_of_invalid_results + sum(phi_null < real_conductance for phi_null in null_conductances)
+    )
 
     return mean_null_conductance, std_null_conductance, conductance_z_score, conductance_empirical_p_value, conductance_rank

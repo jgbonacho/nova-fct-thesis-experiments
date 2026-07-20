@@ -10,7 +10,7 @@ from experiments.scripts.real_world_networks.thresholds.network_thresholds.stabi
     StabilityEvaluation
 
 RAW_CONTRIBUTIONS_FILENAME = "01_raw_contributions.csv"
-RAW_CONTRIBUTIONS_FILENAMES = [
+RAW_CONTRIBUTIONS_FIELDNAMES = [
     "Network", "K", "Stop Condition"
 ]
 K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAME = "k_boundary_thresholds_by_network.csv"
@@ -18,7 +18,7 @@ K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAMES = [
     "Network", "#Contributions", "K", "c_K", "c_K+1", "Valid Threshold?", "Threshold"
 ]
 K_BOUNDARY_THRESHOLDS_BY_FAMILY_FILENAME = "k_boundary_thresholds_by_family.csv"
-K_BOUNDARY_THRESHOLDS_BY_FAMIL_FIELDNAMES = [
+K_BOUNDARY_THRESHOLDS_BY_FAMILY_FIELDNAMES = [
     "Network Family", "#Networks", "#Valid Thresholds", "Valid Thresholds", "e_family", "e_global"
 ]
 CANDIDATE_THRESHOLDS_FILENAME = "02_candidate_thresholds.csv"

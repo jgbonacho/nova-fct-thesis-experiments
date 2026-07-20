@@ -15,9 +15,9 @@ from experiments.scripts.real_world_networks.thresholds.network_thresholds.stabi
     StabilityEvaluation
 from experiments.scripts.real_world_networks.thresholds.real_world_threshold_estimation_config import \
     RealWorldThresholdEstimationConfig
-from experiments.scripts.real_world_networks.thresholds.utils.defuzzification import apply_defuzzification_rule
 from experiments.scripts.real_world_networks.thresholds.utils.utils import generate_a_perturbed_graph, \
     write_candidate_thresholds_to_file
+from experiments.scripts.real_world_networks.utils.defuzzification.defuzzification import apply_defuzzification_rule
 
 
 def evaluate_candidate_thresholds_under_perturbation_stability(
@@ -59,6 +59,7 @@ def evaluate_candidate_thresholds_under_perturbation_stability(
         _, _, perturbed_W = generate_a_perturbed_graph(
             graph=graph,
             number_of_swaps=number_of_swaps,
+            affinity_design=config.affinity_design,
             apply_lapin=config.apply_lapin,
             seed=perturbation_number
         )
@@ -83,7 +84,10 @@ def evaluate_candidate_thresholds_under_perturbation_stability(
             config=config
         )
 
-        stability = _compute_stability(sims)
+        stability = _compute_stability(
+            sims=sims,
+            number_of_perturbed_graphs=config.number_of_perturbed_graphs
+        )
 
         candidate_threshold.stability_evaluation = StabilityEvaluation(
             number_of_perturbed_graphs=config.number_of_perturbed_graphs,
@@ -182,13 +186,15 @@ def _compute_similarities(
     return sims
 
 
-def _compute_stability(sims: list) -> float:
+def _compute_stability(sims: list[float], number_of_perturbed_graphs: int) -> float:
     """
     Compute the average stability from a list of similarity values.
 
     Parameters:
         sims : (list[float])
             Similarity values obtained from the perturbed community structures.
+        number_of_perturbed_graphs : (int)
+            Total number of perturbed graphs.
 
     Returns:
         stability : (float)
@@ -196,7 +202,7 @@ def _compute_stability(sims: list) -> float:
             Returns 0 if no similarity values are provided.
     """
 
-    return float(sum(sims) / len(sims)) if len(sims) > 0 else 0
+    return float(sum(sims) / number_of_perturbed_graphs)
 
 
 def _compute_fuzzy_co_membership_similarity(

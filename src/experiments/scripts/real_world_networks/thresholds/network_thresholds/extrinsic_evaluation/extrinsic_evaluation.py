@@ -9,8 +9,8 @@ from experiments.scripts.real_world_networks.thresholds.network_thresholds.netwo
     CandidateThreshold
 from experiments.scripts.real_world_networks.thresholds.real_world_threshold_estimation_config import \
     RealWorldThresholdEstimationConfig
-from experiments.scripts.real_world_networks.thresholds.utils.defuzzification import apply_defuzzification_rule
 from experiments.scripts.real_world_networks.thresholds.utils.utils import write_candidate_threshold_to_file
+from experiments.scripts.real_world_networks.utils.defuzzification.defuzzification import apply_defuzzification_rule
 
 
 def evaluate_final_threshold_using_extrinsic_metrics(

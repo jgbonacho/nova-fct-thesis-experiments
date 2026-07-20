@@ -12,7 +12,7 @@ from experiments.scripts.real_world_networks.thresholds.network_thresholds.paret
     ParetoPlusParsimonySelection
 from experiments.scripts.real_world_networks.thresholds.network_thresholds.stability_evaluation.stability_evaluation_dataclass import \
     StabilityEvaluation
-from experiments.scripts.real_world_networks.thresholds.utils.csv_dataclass import CsvDataclass
+from experiments.scripts.real_world_networks.utils.csv_dataclass import CsvDataclass
 
 
 class CandidateThresholdName(str, Enum):

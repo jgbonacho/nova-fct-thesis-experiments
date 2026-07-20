@@ -71,7 +71,7 @@ def save_experiment_report(
             The path to the results' directory.
         output_filename : (str)
             The name of the output file to save the report.
-        config : (RealWorldThresholdEstimationConfig)
+        config : (LFRThresholdEstimationConfig)
             Configuration of the threshold estimation.
         network_family_dirs : (list[Path])
             A list of Path objects representing the directories of network families included in the experiment.
@@ -86,6 +86,8 @@ def save_experiment_report(
     report = {
         "apply_lapin": config.apply_lapin,
         "use_desired_k": config.use_desired_k,
+        "bootstrapping_maximum_number_of_repetitions": config.bootstrapping_maximum_number_of_repetitions,
+        "bootstrapping_subsample_fraction": config.bootstrapping_subsample_fraction,
         "number_of_families": len(network_family_dirs),
         "families": [directory.name for directory in network_family_dirs],
         "execution_elapsed_time_secs": execution_elapsed_time

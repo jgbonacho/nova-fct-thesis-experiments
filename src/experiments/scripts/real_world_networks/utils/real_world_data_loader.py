@@ -2,7 +2,7 @@ import os
 
 import networkx as nx
 
-from experiments.scripts.utils.network_config_dataclass import NetworkConfig
+from experiments.scripts.real_world_networks.utils.network_config_dataclass import NetworkConfig
 
 
 def load_network_from_gml(dir_path: str, network_config: NetworkConfig) -> tuple[nx.Graph, list, int]:

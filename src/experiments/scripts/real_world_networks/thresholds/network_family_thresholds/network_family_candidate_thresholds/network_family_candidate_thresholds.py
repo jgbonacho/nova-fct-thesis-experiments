@@ -41,7 +41,7 @@ def compute_thresholds_per_family(
             K-boundary threshold statistics for each network family.
     """
 
-    # K-boundary thresholds by network
+    # K-boundary thresholds by network.
     families = compute_k_boundary_thresholds_by_network(
         input_filename=input_filename,
         input_fieldnames=input_fieldnames,
@@ -51,7 +51,7 @@ def compute_thresholds_per_family(
         discard_global_component=discard_global_component
     )
 
-    # K-boundary thresholds by network family
+    # K-boundary thresholds by network family.
     thresholds_per_family = compute_k_boundary_thresholds_by_family(
         families=families,
         results_dir=results_dir,
@@ -130,10 +130,10 @@ def compute_k_boundary_thresholds_by_network(
                     c_k_plus_1 = contributions[k_plus_1_index] if 0 <= k_plus_1_index < len(contributions) else None
 
                     if c_k is None or c_k_plus_1 is None or c_k_plus_1 >= c_k:
-                        # Invalid K-Boundary Threshold
+                        # Invalid K-Boundary Threshold.
                         writer.writerow([network_name, len(contributions), k, c_k, c_k_plus_1, False, None])
                     else:
-                        # Valid K-Boundary Threshold
+                        # Valid K-Boundary Threshold.
                         threshold = float(np.sqrt(c_k * c_k_plus_1))
                         writer.writerow([network_name, len(contributions), k, c_k, c_k_plus_1, True, threshold])
 

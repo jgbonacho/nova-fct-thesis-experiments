@@ -311,7 +311,7 @@ def filter_candidate_thresholds_using_pareto_and_parsimony(
             Candidate thresholds retained according to Pareto acceptability, parsimony, and the fallback criteria.
     """
 
-    # Check acceptability
+    # Check acceptability.
     acceptable_candidate_thresholds = [
         threshold
         for threshold in candidate_thresholds
@@ -323,26 +323,26 @@ def filter_candidate_thresholds_using_pareto_and_parsimony(
         )
     ]
 
-    # Filter
+    # Filter.
     if acceptable_candidate_thresholds:
-        # Parsimony among acceptable candidates
+        # Parsimony among acceptable candidates.
         acceptable_candidate_thresholds.sort(key=lambda threshold: threshold.value, reverse=True)
         filtered_candidate_thresholds = acceptable_candidate_thresholds[:number_of_thresholds_to_retain]
     else:
-        # Fallback: use the evaluation criteria in priority order
+        # Fallback: use the evaluation criteria in priority order.
         fallback_candidate_thresholds = candidate_thresholds.copy()
         fallback_candidate_thresholds.sort(
-            key=lambda threshold: (
-                not threshold.intrinsic_evaluation.acceptable_non_degenerate if check_non_degenerate else False,
-                -threshold.intrinsic_evaluation.modularity if check_modularity else 0,
-                threshold.intrinsic_evaluation.conductance if check_conductance else 0,
-                -threshold.stability_evaluation.stability if check_stability else 0,
-                -threshold.value
+            key=lambda th: (
+                not th.intrinsic_evaluation.acceptable_non_degenerate if check_non_degenerate else False,
+                -th.intrinsic_evaluation.modularity if check_modularity else 0,
+                th.intrinsic_evaluation.conductance if check_conductance else 0,
+                -th.stability_evaluation.stability if check_stability else 0,
+                -th.value
             )
         )
         filtered_candidate_thresholds = fallback_candidate_thresholds[:number_of_thresholds_to_retain]
 
-    # Keep 'e_family' if required
+    # Keep 'e_family' if required.
     if keep_e_family:
         if CandidateThresholdName.E_FAMILY not in [threshold.name for threshold in filtered_candidate_thresholds]:
             e_family = next(
@@ -375,11 +375,22 @@ def select_final_threshold_using_pareto_and_parsimony(
 
     acceptable_thresholds = [th for th in candidate_thresholds if th.pareto_plus_parsimony_selection.acceptable]
     if acceptable_thresholds:
-        # Parsimony: prefer the largest thresholds of the acceptable thresholds
+        # Parsimony: prefer the largest thresholds of the acceptable thresholds.
         best_candidate = max(acceptable_thresholds, key=lambda th: th.value)
     else:
-        # Fallback: Prefer the largest thresholds of the candidate thresholds
-        best_candidate = max(candidate_thresholds, key=lambda th: th.value)
+        # Fallback: use the evaluation criteria in priority order.
+        fallback_candidates = sorted(
+            candidate_thresholds,
+            key=lambda th: (
+                not th.intrinsic_evaluation.acceptable_non_degenerate,
+                -th.intrinsic_evaluation.modularity,
+                th.intrinsic_evaluation.conductance,
+                -th.stability_evaluation.stability,
+                -th.value
+            )
+        )
+
+        best_candidate = fallback_candidates[0]
 
     # Retain 'e_family' if it is practically indistinguishable from the best candidate
     e_family = next(

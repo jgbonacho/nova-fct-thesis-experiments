@@ -127,7 +127,7 @@ def estimate_lfr_network_family_thresholds(config: LFRThresholdEstimationConfig)
         subsample_fraction=config.bootstrapping_subsample_fraction
     )
 
-    # Generate report
+    # Generate report.
     execution_elapsed_time = time.perf_counter() - execution_start_time
     save_experiment_report(results_dir, REPORT_FILENAME, config, family_dirs, execution_elapsed_time)
 

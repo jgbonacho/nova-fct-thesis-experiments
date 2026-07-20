@@ -151,7 +151,7 @@ def _compute_conductance_of_boundary_nodes(A: np.ndarray, communities: dict[int,
     """
 
     if len(communities) == 1:
-        return 1.0
+        return 1.0  # Large value for single community case.
 
     degrees = A.sum(axis=1)
 
@@ -169,7 +169,7 @@ def _compute_conductance_of_boundary_nodes(A: np.ndarray, communities: dict[int,
             k_in_C += k_in_i
             sum_terms += (k_in_i * k_out_i) / ki
 
-        psi = (sum_terms / k_in_C) if k_in_C > 0 else 0.0
+        psi = (sum_terms / k_in_C) if k_in_C > 0 else 1.0  # Large value when the community has no internal edges.
         psis.append(psi)
 
     return float(np.min(psis))

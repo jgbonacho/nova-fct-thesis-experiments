@@ -89,7 +89,7 @@ def save_normalized_contributions_and_draw_line_plots(
                 normalized_values = [value / global_sum for value in values]
                 writer.writerow(row[:number_of_columns_to_skip] + normalized_values)
 
-            _draw_normalized_contributions_line_plot(family_dir, row[0], row[1], normalized_values)
+                _draw_normalized_contributions_line_plot(family_dir, row[0], row[1], normalized_values)
 
     return global_sum
 
