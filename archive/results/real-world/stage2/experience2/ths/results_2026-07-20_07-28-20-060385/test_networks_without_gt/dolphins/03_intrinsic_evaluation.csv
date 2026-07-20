@@ -1,0 +1,6 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+05_aM_davgL,dolphins,e_family,0.004363122171917465,2,True,"[40, 22]",0,0.0,0.6451612903225806,0.019277385165251716,0.02438791554357592,0.01735709886997938,False,False,True
+05_aM_davgL,dolphins,e_global,0.00028981500100176477,7,True,"[29, 14, 9, 2, 9, 5, 1]",2,0.2857142857142857,0.46774193548387094,0.03209875465194205,0.0,0.04930956894531846,True,True,True
+05_aM_davgL,dolphins,e_below,0.0014790594326199314,3,True,"[39, 21, 2]",1,0.3333333333333333,0.6290322580645161,0.01925803945390698,0.0,0.024651426123455167,False,True,True
+05_aM_davgL,dolphins,e_above,0.012602118948721593,2,True,"[40, 22]",0,0.0,0.6451612903225806,0.019277385165251716,0.02438791554357592,0.01861031213775277,False,False,True
+05_aM_davgL,dolphins,e_elbow,0.012602118948721593,2,True,"[40, 22]",0,0.0,0.6451612903225806,0.019277385165251716,0.02438791554357592,0.018534242874011397,False,False,True
