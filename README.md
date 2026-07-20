@@ -4,4 +4,6 @@ Thesis experiments repository
 
 ## Setup and Run
 
->./setup_and_run.sh
+```bash
+./setup_and_run.sh
+```
