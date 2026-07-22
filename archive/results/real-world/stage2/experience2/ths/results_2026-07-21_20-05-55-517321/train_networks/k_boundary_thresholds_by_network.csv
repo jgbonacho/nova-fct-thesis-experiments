@@ -1,0 +1,15 @@
+Network,#Contributions,K,c_K,c_K+1,Valid Threshold?,Threshold
+zachary-karate-club,17,2,0.03579560669301973,0.011681077138169287,True,0.020448257700565402
+books-about-us-politics,10,3,0.0026843641730112376,0.002577410028092873,True,0.00263034354002902
+us-political-blogs,5,2,0.013885950094711977,0.0006176759706059652,True,0.002928654589147927
+cora,76,7,0.009102999045016989,0.008863114616912547,True,0.008982256058119866
+facebook-network-ego698,8,9,,,False,
+email-eu-core,23,42,,,False,
+american-college-football,12,12,,,False,
+facebook-network-ego0,20,22,,,False,
+facebook-network-ego414,2,7,,,False,
+facebook-network-ego3437,46,32,1.0585102852427625e-14,1.6844026424516113e-15,True,4.2225081663924795e-15
+facebook-network-ego107,5,9,,,False,
+facebook-network-ego1684,32,17,4.999268738559239e-05,0.00019107194924477652,False,
+socio-patterns-primary-school-day1,34,11,9.494631568251092e-08,4.369005830612521e-08,True,6.440659956961455e-08
+facebook-network-ego1912,1,45,,,False,

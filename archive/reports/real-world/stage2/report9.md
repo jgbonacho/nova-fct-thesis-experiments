@@ -19,9 +19,30 @@
   - [Test Assignment](#test-assignment)
 - [(5) Pipeline Configuration](#5-pipeline-configuration)
 - [(6) Pipeline](#6-pipeline)
-- [(7) Non-overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#7-non-overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(8) Overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#8-overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
-- [(9) Discussion](#9-discussion)
+  - [Stage 1: Network Family K-Boundary Thresholds](#stage-1-network-family-k-boundary-thresholds)
+  - [Stage 2: Network Contribution-Boundary Thresholds](#stage-2-network-contribution-boundary-thresholds)
+    - [Stage 2.1: Candidate Thresholds](#stage-21-candidate-thresholds)
+    - [Stage 2.2: Intrinsic Evaluation](#stage-22-intrinsic-evaluation---number_of_thresholds_to_retain_after_intrinsic_evaluation--epsilon_family)
+    - [Stage 2.3: Stability Evaluation](#stage-23-stability-evaluation---number_of_thresholds_to_retain_after_stability_evaluation--e_family)
+    - [Stage 2.5: Null Model Diagnostic](#stage-25-null-model-diagnostic)
+    - [Stage 2.6: Pareto-based Filtering and Parsimony](#stage-26-pareto-based-filtering-and-parsimony)
+    - [Stage 2.7: Extrinsic Evaluation](#stage-27-extrinsic-evaluation)
+- [(7) Default Affinity (Adjacency Matrix) + LAPIN-on + Non-overlapping Communities](#7-default-affinity-adjacency-matrix--lapin-on--non-overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(8) Overlapping Communities + Default Affinity (Adjacency Matrix) + LAPIN-on](#8-overlapping-communities--default-affinity-adjacency-matrix--lapin-on---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+- [(7) Affinity Designs + Non-overlapping Communities](#7-affinity-designs--non-overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
+  - [IP_B0 + LAPIN-on](#ip_b0--lapin-on)
+  - [IP_B0 + LAPIN-off](#ip_b0--lapin-off)
+  - [COSIP_B0 + LAPIN-on](#cosip_b0--lapin-on)
+  - [COSIP + LAPIN-off](#cosip--lapin-off)
+- [Literature Review of Community Detection Results in Networks without Ground-Truth](#literature-review-of-community-detection-results-in-networks-without-ground-truth)
+  - [Reference Paper — "Modularity and community structure in networks"](#reference-paper---modularity-and-community-structure-in-networks)
+  - [Reference Paper — "Community detection in complex networks using Extremal Optimization"](#reference-paper---community-detection-in-complex-networks-using-extremal-optimization)
+  - [Reference Paper — "Overlapping community detection using Bayesian non-negative matrix factorization"](#reference-paper---overlapping-community-detection-using-bayesian-non-negative-matrix-factorization)
+  - [Reference Paper — "Graph neural network inspired algorithm for unsupervised network community detection"](#reference-paper---graph-neural-network-inspired-algorithm-for-unsupervised-network-community-detection)
+  - [Reference Paper — "A three-stage algorithm on community detection in social networks"](#reference-paper---a-three-stage-algorithm-on-community-detection-in-social-networks)
+  - [Reference Paper — "Self-guided community detection on networks with missing edges"](#reference-paper---self-guided-community-detection-on-networks-with-missing-edges)
+  - [Summary of Literature Results](#summary-of-literature-results)
+  - [Comparison with Literature Reference Results](#comparison-with-literature-reference-results)
 
 
 ## (1) Network Selection and Division
@@ -73,8 +94,7 @@
 ## (2) Observations from Stage 1
 
 - `The LFR network threshold estimation pipeline is not applicable due to the limited network sample size, the varying number of networks per family and the quality of the metadata or informal labels, which cannot be automatically treated as ground truth`
-- `LAPIN-on allows the ground-truth number of communities, K, to be extracted for all considered training networks`
-- `Overall, using the adjacency matrix as the affinity matrix and K as the FADDIS stopping criterion, LAPIN-on achieves better results:`
+- `Overall, using the adjacency matrix as the affinity matrix and K as the FADDIS stopping criterion, LAPIN-on allows the ground-truth number of communities, K, to be extracted for all considered training networks and achieves better results:`
   - `LAPIN-on:`
     - `books-about-us-politics`
     - `cora`
@@ -98,44 +118,41 @@
 
 ### Network Properties
 
-- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-17_20-30-20-156374/train_networks/network_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-17_20-30-20-156374/test_networks_with_gt/network_properties.csv)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-17_20-30-20-156374/test_networks_without_gt/network_properties.csv)
+- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/train_networks/network_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/test_networks_with_gt/network_properties.csv)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/test_networks_without_gt/network_properties.csv)
 
 ### Ground-Truth Properties
 
-- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-17_20-30-20-156374/train_networks/ground_truth_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-17_20-30-20-156374/test_networks_with_gt/ground_truth_properties.csv)
+- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/train_networks/ground_truth_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/test_networks_with_gt/ground_truth_properties.csv)
 
 ### FADDIS Correlations
 
-- [Open File](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-17_20-30-20-156374/train_networks/faddis_sensitivity_analysis.csv)
+- [Open File](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/train_networks/faddis_sensitivity_analysis.csv)
 
 | Ground-Truth Type               | Network Property              | FADDIS Property | #Networks | Spearman Correlation | Pearson Correlation   |
 |---------------------------------|-------------------------------|-----------------|-----------|----------------------|-----------------------|
-| Non-overlapping and Overlapping | Degree Assortativity          | c_K             | 14        | -0.7714285714285714  | -0.8034827735356096   |
-| Non-overlapping and Overlapping | Global Clustering Coefficient | c_K             | 14        | -0.6571428571428571  | -0.4831986256048038   |
-| Non-overlapping and Overlapping | Average Degree                | c_K             | 14        | -0.5076923076923077  | -0.33647598856874567  |
+| Non-overlapping and Overlapping | Degree Assortativity          | c_K             | 14        | -0.767032967032967   | -0.7827115029017235   |
+| Non-overlapping and Overlapping | Global Clustering Coefficient | c_K             | 14        | -0.665934065934066   | -0.44293166357643315  |
+| Non-overlapping and Overlapping | Average Degree                | c_K             | 14        | -0.4945054945054946  | -0.3482019687473264   |
 |                                 |                               |                 |           |                      |                       |
-| Non-overlapping                 | Degree Assortativity          | c_K             | 7         | -0.8928571428571429  | -0.9320192285277448   |
-| Non-overlapping                 | Average Degree                | c_K             | 7         | -0.6071428571428572  | -0.3905267946976315   |
-| Non-overlapping                 | Global Clustering Coefficient | c_K             | 7         | -0.5                 | -0.28510872178519103  |
+| Non-overlapping                 | Degree Assortativity          | c_K             | 7         | -0.8928571428571429  | -0.9176830279543988   |
+| Non-overlapping                 | Average Degree                | c_K             | 7         | -0.6071428571428572  | -0.4286907010443401   |
+| Non-overlapping                 | Global Clustering Coefficient | c_K             | 7         | -0.5                 | -0.23921174424961072  |
 |                                 |                               |                 |           |                      |                       |
-| Overlapping                     | Degree Std                    | c_K             | 7         | -0.39285714285714296 | 0.3732117066714181    |
-| Overlapping                     | Degree Assortativity          | c_K             | 7         | -0.3571428571428572  | 0.3291663269624444    |
-| Overlapping                     | Edges LCC                     | c_K             | 7         | -0.28571428571428575 | 0.506706819950832     |
-| Overlapping                     | Max Degree                    | c_K             | 7         | -0.28571428571428575 | 0.47484800717282394   |
-| Overlapping                     | Average Degree                | c_K             | 7         | -0.25                | 0.2769450057885224    |
-| Overlapping                     | Average Clustering            | c_K             | 7         | 0.25                 | -0.24390718101017886  |
-| Overlapping                     | Degree CV                     | c_K             | 7         | -0.14285714285714288 | 0.3072484116685966    |
-| Overlapping                     | Density                       | c_K             | 7         | 0.14285714285714288  | -0.20713915216920017  |
-| Overlapping                     | Sparsity                      | c_K             | 7         | -0.14285714285714288 | 0.20713915216920015   |
-| Overlapping                     | Degree Hub Ratio              | c_K             | 7         | 0.03571428571428572  | 0.2753442257892939    |
-| Overlapping                     | Nodes LCC                     | c_K             | 7         | 0.0                  | 0.5956963447712103    |
-| Overlapping                     | Global Clustering Coefficient | c_K             | 7         | 0.0                  | -0.14814982050285025  |
+| Overlapping                     | Degree Assortativity          | c_K             | 7         | -0.3214285714285715  | 0.33019323930539896   |
+| Overlapping                     | Degree Std                    | c_K             | 7         | -0.28571428571428575 | 0.37377667176219176   |
+| Overlapping                     | Average Degree                | c_K             | 7         | -0.21428571428571433 | 0.2774095170932811    |
+| Overlapping                     | Edges LCC                     | c_K             | 7         | -0.1785714285714286  | 0.5078078373827776    |
+| Overlapping                     | Max Degree                    | c_K             | 7         | -0.1785714285714286  | 0.4753208820030245    |
+| Overlapping                     | Nodes LCC                     | c_K             | 7         | 0.14285714285714288  | 0.5985070325030003    |
+| Overlapping                     | Degree Hub Ratio              | c_K             | 7         | 0.14285714285714288  | 0.2752415698777623    |
+| Overlapping                     | Degree CV                     | c_K             | 7         | -0.10714285714285716 | 0.30829148535650897   |
+| Overlapping                     | Global Clustering Coefficient | c_K             | 7         | -0.07142857142857144 | -0.15109420759755204  |
 
 - `Only network properties are considered in sensitivity correlations, rather than ground-truth properties, because they are available for all networks`
-- `Degree assortativity is clearly the network property most strongly correlated with c_K for the combined and non-overlapping ground-truth groups`
+- `Degree assortativity is clearly the network property most strongly correlated with c_K for the combined, non-overlapping and overlapping ground-truth groups`
 - `Average degree exhibits a balanced correlated with c_K for the combined, non-overlapping and overlapping ground-truth groups`
 
 ### Degree Assortativity (Primary)
@@ -221,6 +238,7 @@
 
 ```json
 {
+  "affinity_design": "Default",
   "apply_lapin": true,
   "tau": 0.05,
   "k_max_boundary": 500,
@@ -230,15 +248,15 @@
   "number_of_thresholds_to_retain_after_stability_evaluation": 2,
   "near_singleton_boundary": 2,
   "number_of_perturbed_graphs": 10,
-  "fraction_of_edges_swaps_in_perturbed_graphs": 0.05,
+  "edge_swap_multiplier_in_perturbed_graphs": 0.05,
   "number_of_null_models": 10,
-  "fraction_of_edges_swaps_in_null_models": 10,
+  "edge_swap_multiplier_in_null_models": 10,
   "pareto_tolerance_fraction_modularity": 0.10,
   "pareto_tolerance_fraction_conductance": 0.10,
-  "pareto_tolerance_fraction_stability": 0.10,
+  "pareto_tolerance_fraction_stability": 0.15,
   "pareto_largest_community_fraction_boundary": 0.95,
   "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
-  "pareto_null_model_p_value_boundary": 0.10,
+  "pareto_null_model_p_value_boundary": 0.1,
   "pareto_null_model_rank_boundary": 2,
   "pareto_null_model_z_score_boundary": 1.645
 }
@@ -367,7 +385,7 @@ $$
   - **Intrinsic Evaluation**
     - *Evaluate*: Acceptable Modularity; Acceptable Conductance; Acceptable Non-degenerate
     - *Filter*: Parsimony Principle (Top-3) over Acceptables
-      - *Fallback*: Non-degenerate; Highest Modularity; Lowest Conductance;
+      - *Fallback*: Non-degenerate; Highest Modularity; Lowest Conductance; Highest threshold value
   - **Stability Evaluation**
     - *Evaluate*: Acceptable Stability
     - *Filter*: Parsimony Principle (Top-2) over Acceptables
@@ -376,7 +394,8 @@ $$
     - *Evaluate*: Acceptable Null Model
   - **Pareto-based Filtering and Parsimony**
     - *Select*: Parsimony Principle over Acceptables
-      - *Fallback*: Parsimony Principle over Non-Acceptables
+      - *Condition*: Retain the $\epsilon_{family}$ if it is practically indistinguishable from the best candidate (acceptable and same k');
+      - *Fallback*: Non-degenerate; Highest Modularity; Lowest Conductance; Highest Stability; Highest threshold value
 
 #### Stage 2.7: Extrinsic Evaluation
 
@@ -385,14 +404,319 @@ $$
   - K' | K, |K'-K|/K, ONMI, Omega if network.overlapping_ground_truth
 
 
-## (7) Non-overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (7) Default Affinity (Adjacency Matrix) + LAPIN-on + Non-overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-TODO
+```json
+{
+  "affinity_design": "Default",
+  "apply_lapin": true,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": false,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "edge_swap_multiplier_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "edge_swap_multiplier_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.1,
+  "pareto_tolerance_fraction_conductance": 0.1,
+  "pareto_tolerance_fraction_stability": 0.15,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.1,
+  "pareto_null_model_rank_boundary": 2,
+  "pareto_null_model_z_score_boundary": 1.645,
+  "execution_elapsed_time_secs": 13476.537909917999 + 42549.93093056511
+}
+```
+
+- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/train_networks/)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_networks_without_gt/)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_networks_with_gt/)
+- [Train networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-19_19-20-08-944343-old/train_networks_with_gt/)
 
 
-## (8) Overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+## (8) Overlapping Communities + Default Affinity (Adjacency Matrix) + LAPIN-on - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
-TODO
+```json
+{
+  "affinity_design": "Default",
+  "apply_lapin": true,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": true,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "edge_swap_multiplier_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "edge_swap_multiplier_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.1,
+  "pareto_tolerance_fraction_conductance": 0.1,
+  "pareto_tolerance_fraction_stability": 0.15,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.1,
+  "pareto_null_model_rank_boundary": 2,
+  "pareto_null_model_z_score_boundary": 1.645,
+  "execution_elapsed_time_secs": 19415.325708261924 + 43559.760930565135
+}
+```
+
+- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_07-21-37-879275/train_networks/)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_07-21-37-879275/test_networks_without_gt/)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_07-21-37-879275/test_networks_with_gt/)
+- [Train networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-20_12-17-10-818425-old/train_networks_with_gt/)
 
 
-## (9) Discussion
+## (7) Affinity Designs + Non-overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
+
+### IP_B0 + LAPIN-on
+
+```json
+{
+  "affinity_design": "Ip_b0",
+  "apply_lapin": true,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": false,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "edge_swap_multiplier_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "edge_swap_multiplier_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.1,
+  "pareto_tolerance_fraction_conductance": 0.1,
+  "pareto_tolerance_fraction_stability": 0.15,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.1,
+  "pareto_null_model_rank_boundary": 2,
+  "pareto_null_model_z_score_boundary": 1.645,
+  "execution_elapsed_time_secs": 20216.17830928904
+}
+```
+
+- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/train_networks/)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/test_networks_without_gt/)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/test_networks_with_gt/)
+- Train networks with ground-truth
+
+### IP_B0 + LAPIN-off
+
+```json
+{
+  "affinity_design": "Ip_b0",
+  "apply_lapin": false,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": false,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "edge_swap_multiplier_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "edge_swap_multiplier_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.1,
+  "pareto_tolerance_fraction_conductance": 0.1,
+  "pareto_tolerance_fraction_stability": 0.15,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.1,
+  "pareto_null_model_rank_boundary": 2,
+  "pareto_null_model_z_score_boundary": 1.645,
+  "execution_elapsed_time_secs": 4665.296060502995
+}
+```
+
+- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/train_networks/)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/test_networks_without_gt/)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/test_networks_with_gt/)
+- Train networks with ground-truth
+
+### COSIP_B0 + LAPIN-on
+
+```json
+{
+  "affinity_design": "CosIp_b0",
+  "apply_lapin": true,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": false,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "edge_swap_multiplier_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "edge_swap_multiplier_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.1,
+  "pareto_tolerance_fraction_conductance": 0.1,
+  "pareto_tolerance_fraction_stability": 0.15,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.1,
+  "pareto_null_model_rank_boundary": 2,
+  "pareto_null_model_z_score_boundary": 1.645,
+  "execution_elapsed_time_secs": 24780.44658103492
+}
+```
+
+- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/train_networks/)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/test_networks_without_gt/)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/test_networks_with_gt/)
+- Train networks with ground-truth
+
+### COSIP + LAPIN-off
+
+```json
+{
+  "affinity_design": "CosIp_b0",
+  "apply_lapin": false,
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  "overlapping_communities": false,
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "edge_swap_multiplier_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "edge_swap_multiplier_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.1,
+  "pareto_tolerance_fraction_conductance": 0.1,
+  "pareto_tolerance_fraction_stability": 0.15,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.1,
+  "pareto_null_model_rank_boundary": 2,
+  "pareto_null_model_z_score_boundary": 1.645,
+  "execution_elapsed_time_secs": 8834.372523091966
+}
+```
+
+- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/train_networks/)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/test_networks_without_gt/)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/test_networks_with_gt/)
+- Train networks with ground-truth
+
+
+## Literature Review of Community Detection Results in Networks without Ground-Truth
+
+### Reference Paper - "Modularity and community structure in networks"
+
+- `MEJ Newman`
+- `Proceedings of the National Academy of Sciences, 2006`
+- `16616 citations`
+
+| Network             | $Q$ (Girvan–Newman)  | $K'$ (Girvan–Newman)  | $Q$ (Fast Greedy) | $K'$ (Fast Greedy) | $Q$ (Extremal Optimization)  | $K'$ (Extremal Optimization)  | $Q$ (Leading Eigenvector) | $K'$ (Leading Eigenvector) |
+|---------------------|---------------------:|----------------------:|------------------:|-------------------:|-----------------------------:|------------------------------:|--------------------------:|---------------------------:|
+| jazz-musicians      |                0.405 |                     — |             0.439 |                  — |                        0.445 |                             — |                     0.442 |                          — |
+| c-elegans-metabolic |                0.403 |                     — |             0.402 |                  — |                        0.434 |                             — |                     0.435 |                          — |
+| email-urv           |                0.532 |                     — |             0.494 |                  — |                        0.574 |                             — |                     0.572 |                          — |
+
+
+### Reference Paper - "Community detection in complex networks using Extremal Optimization"
+
+- `J Duch, A Arenas`
+- `Physical Review E—Statistical, Nonlinear, and Soft Matter Physics, 2005`
+- `2149 citations`
+
+| Network             | $Q$ (Newman Fast Greedy) | $K'$ (Newman Fast Greedy)   | $Q$ (Extremal Optimization)  | $K'$ (Extremal Optimization)  |
+|---------------------|-------------------------:|----------------------------:|-----------------------------:|------------------------------:|
+| jazz-musicians      |                   0.4379 |                           4 |                       0.4452 |                             5 |
+| c-elegans-metabolic |                   0.4001 |                          10 |                       0.4342 |                            12 |
+| email-urv           |                   0.4796 |                          13 |                       0.5738 |                            15 |
+
+
+### Reference Paper - "Overlapping community detection using Bayesian non-negative matrix factorization"
+
+- `I Psorakis, S Roberts, M Ebden, B Sheldon`
+- `Physical Review E—Statistical, Nonlinear, and Soft Matter Physics, 2011`
+- `522 citations`
+
+| Network                           | $Q$ (Bayesian NMF) | $K'$ (Bayesian NMF)   | $Q$ (Extremal Optimization)  | $K'$ (Extremal Optimization)  | $Q$ (Louvain) | $K'$ (Louvain) |
+|-----------------------------------|-------------------:|----------------------:|-----------------------------:|------------------------------:|--------------:|---------------:|
+| dolphins                          |        0.47 ± 0.03 |           6.67 ± 0.83 |                  0.51 ± 0.01 |                      4.00 ± 0 |          0.52 |              5 |
+| les-miserables                    |        0.53 ± 0.02 |           9.97 ± 0.78 |                  0.53 ± 0.01 |                   4.96 ± 1.72 |          0.57 |              6 |
+| jazz-musicians                    |        0.43 ± 0.01 |           8.57 ± 8.89 |                  0.42 ± 0.01 |                      4.00 ± 0 |          0.44 |              4 |
+| c-elegans-metabolic               |        0.36 ± 0.01 |          15.69 ± 1.14 |                  0.40 ± 0.09 |                   7.96 ± 1.06 |          0.43 |             10 |
+| co-authorships-in-network-science |        0.83 ± 0.01 |         342.53 ± 5.28 |                  0.86 ± 0.01 |                 58.24 ± 12.36 |          0.95 |            418 |
+
+
+### Reference Paper - "Graph neural network inspired algorithm for unsupervised network community detection"
+
+- `S Sobolevsky, A Belyi`
+- `Applied Network Science, Springer, 2022`
+- `47 citations`
+
+| Network                  | $Q$ (ADVNDS) | $K'$ (ADVNDS)  | $Q$ (Leiden) | $K'$ (Leiden)  | $Q$ (Louvain) | $K'$ (Louvain) | $Q$ (Combo) | $K'$ (Combo) | $Q$ (GNNS100) | $K'$ (GNNS100)   | $Q$ (GNNS2500) | $K'$ (GNNS2500)   | $Q$ (GNNS25000) | $K'$ (GNNS25000)   |
+|--------------------------|-------------:|---------------:|-------------:|---------------:|--------------:|---------------:|------------:|-------------:|--------------:|-----------------:|---------------:|------------------:|----------------:|-------------------:|
+| dolphins                 |     0.528519 |              — |     0.528519 |              — |      0.527728 |              — |    0.526799 |            — |      0.528519 |                — |       0.528519 |                 — |        0.528519 |                  — |
+| les-miserables           |     0.566688 |              — |     0.566688 |              — |      0.566688 |              — |    0.566688 |            — |      0.566688 |                — |       0.566688 |                 — |        0.566688 |                  — |
+| jazz-musicians           |     0.445144 |              — |     0.445144 |              — |      0.445144 |              — |    0.444469 |            — |      0.445144 |                — |       0.445144 |                 — |        0.445144 |                  — |
+| c-elegans-neural-network |     0.503782 |              — |     0.503485 |              — |      0.498211 |              — |    0.503782 |            — |      0.502002 |                — |       0.503736 |                 — |        0.503782 |                  — |
+| c-elegans-metabolic      |     0.453248 |              — |     0.452867 |              — |      0.446379 |              — |    0.453209 |            — |      0.441670 |                — |       0.446602 |                 — |        0.448080 |                  — |
+| email-urv                |     0.582829 |              — |     0.582636 |              — |      0.577651 |              — |    0.582792 |            — |      0.568329 |                — |       0.576863 |                 — |        0.578422 |                  — |
+
+
+### Reference Paper - "A three-stage algorithm on community detection in social networks"
+
+- `X You, Y Ma, Z Liu`
+- `Knowledge-Based Systems, Elsevier, 2020`
+- `107 citations`
+
+| Network          | $Q$ (Three-Stage) | $K'$ (Three-Stage) | $Q$ (Louvain) | $K'$ (Louvain) | $Q$ (Fast Greedy) | $K'$ (Fast Greedy) | $Q$ (Infomap) | $K'$ (Infomap) | $Q$ (Leading Eigenvector) | $K'$ (Leading Eigenvector) | $Q$ (Label Propagation) | $K'$ (Label Propagation) | $Q$ (Walktrap) | $K'$ (Walktrap) |
+|------------------|------------------:|-------------------:|--------------:|---------------:|------------------:|-------------------:|--------------:|---------------:|--------------------------:|---------------------------:|------------------------:|-------------------------:|---------------:|----------------:|
+| les-miserables   |              0.54 |                  6 |          0.56 |              6 |              0.50 |                  5 |          0.55 |              9 |                      0.53 |                          8 |                    0.55 |                        6 |           0.52 |               8 |
+| jazz-musicians   |              0.44 |                  3 |          0.44 |              4 |              0.44 |                  4 |          0.28 |              7 |                      0.39 |                          3 |                    0.28 |                        2 |           0.44 |              11 |
+| email-urv        |              0.55 |                  9 |          0.54 |             12 |              0.51 |                 16 |          0.52 |             68 |                      0.49 |                          7 |                    0.28 |                        8 |           0.53 |              49 |
+
+
+### Reference Paper - "Self-guided community detection on networks with missing edges"
+
+- `D He, S Li, D Jin, P Jiao, Y Huang`
+- `Proceedings of the Thirtieth International Joint Conference on Artificial Intelligence, 2021`
+- `TODO citations`
+
+| Network                  | $Q$ (MNDPFull) | $K'$ (MNDPFull) | $Q$ (SGCDFull) | $K'$ (SGCDFull) |
+|--------------------------|---------------:|----------------:|---------------:|----------------:|
+| les-miserables           |         0.5426 |               6 |         0.5680 |               6 |
+| jazz-musicians           |         0.4405 |               4 |         0.4473 |               4 |
+| c-elegans-neural-network |         0.4029 |               5 |         0.4082 |               5 |
+| email-urv                |         0.5517 |              11 |         0.5584 |              11 |
+
+### Summary of Literature Results
+
+| Network                            | Typical \(Q\) Range   | Typical \(K'\) Communities      |
+|------------------------------------|----------------------:|--------------------------------:|
+| dolphins                           | 0.470000–0.528519     | 4–5; 7                          |
+| les-miserables                     | 0.500000–0.570000     | 5–6; 8–10                       |
+| jazz-musicians                     | 0.280000–0.447300     | 2–5; 7; 9; 11                   |
+| c-elegans-neural-network           | 0.402900–0.503782     | 5                               |
+| c-elegans-metabolic                | 0.360000–0.453248     | 8; 10; 12; 16                   |
+| email-urv                          | 0.280000–0.582829     | 7–9; 11–13; 15–16; 49; 68       |
+| *co-authorships-in-network-science | 0.830000–0.950000     | 58; 343; 418                    |
+
+### Comparison with Literature Reference Results
+
+| Network                           | Literature \(Q\) Range | \(Q\) (Default + LAPIN-on) | \(Q\) (Cos-ip beta0 + LAPIN-off) | Literature Rounded \(K'\) Groups | \(K'\) (Default + LAPIN-on) | \(K'\) (Cos-ip beta0 + LAPIN-off) |
+|-----------------------------------|-----------------------:|---------------------------:|---------------------------------:|---------------------------------:|----------------------------:|----------------------------------:|
+| dolphins                          |    0.470000–0.528519   |              0.384775      |                    0.451920      | 4–5; 7                           |                        2    |                              5    |
+| les-miserables                    |    0.500000–0.570000   |              0.475177      |                    0.456127      | 5–6; 8–10                        |                        5    |                              8    |
+| jazz-musicians                    |    0.280000–0.447300   |              0.265228      |                    0.434029      | 2–5; 7; 9; 11                    |                       23    |                              4    |
+| c-elegans-neural-network          |    0.402900–0.503782   |              0.291385      |                    0.274725      | 5                                |                       15    |                              3    |
+| c-elegans-metabolic               |    0.360000–0.453248   |              0.239490      |                    0.197712      | 8; 10; 12; 16                    |                       44    |                              3    |
+| email-urv                         |    0.280000–0.582829   |              0.457439      |                    0.489642      | 7–9; 11–13; 15–16; 49; 68        |                       11    |                              9    |

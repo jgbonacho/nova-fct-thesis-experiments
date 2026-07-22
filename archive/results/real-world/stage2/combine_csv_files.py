@@ -80,14 +80,19 @@ if __name__ == "__main__":
         os.path.join("experience1", "v1", "results_2026-07-12_23-54-12-394620"),
         os.path.join("experience1", "v1", "results_2026-07-14_00-00-52-195086"),
         os.path.join("experience1", "v1", "results_2026-07-14_10-55-24-787794"),
-
         os.path.join("experience1", "v2", "results_2026-07-14_18-35-00-623858"),
         os.path.join("experience1", "v2", "results_2026-07-14_23-45-56-297136"),
         os.path.join("experience1", "v2", "results_2026-07-15_04-19-17-796221"),
 
-        os.path.join("experience2", "ths", "results_2026-07-19_12-57-27-555522"),
-        os.path.join("experience2", "ths", "results_2026-07-19_19-20-08-944343"),
-        os.path.join("experience2", "ths", "results_2026-07-20_07-28-20-060385"),
+        os.path.join("experience2", "ths", "results_2026-07-19_12-57-27-555522-old"),
+        os.path.join("experience2", "ths", "results_2026-07-19_19-20-08-944343-old"),
+        os.path.join("experience2", "ths", "results_2026-07-20_07-28-20-060385-old"),
+        os.path.join("experience2", "ths", "results_2026-07-21_01-35-02-985213"),
+        os.path.join("experience2", "ths", "results_2026-07-21_05-19-39-556936"),
+        os.path.join("experience2", "ths", "results_2026-07-21_20-05-55-517321"),
+        os.path.join("experience2", "ths", "results_2026-07-21_21-23-40-813696"),
+        os.path.join("experience2", "ths", "results_2026-07-22_04-16-41-275586"),
+        os.path.join("experience2", "ths", "results_2026-07-22_07-21-37-879275")
     ]:
 
         combine_csv_files(

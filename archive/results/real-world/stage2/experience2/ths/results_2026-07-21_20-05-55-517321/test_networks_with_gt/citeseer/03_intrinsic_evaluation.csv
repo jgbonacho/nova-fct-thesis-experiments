@@ -1,0 +1,6 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+05_aM_davgL,citeseer,e_family,0.008982256058119866,8,False,"[530, 692, 334, 143, 146, 139, 80, 46]",0,0.0,0.32796208530805687,0.5564090875846871,0.005128205128205128,36.3762613281142,False,True,True
+05_aM_davgL,citeseer,e_global,0.002779499064588474,17,False,"[179, 208, 127, 79, 166, 69, 271, 102, 79, 86, 58, 50, 305, 113, 89, 83, 46]",0,0.0,0.14454976303317535,0.649851377530209,0.005128205128205128,100.13364479504526,True,True,True
+05_aM_davgL,citeseer,e_below,0.008729391569991063,8,False,"[530, 692, 334, 143, 146, 139, 80, 46]",0,0.0,0.32796208530805687,0.5564090875846871,0.005128205128205128,59.86546885082498,False,True,True
+05_aM_davgL,citeseer,e_above,0.01017196801231318,7,False,"[328, 775, 597, 144, 140, 80, 46]",0,0.0,0.36729857819905215,0.510442817066224,0.005128205128205128,51.30078712501563,False,True,True
+05_aM_davgL,citeseer,e_elbow,0.12228635936728699,1,False,[2110],0,0.0,1.0,0.0,1.0,9.227112276945263,False,False,False

@@ -1,0 +1,3 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+05_aM_davgL,facebook-network-ego3980,e_global,0.0004975613240748699,22,False,"[2, 3, 1, 3, 4, 2, 1, 1, 2, 3, 3, 3, 2, 1, 3, 2, 2, 1, 2, 1, 1, 1]",15,0.6818181818181818,0.09090909090909091,0.0022579290065112335,0.6666666666666666,0.09535387298092246,True,True,False
+05_aM_davgL,facebook-network-ego3980,e_elbow,0.04758205061681165,1,False,[44],0,0.0,1.0,1.1102230246251565e-16,1.0,0.007174493977800012,False,False,False

@@ -1,0 +1,39 @@
+Ground-Truth Type,Network Property,FADDIS Property,#Networks,Spearman Correlation,Pearson Correlation
+Non-overlapping and Overlapping,Degree Assortativity,c_K,14,-0.767032967032967,-0.7827115029017235
+Non-overlapping and Overlapping,Global Clustering Coefficient,c_K,14,-0.665934065934066,-0.44293166357643315
+Non-overlapping and Overlapping,Average Degree,c_K,14,-0.4945054945054946,-0.3482019687473264
+Non-overlapping and Overlapping,Degree Std,c_K,14,-0.4021978021978022,-0.22913926985882263
+Non-overlapping and Overlapping,Average Clustering,c_K,14,-0.3802197802197802,-0.053574775088032434
+Non-overlapping and Overlapping,Edges LCC,c_K,14,-0.27912087912087913,-0.21427544848216798
+Non-overlapping and Overlapping,Min Degree,c_K,14,0.2538273776010519,-0.15783949559075874
+Non-overlapping and Overlapping,Degree CV,c_K,14,0.18681318681318684,0.21393232081202218
+Non-overlapping and Overlapping,Max Degree,c_K,14,-0.178021978021978,-0.15559060910411737
+Non-overlapping and Overlapping,Density,c_K,14,-0.13406593406593406,0.02697663973217607
+Non-overlapping and Overlapping,Sparsity,c_K,14,0.13406593406593406,-0.026976639732176098
+Non-overlapping and Overlapping,Degree Hub Ratio,c_K,14,0.12967032967032965,0.007281601517653125
+Non-overlapping and Overlapping,Nodes LCC,c_K,14,-0.06813186813186813,-0.1334832495026
+Non-overlapping,Degree Assortativity,c_K,7,-0.8928571428571429,-0.9176830279543988
+Non-overlapping,Average Degree,c_K,7,-0.6071428571428572,-0.4286907010443401
+Non-overlapping,Global Clustering Coefficient,c_K,7,-0.5,-0.23921174424961072
+Non-overlapping,Edges LCC,c_K,7,-0.42857142857142866,-0.2622636078058468
+Non-overlapping,Min Degree,c_K,7,-0.39405520311955033,-0.3965237710243209
+Non-overlapping,Nodes LCC,c_K,7,-0.3214285714285715,-0.26842353226349724
+Non-overlapping,Degree CV,c_K,7,0.3214285714285715,0.2034461994536342
+Non-overlapping,Degree Hub Ratio,c_K,7,0.25,-0.16939090784914662
+Non-overlapping,Degree Std,c_K,7,-0.1785714285714286,-0.1982135825698409
+Non-overlapping,Max Degree,c_K,7,-0.14285714285714288,-0.24526912491239045
+Non-overlapping,Average Clustering,c_K,7,0.10714285714285716,0.4710037313037028
+Non-overlapping,Density,c_K,7,-0.07142857142857144,0.16217673860067666
+Non-overlapping,Sparsity,c_K,7,0.07142857142857144,-0.1621767386006767
+Overlapping,Degree Assortativity,c_K,7,-0.3214285714285715,0.33019323930539896
+Overlapping,Degree Std,c_K,7,-0.28571428571428575,0.37377667176219176
+Overlapping,Average Degree,c_K,7,-0.21428571428571433,0.2774095170932811
+Overlapping,Edges LCC,c_K,7,-0.1785714285714286,0.5078078373827776
+Overlapping,Max Degree,c_K,7,-0.1785714285714286,0.4753208820030245
+Overlapping,Nodes LCC,c_K,7,0.14285714285714288,0.5985070325030003
+Overlapping,Degree Hub Ratio,c_K,7,0.14285714285714288,0.2752415698777623
+Overlapping,Degree CV,c_K,7,-0.10714285714285716,0.30829148535650897
+Overlapping,Global Clustering Coefficient,c_K,7,-0.07142857142857144,-0.15109420759755204
+Overlapping,Average Clustering,c_K,7,0.07142857142857144,-0.24808843937310895
+Overlapping,Density,c_K,7,0.0,-0.2094680759217615
+Overlapping,Sparsity,c_K,7,0.0,0.2094680759217615
