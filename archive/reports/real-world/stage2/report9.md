@@ -615,6 +615,12 @@ $$
 
 ## Literature Review of Community Detection Results in Networks without Ground-Truth
 
+- Canonical references;
+- Table results;
+- Same networks without ground-truth;
+- Modularity; K'; Conductance;
+- Common algorithms.
+
 ### Reference Paper - "Modularity and community structure in networks"
 
 - `MEJ Newman`
@@ -684,30 +690,16 @@ $$
 | jazz-musicians   |              0.44 |                  3 |          0.44 |              4 |              0.44 |                  4 |          0.28 |              7 |                      0.39 |                          3 |                    0.28 |                        2 |           0.44 |              11 |
 | email-urv        |              0.55 |                  9 |          0.54 |             12 |              0.51 |                 16 |          0.52 |             68 |                      0.49 |                          7 |                    0.28 |                        8 |           0.53 |              49 |
 
-
-### Reference Paper - "Self-guided community detection on networks with missing edges"
-
-- `D He, S Li, D Jin, P Jiao, Y Huang`
-- `Proceedings of the Thirtieth International Joint Conference on Artificial Intelligence, 2021`
-- `TODO citations`
-
-| Network                  | $Q$ (MNDPFull) | $K'$ (MNDPFull) | $Q$ (SGCDFull) | $K'$ (SGCDFull) |
-|--------------------------|---------------:|----------------:|---------------:|----------------:|
-| les-miserables           |         0.5426 |               6 |         0.5680 |               6 |
-| jazz-musicians           |         0.4405 |               4 |         0.4473 |               4 |
-| c-elegans-neural-network |         0.4029 |               5 |         0.4082 |               5 |
-| email-urv                |         0.5517 |              11 |         0.5584 |              11 |
-
 ### Summary of Literature Results
 
 | Network                            | Typical \(Q\) Range   | Typical \(K'\) Communities      |
 |------------------------------------|----------------------:|--------------------------------:|
 | dolphins                           | 0.470000–0.528519     | 4–5; 7                          |
 | les-miserables                     | 0.500000–0.570000     | 5–6; 8–10                       |
-| jazz-musicians                     | 0.280000–0.447300     | 2–5; 7; 9; 11                   |
-| c-elegans-neural-network           | 0.402900–0.503782     | 5                               |
+| jazz-musicians                     | 0.280000–0.445200     | 2–5; 7; 9; 11                   |
+| c-elegans-neural-network           | 0.498211–0.503782     | 5                               |
 | c-elegans-metabolic                | 0.360000–0.453248     | 8; 10; 12; 16                   |
-| email-urv                          | 0.280000–0.582829     | 7–9; 11–13; 15–16; 49; 68       |
+| email-urv                          | 0.280000–0.582829     | 7–9; 12–13; 15–16; 49; 68       |
 | *co-authorships-in-network-science | 0.830000–0.950000     | 58; 343; 418                    |
 
 ### Comparison with Literature Reference Results
@@ -716,7 +708,7 @@ $$
 |-----------------------------------|-----------------------:|---------------------------:|---------------------------------:|---------------------------------:|----------------------------:|----------------------------------:|
 | dolphins                          |    0.470000–0.528519   |              0.384775      |                    0.451920      | 4–5; 7                           |                        2    |                              5    |
 | les-miserables                    |    0.500000–0.570000   |              0.475177      |                    0.456127      | 5–6; 8–10                        |                        5    |                              8    |
-| jazz-musicians                    |    0.280000–0.447300   |              0.265228      |                    0.434029      | 2–5; 7; 9; 11                    |                       23    |                              4    |
-| c-elegans-neural-network          |    0.402900–0.503782   |              0.291385      |                    0.274725      | 5                                |                       15    |                              3    |
+| jazz-musicians                    |    0.280000–0.445200   |              0.265228      |                    0.434029      | 2–5; 7; 9; 11                    |                       23    |                              4    |
+| c-elegans-neural-network          |    0.498211–0.503782   |              0.291385      |                    0.274725      | 5                                |                       15    |                              3    |
 | c-elegans-metabolic               |    0.360000–0.453248   |              0.239490      |                    0.197712      | 8; 10; 12; 16                    |                       44    |                              3    |
-| email-urv                         |    0.280000–0.582829   |              0.457439      |                    0.489642      | 7–9; 11–13; 15–16; 49; 68        |                       11    |                              9    |
+| email-urv                         |    0.280000–0.582829   |              0.457439      |                    0.489642      | 7–9; 12–13; 15–16; 49; 68        |                       11    |                              9    |

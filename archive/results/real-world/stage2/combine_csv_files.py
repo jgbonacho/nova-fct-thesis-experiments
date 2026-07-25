@@ -84,9 +84,8 @@ if __name__ == "__main__":
         os.path.join("experience1", "v2", "results_2026-07-14_23-45-56-297136"),
         os.path.join("experience1", "v2", "results_2026-07-15_04-19-17-796221"),
 
-        os.path.join("experience2", "ths", "results_2026-07-19_12-57-27-555522-old"),
         os.path.join("experience2", "ths", "results_2026-07-19_19-20-08-944343-old"),
-        os.path.join("experience2", "ths", "results_2026-07-20_07-28-20-060385-old"),
+        os.path.join("experience2", "ths", "results_2026-07-20_12-17-10-818425-old"),
         os.path.join("experience2", "ths", "results_2026-07-21_01-35-02-985213"),
         os.path.join("experience2", "ths", "results_2026-07-21_05-19-39-556936"),
         os.path.join("experience2", "ths", "results_2026-07-21_20-05-55-517321"),
