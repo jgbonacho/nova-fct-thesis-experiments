@@ -94,9 +94,11 @@ if __name__ == "__main__":
         os.path.join("experience2", "ths", "results_2026-07-24_08-27-39-974371"),  
         os.path.join("experience2", "ths", "results_2026-07-24_09-52-38-785445"),
         os.path.join("experience2", "ths", "results_2026-07-24_15-32-47-785178"),
-        os.path.join("experience2", "ths", "results_2026-07-25_07-21-37-879275"),
         os.path.join("experience2", "ths", "results_2026-07-25_15-40-23-273023"),
-        os.path.join("experience2", "ths", "results_2026-07-25_20-55-04-450298")
+        os.path.join("experience2", "ths", "results_2026-07-25_20-55-04-450298"),
+        os.path.join("experience2", "ths", "results_2026-07-25_07-21-37-879275"),
+        os.path.join("experience2", "ths", "results_2026-07-26_15-04-51-954365"),
+
     ]:
 
         combine_csv_files(

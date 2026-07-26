@@ -45,6 +45,7 @@
   - [Ochiai + LAPIN-off](#ochiai--lapin-off)
 - [(8) Overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds](#8-overlapping-communities---network-family-k-boundary-thresholds--network-contribution-boundary-thresholds)
   - [Default Affinity (Adjacency Matrix) + LAPIN-on](#default-affinity-adjacency-matrix--lapin-on-1)
+  - [Default Affinity (Adjacency Matrix) + LAPIN-off](#default-affinity-adjacency-matrix--lapin-off-1)
 - [(9) Literature Review of Community Detection Results in Networks without Ground-Truth](#9-literature-review-of-community-detection-results-in-networks-without-ground-truth)
   - [Reference Paper - "Modularity and community structure in networks"](#reference-paper---modularity-and-community-structure-in-networks)
   - [Reference Paper - "Community detection in complex networks using Extremal Optimization"](#reference-paper---community-detection-in-complex-networks-using-extremal-optimization)
@@ -649,6 +650,22 @@ $$
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_with_gt/)
 - [Test with train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-20_12-17-10-818425-old/train_networks_with_gt/)
+
+### Default Affinity (Adjacency Matrix) + LAPIN-off
+
+```json
+{
+  "affinity_design": "Default",
+  "apply_lapin": false,
+  "overlapping_communities": true,
+  "execution_elapsed_time_secs": 11053.010993575212
+}
+```
+
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/test_networks_with_gt/)
+- Test with train networks results
 
 
 ## (9) Literature Review of Community Detection Results in Networks without Ground-Truth

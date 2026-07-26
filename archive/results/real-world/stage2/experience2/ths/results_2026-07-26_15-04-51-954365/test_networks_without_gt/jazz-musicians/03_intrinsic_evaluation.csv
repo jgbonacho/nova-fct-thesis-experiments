@@ -1,0 +1,3 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+06_aM_davgM,jazz-musicians,e_global,0.0031324998004947993,5,True,"[54, 70, 48, 36, 45]",0,0.0,0.35353535353535354,0.012229554441268152,0.15501827353252895,0.12123334594070911,False,True,True
+06_aM_davgM,jazz-musicians,e_elbow,1.7024161806021903e-07,17,True,"[20, 15, 13, 14, 14, 15, 30, 31, 13, 31, 22, 20, 20, 26, 28, 38, 15]",0,0.0,0.1919191919191919,0.0359732621439844,0.21784753950025793,0.2759569799527526,True,False,True
