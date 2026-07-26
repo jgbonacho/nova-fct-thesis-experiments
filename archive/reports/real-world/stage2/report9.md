@@ -407,10 +407,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_networks_with_gt/)
-- [Train networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_with_train_networks/)
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_networks_with_gt/)
+- [Test with train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_with_train_networks/)
 
 
 ### Default Affinity (Adjacency Matrix) + LAPIN-off
@@ -420,14 +420,14 @@ $$
   "affinity_design": "Default",
   "apply_lapin": false,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 5106.170760306995
+  "execution_elapsed_time_secs": 5106.170760306995 + 9067.550150152761
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/test_networks_with_gt/)
+- [Test with train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/test_with_train_networks/)
 
 ### Ip_b0 + LAPIN-on
 
@@ -440,10 +440,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/test_networks_with_gt/)
+- Test with train networks results
 
 ### Ip_b0 + LAPIN-off
 
@@ -456,10 +456,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/test_networks_with_gt/)
+- Test with train networks results
 
 ### CosIp_b0 + LAPIN-on
 
@@ -472,10 +472,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/test_networks_with_gt/)
+- Test with train networks results
 
 ### CosIp_b0 + LAPIN-off
 
@@ -488,10 +488,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/test_networks_with_gt/)
+- Test with train networks results
 
 ### Kul + LAPIN-on
 
@@ -504,10 +504,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/test_networks_with_gt/)
+- Test with train networks results
 
 ### Kul + LAPIN-off
 
@@ -520,10 +520,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/test_networks_with_gt/)
+- Test with train networks results
 
 ### Dice + LAPIN-on
 
@@ -536,10 +536,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/test_networks_with_gt/)
+- Test with train networks results
 
 ### Dice + LAPIN-off
 
@@ -552,10 +552,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/test_networks_with_gt/)
+- Test with train networks results
 
 ### Ochiai + LAPIN-on
 
@@ -568,10 +568,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/test_networks_with_gt/)
+- Test with train networks results
 
 ### Ochiai + LAPIN-off
 
@@ -584,10 +584,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/test_networks_with_gt/)
-- Train networks with ground-truth
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/test_networks_with_gt/)
+- Test with train networks results
 
 
 ## (8) Overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
@@ -603,10 +603,10 @@ $$
 }
 ```
 
-- [Train networks](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/train_networks/)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_without_gt/)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_with_gt/)
-- [Train networks with ground-truth](../../../results/real-world/stage2/experience2/ths/results_2026-07-20_12-17-10-818425-old/train_networks_with_gt/)
+- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/train_networks/)
+- [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_without_gt/)
+- [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_with_gt/)
+- [Test with train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-20_12-17-10-818425-old/train_networks_with_gt/)
 
 
 ## (9) Literature Review of Community Detection Results in Networks without Ground-Truth

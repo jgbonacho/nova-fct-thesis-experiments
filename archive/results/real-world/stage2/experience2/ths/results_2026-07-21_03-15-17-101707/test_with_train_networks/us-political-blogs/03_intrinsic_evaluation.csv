@@ -1,0 +1,6 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+02_aL_davgM,us-political-blogs,e_family,0.0053415151367162345,2,False,"[497, 725]",0,0.0,0.5932896890343698,0.4117524448825477,0.09251276609854765,2.137553416658193,True,True,True
+02_aL_davgM,us-political-blogs,e_global,0.0031324998004947993,4,False,"[349, 216, 248, 409]",0,0.0,0.33469721767594107,0.3566960808926199,0.28926102619024435,3.141290640924126,False,False,True
+02_aL_davgM,us-political-blogs,e_below,0.003980942004303883,3,False,"[441, 465, 316]",0,0.0,0.38052373158756136,0.38916475951864965,0.10818553888130969,2.5909610842354596,True,True,True
+02_aL_davgM,us-political-blogs,e_above,0.020062329434223612,1,False,[1222],0,0.0,1.0,0.0,1.0,1.5761467590928078,False,False,False
+02_aL_davgM,us-political-blogs,e_elbow,8.959651951207804e-08,16,False,"[148, 119, 88, 116, 40, 57, 119, 55, 32, 15, 60, 74, 72, 160, 36, 31]",0,0.0,0.1309328968903437,0.17529424165416885,0.6603025043392016,9.30053792707622,False,False,True
