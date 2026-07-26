@@ -8,9 +8,12 @@
   - [Test Networks](#test-networks)
 - [(2) Observations from Stage 1](#2-observations-from-stage-1)
 - [(3) FADDIS Sensitivity Analysis](#3-faddis-sensitivity-analysis)
-  - [Network Properties](#network-properties)
-  - [Ground-Truth Properties](#ground-truth-properties)
-  - [FADDIS Correlations](#faddis-correlations)
+  - [Network Properties (LAPIN-on)](#network-properties-lapin-on)
+  - [Ground-Truth Properties (LAPIN-on)](#ground-truth-properties-lapin-on)
+  - [FADDIS Correlations (LAPIN-on)](#faddis-correlations-lapin-on)
+  - [Network Properties (LAPIN-off)](#network-properties-lapin-off)
+  - [Ground-Truth Properties (LAPIN-off)](#ground-truth-properties-lapin-off)
+  - [FADDIS Correlations (LAPIN-off)](#faddis-correlations-lapin-off)
   - [Degree Assortativity (Primary)](#degree-assortativity-primary)
   - [Average Degree (Secondary)](#average-degree-secondary)
 - [(4) Real-World Network Families](#4-real-world-network-families)
@@ -111,18 +114,18 @@
 
 - `FADDIS sensitivity analysis is necessary to select the properties used to form network families, unlike LFR networks, which leverage prior knowledge from the literature`
 
-### Network Properties
+### Network Properties (LAPIN-on)
 
 - [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/train_networks/network_properties.csv)
 - [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/test_networks_with_gt/network_properties.csv)
 - [Test networks without ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/test_networks_without_gt/network_properties.csv)
 
-### Ground-Truth Properties
+### Ground-Truth Properties (LAPIN-on)
 
 - [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/train_networks/ground_truth_properties.csv)
 - [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/test_networks_with_gt/ground_truth_properties.csv)
 
-### FADDIS Correlations
+### FADDIS Correlations (LAPIN-on)
 
 - [Open File](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/train_networks/faddis_sensitivity_analysis.csv)
 
@@ -149,6 +152,45 @@
 - `Only network properties are considered in sensitivity correlations, rather than ground-truth properties, because they are available for all networks`
 - `Degree assortativity is clearly the network property most strongly correlated with c_K for the combined, non-overlapping and overlapping ground-truth groups`
 - `Average degree exhibits a balanced correlated with c_K for the combined, non-overlapping and overlapping ground-truth groups`
+
+### Network Properties (LAPIN-off)
+
+- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/train_networks/network_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/test_networks_with_gt/network_properties.csv)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/test_networks_without_gt/network_properties.csv)
+
+### Ground-Truth Properties (LAPIN-off)
+
+- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/train_networks/ground_truth_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/test_networks_with_gt/ground_truth_properties.csv)
+
+### FADDIS Correlations (LAPIN-off)
+
+- [Open File](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/train_networks/faddis_sensitivity_analysis.csv)
+
+| Ground-Truth Type               | Network Property              | FADDIS Property | #Networks | Spearman Correlation  | Pearson Correlation   |
+|---------------------------------|-------------------------------|-----------------|-----------|-----------------------|-----------------------|
+| Non-overlapping and Overlapping | Degree Assortativity          | c_K             | 11        | -0.6363636363636364   | -0.7899425242612974   |
+| Non-overlapping and Overlapping | Global Clustering Coefficient | c_K             | 11        | -0.6000000000000001   | -0.38760373768575995  |
+| Non-overlapping and Overlapping | Average Degree                | c_K             | 11        | -0.46363636363636374  | -0.4324586239457222   |
+|                                 |                               |                 |           |                       |                       |
+| Non-overlapping                 | Degree Assortativity          | c_K             | 6         | -0.942857142857143    | -0.8504803336639603   |
+| Non-overlapping                 | Min Degree                    | c_K             | 6         | -0.6982532518267538   | -0.45307746706750557  |
+| Non-overlapping                 | Edges LCC                     | c_K             | 6         | -0.6                  | -0.39568649105365006  |
+| Non-overlapping                 | Nodes LCC                     | c_K             | 6         | -0.5428571428571429   | -0.35731023756280617  |
+| Non-overlapping                 | Average Degree                | c_K             | 6         | -0.5428571428571429   | -0.4832883658153081   |
+| Non-overlapping                 | Degree CV                     | c_K             | 6         | 0.48571428571428577   | 0.10859078034035918   |
+| Non-overlapping                 | Global Clustering Coefficient | c_K             | 6         | -0.48571428571428577  | -0.1738684802241147   |
+|                                 |                               |                 |           |                       |                       |
+| Overlapping                     | Degree Assortativity          | c_K             | 5         | 0.8999999999999998    | 0.9729634358506289    |
+| Overlapping                     | Average Degree                | c_K             | 5         | 0.7999999999999999    | 0.9278743775775963    |
+| Overlapping                     | Density                       | c_K             | 5         | 0.7999999999999999    | 0.07756819167456096   |
+| Overlapping                     | Sparsity                      | c_K             | 5         | -0.7999999999999999   | -0.07756819167456087  |
+| Overlapping                     | Global Clustering Coefficient | c_K             | 5         | 0.7999999999999999    | 0.31309955544264145   |
+
+- `Again only network properties are considered in sensitivity correlations, rather than ground-truth properties, because they are available for all networks`
+- `Again degree assortativity is clearly the network property most strongly correlated with c_K for the combined, non-overlapping and overlapping ground-truth groups`
+- `Again average degree exhibits a balanced correlated with c_K for the combined, non-overlapping and overlapping ground-truth groups`
 
 ### Degree Assortativity (Primary)
 

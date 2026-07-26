@@ -50,8 +50,8 @@ def main(run_lfr_networks_scripts=True, run_real_world_networks_scripts=True):
 
     if run_real_world_networks_scripts:
         # Sensitivity analysis.
-        sensitivity_analysis_in_real_world_networks(apply_lapin=False)
         sensitivity_analysis_in_real_world_networks(apply_lapin=True)
+        sensitivity_analysis_in_real_world_networks(apply_lapin=False)
 
         # Thresholds estimation.
         estimate_real_world_network_thresholds(
