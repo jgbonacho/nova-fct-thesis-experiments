@@ -28,83 +28,114 @@ def main(run_lfr_networks_scripts=True, run_real_world_networks_scripts=True):
     """
 
     if run_lfr_networks_scripts:
-        ## LFR experience with 'LAPIN-off + Extraction of K desired clusters'
+        # Configuration 1.
         estimate_lfr_network_family_thresholds(
             config=LFRThresholdEstimationConfig(apply_lapin=False, use_desired_k=True)
         )
 
-        ## LFR experience with 'LAPIN-off + Extraction of clusters until the end'
-        # estimate_lfr_network_family_thresholds(
-        #    config=LFRThresholdEstimationConfig(apply_lapin=False, use_desired_k=False)
-        # )
+        # Configuration 2.
+        estimate_lfr_network_family_thresholds(
+            config=LFRThresholdEstimationConfig(apply_lapin=False, use_desired_k=False)
+        )
 
-        ## LFR experience with 'LAPIN-on + Extraction of K desired clusters'
-        # estimate_lfr_network_family_thresholds(
-        #    config=LFRThresholdEstimationConfig(apply_lapin=True, use_desired_k=True)
-        # )
+        # Configuration 3.
+        estimate_lfr_network_family_thresholds(
+            config=LFRThresholdEstimationConfig(apply_lapin=True, use_desired_k=True)
+        )
 
-        ## LFR experience with 'LAPIN-on + Extraction of clusters until the end'
-        # estimate_lfr_network_family_thresholds(
-        #    config=LFRThresholdEstimationConfig(apply_lapin=True, use_desired_k=False)
-        # )
+        # Configuration 4.
+        estimate_lfr_network_family_thresholds(
+            config=LFRThresholdEstimationConfig(apply_lapin=True, use_desired_k=False)
+        )
 
     if run_real_world_networks_scripts:
+        # Sensitivity analysis.
+        sensitivity_analysis_in_real_world_networks(apply_lapin=False)
         sensitivity_analysis_in_real_world_networks(apply_lapin=True)
 
+        # Thresholds estimation.
         estimate_real_world_network_thresholds(
             config=RealWorldThresholdEstimationConfig(
-                affinity_design=AffinityDesign.DEFAULT,
-                apply_lapin=True,
-                overlapping_communities=False
+                affinity_design=AffinityDesign.DEFAULT, apply_lapin=True, overlapping_communities=False
             )
         )
         estimate_real_world_network_thresholds(
             config=RealWorldThresholdEstimationConfig(
-                affinity_design=AffinityDesign.DEFAULT,
-                apply_lapin=True,
-                overlapping_communities=True
+                affinity_design=AffinityDesign.DEFAULT, apply_lapin=False, overlapping_communities=False
             )
         )
 
-        # estimate_real_world_network_thresholds(
-        #     config=RealWorldThresholdEstimationConfig(
-        #         affinity_design=AffinityDesign.KUL,
-        #         apply_lapin=True,
-        #         overlapping_communities=False
-        #     )
-        # )
-        # estimate_real_world_network_thresholds(
-        #     config=RealWorldThresholdEstimationConfig(
-        #         affinity_design=AffinityDesign.DICE,
-        #         apply_lapin=True,
-        #         overlapping_communities=False
-        #     )
-        # )
-        # estimate_real_world_network_thresholds(
-        #     config=RealWorldThresholdEstimationConfig(
-        #         affinity_design=AffinityDesign.OCHIAI,
-        #         apply_lapin=True,
-        #         overlapping_communities=False
-        #     )
-        # )
-        # estimate_real_world_network_thresholds(
-        #     config=RealWorldThresholdEstimationConfig(
-        #         affinity_design=AffinityDesign.IP_B0,
-        #         apply_lapin=True,
-        #         overlapping_communities=False
-        #     )
-        # )
-        # estimate_real_world_network_thresholds(
-        #     config=RealWorldThresholdEstimationConfig(
-        #         affinity_design=AffinityDesign.COSIP_B0,
-        #         apply_lapin=True,
-        #         overlapping_communities=False
-        #     )
-        # )
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.IP_B0, apply_lapin=True, overlapping_communities=False
+            )
+        )
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.IP_B0, apply_lapin=False, overlapping_communities=False
+            )
+        )
+
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.COSIP_B0, apply_lapin=True, overlapping_communities=False
+            )
+        )
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.COSIP_B0, apply_lapin=False, overlapping_communities=False
+            )
+        )
+
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.KUL, apply_lapin=True, overlapping_communities=False
+            )
+        )
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.KUL, apply_lapin=False, overlapping_communities=False
+            )
+        )
+
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.DICE, apply_lapin=True, overlapping_communities=False
+            )
+        )
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.DICE, apply_lapin=False, overlapping_communities=False
+            )
+        )
+
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.OCHIAI, apply_lapin=True, overlapping_communities=False
+            )
+        )
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.OCHIAI, apply_lapin=False, overlapping_communities=False
+            )
+        )
+
+        # ---
+
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.DEFAULT, apply_lapin=True, overlapping_communities=True
+            )
+        )
+        estimate_real_world_network_thresholds(
+            config=RealWorldThresholdEstimationConfig(
+                affinity_design=AffinityDesign.DEFAULT, apply_lapin=False, overlapping_communities=True
+            )
+        )
 
 
 if __name__ == "__main__":
     main(
-        run_lfr_networks_scripts=False,
+        run_lfr_networks_scripts=True,
         run_real_world_networks_scripts=True,
     )

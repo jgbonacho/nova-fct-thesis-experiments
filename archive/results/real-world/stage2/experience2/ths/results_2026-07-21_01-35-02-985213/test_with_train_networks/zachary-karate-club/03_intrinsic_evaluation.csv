@@ -1,0 +1,6 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+01_aL_davgL,zachary-karate-club,e_family,0.028080065029042933,2,False,"[16, 18]",0,0.0,0.5294117647058824,0.37146614069691,0.13157894736842105,0.009467697236686945,True,True,True
+01_aL_davgL,zachary-karate-club,e_global,0.00028981500100176477,11,False,"[3, 6, 2, 2, 3, 1, 3, 4, 6, 1, 3]",4,0.36363636363636365,0.17647058823529413,0.15269559500328728,0.5,0.03683840204030275,False,False,True
+01_aL_davgL,zachary-karate-club,e_below,0.014113603692833326,3,False,"[15, 6, 13]",0,0.0,0.4411764705882353,0.389957264957265,0.15151515151515152,0.01213095709681511,True,True,True
+01_aL_davgL,zachary-karate-club,e_above,0.04515936814459895,2,False,"[16, 18]",0,0.0,0.5294117647058824,0.37146614069691,0.13157894736842105,0.009153444319963455,True,True,True
+01_aL_davgL,zachary-karate-club,e_elbow,0.04515936814459895,2,False,"[16, 18]",0,0.0,0.5294117647058824,0.37146614069691,0.13157894736842105,0.00912160286679864,True,True,True

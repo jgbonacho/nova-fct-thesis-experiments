@@ -1,0 +1,6 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+05_aM_davgL,email-urv,e_family,0.012705973156825971,5,False,"[203, 407, 177, 181, 165]",0,0.0,0.3592233009708738,0.5060266241484777,0.21549636803874092,3.1588165098801255,True,True,True
+05_aM_davgL,email-urv,e_global,0.0016572805729200694,12,False,"[76, 248, 73, 97, 145, 76, 103, 76, 54, 94, 42, 49]",0,0.0,0.21888790820829657,0.4635003579697928,0.2286652078774617,6.285136377904564,False,False,True
+05_aM_davgL,email-urv,e_below,0.009928653553931877,6,False,"[126, 359, 167, 186, 179, 116]",0,0.0,0.31685789938217124,0.501957298661301,0.2166747455162385,3.5937569849193096,True,True,True
+05_aM_davgL,email-urv,e_above,0.013047048825108494,5,False,"[203, 407, 177, 181, 165]",0,0.0,0.3592233009708738,0.5060266241484777,0.21549636803874092,3.1666961051523685,True,True,True
+05_aM_davgL,email-urv,e_elbow,2.134317961851824e-05,23,False,"[63, 43, 109, 52, 63, 44, 46, 100, 31, 15, 32, 61, 13, 34, 74, 32, 59, 60, 64, 22, 23, 72, 21]",0,0.0,0.09620476610767872,0.37700440282820535,0.31796610169491524,10.930765537079424,False,False,True

@@ -1,0 +1,6 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+01_aL_davgL,les-miserables,e_family,0.021361390783885468,3,False,"[27, 36, 14]",0,0.0,0.4675324675324675,0.33043741087482165,0.23711340206185566,0.023781181778758764,True,True,True
+01_aL_davgL,les-miserables,e_global,0.002163129076014788,23,False,"[18, 6, 1, 1, 1, 6, 1, 8, 1, 2, 1, 2, 2, 1, 2, 3, 12, 3, 1, 2, 1, 1, 1]",16,0.6956521739130435,0.23376623376623376,0.24621799243598483,0.2786885245901639,0.14305408112704754,False,True,False
+01_aL_davgL,les-miserables,e_below,0.015545222663605082,4,False,"[20, 36, 14, 7]",0,0.0,0.4675324675324675,0.3033433566867133,0.23711340206185566,0.03139146417379379,True,True,True
+01_aL_davgL,les-miserables,e_above,0.027296681951525202,3,False,"[27, 36, 14]",0,0.0,0.4675324675324675,0.33043741087482165,0.23711340206185566,0.024443471804261208,True,True,True
+01_aL_davgL,les-miserables,e_elbow,0.13338305692778205,1,False,[77],0,0.0,1.0,0.0,1.0,0.01200534077361226,False,False,False

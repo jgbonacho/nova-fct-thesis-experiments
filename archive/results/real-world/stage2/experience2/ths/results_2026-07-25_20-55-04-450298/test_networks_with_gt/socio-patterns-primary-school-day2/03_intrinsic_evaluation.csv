@@ -1,0 +1,6 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+11_aH_davgH,socio-patterns-primary-school-day2,e_family,0.00028481815485521133,8,False,"[39, 14, 49, 21, 22, 46, 35, 12]",0,0.0,0.20588235294117646,0.29029803633386797,0.38385502471169686,0.17168654967099428,False,False,True
+11_aH_davgH,socio-patterns-primary-school-day2,e_global,0.0029744440452032796,5,False,"[55, 50, 75, 23, 35]",0,0.0,0.31512605042016806,0.35853910368732,0.311804008908686,0.1082665640860796,True,True,True
+11_aH_davgH,socio-patterns-primary-school-day2,e_below,0.0001029755928088122,9,False,"[29, 14, 40, 21, 22, 27, 38, 35, 12]",0,0.0,0.16806722689075632,0.2801550697264887,0.38385502471169686,0.16908240411430597,False,False,True
+11_aH_davgH,socio-patterns-primary-school-day2,e_above,0.0004552605999802658,8,False,"[39, 14, 49, 21, 22, 46, 35, 12]",0,0.0,0.20588235294117646,0.29029803633386797,0.38385502471169686,0.15368989389389753,False,False,True
+11_aH_davgH,socio-patterns-primary-school-day2,e_elbow,0.18444660354386183,1,False,[238],0,0.0,1.0,0.0,1.0,0.032031096052378416,False,False,False

@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     TEST_NETWORKS_WITHOUT_GT_DIR = "test_networks_without_gt"
     TEST_NETWORKS_WITH_GT_DIR = "test_networks_with_gt"
-    TRAIN_NETWORKS_WITH_GT_DIR = "train_networks_with_gt"
+    TEST_WITH_TRAIN_NETWORKS_DIR = "test_with_train_networks"
 
     SUMMARY_FILENAME = "_summary.csv"
 
@@ -84,14 +84,19 @@ if __name__ == "__main__":
         os.path.join("experience1", "v2", "results_2026-07-14_23-45-56-297136"),
         os.path.join("experience1", "v2", "results_2026-07-15_04-19-17-796221"),
 
-        os.path.join("experience2", "ths", "results_2026-07-19_19-20-08-944343-old"),
-        os.path.join("experience2", "ths", "results_2026-07-20_12-17-10-818425-old"),
         os.path.join("experience2", "ths", "results_2026-07-21_01-35-02-985213"),
+        os.path.join("experience2", "ths", "results_2026-07-21_03-15-17-101707"),
         os.path.join("experience2", "ths", "results_2026-07-21_05-19-39-556936"),
         os.path.join("experience2", "ths", "results_2026-07-21_20-05-55-517321"),
         os.path.join("experience2", "ths", "results_2026-07-21_21-23-40-813696"),
         os.path.join("experience2", "ths", "results_2026-07-22_04-16-41-275586"),
-        os.path.join("experience2", "ths", "results_2026-07-22_07-21-37-879275")
+        os.path.join("experience2", "ths", "results_2026-07-22_12-45-13-205463"),
+        os.path.join("experience2", "ths", "results_2026-07-24_08-27-39-974371"),  
+        os.path.join("experience2", "ths", "results_2026-07-24_09-52-38-785445"),
+        os.path.join("experience2", "ths", "results_2026-07-24_15-32-47-785178"),
+        os.path.join("experience2", "ths", "results_2026-07-25_07-21-37-879275"),
+        os.path.join("experience2", "ths", "results_2026-07-25_15-40-23-273023"),
+        os.path.join("experience2", "ths", "results_2026-07-25_20-55-04-450298")
     ]:
 
         combine_csv_files(
@@ -120,13 +125,13 @@ if __name__ == "__main__":
         )
 
         combine_csv_files(
-            root_dir=os.path.join(base_dir, TRAIN_NETWORKS_WITH_GT_DIR),
+            root_dir=os.path.join(base_dir, TEST_WITH_TRAIN_NETWORKS_DIR),
             input_filename="_summary.csv",
             output_filename=COMBINE_SUMMARY_FILENAME
         )
 
         combine_csv_files(
-            root_dir=os.path.join(base_dir, TRAIN_NETWORKS_WITH_GT_DIR),
+            root_dir=os.path.join(base_dir, TEST_WITH_TRAIN_NETWORKS_DIR),
             input_filename="08_extrinsic_evaluation.csv",
             output_filename=COMBINE_THRESHOLDS_FILENAME,
             concatenate_columns=True

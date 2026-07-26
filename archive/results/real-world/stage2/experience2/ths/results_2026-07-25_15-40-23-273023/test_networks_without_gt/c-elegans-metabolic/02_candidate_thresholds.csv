@@ -1,0 +1,6 @@
+Family,Network,Name,Value
+01_aL_davgL,c-elegans-metabolic,e_family,0.029943225282596044
+01_aL_davgL,c-elegans-metabolic,e_global,0.0014495985600851593
+01_aL_davgL,c-elegans-metabolic,e_below,0.014755574040448503
+01_aL_davgL,c-elegans-metabolic,e_above,0.06310816970726635
+01_aL_davgL,c-elegans-metabolic,e_elbow,2.926131082931026e-08

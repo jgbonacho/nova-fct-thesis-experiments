@@ -1,6 +1,0 @@
-Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
-10_aH_davgM,facebook-network-ego414,e_family,5.301634600929657e-05,7,False,"[25, 27, 27, 11, 4, 49, 5]",0,0.0,0.3310810810810811,0.44018245365480163,0.0038314176245210726,0.1591763161122799,False,True,True
-10_aH_davgM,facebook-network-ego414,e_global,0.00028981500100176477,3,False,"[25, 74, 49]",0,0.0,0.5,0.5253789561781489,0.0038314176245210726,0.06636954401619732,True,True,True
-10_aH_davgM,facebook-network-ego414,e_below,3.733701973911611e-05,8,False,"[25, 27, 27, 11, 4, 34, 15, 5]",0,0.0,0.22972972972972974,0.4269757487606816,0.0038314176245210726,0.1485222529154271,False,True,True
-10_aH_davgM,facebook-network-ego414,e_above,6.442181608112986e-05,6,False,"[25, 27, 27, 15, 49, 5]",0,0.0,0.3310810810810811,0.44093414846112144,0.0038314176245210726,0.11560955597087741,False,True,True
-10_aH_davgM,facebook-network-ego414,e_elbow,0.1300308008367146,1,False,[148],0,0.0,1.0,0.0,1.0,0.033530880929902196,False,False,False

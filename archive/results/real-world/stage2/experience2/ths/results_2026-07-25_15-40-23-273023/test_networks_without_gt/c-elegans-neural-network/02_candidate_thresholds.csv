@@ -1,0 +1,6 @@
+Family,Network,Name,Value
+01_aL_davgL,c-elegans-neural-network,e_family,0.029943225282596044
+01_aL_davgL,c-elegans-neural-network,e_global,0.0014495985600851593
+01_aL_davgL,c-elegans-neural-network,e_below,0.009344833143710546
+01_aL_davgL,c-elegans-neural-network,e_above,
+01_aL_davgL,c-elegans-neural-network,e_elbow,2.248172597108125e-07

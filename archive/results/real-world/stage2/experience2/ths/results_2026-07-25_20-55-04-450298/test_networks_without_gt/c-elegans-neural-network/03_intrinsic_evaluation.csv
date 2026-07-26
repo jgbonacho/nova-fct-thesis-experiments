@@ -1,0 +1,6 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+01_aL_davgL,c-elegans-neural-network,e_family,0.014817389733259545,3,False,"[122, 104, 71]",0,0.0,0.4107744107744108,0.2747253735665068,0.2674743709226468,0.15394001733511686,True,True,True
+01_aL_davgL,c-elegans-neural-network,e_global,0.0029744440452032796,5,False,"[81, 65, 66, 36, 49]",0,0.0,0.2727272727272727,0.27311112238139323,0.3425196850393701,0.20213870471343398,True,False,True
+01_aL_davgL,c-elegans-neural-network,e_below,0.007581244203573004,4,False,"[104, 98, 36, 59]",0,0.0,0.3501683501683502,0.2459220001109689,0.31092436974789917,0.16879894817247987,False,True,True
+01_aL_davgL,c-elegans-neural-network,e_above,0.020039895267116994,3,False,"[122, 104, 71]",0,0.0,0.4107744107744108,0.2747253735665068,0.2674743709226468,0.14074099529534578,True,True,True
+01_aL_davgL,c-elegans-neural-network,e_elbow,0.14931697328004054,1,False,[297],0,0.0,1.0,0.0,1.0,0.05809909524396062,False,False,False

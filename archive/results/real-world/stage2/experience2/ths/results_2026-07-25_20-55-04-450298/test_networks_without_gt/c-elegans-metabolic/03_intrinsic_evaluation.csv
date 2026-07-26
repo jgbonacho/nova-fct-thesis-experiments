@@ -1,0 +1,6 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+01_aL_davgL,c-elegans-metabolic,e_family,0.014817389733259545,3,False,"[142, 146, 165]",0,0.0,0.36423841059602646,0.19771217802164306,0.35340314136125656,0.31260693771764636,True,True,True
+01_aL_davgL,c-elegans-metabolic,e_global,0.0029744440452032796,7,False,"[38, 93, 75, 78, 71, 59, 39]",0,0.0,0.2052980132450331,0.13218533760097548,0.46551724137931033,0.5200935732573271,False,False,True
+01_aL_davgL,c-elegans-metabolic,e_below,0.013340484632157904,3,False,"[142, 146, 165]",0,0.0,0.36423841059602646,0.19771217802164306,0.35340314136125656,0.2912399498745799,True,True,True
+01_aL_davgL,c-elegans-metabolic,e_above,0.027028483755827955,2,False,"[160, 293]",0,0.0,0.6467991169977925,0.16113141289437588,0.3574045002616431,0.23458857275545597,False,True,True
+01_aL_davgL,c-elegans-metabolic,e_elbow,0.21072090024778384,1,False,[453],0,0.0,1.0,0.0,1.0,0.11996614700183272,False,False,False
