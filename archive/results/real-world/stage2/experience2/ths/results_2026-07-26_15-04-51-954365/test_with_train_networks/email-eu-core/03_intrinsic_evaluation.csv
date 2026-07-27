@@ -1,0 +1,3 @@
+Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
+06_aM_davgM,email-eu-core,e_global,0.0031324998004947993,7,True,"[210, 165, 156, 108, 148, 223, 139]",0,0.0,0.22616632860040567,0.004727729223207336,0.2265190327929567,3.3191853589378297,False,False,True
+06_aM_davgM,email-eu-core,e_elbow,9.365443753187506e-09,21,True,"[80, 93, 48, 113, 61, 87, 79, 56, 52, 48, 37, 60, 53, 76, 60, 66, 53, 90, 59, 46, 88]",0,0.0,0.11460446247464504,0.011040842745172518,0.22232491874733917,8.539273594971746,True,True,True

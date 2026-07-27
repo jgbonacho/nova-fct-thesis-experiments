@@ -658,14 +658,14 @@ $$
   "affinity_design": "Default",
   "apply_lapin": false,
   "overlapping_communities": true,
-  "execution_elapsed_time_secs": 11053.010993575212
+  "execution_elapsed_time_secs": 11053.010993575212 + 29001.79571499396
 }
 ```
 
 - [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/train_networks/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/test_networks_with_gt/)
-- Test with train networks results
+- [Test with train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/test_with_train_networks/)
 
 
 ## (9) Literature Review of Community Detection Results in Networks without Ground-Truth
