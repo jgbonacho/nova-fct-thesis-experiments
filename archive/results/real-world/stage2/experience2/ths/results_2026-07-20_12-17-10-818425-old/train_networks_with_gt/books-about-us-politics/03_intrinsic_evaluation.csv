@@ -1,6 +1,0 @@
-Family,Network,Name,Value,K',Overlapping Communities,Community Size Distribution,#Singleton/Near-Singleton Communities,Singleton/Near-Singleton Fraction,Largest-Community Fraction,Modularity,Conductance,Runtime,Acceptable Modularity?,Acceptable Conductance?,Acceptable Non-Degenerate?
-01_aL_davgL,books-about-us-politics,e_family,0.028080065029042933,2,True,"[53, 53]",0,0.0,0.5047619047619047,0.012869577195974959,0.03104491940392414,0.029044466093182564,False,True,True
-01_aL_davgL,books-about-us-politics,e_global,0.00028981500100176477,5,True,"[13, 43, 31, 11, 13]",0,0.0,0.4095238095238095,0.026202558843658047,0.054339880830043576,0.05801350506953895,True,False,True
-01_aL_davgL,books-about-us-politics,e_below,0.011000761913486914,3,True,"[48, 16, 41]",0,0.0,0.45714285714285713,0.0176091612857788,0.04232429984981006,0.039478358114138246,False,False,True
-01_aL_davgL,books-about-us-politics,e_above,0.06737585203163352,2,True,"[53, 53]",0,0.0,0.5047619047619047,0.012869577195974959,0.03104491940392414,0.029378289123997092,False,True,True
-01_aL_davgL,books-about-us-politics,e_elbow,0.0002816806183197159,5,True,"[13, 43, 31, 11, 13]",0,0.0,0.4095238095238095,0.026202558843658047,0.054339880830043576,0.05852748197503388,True,False,True

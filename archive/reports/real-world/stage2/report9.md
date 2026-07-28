@@ -642,14 +642,14 @@ $$
   "affinity_design": "Default",
   "apply_lapin": true,
   "overlapping_communities": true,
-  "execution_elapsed_time_secs": 19415.325708261924 + 43559.760930565135
+  "execution_elapsed_time_secs": 19415.325708261924 + "-"
 }
 ```
 
 - [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/train_networks/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_with_gt/)
-- [Test with train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-20_12-17-10-818425-old/train_networks_with_gt/)
+- [Test with train networks results (inc.)](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_with_train_networks/)
 
 ### Default Affinity (Adjacency Matrix) + LAPIN-off
 
