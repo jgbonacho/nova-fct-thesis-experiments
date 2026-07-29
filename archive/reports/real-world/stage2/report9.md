@@ -20,8 +20,8 @@
   - [Combinations](#combinations)
   - [Train Assignment](#train-assignment)
   - [Test Assignment](#test-assignment)
-- [(5) Pipeline Configuration](#5-pipeline-configuration)
-- [(6) Pipeline](#6-pipeline)
+- [(5) Pipeline](#5-pipeline)
+- [(6) Pipeline Configuration](#6-pipeline-configuration)
   - [Stage 1: Network Family K-Boundary Thresholds](#stage-1-network-family-k-boundary-thresholds)
   - [Stage 2: Network Contribution-Boundary Thresholds](#stage-2-network-contribution-boundary-thresholds)
     - [Stage 2.1: Candidate Thresholds](#stage-21-candidate-thresholds)
@@ -53,11 +53,12 @@
   - [Reference Paper - "Graph neural network inspired algorithm for unsupervised network community detection"](#reference-paper---graph-neural-network-inspired-algorithm-for-unsupervised-network-community-detection)
   - [Reference Paper - "A three-stage algorithm on community detection in social networks"](#reference-paper---a-three-stage-algorithm-on-community-detection-in-social-networks)
   - [Summary of Literature Reference Results](#summary-of-literature-reference-results)
-- [(10) Literature Review of Community Detection Results in Networks with Ground-Truth](#10-literature-review-of-community-detection-results-in-networks-with-ground-truth)
-- [(11) Observations](#11-observations)
+- [(10) Observations](#10-observations)
+  - [Comparison of non-overlapping communities configuration vs overlapping communities configuration](#comparison-of-non-overlapping-communities-configuration-vs-overlapping-communities-configuration)
+    - [Networks without ground-truth](#networks-without-ground-truth)
+    - [Networks with ground-truth (test and train)](#networks-with-ground-truth-test-and-train)
   - [Comparison of Network Family K-Boundary Thresholds](#comparison-of-network-family-k-boundary-thresholds)
   - [Comparison with Literature Reference Results of the Real-World Networks without Ground-Truth](#comparison-with-literature-reference-results-of-the-real-world-networks-without-ground-truth)
-  - [Comparison with Literature Reference Results of the Real-World Networks with Ground-Truth](#comparison-with-literature-reference-results-of-the-real-world-networks-with-ground-truth)
 
 
 ## (1) Network Selection and Division
@@ -267,35 +268,7 @@
 | co-authorships-in-network-science    |         4.8232 |              -0.0817 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
 
 
-## (5) Pipeline Configuration
-
-```json
-{
-  "affinity_design": "Default",
-  "apply_lapin": false,
-  "tau": 0.05,
-  "k_max_boundary": 500,
-  "overlapping_communities": false,
-  "defuzzification_gamma": 0.8,
-  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
-  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
-  "near_singleton_boundary": 2,
-  "number_of_perturbed_graphs": 10,
-  "edge_swap_multiplier_in_perturbed_graphs": 0.05,
-  "number_of_null_models": 10,
-  "edge_swap_multiplier_in_null_models": 10,
-  "pareto_tolerance_fraction_modularity": 0.1,
-  "pareto_tolerance_fraction_conductance": 0.1,
-  "pareto_tolerance_fraction_stability": 0.15,
-  "pareto_largest_community_fraction_boundary": 0.95,
-  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
-  "pareto_null_model_p_value_boundary": 0.1,
-  "pareto_null_model_rank_boundary": 2,
-  "pareto_null_model_z_score_boundary": 1.645
-}
-```
-
-## (6) Pipeline
+## (5) Pipeline
 
 ### Stage 1: Network Family K-Boundary Thresholds
 
@@ -437,6 +410,37 @@ $$
   - K' | K, |K'-K|/K, ONMI, Omega if network.overlapping_ground_truth
 
 
+## (6) Pipeline Configuration
+
+`"The threshold-selection rule must be fixed before final interpretation. This reduces the risk of overfitting and selection bias in empirical model selection."`
+
+```json
+{
+  --> "affinity_design": "Default", <--
+  --> "apply_lapin": false, <--
+  "tau": 0.05,
+  "k_max_boundary": 500,
+  --> "overlapping_communities": false, <--
+  "defuzzification_gamma": 0.8,
+  "number_of_thresholds_to_retain_after_intrinsic_evaluation": 3,
+  "number_of_thresholds_to_retain_after_stability_evaluation": 2,
+  "near_singleton_boundary": 2,
+  "number_of_perturbed_graphs": 10,
+  "edge_swap_multiplier_in_perturbed_graphs": 0.05,
+  "number_of_null_models": 10,
+  "edge_swap_multiplier_in_null_models": 10,
+  "pareto_tolerance_fraction_modularity": 0.1,
+  "pareto_tolerance_fraction_conductance": 0.1,
+  "pareto_tolerance_fraction_stability": 0.15,
+  "pareto_largest_community_fraction_boundary": 0.95,
+  "pareto_singleton_or_near_singleton_fraction_boundary": 0.5,
+  "pareto_null_model_p_value_boundary": 0.1,
+  "pareto_null_model_rank_boundary": 2,
+  "pareto_null_model_z_score_boundary": 1.645
+}
+```
+
+
 ## (7) Non-overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
 
 ### Default Affinity (Adjacency Matrix) + LAPIN-on
@@ -446,7 +450,7 @@ $$
   "affinity_design": "Default",
   "apply_lapin": true,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 13476.537909917999 + 42568.27264089789
+  "execution_elapsed_time_secs": 13476.537909917999 (3 hrs 44 min 37 sec) + 42568.27264089789 (11 hrs 49 min 28 sec)
 }
 ```
 
@@ -463,7 +467,7 @@ $$
   "affinity_design": "Default",
   "apply_lapin": false,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 5106.170760306995 + 9067.550150152761
+  "execution_elapsed_time_secs": 5106.170760306995 (1 hr 25 min 6 sec) + 9067.550150152761 (2 hrs 31 min 8 sec)
 }
 ```
 
@@ -479,7 +483,7 @@ $$
   "affinity_design": "Ip_b0",
   "apply_lapin": true,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 20216.17830928904
+  "execution_elapsed_time_secs": 20216.17830928904 (5 hrs 36 min 56 sec)
 }
 ```
 
@@ -495,7 +499,7 @@ $$
   "affinity_design": "Ip_b0",
   "apply_lapin": false,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 4665.296060502995
+  "execution_elapsed_time_secs": 4665.296060502995 (1 hr 17 min 45 sec)
 }
 ```
 
@@ -511,7 +515,7 @@ $$
   "affinity_design": "CosIp_b0",
   "apply_lapin": true,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 24780.44658103492
+  "execution_elapsed_time_secs": 24780.44658103492 (6 hrs 53 min)
 }
 ```
 
@@ -527,7 +531,7 @@ $$
   "affinity_design": "CosIp_b0",
   "apply_lapin": false,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 8834.372523091966
+  "execution_elapsed_time_secs": 8834.372523091966 (2 hrs 27 min 14 sec)
 }
 ```
 
@@ -543,7 +547,7 @@ $$
   "affinity_design": "Kul",
   "apply_lapin": true,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 21827.662761374144
+  "execution_elapsed_time_secs": 21827.662761374144 (6 hrs 3 min 48 sec)
 }
 ```
 
@@ -559,7 +563,7 @@ $$
   "affinity_design": "Kul",
   "apply_lapin": false,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 5098.827821595129
+  "execution_elapsed_time_secs": 5098.827821595129 (1 hr 24 min 59 sec)
 }
 ```
 
@@ -575,7 +579,7 @@ $$
   "affinity_design": "Dice",
   "apply_lapin": true,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 20408.998805815354
+  "execution_elapsed_time_secs": 20408.998805815354 (5 hrs 40 min 9 sec)
 }
 ```
 
@@ -591,7 +595,7 @@ $$
   "affinity_design": "Dice",
   "apply_lapin": false,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 6559.998357471079
+  "execution_elapsed_time_secs": 6559.998357471079 (1 hr 49 min 20 sec)
 }
 ```
 
@@ -607,7 +611,7 @@ $$
   "affinity_design": "Ochiai",
   "apply_lapin": true,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 18881.176445811056
+  "execution_elapsed_time_secs": 18881.176445811056 (5 hrs 14 min 41 sec)
 }
 ```
 
@@ -623,7 +627,7 @@ $$
   "affinity_design": "Ochiai",
   "apply_lapin": false,
   "overlapping_communities": false,
-  "execution_elapsed_time_secs": 5610.623681175057
+  "execution_elapsed_time_secs": 5610.623681175057 ( 1 hr 33 min 31 sec)
 }
 ```
 
@@ -642,7 +646,7 @@ $$
   "affinity_design": "Default",
   "apply_lapin": true,
   "overlapping_communities": true,
-  "execution_elapsed_time_secs": 19415.325708261924 + "-"
+  "execution_elapsed_time_secs": 19415.325708261924 (5 hrs 23 min 35 sec) + "-" (> 12 hrs)
 }
 ```
 
@@ -658,7 +662,7 @@ $$
   "affinity_design": "Default",
   "apply_lapin": false,
   "overlapping_communities": true,
-  "execution_elapsed_time_secs": 11053.010993575212 + 29001.79571499396
+  "execution_elapsed_time_secs": 11053.010993575212 (3 hrs 4 min 13 sec) + 29001.79571499396 (8 hrs 3 min 22 sec)
 }
 ```
 
@@ -757,12 +761,138 @@ $$
 | email-urv                          | 0.280000–0.582829     | 7–9; 12–13; 15–16; 49; 68       |
 | *co-authorships-in-network-science | 0.830000–0.950000     | 58; 343; 418                    |
 
-## (10) Literature Review of Community Detection Results in Networks with Ground-Truth
 
-TODO
+## (10) Observations
 
+### Comparison of non-overlapping communities configuration vs overlapping communities configuration
 
-## (11) Observations
+#### Networks without ground-truth
+
+| Configuration                          | #Acceptbale Thresholds/#Total           |
+|----------------------------------------|----------------------------------------:|
+| Non-overlapping + Default + LAPIN-on   | 6/7                                     |
+| Non-overlapping + Default + LAPIN-off  | 4/7                                     |
+| Overlapping + Default + LAPIN-on       | 0/7                                     |
+| Overlapping + Default + LAPIN-off      | 1/7                                     |
+
+| Network                           | Literature \(K'\) Range   | \(K'\) (Non-overlapping + Default + LAPIN-on) | \(K'\)  (Non-overlapping + Default + LAPIN-off) | \(K'\) (Overlapping + Default + LAPIN-on) | \(K'\)  (Overlapping + Default + LAPIN-off) |
+|-----------------------------------|--------------------------:|----------------------------------------------:|------------------------------------------------:|------------------------------------------:|--------------------------------------------:|
+| c-elegans-metabolic               | 8; 10; 12; 16             | 44                                            | 8                                               | 75                                        | 24                                          |
+| c-elegans-neural-network          | 5                         | 15                                            | 5                                               | 66                                        | 16                                          |
+| co-authorships-in-network-science | -                         | 7                                             | 22                                              | 64                                        | 61                                          |
+| dolphins                          | 4–5; 7                    | 2                                             | 6                                               | 7                                         | 13                                          |
+| email-urv                         | 7–9; 12–13; 15–16; 49; 68 | 11                                            | 6                                               | 60                                        | 16                                          |
+| jazz-musicians                    | 2–5; 7; 9; 11             | 23                                            | 5                                               | 28                                        | 17                                          |
+| les-miserables                    | 5–6; 8–10                 | 5                                             | 9                                               | 26                                        | 9                                           |
+
+#### Networks with ground-truth (test and train)
+
+| Configuration                          | #Acceptbale Thresholds/#Total           |
+|----------------------------------------|----------------------------------------:|
+| Non-overlapping + Default + LAPIN-on   | 3/5                                     |
+| Non-overlapping + Default + LAPIN-off  | 4/5                                     |
+| Overlapping + Default + LAPIN-on       | 3/5                                     |
+| Overlapping + Default + LAPIN-off      | 0/5                                     |
+| -                                      | -                                       |
+| Non-overlapping + Default + LAPIN-on   | 10/14                                   |
+| Non-overlapping + Default + LAPIN-off  | 4/14                                    |
+| Overlapping + Default + LAPIN-on       | 0/3*                                    |
+| Overlapping + Default + LAPIN-off      | 3/14                                    |
+
+- Non-overlapping + Default + LAPIN-on
+
+| Network                            | K' |  K | AMI   | NMI   | ONMI  | Omega  |
+|------------------------------------|----|----|-------|-------|-------|--------|
+| citeseer                           | 14 | 6  | 0.367 | 0.373 | -     | -      |
+| facebook-network-ego348            | 10 | 14 | -     | -     | 0.218 | -0.042 |
+| facebook-network-ego3980           | 7  | 11 | -     | -     | 0.211 | 0.229  |
+| facebook-network-ego686            | 17 | 14 | -     | -     | 0.093 | 0.025  |
+| socio-patterns-primary-school-day2 | 13 | 11 | 0.865 | 0.880 | -     | -      |
+| -                                  | -  | -  | -     | -     | -     | -      |
+| american-college-football          | 11 | 12 | 0.744 | 0.801 | -     | -      |
+| books-about-us-politics            | 5  | 3  | 0.485 | 0.503 | -     | -      |
+| cora                               | 32 | 7  | 0.304 | 0.315 | -     | -      |
+| email-eu-core                      | 29 | 42 | 0.511 | 0.582 | -     | -      |
+| facebook-network-ego0              | 11 | 22 | -     | -     | 0.136 | 0.324  |
+| facebook-network-ego107            | 21 | 9  | -     | -     | 0.362 | 0.533  |
+| facebook-network-ego1684           | 9  | 17 | -     | -     | 0.366 | 0.432  |
+| facebook-network-ego1912           | 24 | 45 | -     | -     | 0.303 | 0.588  |
+| facebook-network-ego3437           | 21 | 32 | -     | -     | 0.307 | 0.439  |
+| facebook-network-ego414            | 3  | 7  | -     | -     | 0.533 | 0.768  |
+| facebook-network-ego698            | 6  | 9  | -     | -     | 0.340 | 0.353  |
+| socio-patterns-primary-school-day1 | 12 | 11 | 0.823 | 0.843 | -     | -      |
+| us-political-blogs                 | 32 | 2  | 0.255 | 0.261 | -     | -      |
+| zachary-karate-club                | 2  | 2  | 0.833 | 0.837 | -     | -      |
+
+- Non-overlapping + Default + LAPIN-off
+
+| Network                            | K' | K  | AMI   | NMI   | ONMI  | Omega  |
+|------------------------------------|----|----|-------|-------|-------|--------|
+| citeseer                           | 13 | 6  | 0.291 | 0.296 | -     | -      |
+| facebook-network-ego348            | 5  | 14 | -     | -     | 0.162 | -0.027 |
+| facebook-network-ego3980           | 4  | 11 | -     | -     | 0.262 | 0.352  |
+| facebook-network-ego686            | 7  | 14 | -     | -     | 0.110 | 0.029  |
+| socio-patterns-primary-school-day2 | 8  | 11 | 0.771 | 0.789 | -     | -      |
+| -                                  | -  | -  | -     | -     | -     | -      |
+| american-college-football          | 11 | 12 | 0.830 | 0.869 | -     | -      |
+| books-about-us-politics            | 6  | 3  | 0.384 | 0.408 | -     | -      |
+| cora                               | 13 | 7  | 0.312 | 0.316 | -     | -      |
+| email-eu-core                      | 7  | 42 | 0.466 | 0.494 | -     | -      |
+| facebook-network-ego0              | 10 | 22 | -     | -     | 0.077 | 0.173  |
+| facebook-network-ego107            | 9  | 9  | -     | -     | 0.230 | 0.276  |
+| facebook-network-ego1684           | 8  | 17 | -     | -     | 0.266 | 0.352  |
+| facebook-network-ego1912           | 5  | 45 | -     | -     | 0.172 | 0.325  |
+| facebook-network-ego3437           | 14 | 32 | -     | -     | 0.286 | 0.246  |
+| facebook-network-ego414            | 5  | 7  | -     | -     | 0.271 | 0.353  |
+| facebook-network-ego698            | 5  | 9  | -     | -     | 0.315 | 0.218  |
+| socio-patterns-primary-school-day1 | 6  | 11 | 0.699 | 0.716 | -     | -      |
+| us-political-blogs                 | 2  | 2  | 0.608 | 0.608 | -     | -      |
+| zachary-karate-club                | 4  | 2  | 0.571 | 0.593 | -     | -      |
+
+- Overlapping + Default + LAPIN-on
+
+| Network                            | K' | K  | AMI   | NMI   | ONMI  | Omega  |
+|------------------------------------|----|----|-------|-------|-------|--------|
+| citeseer                           | 34 | 6  | 0.348 | 0.361 | -     | -      |
+| facebook-network-ego348            | 20 | 14 | -     | -     | 0.218 | -0.021 |
+| facebook-network-ego3980           | 11 | 11 | -     | -     | 0.182 | 0.138  |
+| facebook-network-ego686            | 32 | 14 | -     | -     | 0.109 | 0.017  |
+| socio-patterns-primary-school-day2 | 16 | 11 | 0.838 | 0.861 | -     | -      |
+| -                                  | -  | -  | -     | -     | -     | -      |
+| books-about-us-politics            |  5 | 3  | 0.485 | 0.503 | -     | -      |
+| us-political-blogs                 | 60 | 2  | 0.167 | 0.179 | -     | -      |
+| zachary-karate-club                | 11 | 2  | 0.187 | 0.295 | -     | -      |
+
+- Overlapping + Default + LAPIN-off
+
+| Network                            | K'  | K  | AMI   | NMI   | ONMI  | Omega  |
+|------------------------------------|-----|----|-------|-------|-------|--------|
+| citeseer                           | 168 | 6  | 0.224 | 0.275 | -     | -      |
+| facebook-network-ego348            | 17  | 14 | -     | -     | 0.211 | -0.009 |
+| facebook-network-ego3980           | 7   | 11 | -     | -     | 0.200 | 0.203  |
+| facebook-network-ego686            | 12  | 14 | -     | -     | 0.116 | 0.0121 |
+| socio-patterns-primary-school-day2 | 10  | 11 | 0.767 | 0.789 | -     | -      |
+| -                                  | -   | -  | -     | -     | -     | -      |
+| american-college-football          |  14 | 12 | 0.824 | 0.871 | -     | -      |
+| books-about-us-politics            |  31 |  3 | 0.221 | 0.313 | -     | -      |
+| cora                               | 111 |  7 | 0.271 | 0.304 | -     | -      |
+| email-eu-core                      |  21 | 42 | 0.538 | 0.596 | -     | -      |
+| facebook-network-ego0              |  31 | 22 | -     | -     | 0.047 | 0.078  |
+| facebook-network-ego107            |  27 |  9 | -     | -     | 0.152 | 0.139  |
+| facebook-network-ego1684           |  30 | 17 | -     | -     | 0.123 | 0.228  |
+| facebook-network-ego1912           |  36 | 45 | -     | -     | 0.109 | 0.242  |
+| facebook-network-ego3437           |  34 | 32 | -     | -     | 0.262 | 0.125  |
+| facebook-network-ego414            |  19 |  7 | -     | -     | 0.201 | 0.234  |
+| facebook-network-ego698            |   5 |  9 | -     | -     | 0.315 | 0.218  |
+| socio-patterns-primary-school-day1 |  14 | 11 | 0.726 | 0.760 | -     | -      |
+| us-political-blogs                 |  16 |  2 | 0.196 | 0.199 | -     | -      |
+| zachary-karate-club                |   4 |  2 | 0.571 | 0.593 | -     | -      |
+
+- Thresholds for overlapping communities configurationn appear to be more unstable. That is, Modularity and Conductance appear to be more reliable than Fuzzy-Modularity and Conductance-BN for the threshold estimation pipeline.
+- Overlapping communities configuration appear to favor larger K' values, resulting in more small communities and an overestimation of K.
+- Overlapping communities configuration need bigger runtimes.
+- The overlapping communities configuration probably generalizes worse, even though it achieves some good results.
+- `The following results correspond to the non-overlapping communities configuration`
 
 ### Comparison of Network Family K-Boundary Thresholds
 
@@ -798,7 +928,6 @@ TODO
 | Ochiai + LAPIN-on                 | 5/7                                     |
 | Ochiai + LAPIN-off                | 5/7                                     |
 
----
 
 | Network                           | Literature \(Q\) Range | \(Q\) (Default + LAPIN-on) | \(Q\)  (Default + LAPIN-off) | \(Q\) (Ip_b0 + LAPIN-on) | \(Q\) (Ip_b0 + LAPIN-of) | \(Q\) (CosIp_b0 + LAPIN-on) | \(Q\) (CosIp_b0 + LAPIN-off) | \(Q\) (Kul + LAPIN-on) | \(Q\) (Kul + LAPIN-off) | \(Q\) (Dice + LAPIN-on) | \(Q\) (Dice + LAPIN-off) | \(Q\) (Ochiai + LAPIN-on) | \(Q\) (Ochiai + LAPIN-off) |
 |-----------------------------------|------------------------|----------------------------|------------------------------|--------------------------|--------------------------|-----------------------------|------------------------------|------------------------|-------------------------|-------------------------|--------------------------|---------------------------|----------------------------|
@@ -811,7 +940,6 @@ TODO
 | les-miserables                    | 0.500–0.570            | 0.475                      | 0.495                        | 0.357                    | 0.467                    | 0.291                       | 0.456                        | 0.289                  | 0.474                   | 0.330                   | 0.486                    | 0.291                     | 0.456                      |
 
 
-
 | Network                           | Literature \(K'\) Range   | \(K'\) (Default + LAPIN-on) | \(K'\)  (Default + LAPIN-off) | \(K'\) (Ip_b0 + LAPIN-on) | \(K'\) (Ip_b0 + LAPIN-of) | \(K'\) (CosIp_b0 + LAPIN-on) | \(K'\) (CosIp_b0 + LAPIN-off) | \(K'\) (Kul + LAPIN-on) | \(K'\) (Kul + LAPIN-off) | \(K'\) (Dice + LAPIN-on) | \(K'\) (Dice + LAPIN-off) | \(K'\) (Ochiai + LAPIN-on) | \(K'\) (Ochiai + LAPIN-off) |
 |-----------------------------------|--------------------------:|----------------------------:|------------------------------:|--------------------------:|--------------------------:|-----------------------------:|------------------------------:|------------------------:|-------------------------:|-------------------------:|--------------------------:|---------------------------:|----------------------------:|
 | c-elegans-metabolic               | 8; 10; 12; 16             | 44                          | 8                             | 2                         | 5                         | 2                            | 3                             | 2                       | 3                        | 11                       | 3                         | 2                          | 3                           |
@@ -822,6 +950,4 @@ TODO
 | jazz-musicians                    | 2–5; 7; 9; 11             | 23                          | 5                             | 37                        | 4                         | 17                           | 4                             | 19                      | 4                        | 16                       | 4                         | 17                         | 4                           |
 | les-miserables                    | 5–6; 8–10                 | 5                           | 9                             | 3                         | 4                         | 3                            | 8                             | 5                       | 7                        | 3                        | 7                         | 3                          | 8                           |
 
-### Comparison with Literature Reference Results of the Real-World Networks with Ground-Truth
-
-TODO
+- None of the affinity designs clearly outperforms the others across all networks, although individual designs perform better in specific networks.
