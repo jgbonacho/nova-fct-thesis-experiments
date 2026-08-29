@@ -118,9 +118,16 @@ if __name__ == "__main__":
 
     RESULTS_COLUMNS = [
         "Network",
+        "Name",
+        "Value",
         "K'",
+        "Singleton/Near-Singleton Fraction",
+        "Largest-Community Fraction",
         "Modularity",
         "Conductance",
+        "Runtime",
+        "Stability",
+        "Acceptable Null Model?",
         "Acceptable?",
         "K' | K",
         "|K'-K|/K",
