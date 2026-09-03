@@ -48,6 +48,12 @@ def pre_process_email_eu_core(network: str = "email-eu-core"):
     label_file = os.path.join(".", "email-Eu-core-department-labels.txt")
     graph = nx.read_edgelist(edge_file, nodetype=int, create_using=nx.DiGraph())
 
+    print("\nBefore pre-processing:")
+    print(f"n = {graph.number_of_nodes()}")
+    print(f"m = {graph.number_of_edges()}")
+    print(f"weighted = {nx.is_weighted(graph)}")
+    print(f"directed = {graph.is_directed()}")
+
     # Ensure graph is undirected.
     graph = graph.to_undirected()
 
@@ -67,6 +73,12 @@ def pre_process_email_eu_core(network: str = "email-eu-core"):
                 graph.add_node(u)
     value_attr = {n: labels[n] for n in graph.nodes()}
     nx.set_node_attributes(graph, value_attr, name="value")
+
+    print("\nAfter pre-processing:")
+    print(f"n = {graph.number_of_nodes()}")
+    print(f"m = {graph.number_of_edges()}")
+    print(f"weighted = {nx.is_weighted(graph)}")
+    print(f"directed = {graph.is_directed()}")
 
     # Save the processed graph as a GML file.
     nx.write_gml(graph, gml_path)
