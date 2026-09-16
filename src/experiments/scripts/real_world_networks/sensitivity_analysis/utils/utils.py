@@ -63,11 +63,11 @@ def append_properties(
         writer.writerow(properties.to_dict())
 
 
-def save_sensitivity_experiment_report(
+def save_experiment_report(
         results_dir: str,
         output_filename: str,
         execution_elapsed_time: float,
-        apply_lapin: bool
+        apply_lapin: bool = None
 ) -> None:
     """
     Save the sensitivity analysis experiment report.
@@ -86,10 +86,12 @@ def save_sensitivity_experiment_report(
         None
     """
 
-    report = {
-        "apply_lapin": apply_lapin,
-        "execution_elapsed_time_secs": execution_elapsed_time
-    }
+    report = {}
+
+    if apply_lapin is not None:
+        report["apply_lapin"] = apply_lapin
+
+    report["execution_elapsed_time_secs"] = execution_elapsed_time
 
     file = os.path.join(results_dir, output_filename)
     with open(file=file, mode="w", encoding="utf-8") as out_file:

@@ -1,7 +1,7 @@
 import networkx as nx
 import numpy as np
 
-from experiments.scripts.real_world_networks.sensitivity_analysis.network_properties.network_properties_dataclass import \
+from experiments.scripts.real_world_networks.utils.network_properties.network_properties_dataclass import \
     NetworkProperties
 
 

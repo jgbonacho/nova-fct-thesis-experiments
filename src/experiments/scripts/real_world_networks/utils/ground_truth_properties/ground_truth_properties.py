@@ -1,6 +1,6 @@
 import numpy as np
 
-from experiments.scripts.real_world_networks.sensitivity_analysis.ground_truth_properties.ground_truth_properties_dataclass import \
+from experiments.scripts.real_world_networks.utils.ground_truth_properties.ground_truth_properties_dataclass import \
     GroundTruthProperties
 
 

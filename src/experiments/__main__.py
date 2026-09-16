@@ -5,6 +5,8 @@ Entry point.
 from experiments.scripts.lfr_networks.thresholds.estimate_lfr_network_family_thresholds import \
     estimate_lfr_network_family_thresholds
 from experiments.scripts.lfr_networks.thresholds.lfr_threshold_estimation_config import LFRThresholdEstimationConfig
+from experiments.scripts.real_world_networks.networks_characterization.real_world_networks_characterization import \
+    characterization_of_real_world_networks
 from experiments.scripts.real_world_networks.sensitivity_analysis.sensitivity_analysis_in_real_world_networks import \
     sensitivity_analysis_in_real_world_networks
 from experiments.scripts.real_world_networks.thresholds.estimate_real_world_network_thresholds import \
@@ -49,6 +51,9 @@ def main(run_lfr_networks_scripts=True, run_real_world_networks_scripts=True):
         )
 
     if run_real_world_networks_scripts:
+        # Networks characterization.
+        characterization_of_real_world_networks()
+
         # Sensitivity analysis.
         sensitivity_analysis_in_real_world_networks(apply_lapin=True)
         sensitivity_analysis_in_real_world_networks(apply_lapin=False)
@@ -136,6 +141,6 @@ def main(run_lfr_networks_scripts=True, run_real_world_networks_scripts=True):
 
 if __name__ == "__main__":
     main(
-        run_lfr_networks_scripts=True,
+        run_lfr_networks_scripts=False,
         run_real_world_networks_scripts=True,
     )
