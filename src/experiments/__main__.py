@@ -141,6 +141,6 @@ def main(run_lfr_networks_scripts=True, run_real_world_networks_scripts=True):
 
 if __name__ == "__main__":
     main(
-        run_lfr_networks_scripts=False,
+        run_lfr_networks_scripts=True,
         run_real_world_networks_scripts=True,
     )

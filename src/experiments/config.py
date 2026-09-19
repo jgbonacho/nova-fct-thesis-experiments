@@ -2,7 +2,7 @@ import os
 
 ROOT_DIR_PATH = os.path.join(os.path.dirname(__file__), '..', '..')
 
-SYNTHETIC_NETWORKS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'networks', 'synthetic')
+SYNTHETIC_NETWORKS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'networks', 'synthetic', 'training')
 
 SYNTHETIC_RESULTS_BASE_DIR_PATH = os.path.join(ROOT_DIR_PATH, 'results', 'synthetic')
 
