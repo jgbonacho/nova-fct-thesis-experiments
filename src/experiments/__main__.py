@@ -58,16 +58,18 @@ def main(run_lfr_networks_scripts=True, run_real_world_networks_scripts=True):
         sensitivity_analysis_in_real_world_networks(apply_lapin=True)
         sensitivity_analysis_in_real_world_networks(apply_lapin=False)
 
-        # Thresholds estimation.
+        # Thresholds estimation (Non-overlapping community cover setting).
         estimate_real_world_network_thresholds(
             config=RealWorldThresholdEstimationConfig(
                 affinity_design=AffinityDesign.DEFAULT, apply_lapin=True, overlapping_communities=False
-            )
+            ),
+            estimate_thresholds_for_training_networks=True
         )
         estimate_real_world_network_thresholds(
             config=RealWorldThresholdEstimationConfig(
                 affinity_design=AffinityDesign.DEFAULT, apply_lapin=False, overlapping_communities=False
-            )
+            ),
+            estimate_thresholds_for_training_networks=True
         )
 
         estimate_real_world_network_thresholds(
@@ -125,17 +127,18 @@ def main(run_lfr_networks_scripts=True, run_real_world_networks_scripts=True):
             )
         )
 
-        # ---
-
+        # Thresholds estimation (Overlapping community cover setting).
         estimate_real_world_network_thresholds(
             config=RealWorldThresholdEstimationConfig(
                 affinity_design=AffinityDesign.DEFAULT, apply_lapin=True, overlapping_communities=True
-            )
+            ),
+            estimate_thresholds_for_training_networks=True
         )
         estimate_real_world_network_thresholds(
             config=RealWorldThresholdEstimationConfig(
                 affinity_design=AffinityDesign.DEFAULT, apply_lapin=False, overlapping_communities=True
-            )
+            ),
+            estimate_thresholds_for_training_networks=True
         )
 
 

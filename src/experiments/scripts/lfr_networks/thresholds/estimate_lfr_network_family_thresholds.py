@@ -4,7 +4,7 @@ import time
 
 import numpy as np
 
-from experiments.config import SYNTHETIC_NETWORKS_BASE_DIR_PATH, SYNTHETIC_RESULTS_BASE_DIR_PATH
+from experiments.config import SYNTHETIC_NETWORKS_PATH, SYNTHETIC_RESULTS_PATH
 from experiments.faddis.faddis import faddis
 from experiments.lapin.lapin import lapin
 from experiments.scripts.lfr_networks.thresholds.bootstrap_and_mse_selection.bootstrap_and_mse import \
@@ -43,10 +43,10 @@ def estimate_lfr_network_family_thresholds(config: LFRThresholdEstimationConfig)
     """
 
     execution_start_time = time.perf_counter()
-    results_dir = create_results_dir(SYNTHETIC_RESULTS_BASE_DIR_PATH)
+    results_dir = create_results_dir(SYNTHETIC_RESULTS_PATH)
 
     # Stage 1: Obtain candidate thresholds for each network family.
-    family_dirs = get_family_dirs(SYNTHETIC_NETWORKS_BASE_DIR_PATH)
+    family_dirs = get_family_dirs(SYNTHETIC_NETWORKS_PATH)
 
     for family_idx, family_dir in enumerate(family_dirs, start=1):
         log_progress(family_idx, len(family_dirs), family_dir.name, 4, True)
@@ -63,7 +63,7 @@ def estimate_lfr_network_family_thresholds(config: LFRThresholdEstimationConfig)
                 log_progress(network_name_idx, len(network_names), network_name, 2)
                 try:
                     graph, _, k = load_lfr_benchmark_network(
-                        dir_path=os.path.join(SYNTHETIC_NETWORKS_BASE_DIR_PATH, family_dir.name), filename=network_name
+                        dir_path=os.path.join(SYNTHETIC_NETWORKS_PATH, family_dir.name), filename=network_name
                     )
                     A = compute_adjacency_matrix(graph)
                     W = np.asarray(A if not config.apply_lapin else lapin(A), dtype=np.float64)

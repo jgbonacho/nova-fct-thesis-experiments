@@ -4,8 +4,8 @@ import time
 from pathlib import Path
 
 import numpy as np
-from experiments.config import REAL_WORLD_RESULTS_BASE_DIR_PATH, REAL_WORLD_RESULTS_TRAIN_NETWORKS_NAME, \
-    REAL_WORLD_TRAIN_NETWORKS_BASE_DIR_PATH
+
+from experiments.config import RW_RESULTS_PATH, RW_TRAINING_NETWORKS_PATH, RW_RESULTS_TRAINING_NETWORKS_NAME
 from experiments.faddis.faddis import faddis
 from experiments.lapin.lapin import lapin
 from experiments.scripts.real_world_networks.sensitivity_analysis.correlations.correlations import \
@@ -14,9 +14,8 @@ from experiments.scripts.real_world_networks.sensitivity_analysis.utils.utils im
     append_properties, save_experiment_report
 from experiments.scripts.real_world_networks.sensitivity_analysis.utils.variables import \
     RAW_CONTRIBUTIONS_FILENAME, RAW_CONTRIBUTIONS_FIELDNAMES, NETWORK_PROPERTIES_FILENAME, \
-    NETWORK_PROPERTIES_FIELDNAMES, \
-    FADDIS_SENSITIVITY_ANALYSIS_FILENAME, \
-    FADDIS_SENSITIVITY_ANALYSIS_FIELDNAMES, REPORT_FILENAME
+    NETWORK_PROPERTIES_FIELDNAMES, FADDIS_SENSITIVITY_ANALYSIS_FILENAME, FADDIS_SENSITIVITY_ANALYSIS_FIELDNAMES, \
+    REPORT_FILENAME
 from experiments.scripts.real_world_networks.utils.network_properties.network_properties import \
     compute_network_properties
 from experiments.scripts.real_world_networks.utils.real_world_data_loader import load_network_from_gml
@@ -39,10 +38,10 @@ def sensitivity_analysis_in_real_world_networks(apply_lapin: bool = True) -> str
     """
 
     execution_start_time = time.perf_counter()
-    results_dir = create_results_dir(REAL_WORLD_RESULTS_BASE_DIR_PATH)
+    results_dir = create_results_dir(RW_RESULTS_PATH)
 
-    network_type = REAL_WORLD_RESULTS_TRAIN_NETWORKS_NAME
-    networks_base_dir_path = REAL_WORLD_TRAIN_NETWORKS_BASE_DIR_PATH
+    network_type = RW_RESULTS_TRAINING_NETWORKS_NAME
+    networks_base_dir_path = RW_TRAINING_NETWORKS_PATH
 
     family_dirs = sorted(
         [directory for directory in Path(networks_base_dir_path).iterdir() if directory.is_dir()],
@@ -93,7 +92,7 @@ def sensitivity_analysis_in_real_world_networks(apply_lapin: bool = True) -> str
                     continue
 
     perform_faddis_sensitivity_analysis(
-        results_dir=os.path.join(results_dir, REAL_WORLD_RESULTS_TRAIN_NETWORKS_NAME),
+        results_dir=os.path.join(results_dir, RW_RESULTS_TRAINING_NETWORKS_NAME),
         network_properties_input_filename=NETWORK_PROPERTIES_FILENAME,
         network_properties_input_fieldnames=NETWORK_PROPERTIES_FIELDNAMES,
         raw_contributions_input_filename=RAW_CONTRIBUTIONS_FILENAME,

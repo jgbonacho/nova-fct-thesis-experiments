@@ -5,10 +5,13 @@ from pathlib import Path
 
 import numpy as np
 
-from experiments.config import REAL_WORLD_TRAIN_NETWORKS_BASE_DIR_PATH, REAL_WORLD_TEST_NETWORKS_WITH_GT_BASE_DIR_PATH, \
-    REAL_WORLD_TEST_NETWORKS_WITHOUT_GT_BASE_DIR_PATH, REAL_WORLD_RESULTS_BASE_DIR_PATH, \
-    REAL_WORLD_RESULTS_TRAIN_NETWORKS_NAME, REAL_WORLD_RESULTS_TRAIN_NETWORKS_WITH_GT_NAME, \
-    REAL_WORLD_RESULTS_TEST_NETWORKS_WITH_GT_NAME, REAL_WORLD_RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME
+from experiments.config import RW_TRAINING_NETWORKS_PATH, \
+    RW_VALIDATION_NETWORKS_WITH_GT_PATH, \
+    RW_VALIDATION_NETWORKS_WITHOUT_GT_PATH, RW_RESULTS_PATH, \
+    RW_RESULTS_REFERENCE_THS_NAME, RW_RESULTS_TRAINING_NETWORKS_NAME, \
+    RW_RESULTS_VALIDATION_NETWORKS_WITH_GT_NAME, RW_RESULTS_VALIDATION_NETWORKS_WITHOUT_GT_NAME, \
+    RW_RESULTS_TEST_NETWORKS_WITH_GT_NAME, RW_TEST_NETWORKS_WITHOUT_GT_PATH, \
+    RW_RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME, RW_TEST_NETWORKS_WITH_GT_PATH
 from experiments.faddis.faddis import faddis
 from experiments.lapin.lapin import lapin
 from experiments.scripts.real_world_networks.sensitivity_analysis.utils.utils import load_real_world_network_configs
@@ -44,13 +47,27 @@ from experiments.scripts.utils.adjacency_matrix import compute_adjacency_matrix
 from experiments.scripts.utils.utils import create_results_dir, log_progress, create_dir
 
 
-def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationConfig) -> str:
+def estimate_real_world_network_thresholds(
+        config: RealWorldThresholdEstimationConfig,
+        estimate_thresholds_for_training_networks=False,
+        estimate_thresholds_for_validation_networks=True,
+        estimate_thresholds_for_test_networks=True
+) -> str:
     """
     Estimate real-world network thresholds.
 
     Parameters:
         config : (RealWorldThresholdEstimationConfig)
             Configuration of the threshold estimation.
+        estimate_thresholds_for_training_networks : (bool)
+            Whether to estimate thresholds for the training networks.
+            Default is False.
+        estimate_thresholds_for_validation_networks : (bool)
+            Whether to estimate thresholds for the validation networks.
+            Default is True.
+        estimate_thresholds_for_test_networks : (bool)
+            Whether to estimate thresholds for the test networks.
+            Default is True.
 
     Returns:
         results_dir : (str)
@@ -58,11 +75,11 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
     """
 
     execution_start_time = time.perf_counter()
-    results_dir = create_results_dir(REAL_WORLD_RESULTS_BASE_DIR_PATH)
+    results_dir = create_results_dir(RW_RESULTS_PATH)
 
     # Stage 1: Estimate threshold for each training network family.
     family_dirs = sorted(
-        [directory for directory in Path(REAL_WORLD_TRAIN_NETWORKS_BASE_DIR_PATH).iterdir() if directory.is_dir()],
+        [directory for directory in Path(RW_TRAINING_NETWORKS_PATH).iterdir() if directory.is_dir()],
         key=lambda path: path.name
     )
 
@@ -70,7 +87,7 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
         log_progress(network_family_idx, len(family_dirs), network_family_dir.name, 4, True)
 
         family_results_dir = create_dir(
-            os.path.join(results_dir, REAL_WORLD_RESULTS_TRAIN_NETWORKS_NAME, network_family_dir.name)
+            os.path.join(results_dir, RW_RESULTS_REFERENCE_THS_NAME, network_family_dir.name)
         )
         raw_contributions_file = os.path.join(family_results_dir, RAW_CONTRIBUTIONS_FILENAME)
         network_configs = load_real_world_network_configs(network_family_dir, network_family_dir.name)
@@ -101,7 +118,7 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
                     continue
 
     thresholds_per_family = compute_thresholds_per_family(
-        results_dir=os.path.join(results_dir, REAL_WORLD_RESULTS_TRAIN_NETWORKS_NAME),
+        results_dir=os.path.join(results_dir, RW_RESULTS_REFERENCE_THS_NAME),
         input_filename=RAW_CONTRIBUTIONS_FILENAME,
         input_fieldnames=RAW_CONTRIBUTIONS_FIELDNAMES,
         k_boundary_thresholds_by_network_output_filename=K_BOUNDARY_THRESHOLDS_BY_NETWORK_FILENAME,
@@ -112,11 +129,23 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
     )
 
     # Stage 2: Estimate the final threshold for each network.
-    for network_type_name, networks_base_dir_path in [
-        (REAL_WORLD_RESULTS_TRAIN_NETWORKS_WITH_GT_NAME, REAL_WORLD_TRAIN_NETWORKS_BASE_DIR_PATH),
-        (REAL_WORLD_RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME, REAL_WORLD_TEST_NETWORKS_WITHOUT_GT_BASE_DIR_PATH),
-        (REAL_WORLD_RESULTS_TEST_NETWORKS_WITH_GT_NAME, REAL_WORLD_TEST_NETWORKS_WITH_GT_BASE_DIR_PATH),
-    ]:
+    network_types = []
+    if estimate_thresholds_for_training_networks:
+        network_types.append(
+            (RW_RESULTS_TRAINING_NETWORKS_NAME, RW_TRAINING_NETWORKS_PATH,)
+        )
+    if estimate_thresholds_for_validation_networks:
+        network_types.extend([
+            (RW_RESULTS_VALIDATION_NETWORKS_WITHOUT_GT_NAME, RW_VALIDATION_NETWORKS_WITHOUT_GT_PATH),
+            (RW_RESULTS_VALIDATION_NETWORKS_WITH_GT_NAME, RW_VALIDATION_NETWORKS_WITH_GT_PATH),
+        ])
+    if estimate_thresholds_for_test_networks:
+        network_types.extend([
+            (RW_RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME, RW_TEST_NETWORKS_WITHOUT_GT_PATH),
+            (RW_RESULTS_TEST_NETWORKS_WITH_GT_NAME, RW_TEST_NETWORKS_WITH_GT_PATH),
+        ])
+
+    for network_type_name, networks_base_dir_path in network_types:
         family_dirs = sorted(
             [directory for directory in Path(networks_base_dir_path).iterdir() if directory.is_dir()],
             key=lambda path: path.name
@@ -219,7 +248,7 @@ def estimate_real_world_network_thresholds(config: RealWorldThresholdEstimationC
 
                 # Stage 2.6: Evaluate the final threshold using extrinsic metrics when ground truth is available.
                 if network_type_name in {
-                    REAL_WORLD_RESULTS_TRAIN_NETWORKS_WITH_GT_NAME, REAL_WORLD_RESULTS_TEST_NETWORKS_WITH_GT_NAME
+                    RW_RESULTS_TRAINING_NETWORKS_NAME, RW_RESULTS_VALIDATION_NETWORKS_WITH_GT_NAME
                 }:
                     evaluate_final_threshold_using_extrinsic_metrics(
                         results_dir=os.path.join(results_dir, network_type_name, network_config.name),

@@ -5,10 +5,6 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
-BOOTSTRAP_SAMPLES = 10000
-CONFIDENCE_LEVEL = 0.95
-RANDOM_SEED = 42
-
 
 def perform_faddis_sensitivity_analysis(
         results_dir: str,
@@ -18,17 +14,17 @@ def perform_faddis_sensitivity_analysis(
         raw_contributions_input_fieldnames: list,
         output_filename: str,
         output_fieldnames: list,
-        apply_lapin: bool
+        apply_lapin: bool,
+        bootstrap_samples: int = 10000,
+        confidence_level: float = 0.95,
+        random_seed: int = 42
 ) -> None:
     """
-    Perform the FADDIS sensitivity analysis between network properties and valid
-    contributions at K.
+    Perform the FADDIS sensitivity analysis between network properties and valid contributions at K.
 
-    The analysis is performed separately for non-overlapping networks,
-    overlapping networks, and both ground-truth types combined. In addition to
-    Pearson and Spearman correlation coefficients, bootstrap confidence
-    intervals, scatter plots, and a leave-one-network-out influence analysis
-    are produced.
+    The analysis is performed separately for non-overlapping networks, overlapping networks, and both ground-truth types combined.
+    In addition to Pearson and Spearman correlation coefficients, bootstrap confidence intervals, scatter plots,
+    and a leave-one-network-out influence analysis are produced.
 
     Parameters:
         results_dir : (str)
@@ -47,15 +43,21 @@ def perform_faddis_sensitivity_analysis(
             Field names of the output CSV file.
         apply_lapin : (bool)
             Whether LAPIN was applied before running FADDIS.
+        bootstrap_samples : (int)
+            Number of bootstrap samples.
+            Default is 10000.
+        confidence_level : (float)
+            Confidence level for the bootstrap intervals.
+            Default is 0.95.
+        random_seed : (int)
+            Random seed for reproducibility.
+            Default is 42.
 
     Returns:
         None
     """
 
-    network_properties = _load_network_properties(
-        os.path.join(results_dir, network_properties_input_filename)
-    )
-
+    network_properties = _load_network_properties(os.path.join(results_dir, network_properties_input_filename))
     contributions_at_k = _load_valid_contributions_at_k(
         results_dir,
         raw_contributions_input_filename,
@@ -64,10 +66,7 @@ def perform_faddis_sensitivity_analysis(
     )
 
     ground_truth_groups = [
-        (
-            "Non-overlapping and Overlapping",
-            network_properties
-        ),
+        ("Non-overlapping and Overlapping", network_properties),
         (
             "Non-overlapping",
             {
@@ -86,27 +85,17 @@ def perform_faddis_sensitivity_analysis(
         )
     ]
 
-    excluded_columns = {
-        "Network",
-        "Ground-Truth?",
-        "Overlapping Ground-Truth?"
-    }
+    excluded_columns = {"Network", "Ground-Truth?", "Overlapping Ground-Truth?"}
 
     plots_dir = os.path.join(results_dir, "plots")
     os.makedirs(plots_dir, exist_ok=True)
 
     output_rows = []
-
     for ground_truth_type, group_network_properties in ground_truth_groups:
-
-        group_plots_dir = os.path.join(
-            plots_dir,
-            _safe_filename(ground_truth_type).lower()
-        )
+        group_plots_dir = os.path.join(plots_dir, _safe_filename(ground_truth_type).lower())
         os.makedirs(group_plots_dir, exist_ok=True)
 
         for property_name in network_properties_input_fieldnames:
-
             if property_name in excluded_columns:
                 continue
 
@@ -115,14 +104,10 @@ def perform_faddis_sensitivity_analysis(
             y_values = []
 
             for network_name, properties in group_network_properties.items():
-
                 if network_name not in contributions_at_k:
                     continue
 
-                property_value = _parse_optional_float(
-                    properties.get(property_name)
-                )
-
+                property_value = _parse_optional_float(properties.get(property_name))
                 contribution_at_k = contributions_at_k[network_name]
 
                 if property_value is None:
@@ -135,20 +120,10 @@ def perform_faddis_sensitivity_analysis(
             if len(x_values) < 3 or len(set(x_values)) <= 1:
                 continue
 
-            pearson_correlation = _pearson_correlation(
-                x_values,
-                y_values
-            )
+            pearson_correlation = _pearson_correlation(x_values, y_values)
+            spearman_correlation = _spearman_correlation(x_values, y_values)
 
-            spearman_correlation = _spearman_correlation(
-                x_values,
-                y_values
-            )
-
-            if (
-                    pearson_correlation is None
-                    or spearman_correlation is None
-            ):
+            if pearson_correlation is None or spearman_correlation is None:
                 continue
 
             # Bootstrap confidence intervals
@@ -157,9 +132,9 @@ def perform_faddis_sensitivity_analysis(
                     x_values=x_values,
                     y_values=y_values,
                     correlation_function=_spearman_correlation,
-                    n_bootstrap=BOOTSTRAP_SAMPLES,
-                    confidence_level=CONFIDENCE_LEVEL,
-                    random_seed=RANDOM_SEED
+                    n_bootstrap=bootstrap_samples,
+                    confidence_level=confidence_level,
+                    random_seed=random_seed
                 )
 
             pearson_ci_lower, pearson_ci_upper = \
@@ -167,9 +142,9 @@ def perform_faddis_sensitivity_analysis(
                     x_values=x_values,
                     y_values=y_values,
                     correlation_function=_pearson_correlation,
-                    n_bootstrap=BOOTSTRAP_SAMPLES,
-                    confidence_level=CONFIDENCE_LEVEL,
-                    random_seed=RANDOM_SEED
+                    n_bootstrap=bootstrap_samples,
+                    confidence_level=confidence_level,
+                    random_seed=random_seed
                 )
 
             output_rows.append({
@@ -186,8 +161,7 @@ def perform_faddis_sensitivity_analysis(
                 "Pearson 95% CI Lower": pearson_ci_lower,
                 "Pearson 95% CI Upper": pearson_ci_upper,
 
-                "Abs Spearman Correlation (Sort Criterion)":
-                    abs(spearman_correlation)
+                "Abs Spearman Correlation (Sort Criterion)": abs(spearman_correlation)
             })
 
             # Scatter plot
@@ -236,19 +210,8 @@ def perform_faddis_sensitivity_analysis(
         row.pop("Abs Spearman Correlation (Sort Criterion)")
 
     file = os.path.join(results_dir, output_filename)
-
-    with open(
-            file=file,
-            mode="w",
-            newline="",
-            encoding="utf-8"
-    ) as out_file:
-
-        writer = csv.DictWriter(
-            out_file,
-            fieldnames=output_fieldnames
-        )
-
+    with open(file=file, mode="w", newline="", encoding="utf-8") as out_file:
+        writer = csv.DictWriter(out_file, fieldnames=output_fieldnames)
         writer.writeheader()
         writer.writerows(output_rows)
 
@@ -268,11 +231,9 @@ def _plot_scatter(
         output_dir: str
 ) -> None:
     """
-    Generate a scatter plot between a structural network property and the FADDIS
-    contribution at K.
+    Generate a scatter plot between a structural network property and the FADDIS contribution at K.
 
-    Each point represents one network and is labelled with its network name. A
-    linear least-squares trend line is included for visual interpretation.
+    Each point represents one network. A linear least-squares trend line is included for visual interpretation.
 
     Parameters:
         network_names : (list[str])
@@ -309,38 +270,17 @@ def _plot_scatter(
 
     fig, ax = plt.subplots(figsize=(8, 6))
 
-    ax.scatter(
-        x,
-        y,
-        s=50
-    )
+    ax.scatter(x, y, s=50)
 
     # Add a simple linear trend line.
     if len(x) >= 2 and np.std(x) > 0:
         slope, intercept = np.polyfit(x, y, 1)
-
-        x_line = np.linspace(
-            np.min(x),
-            np.max(x),
-            100
-        )
-
+        x_line = np.linspace(np.min(x), np.max(x), 100)
         y_line = slope * x_line + intercept
-
-        ax.plot(
-            x_line,
-            y_line,
-            linestyle="--",
-            linewidth=1.2
-        )
+        ax.plot(x_line, y_line, linestyle="--", linewidth=1.2)
 
     ax.set_xlabel(property_name)
     ax.set_ylabel("FADDIS contribution at K")
-
-    # ax.set_title(
-    #    f"{ground_truth_type}\n"
-    #    f"{property_name} vs. FADDIS contribution at K"
-    # )
 
     statistics_text = (
         f"Spearman = {spearman_correlation:.3f} "
@@ -363,29 +303,13 @@ def _plot_scatter(
             "alpha": 0.15
         }
     )
-
-    ax.ticklabel_format(
-        axis="y",
-        style="sci",
-        scilimits=(0, 0)
-    )
-
-    ax.grid(
-        True,
-        alpha=0.25
-    )
+    ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
+    ax.grid(True, alpha=0.25)
 
     fig.tight_layout()
-
-    output_base = os.path.join(
-        output_dir,
-        f"{_safe_filename(property_name).lower()}_s"
-    )
-
-    _save_figure(
-        fig=fig,
-        output_base=output_base
-    )
+    output_base = os.path.join(output_dir, f"{_safe_filename(property_name).lower()}_s")
+    fig.savefig(f"{output_base}.pdf", bbox_inches="tight")
+    plt.close(fig)
 
 
 def _plot_leave_one_out_influence(
@@ -401,9 +325,8 @@ def _plot_leave_one_out_influence(
     """
     Perform and plot a leave-one-network-out influence analysis.
 
-    For each network, the Pearson and Spearman correlations are recomputed after
-    excluding that network. This makes it possible to determine whether an
-    observed correlation is strongly driven by a single network.
+    For each network, the Pearson and Spearman correlations are recomputed after excluding that network.
+    This makes it possible to determine whether an observed correlation is strongly driven by a single network.
 
     Parameters:
         network_names : (list[str])
@@ -434,36 +357,15 @@ def _plot_leave_one_out_influence(
     excluded_networks = []
     spearman_values = []
     pearson_values = []
-
     for excluded_idx, excluded_network in enumerate(network_names):
+        x_leave_one_out = [value for idx, value in enumerate(x_values) if idx != excluded_idx]
+        y_leave_one_out = [value for idx, value in enumerate(y_values) if idx != excluded_idx]
 
-        x_leave_one_out = [
-            value
-            for idx, value in enumerate(x_values)
-            if idx != excluded_idx
-        ]
-
-        y_leave_one_out = [
-            value
-            for idx, value in enumerate(y_values)
-            if idx != excluded_idx
-        ]
-
-        if (
-                len(x_leave_one_out) < 3
-                or len(set(x_leave_one_out)) <= 1
-        ):
+        if len(x_leave_one_out) < 3 or len(set(x_leave_one_out)) <= 1:
             continue
 
-        spearman = _spearman_correlation(
-            x_leave_one_out,
-            y_leave_one_out
-        )
-
-        pearson = _pearson_correlation(
-            x_leave_one_out,
-            y_leave_one_out
-        )
+        spearman = _spearman_correlation(x_leave_one_out, y_leave_one_out)
+        pearson = _pearson_correlation(x_leave_one_out, y_leave_one_out)
 
         if spearman is None or pearson is None:
             continue
@@ -477,14 +379,8 @@ def _plot_leave_one_out_influence(
 
     positions = np.arange(len(excluded_networks))
 
-    fig_width = max(
-        8,
-        len(excluded_networks) * 0.7
-    )
-
-    fig, ax = plt.subplots(
-        figsize=(fig_width, 6)
-    )
+    fig_width = max(8, len(excluded_networks) * 0.7)
+    fig, ax = plt.subplots(figsize=(fig_width, 6))
 
     spearman_line, = ax.plot(
         positions,
@@ -519,54 +415,19 @@ def _plot_leave_one_out_influence(
         label=f"Full Pearson ({full_pearson:.3f})"
     )
 
-    ax.axhline(
-        0.0,
-        linewidth=0.8,
-        alpha=0.5
-    )
-
+    ax.axhline(0.0, linewidth=0.8, alpha=0.5)
     ax.set_xticks(positions)
-
-    ax.set_xticklabels(
-        excluded_networks,
-        rotation=45,
-        ha="right"
-    )
-
-    ax.set_ylim(
-        -1.05,
-        1.05
-    )
+    ax.set_xticklabels(excluded_networks, rotation=45, ha="right")
+    ax.set_ylim(-1.05, 1.05)
 
     ax.set_xlabel("Excluded network")
     ax.set_ylabel("Correlation coefficient")
-
-    # ax.set_title(
-    #    f"{ground_truth_type}\n"
-    #    f"Leave-one-network-out influence: {property_name}"
-    # )
-
-    ax.grid(
-        True,
-        axis="y",
-        alpha=0.25
-    )
-
-    ax.legend(
-        fontsize=8
-    )
-
+    ax.grid(True, axis="y", alpha=0.25)
+    ax.legend(fontsize=8)
     fig.tight_layout()
-
-    output_base = os.path.join(
-        output_dir,
-        f"{_safe_filename(property_name).lower()}_l"
-    )
-
-    _save_figure(
-        fig=fig,
-        output_base=output_base
-    )
+    output_base = os.path.join(output_dir, f"{_safe_filename(property_name).lower()}_l")
+    fig.savefig(f"{output_base}.pdf", bbox_inches="tight")
+    plt.close(fig)
 
 
 def _bootstrap_correlation_confidence_interval(
@@ -578,12 +439,10 @@ def _bootstrap_correlation_confidence_interval(
         random_seed: int = 42
 ) -> tuple[float, float]:
     """
-    Compute a percentile bootstrap confidence interval for a correlation
-    coefficient.
+    Compute a percentile bootstrap confidence interval for a correlation coefficient.
 
-    Paired observations are resampled together so that the association between
-    each network property and its corresponding FADDIS contribution is
-    preserved.
+    Paired observations are resampled together so that the association between each network property and
+    its corresponding FADDIS contribution is preserved.
 
     Parameters:
         x_values : (list[float])
@@ -604,107 +463,35 @@ def _bootstrap_correlation_confidence_interval(
             Bootstrap confidence interval bounds.
     """
 
-    x = np.asarray(
-        x_values,
-        dtype=np.float64
-    )
-
-    y = np.asarray(
-        y_values,
-        dtype=np.float64
-    )
-
+    x = np.asarray(x_values, dtype=np.float64)
+    y = np.asarray(y_values, dtype=np.float64)
     n = len(x)
 
     if n < 3:
         return None, None
 
-    rng = np.random.default_rng(
-        random_seed
-    )
-
+    rng = np.random.default_rng(random_seed)
     bootstrap_correlations = []
-
     for _ in range(n_bootstrap):
-
-        sample_indices = rng.integers(
-            low=0,
-            high=n,
-            size=n
-        )
+        sample_indices = rng.integers(low=0, high=n, size=n)
 
         x_sample = x[sample_indices]
         y_sample = y[sample_indices]
 
-        correlation = correlation_function(
-            x_sample.tolist(),
-            y_sample.tolist()
-        )
+        correlation = correlation_function(x_sample.tolist(), y_sample.tolist())
 
-        if (
-                correlation is not None
-                and np.isfinite(correlation)
-        ):
-            bootstrap_correlations.append(
-                correlation
-            )
+        if correlation is not None and np.isfinite(correlation):
+            bootstrap_correlations.append(correlation)
 
     if len(bootstrap_correlations) < 2:
         return None, None
 
     alpha = 1.0 - confidence_level
+    lower_percentile = 100.0 * alpha / 2.0
+    upper_percentile = 100.0 * (1.0 - alpha / 2.0)
+    lower_bound, upper_bound = np.percentile(bootstrap_correlations, [lower_percentile, upper_percentile])
 
-    lower_percentile = (
-            100.0 * alpha / 2.0
-    )
-
-    upper_percentile = (
-            100.0 * (1.0 - alpha / 2.0)
-    )
-
-    lower_bound, upper_bound = np.percentile(
-        bootstrap_correlations,
-        [
-            lower_percentile,
-            upper_percentile
-        ]
-    )
-
-    return (
-        float(lower_bound),
-        float(upper_bound)
-    )
-
-
-def _save_figure(
-        fig,
-        output_base: str
-) -> None:
-    """
-    Save a figure using the configured output format.
-
-    Parameters:
-        fig :
-            Figure to save.
-        output_base : (str)
-            Base path used to construct the output filename.
-
-    Returns:
-        None
-    """
-
-    # fig.savefig(
-    #    f"{output_base}.png",
-    #    dpi=300,
-    #    bbox_inches="tight"
-    # )
-
-    fig.savefig(
-        f"{output_base}.pdf",
-        bbox_inches="tight"
-    )
-
-    plt.close(fig)
+    return float(lower_bound), float(upper_bound)
 
 
 def _safe_filename(value: str) -> str:
@@ -720,17 +507,10 @@ def _safe_filename(value: str) -> str:
             Filename-safe representation of the input string.
     """
 
-    return "".join(
-        character
-        if character.isalnum() or character in ("-", "_")
-        else "_"
-        for character in value
-    )
+    return "".join(character if character.isalnum() or character in ("-", "_") else "_" for character in value)
 
 
-def _format_optional_float(
-        value: float
-) -> str:
+def _format_optional_float(value: float) -> str:
     """
     Format an optional floating-point value.
 
@@ -749,9 +529,7 @@ def _format_optional_float(
     return f"{value:.3f}"
 
 
-def _load_network_properties(
-        input_path: str
-) -> dict[str, dict]:
+def _load_network_properties(input_path: str) -> dict[str, dict]:
     """
     Load network properties from a CSV file.
 
@@ -766,18 +544,11 @@ def _load_network_properties(
 
     properties_by_network = {}
 
-    with open(
-            input_path,
-            "r",
-            newline="",
-            encoding="utf-8"
-    ) as in_file:
+    with open(input_path, "r", newline="", encoding="utf-8") as in_file:
         reader = csv.DictReader(in_file)
 
         for row in reader:
-            properties_by_network[
-                row["Network"]
-            ] = row
+            properties_by_network[row["Network"]] = row
 
     return properties_by_network
 
@@ -789,8 +560,7 @@ def _load_valid_contributions_at_k(
         apply_lapin: bool
 ) -> dict[str, float]:
     """
-    Load the valid FADDIS contributions corresponding to the ground-truth
-    number of communities.
+    Load the valid FADDIS contributions corresponding to the ground-truth number of communities.
 
     Parameters:
         results_dir : (str)
@@ -811,71 +581,39 @@ def _load_valid_contributions_at_k(
     contributions_at_k = {}
 
     network_family_dirs = sorted(
-        [
-            directory
-            for directory in Path(results_dir).iterdir()
-            if directory.is_dir()
-        ],
+        [directory for directory in Path(results_dir).iterdir() if directory.is_dir()],
         key=lambda path: path.name
     )
 
     for network_family_dir in network_family_dirs:
-
-        input_path = os.path.join(
-            network_family_dir,
-            raw_contributions_input_filename
-        )
+        input_path = os.path.join(network_family_dir, raw_contributions_input_filename)
 
         if not os.path.exists(input_path):
             continue
 
-        with open(
-                input_path,
-                "r",
-                newline="",
-                encoding="utf-8"
-        ) as in_file:
-
+        with open(input_path, "r", newline="", encoding="utf-8") as in_file:
             reader = csv.reader(in_file)
             next(reader, None)
 
             for row in reader:
-
                 network_name = row[0]
                 k = int(row[1])
 
-                contributions = [
-                    float(value)
-                    for value
-                    in row[len(raw_contributions_input_fieldnames):]
-                    if value != ""
-                ]
+                contributions = [float(value) for value in row[len(raw_contributions_input_fieldnames):] if value != ""]
 
-                # Without LAPIN, the first extracted component is the
-                # background component, so community K is K+1.
-                contribution_idx = (
-                    k - 1
-                    if apply_lapin
-                    else k
-                )
+                # Without LAPIN, the first extracted component is the background component, so community K is K+1.
+                contribution_idx = (k - 1 if apply_lapin else k)
 
                 if contribution_idx >= len(contributions):
                     continue
 
-                contribution_at_k = contributions[
-                    contribution_idx
-                ]
-
-                contributions_at_k[
-                    network_name
-                ] = contribution_at_k
+                contribution_at_k = contributions[contribution_idx]
+                contributions_at_k[network_name] = contribution_at_k
 
     return contributions_at_k
 
 
-def _parse_optional_float(
-        value: str
-) -> float:
+def _parse_optional_float(value: str) -> float:
     """
     Parse an optional value as a finite floating-point number.
 
@@ -893,7 +631,6 @@ def _parse_optional_float(
         return None
 
     try:
-
         parsed_value = float(value)
 
         if not np.isfinite(parsed_value):
@@ -905,10 +642,7 @@ def _parse_optional_float(
         return None
 
 
-def _pearson_correlation(
-        x_values: list[float],
-        y_values: list[float]
-) -> float:
+def _pearson_correlation(x_values: list[float], y_values: list[float]) -> float:
     """
     Compute the Pearson correlation coefficient between two sequences of values.
 
@@ -924,34 +658,18 @@ def _pearson_correlation(
             zero variance.
     """
 
-    x = np.asarray(
-        x_values,
-        dtype=np.float64
-    )
+    x = np.asarray(x_values, dtype=np.float64)
+    y = np.asarray(y_values, dtype=np.float64)
 
-    y = np.asarray(
-        y_values,
-        dtype=np.float64
-    )
-
-    if (
-            np.std(x) == 0
-            or np.std(y) == 0
-    ):
+    if np.std(x) == 0 or np.std(y) == 0:
         return None
 
-    return float(
-        np.corrcoef(x, y)[0, 1]
-    )
+    return float(np.corrcoef(x, y)[0, 1])
 
 
-def _spearman_correlation(
-        x_values: list[float],
-        y_values: list[float]
-) -> float:
+def _spearman_correlation(x_values: list[float], y_values: list[float]) -> float:
     """
-    Compute the Spearman rank correlation coefficient between two sequences of
-    values.
+    Compute the Spearman rank correlation coefficient between two sequences of values.
 
     Parameters:
         x_values : (list[float])
@@ -965,18 +683,12 @@ def _spearman_correlation(
             variable has zero variance.
     """
 
-    return _pearson_correlation(
-        _rank_values(x_values),
-        _rank_values(y_values)
-    )
+    return _pearson_correlation(_rank_values(x_values), _rank_values(y_values))
 
 
-def _rank_values(
-        values: list[float]
-) -> list[float]:
+def _rank_values(values: list[float]) -> list[float]:
     """
     Assign average ranks to a sequence of values.
-
     Tied values receive the average of their rank positions.
 
     Parameters:
@@ -988,40 +700,19 @@ def _rank_values(
             Rank assigned to each value in its original position.
     """
 
-    sorted_indices = sorted(
-        range(len(values)),
-        key=lambda idx: values[idx]
-    )
-
-    ranks = [
-        0.0
-        for _ in values
-    ]
+    sorted_indices = sorted(range(len(values)), key=lambda idx: values[idx])
+    ranks = [0.0 for _ in values]
 
     i = 0
-
     while i < len(values):
-
         j = i
 
-        while (
-                j + 1 < len(values)
-                and values[sorted_indices[j + 1]]
-                == values[sorted_indices[i]]
-        ):
+        while j + 1 < len(values) and values[sorted_indices[j + 1]] == values[sorted_indices[i]]:
             j += 1
 
-        average_rank = (
-                               i + j + 2
-                       ) / 2
-
-        for rank_idx in range(
-                i,
-                j + 1
-        ):
-            ranks[
-                sorted_indices[rank_idx]
-            ] = average_rank
+        average_rank = (i + j + 2) / 2
+        for rank_idx in range(i, j + 1):
+            ranks[sorted_indices[rank_idx]] = average_rank
 
         i = j + 1
 

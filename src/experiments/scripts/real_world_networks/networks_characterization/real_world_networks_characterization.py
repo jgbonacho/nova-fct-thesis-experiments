@@ -2,9 +2,12 @@ import os
 import time
 from pathlib import Path
 
-from experiments.config import REAL_WORLD_RESULTS_BASE_DIR_PATH, REAL_WORLD_TEST_NETWORKS_WITH_GT_BASE_DIR_PATH, \
-    REAL_WORLD_TEST_NETWORKS_WITHOUT_GT_BASE_DIR_PATH, REAL_WORLD_RESULTS_TEST_NETWORKS_WITH_GT_NAME, \
-    REAL_WORLD_RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME
+from experiments.config import RW_RESULTS_PATH, RW_VALIDATION_NETWORKS_WITH_GT_PATH, \
+    RW_VALIDATION_NETWORKS_WITHOUT_GT_PATH, RW_RESULTS_VALIDATION_NETWORKS_WITH_GT_NAME, \
+    RW_RESULTS_VALIDATION_NETWORKS_WITHOUT_GT_NAME, RW_RESULTS_TRAINING_NETWORKS_NAME, \
+    RW_TRAINING_NETWORKS_PATH, RW_RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME, \
+    RW_TEST_NETWORKS_WITHOUT_GT_PATH, RW_TEST_NETWORKS_WITH_GT_PATH, \
+    RW_RESULTS_TEST_NETWORKS_WITH_GT_NAME
 from experiments.scripts.real_world_networks.sensitivity_analysis.utils.utils import load_real_world_network_configs, \
     append_properties, save_experiment_report
 from experiments.scripts.real_world_networks.sensitivity_analysis.utils.variables import \
@@ -19,9 +22,24 @@ from experiments.scripts.real_world_networks.utils.real_world_data_loader import
 from experiments.scripts.utils.utils import create_results_dir, log_progress
 
 
-def characterization_of_real_world_networks() -> str:
+def characterization_of_real_world_networks(
+        characterize_training_networks=True,
+        characterize_validation_networks=True,
+        characterize_test_networks=True
+) -> str:
     """
     Characterization of real world networks.
+
+    Parameters:
+        characterize_training_networks : (bool)
+            Whether to characterize the training networks.
+            Default is True.
+        characterize_validation_networks : (bool)
+            Whether to characterize the validation networks.
+            Default is True.
+        characterize_test_networks : (bool)
+            Whether to characterize the test networks.
+            Default is True.
 
     Returns:
         results_dir : (str)
@@ -29,12 +47,25 @@ def characterization_of_real_world_networks() -> str:
     """
 
     execution_start_time = time.perf_counter()
-    results_dir = create_results_dir(REAL_WORLD_RESULTS_BASE_DIR_PATH)
+    results_dir = create_results_dir(RW_RESULTS_PATH)
 
-    for network_type, networks_base_dir_path in [
-        (REAL_WORLD_RESULTS_TEST_NETWORKS_WITH_GT_NAME, REAL_WORLD_TEST_NETWORKS_WITH_GT_BASE_DIR_PATH),
-        (REAL_WORLD_RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME, REAL_WORLD_TEST_NETWORKS_WITHOUT_GT_BASE_DIR_PATH)
-    ]:
+    network_types = []
+    if characterize_training_networks:
+        network_types.append(
+            (RW_RESULTS_TRAINING_NETWORKS_NAME, RW_TRAINING_NETWORKS_PATH)
+        )
+    if characterize_validation_networks:
+        network_types.extend([
+            (RW_RESULTS_VALIDATION_NETWORKS_WITHOUT_GT_NAME, RW_VALIDATION_NETWORKS_WITHOUT_GT_PATH),
+            (RW_RESULTS_VALIDATION_NETWORKS_WITH_GT_NAME, RW_VALIDATION_NETWORKS_WITH_GT_PATH),
+        ])
+    if characterize_test_networks:
+        network_types.extend([
+            (RW_RESULTS_TEST_NETWORKS_WITHOUT_GT_NAME, RW_TEST_NETWORKS_WITHOUT_GT_PATH),
+            (RW_RESULTS_TEST_NETWORKS_WITH_GT_NAME, RW_TEST_NETWORKS_WITH_GT_PATH),
+        ])
+
+    for network_type, networks_base_dir_path in network_types:
         family_dirs = sorted(
             [directory for directory in Path(networks_base_dir_path).iterdir() if directory.is_dir()],
             key=lambda path: path.name
