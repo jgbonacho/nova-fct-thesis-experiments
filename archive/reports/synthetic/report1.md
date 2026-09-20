@@ -129,7 +129,7 @@
 
 ### Contributions Line Plots
 
-[Open Folder](../results/synthetic/experience1_cluster/results_2026-03-29_16-06-42-670441)
+[Open Folder](../../results/synthetic/experience1_cluster/results_2026-03-29_16-06-42-670441)
 
 ### Statistics
 
