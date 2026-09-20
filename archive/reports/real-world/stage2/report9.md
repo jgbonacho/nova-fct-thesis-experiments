@@ -5,28 +5,28 @@
 
 - [(1) Network Selection and Division](#1-network-selection-and-division)
   - [Train Networks](#train-networks)
+  - [Validation Networks](#validation-networks)
   - [Test Networks](#test-networks)
 - [(2) Observations from Stage 1](#2-observations-from-stage-1)
 - [(3) FADDIS Sensitivity Analysis](#3-faddis-sensitivity-analysis)
-  - [Network Properties (LAPIN-on)](#network-properties-lapin-on)
-  - [Ground-Truth Properties (LAPIN-on)](#ground-truth-properties-lapin-on)
+  - [Network Properties](#network-properties)
+  - [Ground-Truth Properties](#ground-truth-properties)
   - [FADDIS Correlations (LAPIN-on)](#faddis-correlations-lapin-on)
-  - [Network Properties (LAPIN-off)](#network-properties-lapin-off)
-  - [Ground-Truth Properties (LAPIN-off)](#ground-truth-properties-lapin-off)
   - [FADDIS Correlations (LAPIN-off)](#faddis-correlations-lapin-off)
   - [Degree Assortativity (Primary)](#degree-assortativity-primary)
   - [Average Degree (Secondary)](#average-degree-secondary)
 - [(4) Real-World Network Families](#4-real-world-network-families)
   - [Combinations](#combinations)
   - [Train Assignment](#train-assignment)
+  - [Validation Assignment](#validation-assignment)
   - [Test Assignment](#test-assignment)
 - [(5) Pipeline](#5-pipeline)
 - [(6) Pipeline Configuration](#6-pipeline-configuration)
   - [Stage 1: Network Family K-Boundary Thresholds](#stage-1-network-family-k-boundary-thresholds)
   - [Stage 2: Network Contribution-Boundary Thresholds](#stage-2-network-contribution-boundary-thresholds)
     - [Stage 2.1: Candidate Thresholds](#stage-21-candidate-thresholds)
-    - [Stage 2.2: Intrinsic Evaluation](#stage-22-intrinsic-evaluation---number_of_thresholds_to_retain_after_intrinsic_evaluation--epsilon_family)
-    - [Stage 2.3: Stability Evaluation](#stage-23-stability-evaluation---number_of_thresholds_to_retain_after_stability_evaluation--e_family)
+    - [Stage 2.2: Intrinsic Evaluation](#stage-22-intrinsic-evaluation---number_of_thresholds_to_retain_after_intrinsic_evaluation--)
+    - [Stage 2.3: Stability Evaluation](#stage-23-stability-evaluation---number_of_thresholds_to_retain_after_stability_evaluation--)
     - [Stage 2.4: Null Model Diagnostic](#stage-24-null-model-diagnostic)
     - [Stage 2.5: Pareto-based Filtering and Parsimony](#stage-25-pareto-based-filtering-and-parsimony)
     - [Stage 2.6: Extrinsic Evaluation](#stage-26-extrinsic-evaluation)
@@ -56,7 +56,7 @@
 - [(10) Observations](#10-observations)
   - [Comparison of non-overlapping communities configuration vs overlapping communities configuration](#comparison-of-non-overlapping-communities-configuration-vs-overlapping-communities-configuration)
     - [Networks without ground-truth](#networks-without-ground-truth)
-    - [Networks with ground-truth (test and train)](#networks-with-ground-truth-test-and-train)
+    - [Networks with ground-truth (validation and train)](#networks-with-ground-truth-validation-and-train)
   - [Comparison of Network Family K-Boundary Thresholds](#comparison-of-network-family-k-boundary-thresholds)
   - [Comparison with Literature Reference Results of the Real-World Networks without Ground-Truth](#comparison-with-literature-reference-results-of-the-real-world-networks-without-ground-truth)
 
@@ -66,9 +66,9 @@
 - `Networks with reasonable meta-data or informal labels to be considered ground-truth`
 - Networks pre-processed to **undirected, unweighted simple graphs without self-loops**, saved as .gml files.
 - **26 small- to medium-size networks**:
-    - 9 networks with non-overlapping ground-truth: **7 train + 2 test**
-    - 10 networks with overlapping ground-truth: **7 train + 3 test**
-    - 7 networks without ground-truth: **7 test**
+    - 9 networks with non-overlapping ground-truth
+    - 10 networks with overlapping ground-truth
+    - 7 networks without ground-truth
 
 ### Train Networks
 
@@ -89,21 +89,26 @@
 | Facebook Ego-1912 Network [[6](https://snap.stanford.edu/data/egonets-Facebook.html)]                                                      | Online Social                     | Yes           | 747   | 30025 | 2   | 744       | 30023     | 0.9960            | Yes                       | 45     | Train |
 | Facebook Ego-107 Network [[6](https://snap.stanford.edu/data/egonets-Facebook.html)]                                                       | Online Social                     | Yes           | 1034  | 26749 | 1   | 1034      | 26749     | 1.0000            | Yes                       | 9      | Train |
 
+### Validation Networks
+
+| Network                                                                                                                                    | Knowledge Domain                  | Ground-Truth? | Nodes | Edges | CC  | Nodes LCC | Edges LCC | Relative Size LCC | Overlapping Ground-Truth? | K LCC  | Set         |
+|--------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|---------------|-------|-------|-----|-----------|-----------|-------------------|---------------------------|--------|-------------|
+| SocioPatterns Primary School day 2 [[3](https://sociopatterns.org/datasets/primary-school-cumulative-networks/)]                           | Human Contact                     | Yes           | 238   | 5539  | 1   | 238       | 5539      | 1.0000            | No                        | 11     | Validation  |
+| CiteSeer [[5](https://web.archive.org/web/20151007064508/http://linqs.cs.umd.edu/projects/projects/lbc/)]                                  | Scientific Citation               | Yes           | 3312  | 4536  | 438 | 2110      | 3668      | 0.6371            | No                        | 6      | Validation  |
+| Facebook Ego-686 Network [[6](https://snap.stanford.edu/data/egonets-Facebook.html)]                                                       | Online Social                     | Yes           | 168   | 1656  | 1   | 168       | 1656      | 1.0000            | Yes                       | 14     | Validation  |
+| Facebook Ego-348 Network [[6](https://snap.stanford.edu/data/egonets-Facebook.html)]                                                       | Online Social                     | Yes           | 224   | 3192  | 1   | 224       | 3192      | 1.0000            | Yes                       | 14     | Validation  |
+| Les Miserables [[2](https://websites.umich.edu/~mejn/netdata/)]                                                                            | Character                         | No            | 77    | 254   | 1   | 77        | 254       | 1.0000            | -                         | -      | Validation  |
+| C.Elegans Neural Network [[2](https://websites.umich.edu/~mejn/netdata/)]                                                                  | Neural                            | No            | 297   | 2148  | 1   | 297       | 2148      | 1.0000            | -                         | -      | Validation  |
+| C.Elegans Metabolic [[7](https://alephsyslab.com/data/)]                                                                                   | Metabolic                         | No            | 453   | 2025  | 1   | 453       | 2025      | 1.0000            | -                         | -      | Validation  |
+| E-mail URV [[7](https://alephsyslab.com/data/)]                                                                                            | Communication                     | No            | 1133  | 5451  | 1   | 1133      | 5451      | 1.0000            | -                         | -      | Validation  |
+
 ### Test Networks
 
 | Network                                                                                                                                    | Knowledge Domain                  | Ground-Truth? | Nodes | Edges | CC  | Nodes LCC | Edges LCC | Relative Size LCC | Overlapping Ground-Truth? | K LCC  | Set   |
 |--------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------|---------------|-------|-------|-----|-----------|-----------|-------------------|---------------------------|--------|-------|
-| SocioPatterns Primary School day 2 [[3](https://sociopatterns.org/datasets/primary-school-cumulative-networks/)]                           | Human Contact                     | Yes           | 238   | 5539  | 1   | 238       | 5539      | 1.0000            | No                        | 11     | Test  |
-| CiteSeer [[5](https://web.archive.org/web/20151007064508/http://linqs.cs.umd.edu/projects/projects/lbc/)]                                  | Scientific Citation               | Yes           | 3312  | 4536  | 438 | 2110      | 3668      | 0.6371            | No                        | 6      | Test  |
 | Facebook Ego-3980 Network [[6](https://snap.stanford.edu/data/egonets-Facebook.html)]                                                      | Online Social                     | Yes           | 52    | 146   | 4   | 44        | 138       | 0.8462            | Yes                       | 11     | Test  |
-| Facebook Ego-686 Network [[6](https://snap.stanford.edu/data/egonets-Facebook.html)]                                                       | Online Social                     | Yes           | 168   | 1656  | 1   | 168       | 1656      | 1.0000            | Yes                       | 14     | Test  |
-| Facebook Ego-348 Network [[6](https://snap.stanford.edu/data/egonets-Facebook.html)]                                                       | Online Social                     | Yes           | 224   | 3192  | 1   | 224       | 3192      | 1.0000            | Yes                       | 14     | Test  |
 | Dolphins [[2](https://websites.umich.edu/~mejn/netdata/)]                                                                                  | Geographic                        | No            | 62    | 159   | 1   | 62        | 159       | 1.0000            | -                         | -      | Test  |
-| Les Miserables [[2](https://websites.umich.edu/~mejn/netdata/)]                                                                            | Character                         | No            | 77    | 254   | 1   | 77        | 254       | 1.0000            | -                         | -      | Test  |
 | Jazz Musicians [[7](https://alephsyslab.com/data/)]                                                                                        | Human Social                      | No            | 198   | 2742  | 1   | 198       | 2742      | 1.0000            | -                         | -      | Test  |
-| C.Elegans Neural Network [[2](https://websites.umich.edu/~mejn/netdata/)]                                                                  | Neural                            | No            | 297   | 2148  | 1   | 297       | 2148      | 1.0000            | -                         | -      | Test  |
-| C.Elegans Metabolic [[7](https://alephsyslab.com/data/)]                                                                                   | Metabolic                         | No            | 453   | 2025  | 1   | 453       | 2025      | 1.0000            | -                         | -      | Test  |
-| E-mail URV [[7](https://alephsyslab.com/data/)]                                                                                            | Communication                     | No            | 1133  | 5451  | 1   | 1133      | 5451      | 1.0000            | -                         | -      | Test  |
 | Co-authorships in Network Science [[2](https://websites.umich.edu/~mejn/netdata/)]                                                         | Co-authorship                     | No            | 1589  | 2742  | 396 | 379       | 914       | 0.2385            | -                         | -      | Test  |
 
 
@@ -116,20 +121,23 @@
 
 - `FADDIS sensitivity analysis is necessary to select the properties used to form network families, unlike LFR networks, which leverage prior knowledge from the literature`
 
-### Network Properties (LAPIN-on)
+### Network Properties
 
-- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/train_networks/network_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/test_networks_with_gt/network_properties.csv)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/test_networks_without_gt/network_properties.csv)
+- [Train networks](../../../results/real-world/stage2/experience2/characterization/results_2026-09-20_15-23-42-422629/training_networks/network_properties.csv)
+- [Validation networks with ground-truth](../../../results/real-world/stage2/experience2/characterization/results_2026-09-20_15-23-42-422629/validation_networks_with_gt/network_properties.csv)
+- [Validation networks without ground-truth](../../../results/real-world/stage2/experience2/characterization/results_2026-09-20_15-23-42-422629/validation_networks_without_gt/network_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/characterization/results_2026-09-20_15-23-42-422629/test_networks_with_gt/network_properties.csv)
+- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/characterization/results_2026-09-20_15-23-42-422629/test_networks_without_gt/network_properties.csv)
 
-### Ground-Truth Properties (LAPIN-on)
+### Ground-Truth Properties
 
-- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/train_networks/ground_truth_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/test_networks_with_gt/ground_truth_properties.csv)
+- [Train networks](../../../results/real-world/stage2/experience2/characterization/results_2026-09-20_15-23-42-422629/training_networks/ground_truth_properties.csv)
+- [Validation networks with ground-truth](../../../results/real-world/stage2/experience2/characterization/results_2026-09-20_15-23-42-422629/validation_networks_with_gt/ground_truth_properties.csv)
+- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/characterization/results_2026-09-20_15-23-42-422629/test_networks_with_gt/ground_truth_properties.csv)
 
 ### FADDIS Correlations (LAPIN-on)
 
-- [Open File](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-21_00-06-25-411658/train_networks/faddis_sensitivity_analysis.csv)
+- [Open File](../../../results/real-world/stage2/experience2/sensitivity/results_2026-09-11_19-38-08-470447/training_networks/faddis_sensitivity_analysis.csv)
 
 | Ground-Truth Type               | Network Property              | FADDIS Property | #Networks | Spearman Correlation | Pearson Correlation   |
 |---------------------------------|-------------------------------|-----------------|-----------|----------------------|-----------------------|
@@ -155,20 +163,9 @@
 - `Degree assortativity is clearly the network property most strongly correlated with c_K for the combined, non-overlapping and overlapping ground-truth groups`
 - `Average degree exhibits a balanced correlated with c_K for the combined, non-overlapping and overlapping ground-truth groups`
 
-### Network Properties (LAPIN-off)
-
-- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/train_networks/network_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/test_networks_with_gt/network_properties.csv)
-- [Test networks without ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/test_networks_without_gt/network_properties.csv)
-
-### Ground-Truth Properties (LAPIN-off)
-
-- [Train networks](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/train_networks/ground_truth_properties.csv)
-- [Test networks with ground-truth](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/test_networks_with_gt/ground_truth_properties.csv)
-
 ### FADDIS Correlations (LAPIN-off)
 
-- [Open File](../../../results/real-world/stage2/experience2/sensitivity/results_2026-07-26_14-08-05-867933/train_networks/faddis_sensitivity_analysis.csv)
+- [Open File](../../../results/real-world/stage2/experience2/sensitivity/results_2026-09-11_21-14-12-283040/training_networks/faddis_sensitivity_analysis.csv)
 
 | Ground-Truth Type               | Network Property              | FADDIS Property | #Networks | Spearman Correlation  | Pearson Correlation   |
 |---------------------------------|-------------------------------|-----------------|-----------|-----------------------|-----------------------|
@@ -250,23 +247,27 @@
 | facebook-network-ego107            | 51.7389        | 0.4316               | Assortative + Large Average Degree      | 11_aH_davgH       | Train |
 | facebook-network-ego1912           | 80.7070        | 0.5026               | Assortative + Very Large Average Degree | 12_aH_davgVH      | Train |
 
-### Test Assignment
+### Validation Assignment
 
 | Network                              | Average Degree | Degree Assortativity | Combination                                | Assigned Family | Calibrated? |
 |--------------------------------------|---------------:|---------------------:|--------------------------------------------|-----------------|-------------|
 | socio-patterns-primary-school-day2   |        46.5462 |               0.2168 | Assortative + Large Average Degree         | 11_aH_davgH     | Yes         |
 | citeseer                             |         3.4768 |               0.0071 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
-| facebook-network-ego3980             |         6.2727 |               0.0530 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
 | facebook-network-ego686              |        19.7143 |               0.0841 | Near-Neutral + Medium Average Degree       | 06_aM_davgM     | Yes         |
 | facebook-network-ego348              |        28.5000 |               0.2227 | Assortative + Medium Average Degree        | 10_aH_davgM     | Yes         |
-| dolphins                             |         5.1290 |              -0.0436 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
 | les-miserables                       |         6.5974 |              -0.1652 | Disassortative + Low Average Degree        | 01_aL_davgL     | Yes         |
-| jazz-musicians                       |        27.6970 |               0.0202 | Near-Neutral + Medium Average Degree       | 06_aM_davgM     | Yes         |
 | c-elegans-neural-network             |        14.4646 |              -0.1632 | Disassortative + Low Average Degree        | 01_aL_davgL     | Yes         |
 | c-elegans-metabolic                  |         8.9404 |              -0.2258 | Disassortative + Low Average Degree        | 01_aL_davgL     | Yes         |
 | email-urv                            |         9.6222 |               0.0782 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
-| co-authorships-in-network-science    |         4.8232 |              -0.0817 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
 
+### Test Assignment
+
+| Network                              | Average Degree | Degree Assortativity | Combination                                | Assigned Family | Calibrated? |
+|--------------------------------------|---------------:|---------------------:|--------------------------------------------|-----------------|-------------|
+| facebook-network-ego3980             |         6.2727 |               0.0530 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
+| dolphins                             |         5.1290 |              -0.0436 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
+| jazz-musicians                       |        27.6970 |               0.0202 | Near-Neutral + Medium Average Degree       | 06_aM_davgM     | Yes         |
+| co-authorships-in-network-science    |         4.8232 |              -0.0817 | Near-Neutral + Low Average Degree          | 05_aM_davgL     | Yes         |
 
 ## (5) Pipeline
 
@@ -454,10 +455,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_networks_with_gt/)
-- [Test with train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/test_with_train_networks/)
+- [Training networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_01-35-02-985213/training_networks/)
 
 
 ### Default Affinity (Adjacency Matrix) + LAPIN-off
@@ -471,10 +474,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/test_networks_with_gt/)
-- [Test with train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/test_with_train_networks/)
+- [Training networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_03-15-17-101707/training_networks/)
 
 ### Ip_b0 + LAPIN-on
 
@@ -487,10 +492,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_05-19-39-556936/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 ### Ip_b0 + LAPIN-off
 
@@ -503,10 +510,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_20-05-55-517321/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 ### CosIp_b0 + LAPIN-on
 
@@ -519,10 +528,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-21_21-23-40-813696/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 ### CosIp_b0 + LAPIN-off
 
@@ -535,10 +546,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_04-16-41-275586/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 ### Kul + LAPIN-on
 
@@ -551,10 +564,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-22_12-45-13-205463/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 ### Kul + LAPIN-off
 
@@ -567,10 +582,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_08-27-39-974371/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 ### Dice + LAPIN-on
 
@@ -583,10 +600,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_09-52-38-785445/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 ### Dice + LAPIN-off
 
@@ -599,10 +618,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-24_15-32-47-785178/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 ### Ochiai + LAPIN-on
 
@@ -615,10 +636,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_15-40-23-273023/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 ### Ochiai + LAPIN-off
 
@@ -631,10 +654,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/validation_networks_without_gt//)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-25_20-55-04-450298/test_networks_with_gt/)
-- Test with train networks results
+- Training networks results
 
 
 ## (8) Overlapping Communities - Network Family K-Boundary Thresholds + Network Contribution-Boundary Thresholds
@@ -650,10 +675,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_networks_with_gt/)
-- [Test with train networks results (inc.)](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/test_with_train_networks/)
+- [Training networks results (inc.)](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_07-21-37-879275/training_networks/)
 
 ### Default Affinity (Adjacency Matrix) + LAPIN-off
 
@@ -666,10 +693,12 @@ $$
 }
 ```
 
-- [Train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/train_networks/)
+- [Reference thresholds results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/reference_ths/)
+- [Validation networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/validation_networks_without_gt/)
+- [Validation networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/validation_networks_with_gt/)
 - [Test networks without ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/test_networks_without_gt/)
 - [Test networks with ground-truth results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/test_networks_with_gt/)
-- [Test with train networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/test_with_train_networks/)
+- [Training networks results](../../../results/real-world/stage2/experience2/ths/results_2026-07-26_15-04-51-954365/training_networks/)
 
 
 ## (9) Literature Review of Community Detection Results in Networks without Ground-Truth
@@ -770,29 +799,26 @@ $$
 
 | Configuration                          | #Acceptbale Thresholds/#Total           |
 |----------------------------------------|----------------------------------------:|
-| Non-overlapping + Default + LAPIN-on   | 6/7                                     |
-| Non-overlapping + Default + LAPIN-off  | 4/7                                     |
-| Overlapping + Default + LAPIN-on       | 0/7                                     |
-| Overlapping + Default + LAPIN-off      | 1/7                                     |
+| Non-overlapping + Default + LAPIN-on   | 4/4                                     |
+| Non-overlapping + Default + LAPIN-off  | 1/4                                     |
+| Overlapping + Default + LAPIN-on       | 0/4                                     |
+| Overlapping + Default + LAPIN-off      | 1/4                                     |
 
 | Network                           | Literature \(K'\) Range   | \(K'\) (Non-overlapping + Default + LAPIN-on) | \(K'\)  (Non-overlapping + Default + LAPIN-off) | \(K'\) (Overlapping + Default + LAPIN-on) | \(K'\)  (Overlapping + Default + LAPIN-off) |
 |-----------------------------------|--------------------------:|----------------------------------------------:|------------------------------------------------:|------------------------------------------:|--------------------------------------------:|
 | c-elegans-metabolic               | 8; 10; 12; 16             | 44                                            | 8                                               | 75                                        | 24                                          |
 | c-elegans-neural-network          | 5                         | 15                                            | 5                                               | 66                                        | 16                                          |
-| co-authorships-in-network-science | -                         | 7                                             | 22                                              | 64                                        | 61                                          |
-| dolphins                          | 4–5; 7                    | 2                                             | 6                                               | 7                                         | 13                                          |
 | email-urv                         | 7–9; 12–13; 15–16; 49; 68 | 11                                            | 6                                               | 60                                        | 16                                          |
-| jazz-musicians                    | 2–5; 7; 9; 11             | 23                                            | 5                                               | 28                                        | 17                                          |
 | les-miserables                    | 5–6; 8–10                 | 5                                             | 9                                               | 26                                        | 9                                           |
 
-#### Networks with ground-truth (test and train)
+#### Networks with ground-truth (validation and train)
 
 | Configuration                          | #Acceptbale Thresholds/#Total           |
 |----------------------------------------|----------------------------------------:|
-| Non-overlapping + Default + LAPIN-on   | 3/5                                     |
-| Non-overlapping + Default + LAPIN-off  | 4/5                                     |
-| Overlapping + Default + LAPIN-on       | 3/5                                     |
-| Overlapping + Default + LAPIN-off      | 0/5                                     |
+| Non-overlapping + Default + LAPIN-on   | 3/4                                     |
+| Non-overlapping + Default + LAPIN-off  | 3/4                                     |
+| Overlapping + Default + LAPIN-on       | 2/4                                     |
+| Overlapping + Default + LAPIN-off      | 0/4                                     |
 | -                                      | -                                       |
 | Non-overlapping + Default + LAPIN-on   | 10/14                                   |
 | Non-overlapping + Default + LAPIN-off  | 4/14                                    |
@@ -805,7 +831,6 @@ $$
 |------------------------------------|----|----|-------|-------|-------|--------|
 | citeseer                           | 14 | 6  | 0.367 | 0.373 | -     | -      |
 | facebook-network-ego348            | 10 | 14 | -     | -     | 0.218 | -0.042 |
-| facebook-network-ego3980           | 7  | 11 | -     | -     | 0.211 | 0.229  |
 | facebook-network-ego686            | 17 | 14 | -     | -     | 0.093 | 0.025  |
 | socio-patterns-primary-school-day2 | 13 | 11 | 0.865 | 0.880 | -     | -      |
 | -                                  | -  | -  | -     | -     | -     | -      |
@@ -830,7 +855,6 @@ $$
 |------------------------------------|----|----|-------|-------|-------|--------|
 | citeseer                           | 13 | 6  | 0.291 | 0.296 | -     | -      |
 | facebook-network-ego348            | 5  | 14 | -     | -     | 0.162 | -0.027 |
-| facebook-network-ego3980           | 4  | 11 | -     | -     | 0.262 | 0.352  |
 | facebook-network-ego686            | 7  | 14 | -     | -     | 0.110 | 0.029  |
 | socio-patterns-primary-school-day2 | 8  | 11 | 0.771 | 0.789 | -     | -      |
 | -                                  | -  | -  | -     | -     | -     | -      |
@@ -855,7 +879,6 @@ $$
 |------------------------------------|----|----|-------|-------|-------|--------|
 | citeseer                           | 34 | 6  | 0.348 | 0.361 | -     | -      |
 | facebook-network-ego348            | 20 | 14 | -     | -     | 0.218 | -0.021 |
-| facebook-network-ego3980           | 11 | 11 | -     | -     | 0.182 | 0.138  |
 | facebook-network-ego686            | 32 | 14 | -     | -     | 0.109 | 0.017  |
 | socio-patterns-primary-school-day2 | 16 | 11 | 0.838 | 0.861 | -     | -      |
 | -                                  | -  | -  | -     | -     | -     | -      |
@@ -869,7 +892,6 @@ $$
 |------------------------------------|-----|----|-------|-------|-------|--------|
 | citeseer                           | 168 | 6  | 0.224 | 0.275 | -     | -      |
 | facebook-network-ego348            | 17  | 14 | -     | -     | 0.211 | -0.009 |
-| facebook-network-ego3980           | 7   | 11 | -     | -     | 0.200 | 0.203  |
 | facebook-network-ego686            | 12  | 14 | -     | -     | 0.116 | 0.0121 |
 | socio-patterns-primary-school-day2 | 10  | 11 | 0.767 | 0.789 | -     | -      |
 | -                                  | -   | -  | -     | -     | -     | -      |
@@ -915,28 +937,25 @@ $$
 
 | Configuration                     | #Acceptbale Thresholds/#Total           |
 |-----------------------------------|----------------------------------------:|
-| Default + LAPIN-on                | 6/7                                     |
-| Default + LAPIN-off               | 4/7                                     |
-| Ip_b0 + LAPIN-on                  | 4/7                                     |
-| Ip_b0 + LAPIN-off                 | 2/7                                     |
-| CosIp_b0 + LAPIN-on               | 5/7                                     |
-| CosIp_b0 + LAPIN-off              | 5/7                                     |
-| Kul + LAPIN-on                    | 5/7                                     |
-| Kul + LAPIN-off                   | 5/7                                     |
-| Dice + LAPIN-on                   | 6/7                                     |
-| Dice + LAPIN-off                  | 4/7                                     |
-| Ochiai + LAPIN-on                 | 5/7                                     |
-| Ochiai + LAPIN-off                | 5/7                                     |
+| Default + LAPIN-on                | 4/4                                     |
+| Default + LAPIN-off               | 1/4                                     |
+| Ip_b0 + LAPIN-on                  | 2/4                                     |
+| Ip_b0 + LAPIN-off                 | 0/4                                     |
+| CosIp_b0 + LAPIN-on               | 2/4                                     |
+| CosIp_b0 + LAPIN-off              | 3/4                                     |
+| Kul + LAPIN-on                    | 2/4                                     |
+| Kul + LAPIN-off                   | 3/4                                     |
+| Dice + LAPIN-on                   | 3/4                                     |
+| Dice + LAPIN-off                  | 2/4                                     |
+| Ochiai + LAPIN-on                 | 2/4                                     |
+| Ochiai + LAPIN-off                | 3/4                                     |
 
 
 | Network                           | Literature \(Q\) Range | \(Q\) (Default + LAPIN-on) | \(Q\)  (Default + LAPIN-off) | \(Q\) (Ip_b0 + LAPIN-on) | \(Q\) (Ip_b0 + LAPIN-of) | \(Q\) (CosIp_b0 + LAPIN-on) | \(Q\) (CosIp_b0 + LAPIN-off) | \(Q\) (Kul + LAPIN-on) | \(Q\) (Kul + LAPIN-off) | \(Q\) (Dice + LAPIN-on) | \(Q\) (Dice + LAPIN-off) | \(Q\) (Ochiai + LAPIN-on) | \(Q\) (Ochiai + LAPIN-off) |
 |-----------------------------------|------------------------|----------------------------|------------------------------|--------------------------|--------------------------|-----------------------------|------------------------------|------------------------|-------------------------|-------------------------|--------------------------|---------------------------|----------------------------|
 | c-elegans-metabolic               | 0.360–0.453            | 0.239                      | 0.340                        | 0.091                    | 0.034                    | 0.089                       | 0.198                        | 0.092                  | 0.199                   | 0.185                   | 0.193                    | 0.089                     | 0.198                      |
 | c-elegans-neural-network          | 0.498–0.504            | 0.291                      | 0.336                        | 0.092                    | 0.294                    | 0.180                       | 0.275                        | 0.219                  | 0.244                   | 0.253                   | 0.192                    | 0.229                     | 0.275                      |
-| co-authorships-in-network-science | -                      | 0.760                      | 0.776                        | 0.695                    | 0.770                    | 0.763                       | 0.757                        | 0.746                  | 0.748                   | 0.709                   | 0.730                    | 0.763                     | 0.757                      |
-| dolphins                          | 0.470–0.529            | 0.385                      | 0.470                        | 0.316                    | 0.488                    | 0.390                       | 0.452                        | 0.390                  | 0.437                   | 0.390                   | 0.478                    | 0.390                     | 0.452                      |
 | email-urv                         | 0.280–0.583            | 0.457                      | 0.450                        | 0.482                    | 0.463                    | 0.482                       | 0.490                        | 0.494                  | 0.493                   | 0.449                   | 0.502                    | 0.482                     | 0.490                      |
-| jazz-musicians                    | 0.280–0.445            | 0.265                      | 0.377                        | 0.108                    | 0.404                    | 0.328                       | 0.434                        | 0.323                  | 0.432                   | 0.351                   | 0.432                    | 0.328                     | 0.434                      |
 | les-miserables                    | 0.500–0.570            | 0.475                      | 0.495                        | 0.357                    | 0.467                    | 0.291                       | 0.456                        | 0.289                  | 0.474                   | 0.330                   | 0.486                    | 0.291                     | 0.456                      |
 
 
@@ -944,10 +963,7 @@ $$
 |-----------------------------------|--------------------------:|----------------------------:|------------------------------:|--------------------------:|--------------------------:|-----------------------------:|------------------------------:|------------------------:|-------------------------:|-------------------------:|--------------------------:|---------------------------:|----------------------------:|
 | c-elegans-metabolic               | 8; 10; 12; 16             | 44                          | 8                             | 2                         | 5                         | 2                            | 3                             | 2                       | 3                        | 11                       | 3                         | 2                          | 3                           |
 | c-elegans-neural-network          | 5                         | 15                          | 5                             | 21                        | 3                         | 15                           | 3                             | 12                      | 3                        | 11                       | 7                         | 14                         | 3                           |
-| co-authorships-in-network-science | -                         | 7                           | 22                            | 21                        | 10                        | 14                           | 8                             | 12                      | 8                        | 9                        | 8                         | 14                         | 8                           |
-| dolphins                          | 4–5; 7                    | 2                           | 6                             | 14                        | 4                         | 2                            | 5                             | 2                       | 5                        | 2                        | 4                         | 2                          | 5                           |
 | email-urv                         | 7–9; 12–13; 15–16; 49; 68 | 11                          | 6                             | 44                        | 6                         | 15                           | 9                             | 11                      | 5                        | 11                       | 6                         | 15                         | 9                           |
-| jazz-musicians                    | 2–5; 7; 9; 11             | 23                          | 5                             | 37                        | 4                         | 17                           | 4                             | 19                      | 4                        | 16                       | 4                         | 17                         | 4                           |
 | les-miserables                    | 5–6; 8–10                 | 5                           | 9                             | 3                         | 4                         | 3                            | 8                             | 5                       | 7                        | 3                        | 7                         | 3                          | 8                           |
 
 - None of the affinity designs clearly outperforms the others across all networks, although individual designs perform better in specific networks.

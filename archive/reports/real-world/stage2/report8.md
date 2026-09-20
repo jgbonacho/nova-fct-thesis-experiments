@@ -959,4 +959,5 @@ $$
   - [DONE [Report 9](./report9.md)] Adjust configurations;
   - [DONE [Report 9](./report9.md)] Retain the 'e_family' if it is practically indistinguishable from the best candidate;
   - [DONE [Report 9](./report9.md)] Execute also for training networks;
-  - [DONE [Report 9](./report9.md)] Execute also for overlapping communities
+  - [DONE [Report 9](./report9.md)] Execute also for overlapping communities;
+  - [DONE [Report 9](./report9.md)] Divide in network in training, validation and test sets.

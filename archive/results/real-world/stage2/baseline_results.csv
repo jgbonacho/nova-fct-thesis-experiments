@@ -1,28 +1,28 @@
 ﻿Set,Network Family,Network,Overlapping?,Affinity Design,Execution Mode,Laplacian,Epsilon,Tau,Kmax,Stop Condition,Gamma,C0 discarded?,K' | K,|K'-K|/K,AMI,F-measure,ARI,FMI,NMI,VI,ONMI,Omega,Modularity,Conductance,Fuzzy-Modularity,Conductance-BN
-Test,network_family_03,citeseer,No,Default,LAPIN-on,Lsym,0.00419,0.05,500,epsilon,,No,13 | 6,1.166667,0.360896,0.645846,0.34101,0.485108,0.366233,2.24665,,,0.668709,0.005076,,
+Validation,network_family_03,citeseer,No,Default,LAPIN-on,Lsym,0.00419,0.05,500,epsilon,,No,13 | 6,1.166667,0.360896,0.645846,0.34101,0.485108,0.366233,2.24665,,,0.668709,0.005076,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
-Test,network_family_06,facebook-network-ego348,Yes,Default,LAPIN-on,Lsym,5.30E-05,0.05,112,epsilon,0.8,No,20 | 14,0.428571,,,,,,,0.222568,-0.021614,,,0.014104,0
+Validation,network_family_06,facebook-network-ego348,Yes,Default,LAPIN-on,Lsym,5.30E-05,0.05,112,epsilon,0.8,No,20 | 14,0.428571,,,,,,,0.222568,-0.021614,,,0.014104,0
+,,,,,,,,,,,,,,,,,,,,,,,,,,
+Validation,network_family_04,facebook-network-ego686,Yes,Default,LAPIN-on,Lsym,0.000112,0.05,84,epsilon,0.8,No,23 | 14,0.642857,,,,,,,0.094909,0.020342,,,0.023225,0
+,,,,,,,,,,,,,,,,,,,,,,,,,,
+Validation,network_family_07,socio-patterns-primary-school-day2,No,Default,LAPIN-on,Lsym,0.00033,0.05,119,epsilon,,No,13 | 11,0.181818,0.865055,0.884209,0.79563,0.816914,0.880367,0.564789,,,0.343856,0.386632,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
 Test,network_family_03,facebook-network-ego3980,Yes,Default,LAPIN-on,Lsym,0.00419,0.05,22,epsilon,0.8,No,10 | 11,0.090909,,,,,,,0.207748,0.152663,,,0.07567,0
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
-Test,network_family_04,facebook-network-ego686,Yes,Default,LAPIN-on,Lsym,0.000112,0.05,84,epsilon,0.8,No,23 | 14,0.642857,,,,,,,0.094909,0.020342,,,0.023225,0
+Validation,network_family_01,c-elegans-metabolic,Yes,Default,LAPIN-on,Lsym,0.032604,0.05,226,epsilon,0.8,No,2,,,,,,,,,,,,0.002222,0.019545
+Validation,network_family_01,c-elegans-metabolic,No,Default,LAPIN-on,Lsym,0.032604,0.05,226,epsilon,,No,2,,,,,,,,,,0.026926,0.643678,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
-Test,network_family_07,socio-patterns-primary-school-day2,No,Default,LAPIN-on,Lsym,0.00033,0.05,119,epsilon,,No,13 | 11,0.181818,0.865055,0.884209,0.79563,0.816914,0.880367,0.564789,,,0.343856,0.386632,,
+Validation,network_family_03,email-urv,Yes,Default,LAPIN-on,Lsym,0.00419,0.05,500,epsilon,0.8,No,11,,,,,,,,,,,,0.005529,0
+Validation,network_family_03,email-urv,No,Default,LAPIN-on,Lsym,0.00419,0.05,500,epsilon,,No,11,,,,,,,,,,0.486746,0.2377,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
-Test,network_family_01,c-elegans-metabolic,Yes,Default,LAPIN-on,Lsym,0.032604,0.05,226,epsilon,0.8,No,2,,,,,,,,,,,,0.002222,0.019545
-Test,network_family_01,c-elegans-metabolic,No,Default,LAPIN-on,Lsym,0.032604,0.05,226,epsilon,,No,2,,,,,,,,,,0.026926,0.643678,,
-,,,,,,,,,,,,,,,,,,,,,,,,,,
+Validation,network_family_01,les-miserables,No,Default,LAPIN-on,Lsym,0.032604,0.05,38,epsilon,,No,4,,,,,,,,,,0.423004,0.155738,,
+Validation,network_family_01,les-miserables,Yes,Default,LAPIN-on,Lsym,0.032604,0.05,38,epsilon,0.8,No,4,,,,,,,,,,,,0.038775,0.097467
+
 Test,network_family_03,co-authorships-in-network-science,Yes,Default,LAPIN-on,Lsym,0.00419,0.05,189,epsilon,0.8,No,7,,,,,,,,,,,,0.016961,0.01098
 Test,network_family_03,co-authorships-in-network-science,No,Default,LAPIN-on,Lsym,0.00419,0.05,189,epsilon,,No,7,,,,,,,,,,0.760221,0.021739,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
 Test,network_family_03,dolphins,Yes,Default,LAPIN-on,Lsym,0.00419,0.05,31,epsilon,0.8,No,2,,,,,,,,,,,,0.019277,0.024388
 Test,network_family_03,dolphins,No,Default,LAPIN-on,Lsym,0.00419,0.05,31,epsilon,,No,2,,,,,,,,,,0.384775,0.070707,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,
-Test,network_family_03,email-urv,Yes,Default,LAPIN-on,Lsym,0.00419,0.05,500,epsilon,0.8,No,11,,,,,,,,,,,,0.005529,0
-Test,network_family_03,email-urv,No,Default,LAPIN-on,Lsym,0.00419,0.05,500,epsilon,,No,11,,,,,,,,,,0.486746,0.2377,,
-,,,,,,,,,,,,,,,,,,,,,,,,,,
 Test,network_family_04,jazz-musicians,Yes,Default,LAPIN-on,Lsym,0.000112,0.05,99,epsilon,0.8,No,24,,,,,,,,,,,,0.017947,0
 Test,network_family_04,jazz-musicians,No,Default,LAPIN-on,Lsym,0.000112,0.05,99,epsilon,,No,24,,,,,,,,,,0.249361,0.274623,,
-
-Test,network_family_01,les-miserables,No,Default,LAPIN-on,Lsym,0.032604,0.05,38,epsilon,,No,4,,,,,,,,,,0.423004,0.155738,,
-Test,network_family_01,les-miserables,Yes,Default,LAPIN-on,Lsym,0.032604,0.05,38,epsilon,0.8,No,4,,,,,,,,,,,,0.038775,0.097467

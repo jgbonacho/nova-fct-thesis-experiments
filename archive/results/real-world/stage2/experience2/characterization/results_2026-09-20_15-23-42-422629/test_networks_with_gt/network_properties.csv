@@ -1,0 +1,2 @@
+Network,Nodes LCC,Edges LCC,Min Degree,Max Degree,Average Degree,Degree Std,Degree CV,Degree Hub Ratio,Degree Assortativity,Density,Sparsity,Global Clustering Coefficient,Average Clustering,Ground-Truth?,Overlapping Ground-Truth?
+facebook-network-ego3980,44,138,1.0,18.0,6.2727272727272725,4.206106504106863,0.6705387180460217,2.8695652173913047,0.05297863564191894,0.14587737843551796,0.854122621564482,0.44404332129963897,0.4547680965795939,True,True

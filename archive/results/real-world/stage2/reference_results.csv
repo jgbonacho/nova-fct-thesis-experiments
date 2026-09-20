@@ -41,17 +41,17 @@ Train,network_family_07,socio-patterns-primary-school-day1,No,Default,LAPIN-on,L
 Train,network_family_08,facebook-network-ego1912,Yes,Default,LAPIN-off,-,W,0.8,Yes,37 | 45,0.177778,,,,,,,0.105856,0.241756,,,0.012937,0.120262
 Train,network_family_08,facebook-network-ego1912,Yes,Default,LAPIN-on,Lsym,desiredK,0.8,No,45 | 45,0,,,,,,,0.278874,0.559884,,,0.008677,0
 ,,,,,,,,,,,,,,,,,,,,,,,
-Test,network_family_03,citeseer,No,Default,LAPIN-off,-,desiredK,,Yes,6 | 6,0,0.200393,0.476408,0.142565,0.328711,0.203366,2.578539,,,0.647021,0.005076,,
-Test,network_family_03,citeseer,No,Default,LAPIN-on,Lsym,desiredK,,No,6 | 6,0,0.274566,0.559658,0.226317,0.408581,0.277356,2.283583,,,0.685444,0.011348,,
+Validation,network_family_03,citeseer,No,Default,LAPIN-off,-,desiredK,,Yes,6 | 6,0,0.200393,0.476408,0.142565,0.328711,0.203366,2.578539,,,0.647021,0.005076,,
+Validation,network_family_03,citeseer,No,Default,LAPIN-on,Lsym,desiredK,,No,6 | 6,0,0.274566,0.559658,0.226317,0.408581,0.277356,2.283583,,,0.685444,0.011348,,
+,,,,,,,,,,,,,,,,,,,,,,,
+Validation,network_family_04,facebook-network-ego686,Yes,Default,LAPIN-off,-,W,0.8,Yes,13 | 14,0.071429,,,,,,,0.110002,0.008206,,,0.024439,0.169715
+Validation,network_family_04,facebook-network-ego686,Yes,Default,LAPIN-on,Lsym,desiredK,0.8,No,14 | 14,0,,,,,,,0.093296,0.029832,,,0.016754,0
+,,,,,,,,,,,,,,,,,,,,,,,
+Validation,network_family_06,facebook-network-ego348,Yes,Default,LAPIN-off,-,desiredK,0.8,Yes,14 | 14,0,,,,,,,0.229319,-0.012025,,,0.017892,0.075874
+Validation,network_family_06,facebook-network-ego348,Yes,Default,LAPIN-on,Lsym,desiredK,0.8,No,14 | 14,0,,,,,,,0.202235,-0.033371,,,0.009907,0
+,,,,,,,,,,,,,,,,,,,,,,,
+Validation,network_family_07,socio-patterns-primary-school-day2,No,Default,LAPIN-off,-,desiredK,,Yes,11 | 11,0,0.779557,0.802499,0.688547,0.718157,0.802333,0.932719,,,0.299659,0.373272,,
+Validation,network_family_07,socio-patterns-primary-school-day2,No,Default,LAPIN-on,Lsym,desiredK,,No,11 | 11,0,0.849879,0.87296,0.772145,0.797914,0.864591,0.626867,,,0.344346,0.386632,,
 ,,,,,,,,,,,,,,,,,,,,,,,
 Test,network_family_03,facebook-network-ego3980,Yes,Default,LAPIN-off,-,W,0.8,Yes,9 | 11,0.181818,,,,,,,0.162445,0.184378,,,0.083613,0.309167
 Test,network_family_03,facebook-network-ego3980,Yes,Default,LAPIN-on,Lsym,desiredK,0.8,No,11 | 11,0,,,,,,,0.181523,0.137739,,,0.079585,0
-,,,,,,,,,,,,,,,,,,,,,,,
-Test,network_family_04,facebook-network-ego686,Yes,Default,LAPIN-off,-,W,0.8,Yes,13 | 14,0.071429,,,,,,,0.110002,0.008206,,,0.024439,0.169715
-Test,network_family_04,facebook-network-ego686,Yes,Default,LAPIN-on,Lsym,desiredK,0.8,No,14 | 14,0,,,,,,,0.093296,0.029832,,,0.016754,0
-,,,,,,,,,,,,,,,,,,,,,,,
-Test,network_family_06,facebook-network-ego348,Yes,Default,LAPIN-off,-,desiredK,0.8,Yes,14 | 14,0,,,,,,,0.229319,-0.012025,,,0.017892,0.075874
-Test,network_family_06,facebook-network-ego348,Yes,Default,LAPIN-on,Lsym,desiredK,0.8,No,14 | 14,0,,,,,,,0.202235,-0.033371,,,0.009907,0
-,,,,,,,,,,,,,,,,,,,,,,,
-Test,network_family_07,socio-patterns-primary-school-day2,No,Default,LAPIN-off,-,desiredK,,Yes,11 | 11,0,0.779557,0.802499,0.688547,0.718157,0.802333,0.932719,,,0.299659,0.373272,,
-Test,network_family_07,socio-patterns-primary-school-day2,No,Default,LAPIN-on,Lsym,desiredK,,No,11 | 11,0,0.849879,0.87296,0.772145,0.797914,0.864591,0.626867,,,0.344346,0.386632,,

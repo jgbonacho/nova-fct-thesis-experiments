@@ -1,0 +1,2 @@
+Network,Overlapping Ground-Truth?,Overlap Fraction,K,Community Proportion,Min Community Size,Max Community Size,Average Community Size,Community Size Std,Community Size CV,Nodes Without Community,Nodes Fraction Without Community
+facebook-network-ego3980,True,0.0,11,0.25,1.0,21.0,4.0,5.932958789676531,1.4832396974191326,0,0.0
