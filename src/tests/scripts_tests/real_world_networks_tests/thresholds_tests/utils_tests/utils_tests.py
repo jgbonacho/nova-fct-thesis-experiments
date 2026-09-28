@@ -207,14 +207,14 @@ class TestThresholdUtils(unittest.TestCase):
                 "connected_double_edge_swap",
                 return_value=3
         ) as mocked_swap, patch.object(
-                utils_module,
-                "compute_adjacency_matrix",
-                return_value=perturbed_A
+            utils_module,
+            "compute_adjacency_matrix",
+            return_value=perturbed_A
         ) as mocked_compute_adjacency, patch.object(
-                utils_module,
-                "lapin"
+            utils_module,
+            "lapin"
         ) as mocked_lapin, patch(
-                "builtins.print"
+            "builtins.print"
         ) as mocked_print:
             perturbed_graph, returned_A, returned_W = (
                 utils_module.generate_a_perturbed_graph(
@@ -262,15 +262,15 @@ class TestThresholdUtils(unittest.TestCase):
                 "connected_double_edge_swap",
                 return_value=2
         ), patch.object(
-                utils_module,
-                "compute_adjacency_matrix",
-                return_value=perturbed_A
+            utils_module,
+            "compute_adjacency_matrix",
+            return_value=perturbed_A
         ), patch.object(
-                utils_module,
-                "lapin",
-                return_value=lapin_W
+            utils_module,
+            "lapin",
+            return_value=lapin_W
         ) as mocked_lapin, patch(
-                "builtins.print"
+            "builtins.print"
         ):
             _, returned_A, returned_W = (
                 utils_module.generate_a_perturbed_graph(
@@ -322,11 +322,11 @@ class TestThresholdUtils(unittest.TestCase):
                 "connected_double_edge_swap",
                 side_effect=fake_swap
         ), patch.object(
-                utils_module,
-                "compute_adjacency_matrix",
-                side_effect=fake_compute_adjacency
+            utils_module,
+            "compute_adjacency_matrix",
+            side_effect=fake_compute_adjacency
         ), patch(
-                "builtins.print"
+            "builtins.print"
         ):
             perturbed_graph, _, _ = (
                 utils_module.generate_a_perturbed_graph(

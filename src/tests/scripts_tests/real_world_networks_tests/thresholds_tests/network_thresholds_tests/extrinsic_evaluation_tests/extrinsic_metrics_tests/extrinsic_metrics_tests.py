@@ -2,7 +2,7 @@ import math
 import unittest
 from dataclasses import fields
 from types import SimpleNamespace
-from unittest.mock import Mock, call, patch
+from unittest.mock import call, patch
 
 import networkx as nx
 
@@ -66,8 +66,8 @@ class TestExtrinsicMetrics(unittest.TestCase):
                 "compute_extrinsic_metrics_for_non_overlapping_ground_truth",
                 return_value=expected
         ) as mocked_non_overlapping, patch.object(
-                metrics_module,
-                "compute_extrinsic_metrics_for_overlapping_ground_truth"
+            metrics_module,
+            "compute_extrinsic_metrics_for_overlapping_ground_truth"
         ) as mocked_overlapping:
             result = metrics_module.compute_extrinsic_metrics(
                 graph=graph,
@@ -100,9 +100,9 @@ class TestExtrinsicMetrics(unittest.TestCase):
                 metrics_module,
                 "compute_extrinsic_metrics_for_non_overlapping_ground_truth"
         ) as mocked_non_overlapping, patch.object(
-                metrics_module,
-                "compute_extrinsic_metrics_for_overlapping_ground_truth",
-                return_value=expected
+            metrics_module,
+            "compute_extrinsic_metrics_for_overlapping_ground_truth",
+            return_value=expected
         ) as mocked_overlapping:
             result = metrics_module.compute_extrinsic_metrics(
                 graph=graph,
@@ -306,13 +306,13 @@ class TestExtrinsicMetrics(unittest.TestCase):
                     predicted_node_clustering
                 ]
         ) as mocked_conversion, patch.object(
-                overlapping_module,
-                "_compute_onmi",
-                return_value=0.80
+            overlapping_module,
+            "_compute_onmi",
+            return_value=0.80
         ) as mocked_onmi, patch.object(
-                overlapping_module,
-                "_compute_omega",
-                return_value=0.75
+            overlapping_module,
+            "_compute_omega",
+            return_value=0.75
         ) as mocked_omega:
             metrics = (
                 overlapping_module.compute_extrinsic_metrics_for_overlapping_ground_truth(
@@ -401,9 +401,9 @@ class TestExtrinsicMetrics(unittest.TestCase):
                 "overlapping_normalized_mutual_information_MGH",
                 return_value=SimpleNamespace(score=0.61)
         ) as mocked_onmi, patch.object(
-                overlapping_module.ev,
-                "omega",
-                return_value=SimpleNamespace(score=0.72)
+            overlapping_module.ev,
+            "omega",
+            return_value=SimpleNamespace(score=0.72)
         ) as mocked_omega:
             onmi = overlapping_module._compute_onmi(
                 ground_truth,

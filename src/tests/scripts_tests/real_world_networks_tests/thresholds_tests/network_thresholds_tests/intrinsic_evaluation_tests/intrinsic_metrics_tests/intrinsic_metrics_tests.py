@@ -133,11 +133,11 @@ class TestIntrinsicMetrics(unittest.TestCase):
         degrees = A.sum(axis=1)
         twice_edges = degrees.sum()
         expected = (
-            (
-                A - np.outer(degrees, degrees) / twice_edges
-            )
-            * (U @ U.T)
-        ).sum() / twice_edges
+                           (
+                                   A - np.outer(degrees, degrees) / twice_edges
+                           )
+                           * (U @ U.T)
+                   ).sum() / twice_edges
 
         score = metrics_module._compute_fuzzy_modularity(A, U)
 
