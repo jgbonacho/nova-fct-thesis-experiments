@@ -1,6 +1,6 @@
 # NOVA FCT Thesis Experiments
 
-This repository contains the source-code artifacts, network datasets and archived experimental results produced for the calibration of the FADDIS stopping criterion.
+Developed in the context of the Master's thesis **Fuzzy Additive Spectral Clustering for Overlapping Community Detection: Affinity Construction and LAPIN Effects**, this repository contains the source-code artifacts, network datasets and archived experimental results produced for the calibration of the FADDIS stopping criterion.
 
 ## Repository Structure
 
